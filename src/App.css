@@ -1047,6 +1047,7 @@ progress::-moz-progress-bar {
   text-align: end;
   margin-bottom: -1.1rem;
 }
+
 .documentVdoImg{
   background-color: gray;
   width: -webkit-fill-available;

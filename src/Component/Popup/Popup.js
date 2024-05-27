@@ -46,6 +46,7 @@ const Popup = ({ onClose }) => {
     alignInput = {top:'34.5rem'};
     alignIcon = {top:'35rem'};
   }
+  
   if (broadcast === 'media') {
     broadcastMediaStyle = { display: 'block' };
     alignInput = {top:'37.5rem'};
