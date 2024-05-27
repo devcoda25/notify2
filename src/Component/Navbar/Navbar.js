@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import logo from '../img/showFile.png'
-import { CiLink } from "react-icons/ci";
+import { BiLogoMeta } from "react-icons/bi";
 import { LiaWalletSolid } from "react-icons/lia";
 import { GoBellFill } from "react-icons/go";
 import { IoMdPerson } from "react-icons/io";
@@ -9,16 +9,38 @@ import { PiBroadcastDuotone } from "react-icons/pi";
 import { RiContactsBook2Line } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
 import { TfiMore } from "react-icons/tfi";
-import { CgDanger } from "react-icons/cg";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { RiCalendarScheduleLine } from "react-icons/ri";
 import Popup from '../Popup/Popup';
+import { VscTriangleRight } from "react-icons/vsc";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { CiSearch } from "react-icons/ci";
+import { PiExport } from "react-icons/pi";
+import { BiImport } from "react-icons/bi";
+import { BiGridAlt } from "react-icons/bi";
+import filter from '../img/filter-01.png'
+import vdo from '../img/resume-01.png'
+import DataJsonFile from '../Data.json';
+import { FaRegCopy } from "react-icons/fa6";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { IoMdArrowDropdown } from "react-icons/io";
+// import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
+import { CgArrowLongLeft } from "react-icons/cg";
+import { CgArrowLongRight } from "react-icons/cg";
+import { BsFillFilterSquareFill } from "react-icons/bs";
+import StartedPopup from '../Popup/StartedPopup'
 
 
 const Navbar = () => {
-
+  
     const [isModalOpen, setIsModalOpen] = useState(false);
+    
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const togglePopup = () => {
+      setIsPopupOpen(!isPopupOpen);
+    };
 
     const handleOpenModal = () => {
       setIsModalOpen(true);
@@ -28,37 +50,205 @@ const Navbar = () => {
       setIsModalOpen(false);
     };
 
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+    const handleStartFooter = () => {
+      setIsPopupVisible(true);
+    };
+  
+    const handleClosePopup = () => {
+      setIsPopupVisible(false);
+    };
+
   return (
-    <div>
+    <>
+    <div className="main">
       <div className='nav'>
         <div className='lnav'>
             <img src={logo} alt='car' width='10%'/>
+            <span className='border'></span>
             <li><a href='#'><FiInbox />Team Inbox</a></li>
             <li className='solo'><a href='#'><PiBroadcastDuotone />Broadcast</a></li>
             <li><a href='#'><RiContactsBook2Line /></a>Contacts</li>
             <li><a href='#'><FiSettings />Automations</a></li>
+            <li><a href='#'><BiGridAlt  />Analytics</a></li>
             <li><a href='#'><TfiMore />More</a></li>
         </div>
         <div className='rnav'>
-            <li className='navicon1'><CiLink /></li>
+            <li className='navicon1'><BiLogoMeta /></li>
+            <span className='border'></span>
             <li className='navicon2'><LiaWalletSolid /></li>
+            <span className='border'></span>
             <li className='navicon3'><GoBellFill /></li>
-            <li className='navcont'>CONNECTED</li>     {/*<CgDanger />  */}
+            <span className='border'></span>
+            <li className='navcont'><p className='dangerWithCont'>CONNECTED <span className='dangerIcon'>!</span></p><span className='dangerNum'>+256393249612</span></li>  
+            <span className='border'></span>
             <li className='navicon3'><IoMdPerson /></li>
         </div>
       </div>
-      <div style={{display:'flex'}}>
+      <div className='msgCont'>
         <div className='msgContL'>
-            <li className='solo'><a><RiMessage2Line style={{fontSize:'1.5rem'}} />Template Messages</a></li>
-            <li><a><FaClockRotateLeft style={{fontSize:'1.5rem'}}/>Broadcast Analytics</a></li>
-            <li><a><RiCalendarScheduleLine style={{fontSize:'1.5rem'}}/>Scheduled Broadcasts</a></li>
+            <li className='solo'><a><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.125C0 2.2962 0.32924 1.50134 0.915291 0.915291C1.50134 0.32924 2.2962 0 3.125 0H14.375C15.2038 0 15.9987 0.32924 16.5847 0.915291C17.1708 1.50134 17.5 2.2962 17.5 3.125V7.54375C17.293 7.51438 17.0841 7.49976 16.875 7.5H16.25V3.125C16.25 2.62772 16.0525 2.15081 15.7008 1.79917C15.3492 1.44754 14.8723 1.25 14.375 1.25H3.125C2.62772 1.25 2.15081 1.44754 1.79917 1.79917C1.44754 2.15081 1.25 2.62772 1.25 3.125V14.375C1.25 14.8723 1.44754 15.3492 1.79917 15.7008C2.15081 16.0525 2.62772 16.25 3.125 16.25H5V16.875C5 17.0875 5.015 17.2962 5.04375 17.5H3.125C2.2962 17.5 1.50134 17.1708 0.915291 16.5847C0.32924 15.9987 0 15.2038 0 14.375V3.125ZM13.75 6.875C13.75 7.04076 13.6842 7.19973 13.5669 7.31694C13.4497 7.43415 13.2908 7.5 13.125 7.5H6.875C6.70924 7.5 6.55027 7.43415 6.43306 7.31694C6.31585 7.19973 6.25 7.04076 6.25 6.875C6.25 6.70924 6.31585 6.55027 6.43306 6.43306C6.55027 6.31585 6.70924 6.25 6.875 6.25H13.125C13.2908 6.25 13.4497 6.31585 13.5669 6.43306C13.6842 6.55027 13.75 6.70924 13.75 6.875ZM3.75 4.375C3.75 4.20924 3.81585 4.05027 3.93306 3.93306C4.05027 3.81585 4.20924 3.75 4.375 3.75H13.125C13.2908 3.75 13.4497 3.81585 13.5669 3.93306C13.6842 4.05027 13.75 4.20924 13.75 4.375C13.75 4.54076 13.6842 4.69973 13.5669 4.81694C13.4497 4.93415 13.2908 5 13.125 5H4.375C4.20924 5 4.05027 4.93415 3.93306 4.81694C3.81585 4.69973 3.75 4.54076 3.75 4.375ZM6.25 11.875C6.25 11.0462 6.57924 10.2513 7.16529 9.66529C7.75134 9.07924 8.5462 8.75 9.375 8.75H16.875C17.7038 8.75 18.4987 9.07924 19.0847 9.66529C19.6708 10.2513 20 11.0462 20 11.875V16.875C20 17.7038 19.6708 18.4987 19.0847 19.0847C18.4987 19.6708 17.7038 20 16.875 20H9.375C8.5462 20 7.75134 19.6708 7.16529 19.0847C6.57924 18.4987 6.25 17.7038 6.25 16.875V11.875ZM9.375 10C8.93598 9.99991 8.51084 10.1539 8.17368 10.4351C7.83653 10.7163 7.60873 11.1068 7.53 11.5387L13.125 14.8962L18.72 11.5387C18.6413 11.1068 18.4135 10.7163 18.0763 10.4351C17.7392 10.1539 17.314 9.99991 16.875 10H9.375ZM7.5 16.875C7.5 17.3723 7.69754 17.8492 8.04917 18.2008C8.40081 18.5525 8.87772 18.75 9.375 18.75H16.875C17.3723 18.75 17.8492 18.5525 18.2008 18.2008C18.5525 17.8492 18.75 17.3723 18.75 16.875V12.9788L13.4462 16.1612C13.3492 16.2194 13.2382 16.2501 13.125 16.2501C13.0118 16.2501 12.9008 16.2194 12.8038 16.1612L7.5 12.9788V16.875Z" fill="#23a455"></path></svg><span style={{fontSize:'.9rem'}}>Template Messages</span></a></li>
+            <li><a><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.0312 9.67641V9.98707L10.2509 10.2067L13.095 13.0508C13.1073 13.0631 13.1072 13.0828 13.0951 13.095L13.095 13.095C13.0828 13.1072 13.063 13.1072 13.0508 13.095L9.97791 10.0221L9.97784 10.022C9.97207 10.0163 9.96875 10.0083 9.96875 10V5.39062C9.96875 5.37335 9.98273 5.35938 10 5.35938C10.0173 5.35938 10.0312 5.37335 10.0312 5.39062V9.67641ZM1.63473 1.69836V3.34451L2.87688 2.2643C4.02874 1.26261 5.46716 0.75 6.92707 0.75H13.0729C16.4783 0.75 19.25 3.52167 19.25 6.92707V13.0729C19.25 16.4783 16.4783 19.25 13.0729 19.25H6.92707C3.52167 19.25 0.75 16.4783 0.75 13.0729V10C0.75 9.98273 0.763979 9.96875 0.78125 9.96875C0.798521 9.96875 0.8125 9.98273 0.8125 10V13.0729C0.8125 16.4452 3.55481 19.1875 6.92707 19.1875H13.0729C16.4452 19.1875 19.1875 16.4452 19.1875 13.0729V6.92707C19.1875 3.55481 16.4452 0.8125 13.0729 0.8125H6.92707C5.32361 0.8125 3.80341 1.448 2.67801 2.53299L1.57223 3.59907V0.78125C1.57223 0.763979 1.58621 0.75 1.60348 0.75C1.62075 0.75 1.63473 0.763979 1.63473 0.78125V1.69836ZM1.57223 3.85418V3.82293H3.19855H4.67641C4.69368 3.82293 4.70766 3.83691 4.70766 3.85418C4.70766 3.87145 4.69368 3.88543 4.67641 3.88543H1.60348C1.59706 3.88543 1.58965 3.8834 1.5818 3.87558C1.57797 3.87175 1.57553 3.86783 1.57417 3.86465C1.57305 3.86202 1.57223 3.85897 1.57223 3.85418Z" stroke="#666" stroke-width="1.5"></path></svg><span style={{fontSize:'.9rem'}}>Broadcast Analytics</span></a></li>
+            <li><a><svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3035 20.125H4.79167C4.28333 20.125 3.79582 19.923 3.43638 19.5636C3.07693 19.2041 2.875 18.7166 2.875 18.2083V6.70829C2.875 6.19996 3.07693 5.71245 3.43638 5.353C3.79582 4.99356 4.28333 4.79163 4.79167 4.79163H16.2917C16.8 4.79163 17.2875 4.99356 17.647 5.353C18.0064 5.71245 18.2083 6.19996 18.2083 6.70829V10.5416" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.2474 21.0833C19.3645 21.0833 21.0807 19.3671 21.0807 17.25C21.0807 15.1329 19.3645 13.4166 17.2474 13.4166C15.1303 13.4166 13.4141 15.1329 13.4141 17.25C13.4141 19.3671 15.1303 21.0833 17.2474 21.0833Z" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.375 2.875V6.70833" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.71094 2.875V6.70833" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.875 10.5416H18.2083" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.25 15.8087V17.25L18.2083 18.2083" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style={{fontSize:'.9rem'}}>Scheduled Broadcasts</span></a></li>
         </div>
-        <div className='msgContR'>
-            <button className='btn' onClick={handleOpenModal}>New Template Message</button>
-            {isModalOpen && <Popup onClose={handleCloseModal} />}
+        <div>
+          <div className='wholemsgContR'>
+            <div className='msgContR'>
+            <div className='msgContRLeft'>
+              <div className='sortCont'>
+                <p>Sorted by:</p>
+              </div>
+              <div className="input-icon-wrapper1">
+                <input type="text" placeholder="Latest" className="input-field1" />
+                <MdKeyboardArrowDown className="icon1" />
+              </div>
+              <div className="input-icon-wrapper2">
+                <input type="text" placeholder="Search" className="input-field2" />
+                <CiSearch className="icon2" />
+              </div>
+              {/* <div className='sortIcon'>
+                <BsFillFilterSquareFill style={{fontSize:'2rem', color:'green'}} onClick={togglePopup}/>
+              </div> */}
+              <div className="sortIcon">
+                {/* <BsFillFilterSquareFill style={{fontSize:'2rem', color:'green'}} onClick={togglePopup}/> 
+                */}
+                <svg onClick={togglePopup} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.1169 17.9867H2.88281" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M21.1174 17.9864C21.1174 19.577 19.828 20.8664 18.2374 20.8664C16.6468 20.8664 15.3574 19.577 15.3574 17.9864C15.3574 16.3947 16.6468 15.1064 18.2374 15.1064C19.828 15.1064 21.1174 16.3947 21.1174 17.9864Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M13.8828 6.26206H21.1181" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M2.88281 6.26208C2.88281 7.85384 4.17222 9.14208 5.76281 9.14208C7.3534 9.14208 8.64281 7.85384 8.64281 6.26208C8.64281 4.67149 7.3534 3.38208 5.76281 3.38208C4.17222 3.38208 2.88281 4.67149 2.88281 6.26208Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                {isPopupOpen && (
+                  <div className="popup-overlay">
+                    <div className="popupExtra">
+                    <div className="popup-box">
+                      <div className="filterPoppup">
+                        <div>
+                          <p className="filterCont">Attributes</p>
+                        </div>
+                        <div>
+                          <button className="close-btn" onClick={togglePopup}>×</button>
+                        </div>
+                      </div>
+                      <div className="popup-content">
+                        <form action="/action_page.php" style={{textAlign:"justify"}}>
+                          <p className="popupInputHead">Choose attributes to filter</p>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="DRAFT" name="DRAFT" value="DRAFT"/>
+                            <label for="DRAFT"> DRAFT </label><br/>
+                          </div>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="PENDING" name="PENDING" value="PENDING"/>
+                            <label for="PENDING"> PENDING </label><br/>
+                          </div>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="APPROVED" name="APPROVED" value="APPROVED"/>
+                            <label for="APPROVED"> APPROVED</label><br/>
+                          </div>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="REJECTED" name="REJECTED" value="REJECTED"/>
+                            <label for="REJECTED"> REJECTED </label><br/>
+                          </div>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="DELETED" name="DELETED" value="DELETED"/>
+                            <label for="DELETED"> DELETED </label><br/>
+                          </div>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="PAUSED" name="PAUSED" value="PAUSED"/>
+                            <label for="vehicle2"> PAUSED </label><br/>
+                          </div>
+                          <div className="popupFilterInput">
+                            <input className="popupInput" type="checkbox" id="DIASBLED" name="DIASBLED" value="DIASBLED"/>
+                            <label for="DIASBLED"> DIASBLED</label><br/><br/>
+                          </div>                         
+                        </form>
+                        <input className="poppupSubmit" type="submit" value="save"/>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className='portCont'>
+                <div>
+                  <p className='ImportExport'><PiExport className='exportIcon' /> Export</p>
+                </div>
+                <span style={{border:'1px solid rgb(225 231 231 / 78%)', margin:'.5rem'}}></span>
+                <div>
+                  <p className='ImportExport'><BiImport  className='importIcon' /> Import</p>
+                </div>
+              </div>
+            </div>
+            <div className='wholemsgContRRight'>
+              <div className='msgContRRight'>
+                <div>
+                  <h4 className='vdoCont'><img src={vdo}/> <a href="https://www.youtube.com/watch?v=Zyk7bby9URE" target="_blank">Watch Tutorial</a></h4>
+                </div>
+                <div>
+                  <button className='btn' onClick={handleOpenModal}>New Template Message</button>
+                  {isModalOpen && <Popup onClose={handleCloseModal} />}
+                </div>
+              </div>
+            </div>
+            </div>
+            <div className='paraLink'>
+              <p>All templates must adhere to WhatsApp's Template Message Guidelines.<a href='https://support.wati.io/l/en/article/d0ewqzh7gv-how-to-avoid-template-message-rejection?_gl=1*10pj2tu*_ga*NjY4NjgyOTg4LjE3MTU3NTA3MTA.*_ga_HYL717ZD73*MTcxNjI2NjI5MS4xNS4xLjE3MTYyNjY0NDkuNTQuMC4w' target="_blank">Click here to read</a></p>
+            </div>
+          </div>
+          <div className="table">
+            <table>
+              <tr>
+                <th style={{textAlign:'start', width:'10%'}}>Template Name</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Language</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+              </tr>
+              <hr width='465%' style={{marginLeft:'1rem'}}/>
+              {DataJsonFile.data.map((datamap)=>{
+                let {Actions,Category,Language,Status,templateName,lastUpdated}=datamap
+                return  <tr style={{paddingBottom:'4rem'}}>
+                <td style={{textAlign:'start', color:'rgb(27, 116, 227)'}}><span>{templateName}</span></td>
+                <td>{Category}</td>
+                <td><button className="statusBtn">{Status}</button></td>
+                <td>{Language}</td>
+                <td>{lastUpdated}</td>
+                <td className="action"><button className="actionBtn">{Actions}</button><hr style={{margin:'.7rem', marginLeft:'-1.5rem'}}/><span className="actionSpanCopy"><FaRegCopy /></span><span className="actionSpanDelete"><RiDeleteBinLine /></span></td>
+              </tr>
+              })}
+             
+            </table>
+          </div>
+          <div className="bodyFooter">
+            <div>
+              <p style={{fontSize:'15px'}}>Rows per page:</p>
+            </div>
+            <div>
+              <p className="footerCenter">5 <IoMdArrowDropdown /></p>
+            </div>
+            <div>
+              <p className="footerCenter">1–5 of 127</p>
+            </div>
+            <div>
+              <p><CgArrowLongLeft /> <span style={{color:'rgb(155 157 165)'}}>Previous</span></p>
+            </div>
+            <div>
+              <p className="footerCenter"><span style={{color:'rgb(35, 164, 85)'}}>Next</span> <CgArrowLongRight /></p>
+            </div>
+          </div>
         </div>
       </div>
+      <div className="footer">
+          <div>
+            <p>Copyright WATI.io @ 2024</p>
+          </div>
+          <div>
+            <p>WATI: release/sprint-15-8c5f131 - release/sprint-15</p>
+          </div>
+      </div>
     </div>
+    <div className="starFooter">
+      <p onClick={handleStartFooter}>How to get started</p>
+    </div>
+    {isPopupVisible && <StartedPopup onClose={handleClosePopup} />}
+  </>
   )
 }
 

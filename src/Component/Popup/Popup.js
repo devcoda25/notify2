@@ -1,45 +1,65 @@
-import React, { useState } from 'react';
-import { ImCross } from "react-icons/im";
-import { FormControl, InputLabel, MenuItem, Select, Box, Typography } from '@mui/material';
-import mailLap from '../img/mailLap.png';
-import mailMobile from '../img/mailMobile.png';
-import msgMobile from '../img/msgMobile.png';
+import React, { useState, useRef  } from 'react';
+import { RxCross2 } from "react-icons/rx";
+import whatsapp from '../img/whatsapp.png'
+import { SlDiamond } from "react-icons/sl";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
+import { GrBold } from "react-icons/gr";
+import { FaItalic } from "react-icons/fa6";
+import { MdStrikethroughS } from "react-icons/md";
+import { MdLink } from "react-icons/md";
+import { CgLogIn } from 'react-icons/cg';
+import img from '../img/mediaImg.png';
+import vdo from '../img/mediaVdo.png';
+import document from '../img/mediaDocument.png';
 
 const Popup = ({ onClose }) => {
-  const [app, setApp] = useState('');
-  const [platform, setPlatform] = useState('');
+
+  const [category, setCategory] = useState('');
+  const [broadcast, setBroadcast] = useState('none');
+  const [selectedOption, setSelectedOption] = useState('');
   const [cleanText, setCleanText] = useState('');
+  const [cleanTextBody, setCleanTextBody] = useState('');
+  const [cleanTextFooter, setCleanTextFooter] = useState('');
   const [htmlText, setHtmlText] = useState('');
+  const [htmlTextBody, setHtmlTextBody] = useState('');
+  const [htmlTextFooter, setHtmlTextFooter] = useState('');
   const [isBold, setIsBold] = useState(false);
-  const [cleanTextMail, setCleanTextMail] = useState('');
-  const [htmlTextMail, setHtmlTextMail] = useState('');
-  let img = '';
+  const [selectOption, setSelectOption] = useState('IMAGE');
+  const [newImage, setNewImage] = useState('');
+  
 
-  const handleAppChange = (event) => {
-    setApp(event.target.value);
+  const handleOptionChange = (e) => {
+    setSelectOption(e.target.value);
   };
 
-  const handlePlatformChange = (event) => {
-    setPlatform(event.target.value);
+
+  let broadcastTextStyle = { display: 'none' };
+  let broadcastMediaStyle = { display: 'none' };
+  let alignIcon = {top:'32rem'};
+  let alignInput = {top:'31.5rem'};
+
+  if (broadcast === 'text') {
+    broadcastTextStyle = { display: 'block' };
+    alignInput = {top:'34.5rem'};
+    alignIcon = {top:'35rem'};
+  }
+  if (broadcast === 'media') {
+    broadcastMediaStyle = { display: 'block' };
+    alignInput = {top:'37.5rem'};
+    alignIcon = {top:'38rem'};
+  }
+
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Selected file:', file.name);
+      let objectUrl = URL.createObjectURL(file)
+      // Do something with the selected file
+      setNewImage(objectUrl)
+    }
   };
-
-  // const handleTextChange = (event) => {
-  //   let newText = event.target.value;
-
-  //   // let newHtmlText = '';
-  //   // if (newText.length < cleanText.length) {
-  //   //   newHtmlText = htmlText.substring(0, htmlText.lastIndexOf('<b>') > -1 ? htmlText.lastIndexOf('<b>') : 0);
-  //   //   newHtmlText += newText.slice(newHtmlText.replace(/<\/?b>/g, '').length);
-  //   // } else {
-  //   //   const newContent = newText.slice(cleanText.length);
-  //   //   const newHtmlContent = isBold ? `<b>${newContent}</b>` : newContent;
-  //   //   newHtmlText = htmlText + newHtmlContent;
-  //   // }
-  //   let newHtmlText = newText.replace(/\n/g,"<br />");
-
-  //   setCleanText(newText);
-  //   setHtmlText(newHtmlText);
-  // };
 
 
   const handleTextChange = (event) => {
@@ -65,180 +85,365 @@ const Popup = ({ onClose }) => {
     setHtmlText(newHtmlText);
   };
   
-  const handleTextChangeMail = (event) => {
-    let newTextMail = event.target.value;
-
-    //let newHtmlTextMail = '';
-    // if (newTextMail.length < cleanTextMail.length) {
-    //   newHtmlTextMail = htmlTextMail.substring(0, htmlTextMail.lastIndexOf('<b>') > -1 ? htmlTextMail.lastIndexOf('<b>') : 0);
-    //   newHtmlTextMail += newTextMail.slice(newHtmlTextMail.replace(/<\/?b>/g, '').length);
-    // } else {
-    //   const newContent = newTextMail.slice(cleanTextMail.length);
-    //   const newHtmlContent = isBold ? `<b>${newContent}</b>` : newContent;
-    //   newHtmlTextMail = htmlTextMail + newHtmlContent;
-    // }
-    let newHtmlText = newTextMail.replace(/\n/g,"<br />");
-
-    setCleanTextMail(newTextMail);
-    setHtmlTextMail(newHtmlText);
-  };
-
-  const toggleBold = () => {
-    setIsBold(prevIsBold => !prevIsBold);
-  };
+  const handleTextBodyChange = (event) => {
+    const newTextBody = event.target.value;
+    let newHtmlTextBody = '';
   
-  var imgWidth = '';
-  var imgHeight = '';
-
-  if (app === 'mail' && platform === 'mobile') {
-    img = mailMobile;
-    imgWidth="60%"
-    imgHeight="70%"
-  } else if (app === 'mail' && platform === 'laptop') {
-    img = mailLap;
-    imgWidth="100%"
-    imgHeight='70%'
-  } else if (app === 'message' && platform === 'mobile') {
-    img = msgMobile;
-    imgWidth="60%"
-    imgHeight="70%"
-  }
-
-  const mailOnly = {
-    visibility: app === 'mail' ? 'visible' : 'hidden'
+    if (newTextBody.length === 0) {
+      newHtmlTextBody = '';
+    } 
+    else if (newTextBody.length < cleanTextBody.length) {
+      newHtmlTextBody = htmlTextBody.substring(0, htmlTextBody.lastIndexOf('<b>') > -1 ? htmlTextBody.lastIndexOf('<b>') : 0);
+      newHtmlTextBody += newTextBody.slice(newHtmlTextBody.replace(/<\/?b>/g, '').length);
+    } 
+    else {
+      const newContent = newTextBody.slice(cleanTextBody.length);
+      const newHtmlContent = isBold ? `<b>${newContent}</b>` : newContent;
+      newHtmlTextBody = htmlTextBody + newHtmlContent;
+    }
+  
+    newHtmlTextBody = newHtmlTextBody.replace(/\n/g, "<br />");
+  
+    setCleanTextBody(newTextBody);
+    setHtmlTextBody(newHtmlTextBody);
   };
 
-  // Define style object based on condition
-  const previewTextStyle = {};
-  const previewTextStyleTitle = {};
-  if (app === 'mail' && platform === 'mobile') {
-    previewTextStyle.position = 'absolute';
-    previewTextStyle.wordBreak = 'break-word';
-    previewTextStyle.top = '29%';
-    previewTextStyle.left = '22%';
-    previewTextStyle.fontSize = '1.03rem';
-    previewTextStyle.letterSpacing = '0.1rem';
-    previewTextStyle.width = '55%';
-    previewTextStyle.textAlign = 'justify';
-    previewTextStyle.whiteSpace = 'pre-wrap';
-    previewTextStyleTitle.wordBreak = 'break-word';
-    previewTextStyleTitle.position = 'absolute';
-    previewTextStyleTitle.top = '15%';
-    previewTextStyleTitle.textAlign = 'justify';
-    previewTextStyleTitle.left = '22%';
-    previewTextStyleTitle.fontSize = '1.5rem';
-    previewTextStyleTitle.width = '52%';
-  } else if (app === 'message' && platform === 'mobile') {
-    previewTextStyle.position = 'absolute';
-    previewTextStyle.top = '10rem';
-    previewTextStyle.left = '10rem';
-    previewTextStyle.color = 'black';
-    previewTextStyle.wordBreak = 'break-word';
-    previewTextStyle.border = '1px solid white';
-    previewTextStyle.padding = '1.5rem';
-    previewTextStyle.width = '35%';
-    previewTextStyle.backgroundColor = 'white';
-    previewTextStyle.borderRadius = '.5rem';
-    previewTextStyle.whiteSpace = 'pre-wrap';
-    previewTextStyle.textAlign = 'justify';
-    previewTextStyle.fontSize = '1.1rem';
+  const handleTextFooterChange = (event) => {
+    const newTextFooter = event.target.value;
+    let newHtmlTextFooter = '';
+  
+    if (newTextFooter.length === 0) {
+      newHtmlTextFooter = '';
+    } 
+    else if (newTextFooter.length < cleanTextFooter.length) {
+      newHtmlTextFooter = htmlTextFooter.substring(0, htmlTextFooter.lastIndexOf('<b>') > -1 ? htmlTextFooter.lastIndexOf('<b>') : 0);
+      newHtmlTextFooter += newTextFooter.slice(newHtmlTextFooter.replace(/<\/?b>/g, '').length);
+    } 
+    else {
+      const newContent = newTextFooter.slice(cleanTextFooter.length);
+      const newHtmlContent = isBold ? `<b>${newContent}</b>` : newContent;
+      newHtmlTextFooter = htmlTextFooter + newHtmlContent;
+    }
+  
+    newHtmlTextFooter = newHtmlTextFooter.replace(/\n/g, "<br />");
+  
+    setCleanTextFooter(newTextFooter);
+    setHtmlTextFooter(newHtmlTextFooter);
+  };
+
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
+
+  const handleBroadcastChange =(e)=>{
+    setBroadcast(e.target.value)
   }
-  if (app === 'mail' && platform === 'laptop') {
-    previewTextStyleTitle.position = 'absolute';
-    previewTextStyleTitle.top = '5rem';
-    previewTextStyle.position = 'absolute';
-    previewTextStyle.top = '10rem';
-    previewTextStyle.left = '.7rem';
-    previewTextStyleTitle.left = '.7rem';
-    previewTextStyle.fontSize = '.8rem';
-    previewTextStyleTitle.wordBreak = 'break-word';
-    previewTextStyle.wordBreak = 'break-word';
-    previewTextStyleTitle.whiteSpace = 'pre-wrap';
-    previewTextStyle.whiteSpace = 'pre-wrap';
-    previewTextStyle.textAlign = 'start';
-  } 
+  
+
+const languages = [
+  'English (US)', 'Afrikaans', 'Albanian', 'Arabic', 'Azerbaijani', 'Bengali', 'Bulgarian', 'Catalan',
+  'Chinese (CHN)', 'Chinese (HKG)', 'Chinese (TAI)', 'Croatian', 'Czech', 'Danish', 'Dutch', 'English',
+  'English (UK)', 'Estonian', 'Filipino', 'Finnish', 'French', 'Georgian', 'German', 'Greek', 'Gujarati',
+  'Hausa', 'Hebrew', 'Hindi', 'Hungarian', 'Indonesian', 'Irish', 'Italian', 'Japanese', 'Kannada', 'Kazakh',
+  'Kinyarwanda', 'Korean', 'Kyrgyz (Kyrgyzstan)', 'Lao', 'Latvian', 'Lithuanian', 'Macedonian', 'Malay',
+  'Malayalam', 'Marathi', 'Norwegian', 'Persian', 'Polish', 'Portuguese (BR)', 'Portuguese (POR)', 'Punjabi',
+  'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Spanish', 'Spanish (ARG)', 'Spanish (SPA)',
+  'Spanish (MEX)', 'Swahili', 'Swedish', 'Tamil', 'Telugu', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Uzbek',
+  'Vietnamese', 'Zulu'
+];
+
+
+let now = new Date();
+let hours = String(now.getHours()).padStart(2, '0');
+let minutes = String(now.getMinutes()).padStart(2, '0');
+let currentTime = `${hours}:${minutes}`;
 
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
-        <button className="close-button" style={{ marginLeft: '75rem' }} onClick={onClose}><ImCross /></button>
-        <div className="contImg" >
-          <div style={{ width: '50%' }}>
-            <h2>create message template</h2>
-            <div>
-              <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', paddingTop: '50px', gap:'.5rem' }}>
-                <Box sx={{ width: '40%' }}>
-                  <Typography variant="h6" gutterBottom>
-                    App
-                  </Typography>
-                  <FormControl fullWidth>
-                    <InputLabel id="app-select-label">Select App</InputLabel>
-                    <Select
-                      labelId="app-select-label"
-                      id="app-select"
-                      value={app}
-                      label="Select App"
-                      onChange={handleAppChange}
-                    >
-                      <MenuItem value="mail">Mail</MenuItem>
-                      <MenuItem value="message">Message</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
+        <div className='popupNav'>
+          <p className='popupNavHead'>Create template message</p>
+          <p className="close-button" onClick={onClose}><RxCross2  /></p>
+        </div>
+        <div className='bodyPoppup'>
+          <div className='bodyPoppupL'>
+              <div>
+                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a href='#'>Use a sample</a></p>
+              </div>
+              <div className='popupInput'>
+                <div>
+                  <label>Template Name</label>
+                  <input placeholder='Template Name' type='text'/>
+                </div>
+                <div className="App" style={{marginLeft:'-2.5rem'}}>
+                  <label htmlFor="category">Category</label>
+                  <select
+                    id="category"
+                    value={category}
+                    onChange={handleCategoryChange}
+                    className='select1'
+                  >
+                    <option value="" disabled>Marketing</option>
+                    <option value="authentication">Authentication</option>
+                    <option value="utility">Utility</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="language">Language</label>
+                  <select id="language" name="language" className='select2'>
+                      <option value="" disabled selected>language...</option>
+                      {languages.map((language, index) => (
+                          <option key={index} value={language}>{language}</option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+              <div className='poppupRadioCont'>
+                <div>
+                  <p>Select Marketing template</p>
+                </div>
+                <div className='poppupRadio'>
+                  <div className='poppupInputLabel'>
+                    <input type="radio" id="standard" name="type" value="standard" />
+                    <label htmlFor="standard">Standard</label><br />
+                  </div>
+                  <div className='poppupInputLabel'>
+                    <input type="radio" id="catalog" name="type" value="catalog" />
+                    <label htmlFor="catalog">Catalog</label><br />
+                  </div>
+                  <div className='poppupInputLabel splIcon'>
+                    <div>
+                      <input type="radio" id="carousel" name="type" value="carousel" />
+                      <label htmlFor="carousel">Carousel</label>
+                    </div>
+                    <div className='poppupInputLabelIcon'>
+                        <p><SlDiamond /> Pro</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="poppupBroadcast">
+                <h5>Broadcast title <span style={{ color: 'gray', fontWeight: '500' }}>(Optional)</span></h5>
+                <p>Highlight your brand here, use images or videos, to stand out</p>
+                <div className="App">
+                  <select
+                    id="broadcast"
+                    value={broadcast}
+                    onChange={handleBroadcastChange}
+                    className="poppupBroadcastInput"
+                  >
+                    <option class="custom-option" style={{backgroundColor:'whitesmoke'}} value="none">None</option>
+                    <option class="custom-option" style={{backgroundColor:'whitesmoke'}} value="text">Text</option>
+                    <option class="custom-option" style={{backgroundColor:'whitesmoke'}} value="media">Media</option>
+                  </select>
+                </div>
+                <div className="titleInput" style={broadcastTextStyle}>
+                  <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                </div>
+                <div style={broadcastMediaStyle}>
+                  <div style={{ display: 'flex', gap: '1rem', fontSize: '.8rem', cursor: 'pointer' }}>
+                    <input
+                      type="radio"
+                      id="image"
+                      name="media"
+                      value="IMAGE"
+                      checked={selectOption === 'IMAGE'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="image">Image</label>
+                    <input
+                      type="radio"
+                      id="video"
+                      name="media"
+                      value="VIDEO"
+                      checked={selectOption === 'VIDEO'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="video">video</label>
+                    <input
+                      type="radio"
+                      id="document"
+                      name="media"
+                      value="DOCUMENT"
+                      checked={selectOption === 'DOCUMENT'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="document">document</label>
+                  </div>
+                  <div className='dropImg'>  
+                    {selectOption === 'IMAGE' && <div>
+                      <p className='dropImgp'>(Image:.jpeg, .png)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {/* <img src={newImage ? newImage:img} alt="Image" className="documentVdoImg"/> */}
+                      
+                      </div>}
+                    {selectOption === 'VIDEO' && <div>
+                      <p className='dropImgp'>(Video:.mp4)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {/* {newImage ? <video width={100} height={100} controls>
+                  <source src={newImage} type='video/mp4' />
+                  Your browser does not support the video tag.
 
-                <Box sx={{ width: '40%' }}>
-                  <Typography variant="h6" gutterBottom>
-                    Platform
-                  </Typography>
-                  <FormControl fullWidth>
-                    <InputLabel id="platform-select-label">Select Platform</InputLabel>
-                    <Select
-                      labelId="platform-select-label"
-                      id="platform-select"
-                      value={platform}
-                      label="Select Platform"
-                      onChange={handlePlatformChange}
-                    >
-                      <MenuItem value="mobile">Mobile</MenuItem>
-                      <MenuItem value="laptop">Laptop</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Box>
-            </div>
-            <div className="container">
-              <h1 onClick={toggleBold} className='boldCont' style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}>B</h1>
-              <textarea
-                className="textarea"
-                value={cleanText}
-                onChange={handleTextChange}
-                placeholder="Type body content here..."
-              />
-            </div>
-            <div className="container" style={mailOnly}>
-              <h2 className='boldCont'>Email Title:-</h2>
-              <textarea
-                className="textareamail"
-                value={cleanTextMail}
-                onChange={handleTextChangeMail}
-                placeholder="Type title content here..."
-              />
-            </div>
+                </video>:  
+                <img src={vdo} alt="Video" />
+                } */}
+                      </div>}
+                    {selectOption === 'DOCUMENT' && <div>
+                      <p className='dropImgp'>(document:.pdf)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {/* <img src={document} alt="Document" /> */}
+                      </div>}
+                  </div>
+                </div>
+              </div>
+              <div className='poppupBroadcast'>
+                  <h5>Body</h5>
+                  <p>Make your messages personal using variables like and get more replies!</p>
+                  <div className="poppupBodyInputCont">
+                    <p>Add variable</p>
+                  </div>
+                  <div className='poppupBodyInput'>
+                    <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={handleTextBodyChange}></textarea>
+                    <div>
+                      <input type='text' disabled style={alignInput}/>
+                        <div className='poppupBodyInputIcons' style={alignIcon}>
+                          <div>
+                            <MdOutlineEmojiEmotions />
+                          </div>
+                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <div>
+                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                          </div>
+                          <div>
+                            <FaItalic style={{fontSize:'.8rem'}} />
+                          </div>
+                          <div>
+                            <MdStrikethroughS />
+                          </div>
+                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <div>
+                            <MdLink />
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div className='poppupBroadcast'>
+                  <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
+                  <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                  </div>
+              </div>
+              <div className='poppupButton'>
+                  <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <p>Insert buttons so your customers can take action and engage with your message!</p>
+                  <div>
+                    <select value={selectedOption} className='poppupBroadcastInput' onChange={handleChange}>
+                      <option value="">None</option>
+                      <option value="copyOfferCode">Copy offer code</option>
+                      <option value="visitWebsite">Visit Website</option>
+                      <option value="quickReplies">Quick replies</option>
+                      <option value="callPhone">Call Phone</option>
+                    </select>
+
+                    {selectedOption && (
+                      <div>
+                        {selectedOption === 'copyOfferCode' && <p>You selected: Copy offer code</p>}
+                        {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
+                        {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
+                        {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}
+                      </div>
+                    )}
+                  </div>
+                  {/* <div className='titleInput'>
+                    <input type='text' placeholder='Enter Text'/>
+                  </div> */}
+              </div>
+              <div className='poppupButtons'>
+                <p className='poppupButtons1'>Save as draft</p>
+                <p className='poppupButtons2'>Save and Submit</p>
+              </div>
           </div>
-          <div className='' style={{position:"relative"}}>
-            <h2>Preview</h2>
-            {img && <img src={img} alt='Selected' width={imgWidth} height={imgHeight} className="imgWithCont"/>}
-           
-            <div
-              className="preview-text"
-              style={previewTextStyle} 
-              dangerouslySetInnerHTML={{ __html: htmlText }}
-            />
-            <div
-              className="preview-textMail"
-              style={previewTextStyleTitle} 
-              dangerouslySetInnerHTML={{ __html: htmlTextMail }}
-            />
+ 
+          <div className='bodyPoppupR'>
+            <h2 style={{fontSize:'1rem'}}>Preview</h2>
+            <img src={whatsapp} alt='email'/>
+            <div className='previewStyle'>
+              { broadcast ==="media"&&selectOption === 'IMAGE' ? <div>
+              <img src={newImage ? newImage:img} alt="Image" className="documentVdoImg"/>
+              </div> :null} 
+
+              { broadcast ==="media"&&selectOption === 'VIDEO' ? <div>
+                {newImage ? <video width={100} height={100} controls>
+                  <source src={newImage} type='video/mp4'/>
+                  Your browser does not support the video tag.
+                </video>:  <img src={vdo} alt="Video" className="documentVdoImg"/>}
+            
+              </div> :null}
+
+              { broadcast ==="media"&&selectOption === 'DOCUMENT' ? <div>
+              {newImage ?<embed src={newImage} width="800px" height="2100px" />:  <img src={document} alt="document" className="documentVdoImg"/>}
+              
+              </div> :null}
+
+              <div
+                className="previewTextStyle" 
+                dangerouslySetInnerHTML={{ __html: htmlText }}
+              />
+              <div
+                className="previewBodyStyle" 
+                dangerouslySetInnerHTML={{ __html: htmlTextBody }}
+              />
+              <div
+                className="previewFooterStyle" 
+                dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
+              />
+              <div className='previewStyleTime'>{currentTime}</div>
+            </div>
           </div>
         </div>
       </div>
