@@ -11,6 +11,7 @@ import { CgLogIn } from 'react-icons/cg';
 import img from '../img/mediaImg.png';
 import vdo from '../img/mediaVdo.png';
 import document from '../img/mediaDocument.png';
+import { Padding, WidthWide } from '@mui/icons-material';
 
 const Popup = ({ onClose }) => {
 
@@ -37,6 +38,8 @@ const Popup = ({ onClose }) => {
   let broadcastMediaStyle = { display: 'none' };
   let alignIcon = {top:'32rem'};
   let alignInput = {top:'31.5rem'};
+  let inputExtra = {};
+  let previewBodyStyleImg = {};
 
   if (broadcast === 'text') {
     broadcastTextStyle = { display: 'block' };
@@ -47,6 +50,8 @@ const Popup = ({ onClose }) => {
     broadcastMediaStyle = { display: 'block' };
     alignInput = {top:'37.5rem'};
     alignIcon = {top:'38rem'};
+    // inputExtra = {paddingBottom:'9rem'}
+    previewBodyStyleImg = {paddingTop:'5rem'}
   }
 
   const fileInputRef = useRef(null);
@@ -411,8 +416,8 @@ let currentTime = `${hours}:${minutes}`;
  
           <div className='bodyPoppupR'>
             <h2 style={{fontSize:'1rem'}}>Preview</h2>
-            <img src={whatsapp} alt='email'/>
-            <div className='previewStyle'>
+            <img src={whatsapp} alt='email' className='selectImg'/>
+            <div className='previewStyle' style={inputExtra}>
               { broadcast ==="media"&&selectOption === 'IMAGE' ? <div>
               <img src={newImage ? newImage:img} alt="Image" className="documentVdoImg"/>
               </div> :null} 
@@ -436,6 +441,7 @@ let currentTime = `${hours}:${minutes}`;
               />
               <div
                 className="previewBodyStyle" 
+                style={previewBodyStyleImg}
                 dangerouslySetInnerHTML={{ __html: htmlTextBody }}
               />
               <div
