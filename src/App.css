@@ -231,9 +231,8 @@ input[type="radio"] + label {
   color: rgb(63, 63, 63);
 }
 .poppupInputLabel{
-  border: 1px solid #dce0e0;
-  padding: .4rem;
-  border-radius: .3rem;
+  display: flex;
+  gap: .5rem;
 }
 .poppupInputLabel:hover{
   background-color: whitesmoke;
@@ -1234,6 +1233,60 @@ progress::-moz-progress-bar {
   background-color: #dee4e4;
   border: none;
 }
-
-
-    
+.radio-btn{
+  width: 21px;
+  height: 21px;
+  background: rgb(255, 255, 255);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(35, 164, 85);
+  border-radius: 50%;
+  font-size: 1.25rem;
+}
+.radio-active .radio-btn::after {
+  content: "";
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgb(35, 164, 85);
+}
+/* .radio-active{
+  border: 1px solid rgb(35, 164, 85);
+} */
+.button-standard {
+  margin-right: 10px;
+}
+.active__standardbutton {
+  border: 1px solid rgb(35, 164, 85);
+}
+.bsHFOv {
+  --color: #333;
+  background: none;
+  color: var(--color);
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  border-width: 1px;
+  border-color: rgb(51, 51, 51);
+  border-style: solid;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter;
+  font-size: 13px;
+  transition: box-shadow 0.3s ease 0s;
+  min-width: 100px;
+  width: auto;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.market-radio__button {
+  border: 1px solid rgb(211, 211, 211);
+  display: inline-flex;
+  padding: 8px 16px;
+  align-items: flex-start;
+  gap: 10px;
+}

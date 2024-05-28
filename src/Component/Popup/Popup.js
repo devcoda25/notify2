@@ -12,6 +12,7 @@ import img from '../img/mediaImg.png';
 import vdo from '../img/mediaVdo.png';
 import document from '../img/mediaDocument.png';
 import { Padding, WidthWide } from '@mui/icons-material';
+import Sample from '../../Sample';
 
 const Popup = ({ onClose }) => {
 
@@ -27,6 +28,8 @@ const Popup = ({ onClose }) => {
   const [isBold, setIsBold] = useState(false);
   const [selectOption, setSelectOption] = useState('IMAGE');
   const [filePreview, setFilePreview] = useState('');
+  const [sampleTemplate, setSampleTemplate] = useState(false);
+  const [marketingTemplate, setMarketingTemplate] = useState("standard");
   
 
   const handleOptionChange = (e) => {
@@ -95,8 +98,8 @@ const Popup = ({ onClose }) => {
     setHtmlText(newHtmlText);
   };
   
-  const handleTextBodyChange = (event) => {
-    const newTextBody = event.target.value;
+  const handleTextBodyChange = (typingvalue) => {
+    const newTextBody = typingvalue;
     let newHtmlTextBody = '';
   
     if (newTextBody.length === 0) {
@@ -182,8 +185,21 @@ let currentTime = `${hours}:${minutes}`;
         <div className='bodyPoppup'>
           <div className='bodyPoppupL'>
               <div>
-                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a href='#'>Use a sample</a></p>
+                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a href='#' onClick={()=>{
+                  setSampleTemplate(true)
+                }}>Use a sample</a></p>
               </div>
+             
+              {sampleTemplate ?<Sample
+              onClose={onClose}
+               closeSamplePage={()=>{
+                setSampleTemplate(false)
+              }}  templateOnchange={(samplehtmltext)=>{
+                handleTextBodyChange(samplehtmltext)
+                setSampleTemplate(false)
+              }}/> :null}
+               
+
               <div className='popupInput'>
                 <div>
                   <label>Template Name</label>
@@ -217,25 +233,37 @@ let currentTime = `${hours}:${minutes}`;
                   <p>Select Marketing template</p>
                 </div>
                 <div className='poppupRadio'>
-                  <div className='poppupInputLabel'>
-                    <input type="radio" id="standard" name="type" value="standard" />
-                    <label htmlFor="standard">Standard</label><br />
-                  </div>
-                  <div className='poppupInputLabel'>
-                    <input type="radio" id="catalog" name="type" value="catalog" />
-                    <label htmlFor="catalog">Catalog</label><br />
-                  </div>
-                  <div className='poppupInputLabel splIcon'>
-                    <div>
-                      <input type="radio" id="carousel" name="type" value="carousel" />
-                      <label htmlFor="carousel">Carousel</label>
+                  <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                    <div className={`poppupInputLabel ${marketingTemplate==="standard" ?"radio-active":""} `}>
+                      <span class="radio-btn" onClick={()=>{ setMarketingTemplate("standard")}}></span>
+                      <label htmlFor="standard">Standard</label><br />
                     </div>
-                    <div className='poppupInputLabelIcon'>
-                        <p><SlDiamond /> Pro</p>
+                  </button>
+                  <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                    <div className={`poppupInputLabel ${marketingTemplate==="catalog" ?"radio-active":""} `}>
+                      {/* <input type="radio" id="catalog" name="type" value="catalog" /> */}
+                      <span class="radio-btn" onClick={()=>{ setMarketingTemplate("catalog")}}></span>
+                      <label htmlFor="catalog">Catalog</label><br />
                     </div>
-                  </div>
+                  </button>
+                  <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                    <div className={`poppupInputLabel ${marketingTemplate==="carousel" ?"radio-active":""} `} >
+                      <div style={{display:'flex', gap:'.5rem'}}>
+                      <span class="radio-btn" onClick={()=>{ setMarketingTemplate("carousel")}}></span>
+                        {/* <input type="radio" id="carousel" name="type" value="carousel" /> */}
+                        <label htmlFor="carousel">Carousel</label>
+                      </div>
+                      <div className='poppupInputLabelIcon'>
+                          <p><SlDiamond /> Pro</p>
+                      </div>
+                    </div>
+                  </button>
                 </div>
               </div>
+
+          
+
+              {(marketingTemplate==="standard" || marketingTemplate==="catalog" )? <>
               <div className="poppupBroadcast">
                 <h5>Broadcast title <span style={{ color: 'gray', fontWeight: '500' }}>(Optional)</span></h5>
                 <p>Highlight your brand here, use images or videos, to stand out</p>
@@ -349,6 +377,8 @@ let currentTime = `${hours}:${minutes}`;
                   </div>
                 </div>
               </div>
+
+               
               <div className='poppupBroadcast'>
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
@@ -356,7 +386,9 @@ let currentTime = `${hours}:${minutes}`;
                     <p>Add variable</p>
                   </div>
                   <div className='poppupBodyInput'>
-                    <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={handleTextBodyChange}></textarea>
+                    <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                      handleTextBodyChange(e.target.value)
+                    }}></textarea>
                     <div>
                       <input type='text' disabled style={alignInput}/>
                         <div className='poppupBodyInputIcons' style={alignIcon}>
@@ -417,6 +449,13 @@ let currentTime = `${hours}:${minutes}`;
                 <p className='poppupButtons1'>Save as draft</p>
                 <p className='poppupButtons2'>Save and Submit</p>
               </div>
+              </>:null}
+
+              {marketingTemplate==="catalog" ? <></>:null}
+
+              {marketingTemplate==="carousel" ? <>{marketingTemplate}</>:null}
+          
+             
           </div>
  
           <div className='bodyPoppupR'>

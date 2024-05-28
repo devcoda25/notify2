@@ -2,14 +2,20 @@ import React from 'react'
 import './Sample.css'
 import { RxCross2 } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
+import { FaArrowLeft } from "react-icons/fa6";
 
-const Sample = ({onClose}) => {
+const Sample = ({onClose,closeSamplePage,templateOnchange}) => {
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
         <div>
           <div className='sampleTemplateHead'>
-            <p className='sampleTemplateHeadP'>Use a sample</p>
+            <div>
+              <FaArrowLeft className='sampleTempArrowIcon' onClick={()=>{
+                 closeSamplePage()
+              }}/>
+              <p className='sampleTemplateHeadP'>Use a sample</p>
+            </div>
             <p className="close-button" onClick={onClose}><RxCross2  /></p>
           </div>  
           <div className='sampleTemplateSubNavs'>
@@ -48,7 +54,17 @@ Hurry, offer valid until [End Date]!
 Spread love, shop smart, and cherish every moment.
 [Your name]
                 </div>
-                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY'>Use this sample</button>
+                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY' onClick={()=>{
+                  templateOnchange(`🌹 Valentine's Day Special Deal! 🌹
+                  Celebrate love with exclusive offers just for you! 💕
+                  
+                  🎁 Get [X]% off on all Valentine's Day gifts! 💝 Explore our curated collection of romantic surprises. 🛍️ Shop now and make this Valentine's Day unforgettable!
+                  
+                  Hurry, offer valid until [End Date]!
+                  
+                  Spread love, shop smart, and cherish every moment.
+                  [Your name]`)
+                }}>Use this sample</button>
               </div>
             </div>
             <div className='choose-template__item'>
