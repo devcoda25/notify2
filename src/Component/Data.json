@@ -6,7 +6,7 @@
                 "Status":"Approved",
                 "Language":"English",
                 "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcase"
+                "Actions":"Send broadcast"
             },
             {
                 "templateName":"from_airport_ride_someone_12",
@@ -14,7 +14,7 @@
                 "Status":"Approved",
                 "Language":"English",
                 "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcase"
+                "Actions":"Send broadcast"
             },
             {
                 "templateName":"from_airport_for_me_today",
@@ -22,7 +22,7 @@
                 "Status":"Approved",
                 "Language":"English",
                 "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcase"
+                "Actions":"Send broadcast"
             },
             {
                 "templateName":"ambulance_ride_later",
@@ -30,7 +30,7 @@
                 "Status":"Approved",
                 "Language":"English",
                 "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcase"
+                "Actions":"Send broadcast"
             },
             {
                 "templateName":"driver_app",
@@ -38,7 +38,7 @@
                 "Status":"Approved",
                 "Language":"English (US)",
                 "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcase"
+                "Actions":"Send broadcast"
             }
            ]
     }

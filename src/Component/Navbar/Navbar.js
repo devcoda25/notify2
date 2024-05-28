@@ -33,6 +33,7 @@ import StartedPopup from '../Popup/StartedPopup'
 
 
 const Navbar = () => {
+    const [isHovered, setIsHovered] = useState(false);
   
     const [isModalOpen, setIsModalOpen] = useState(false);
     
@@ -59,6 +60,8 @@ const Navbar = () => {
     const handleClosePopup = () => {
       setIsPopupVisible(false);
     };
+
+    
 
   return (
     <>
@@ -104,7 +107,7 @@ const Navbar = () => {
                 <MdKeyboardArrowDown className="icon1" />
               </div>
               <div className="input-icon-wrapper2">
-                <input type="text" placeholder="Search" className="input-field2" />
+                <input type="text" placeholder="Search..." className="input-field2" />
                 <CiSearch className="icon2" />
               </div>
               {/* <div className='sortIcon'>
@@ -117,7 +120,7 @@ const Navbar = () => {
                 {isPopupOpen && (
                   <div className="popup-overlay">
                     <div className="popupExtra">
-                    <div className="popup-box">
+                    <div className="">
                       <div className="filterPoppup">
                         <div>
                           <p className="filterCont">Attributes</p>
@@ -127,37 +130,39 @@ const Navbar = () => {
                         </div>
                       </div>
                       <div className="popup-content">
-                        <form action="/action_page.php" style={{textAlign:"justify"}}>
-                          <p className="popupInputHead">Choose attributes to filter</p>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="DRAFT" name="DRAFT" value="DRAFT"/>
-                            <label for="DRAFT"> DRAFT </label><br/>
-                          </div>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="PENDING" name="PENDING" value="PENDING"/>
-                            <label for="PENDING"> PENDING </label><br/>
-                          </div>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="APPROVED" name="APPROVED" value="APPROVED"/>
-                            <label for="APPROVED"> APPROVED</label><br/>
-                          </div>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="REJECTED" name="REJECTED" value="REJECTED"/>
-                            <label for="REJECTED"> REJECTED </label><br/>
-                          </div>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="DELETED" name="DELETED" value="DELETED"/>
-                            <label for="DELETED"> DELETED </label><br/>
-                          </div>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="PAUSED" name="PAUSED" value="PAUSED"/>
-                            <label for="vehicle2"> PAUSED </label><br/>
-                          </div>
-                          <div className="popupFilterInput">
-                            <input className="popupInput" type="checkbox" id="DIASBLED" name="DIASBLED" value="DIASBLED"/>
-                            <label for="DIASBLED"> DIASBLED</label><br/><br/>
-                          </div>                         
-                        </form>
+                        <div className="popup-box">
+                          <form action="/action_page.php" style={{textAlign:"justify"}}>
+                            <p className="popupInputHead">Choose attributes to filter</p>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="DRAFT" name="DRAFT" value="DRAFT"/>
+                              <label for="DRAFT"> DRAFT </label>
+                            </div>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="PENDING" name="PENDING" value="PENDING"/>
+                              <label for="PENDING"> PENDING </label>
+                            </div>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="APPROVED" name="APPROVED" value="APPROVED"/>
+                              <label for="APPROVED"> APPROVED</label>
+                            </div>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="REJECTED" name="REJECTED" value="REJECTED"/>
+                              <label for="REJECTED"> REJECTED </label>
+                            </div>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="DELETED" name="DELETED" value="DELETED"/>
+                              <label for="DELETED"> DELETED </label>
+                            </div>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="PAUSED" name="PAUSED" value="PAUSED"/>
+                              <label for="vehicle2"> PAUSED </label>
+                            </div>
+                            <div className="popupFilterInput">
+                              <input className="popupInputFilter" type="checkbox" id="DIASBLED" name="DIASBLED" value="DIASBLED"/>
+                              <label for="DIASBLED"> DIASBLED</label>
+                            </div>                         
+                          </form>
+                        </div>
                         <input className="poppupSubmit" type="submit" value="save"/>
                       </div>
                     </div>
@@ -210,7 +215,19 @@ const Navbar = () => {
                 <td><button className="statusBtn">{Status}</button></td>
                 <td>{Language}</td>
                 <td>{lastUpdated}</td>
-                <td className="action"><button className="actionBtn">{Actions}</button><hr style={{margin:'.7rem', marginLeft:'-1.5rem'}}/><span className="actionSpanCopy"><FaRegCopy /></span><span className="actionSpanDelete"><RiDeleteBinLine /></span></td>
+                <td className="action" style={{width:'79%'}}><button className="actionBtn">{Actions}</button><hr style={{margin:'.7rem', marginLeft:'-1.5rem'}}/><span className="actionSpanCopy"><div 
+                          className="icon-container"
+                          onMouseEnter={() => setIsHovered(true)}
+                          onMouseLeave={() => setIsHovered(false)}
+                        >
+                          <FaRegCopy className="copy-icon" />
+                          {isHovered && (
+                            <div className="icon-popup">
+                              Copy template
+                            </div>
+                          )}
+                        </div>
+                        </span><span className="actionSpanDelete"><RiDeleteBinLine /></span></td>
               </tr>
               })}
              

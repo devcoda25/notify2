@@ -7,8 +7,8 @@ import Sample from './Sample';
 function App() {
   return (
     <div className="App">
-      <Navbar/>
-      {/* <Sample/> */}
+      {/* <Navbar/> */}
+      <Sample/>
     </div>
   );
 }

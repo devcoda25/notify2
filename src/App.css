@@ -32,6 +32,17 @@
   overflow-y: scroll;
   position: relative;
 }
+.modal-content::-webkit-scrollbar {
+  width: 10px;
+}
+.modal-content::-webkit-scrollbar-track {
+  border-radius: 10px; 
+}
+/* Handle */
+.modal-content::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -64,14 +75,32 @@
   margin: .5rem;
   position: relative;
 }
+/* width */
+.bodyPoppupL::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.bodyPoppupL::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px grey;  */
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.bodyPoppupL::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 10px;
+}
 .bodyPoppupR p{
   font-size: 1rem;
   color: rgb(63,63, 63);
 }
 .bodyPoppupR .selectImg{
-  width:100%;
-  height: 90%;
+  width:321px;
+  height: 95%;
   margin-top: -1.5rem;
+  margin-left: -1rem;
+  margin-right: -1rem;
 }
 .custom-option {
   background-color: whitesmoke;
@@ -146,7 +175,10 @@
 }
 .popupFilterInput{
   display: flex;
+  align-items: center;
+  margin-left: -1rem;
 }
+
 /* popu end */
 
 /* radio start */
@@ -395,6 +427,7 @@ input[type="radio"] + label {
   text-align: center;
   justify-content: space-around;
   width: 27%;
+  margin-top: .5rem;
 }
 .nav li{
   list-style-type: none;
@@ -425,7 +458,7 @@ input[type="radio"] + label {
   border: none;
 }
 .nav .navicon3{
-  font-size: 1rem;
+  font-size: 1.1rem;
   border: 1px solid black;
   padding: .5rem;
   border-radius: 2rem;
@@ -435,6 +468,7 @@ input[type="radio"] + label {
 }
 .nav .navcont{
   font-size: .7rem;
+  margin-top: -.4rem;
 }
 .nav a{
   text-decoration: none;
@@ -552,6 +586,8 @@ input[type="radio"] + label {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  outline-color: #23a455;
+  font-size: 11.4px;
 }
 .input-field1:hover{
   border-color: rgb(83, 185, 122);
@@ -570,7 +606,17 @@ input[type="radio"] + label {
   border-radius: 4px;
   box-sizing: border-box;
   outline-color: rgb(35, 164, 85);
+  font-size: .75rem;
+  font-weight: 300;
+  /* opacity: .5; */
+
 }
+.input-field2::placeholder {
+  color: rgb(207, 201, 201);
+  opacity: 1;
+}
+
+
 
 .icon1 {
   position: absolute;
@@ -592,10 +638,18 @@ input[type="radio"] + label {
   font-weight: 600;
 }
 .portCont{
-  display: flex;
+  /* display: flex;
   justify-content: center;
   width: 164px;
   height: 43px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 100px;
+  border: none; */
+  display: flex;
+  justify-content: center;
+  width: 163px;
+  height: 50px;
+  /* padding: 10px 0px; */
   background-color: rgb(255, 255, 255);
   border-radius: 100px;
   border: none;
@@ -647,11 +701,12 @@ input[type="radio"] + label {
   justify-content: center;
   display: flex;
   font-size: .9rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 .sortCont p{
   font-size: .9rem;
   font-weight: 500;
+  margin-right: .5rem;
 }
 .border{
   border: solid rgb(225 231 231 / 78%);
@@ -671,17 +726,19 @@ input[type="radio"] + label {
 }
 .dangerWithCont{
   color: rgb(14, 113, 195);
-    font-size: 11px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    width: fit-content;
+  font-size: 11px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  margin-top: -.0rem;
 }
 .dangerNum{
-  font-weight: bold;
+  font-weight: 800;
   margin-top: -1rem;
-  font-size: .8rem;
+  font-size: .75rem;
   color: rgb(35, 164, 85);
 }
 .navcont{
@@ -700,7 +757,7 @@ input[type="radio"] + label {
   margin-left: 2rem
 }
 .wholemsgContR{
-  width: 115%;
+  width: 114%;
   height: -webkit-fill-available;
   background-color: rgb(245, 246, 250);
   padding-bottom: 2rem;
@@ -710,7 +767,7 @@ input[type="radio"] + label {
   font-weight: bold;
 }
 .table table{
-  width: 115%;
+  width: 114%;
   font-size: 15px;
   /* margin: 1rem; */
 }
@@ -744,17 +801,28 @@ input[type="radio"] + label {
   color: rgb(35, 164, 85);
   border: 1px solid;
   margin: 0px auto;
-  width: 50%;
+  width: 41%;
   height: 1.8rem;
   border-radius: .5rem;
   font-size: 0.7rem;
   padding: 0px 12px;
   text-align: center;
-  /* margin-right: -.5rem; */
+  margin-right: 31.7px;
 }
 .table .action{
   display: flex;
   /* align-items: center; */
+}
+.icon-popup{
+  border: 1px solid black;
+  position: absolute;
+  top: 53%;
+  left: 90%;
+  color: white;
+  background-color: rgb(34, 33, 33);
+  font-size: .6rem;
+  padding: .2rem;
+  border-radius: 5px;
 }
 .table .actionSpanCopy{
   border-radius: .3rem;
@@ -762,7 +830,7 @@ input[type="radio"] + label {
   background-color: #efeff5;
   border: 1px solid #e0e0eb;
   height: fit-content;
-  margin-left: -.5rem;
+  margin-left: -.3rem;
   margin-right: .5rem;
 }
 .table .actionSpanDelete{
@@ -774,7 +842,7 @@ input[type="radio"] + label {
 }
 .bodyFooter{
   background-color: rgb(248 248 251);
-  width: 111.5%;
+  width: 110.5%;
   display: flex;
   justify-content: end;
   gap: 1rem;
@@ -789,11 +857,19 @@ input[type="radio"] + label {
     padding-left: 1rem;
     font-weight: bold;
     font-size: .9rem;
+    color: #484646;
 }
 /* .footerCenter{
   display: flex;
   align-items: center;
 } */
+.copy-icon{
+  font-size: 1rem;
+}
+.copy-icon:hover{
+  color: #23a455;
+  cursor: pointer;
+}
 .popup {
   position: absolute;
   top: 50%;
@@ -820,10 +896,13 @@ input[type="radio"] + label {
 
 .popup-box {
   background: white;
-  padding: 20px;
+  padding-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 8px;
   width: 381px;
-  height: 324px;
+  height: 270px;
+  margin-bottom: 1rem;
   position: relative;
   /* height: 40px;
   width: 200px; */
@@ -836,11 +915,27 @@ input[type="radio"] + label {
   padding-top: 2rem;
   border-radius: 3px;
 }
+/* width */
+.popup-box::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.popup-box::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.popup-box::-webkit-scrollbar-thumb {
+  background: rgb(185, 184, 184); 
+  border-radius: 10px;
+}
 
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8.5rem;
+  right: 29rem;
   background: none;
   border: none;
   font-size: 27px;
@@ -853,7 +948,12 @@ input[type="radio"] + label {
 
 /* filter poppup start */
 .filterPoppup{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #d1e0e0;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 .filterPoppup .filterCont{
   display: flex;
@@ -861,19 +961,25 @@ input[type="radio"] + label {
   margin-top: 0rem;
   font-weight: 500;
 }
-.popupInput{
-  margin-bottom: 1.3rem;
+.popupInputFilter{
+  margin-bottom: 0.3rem;
+  width: 55px;
+  height: 30px;
+  accent-color: rgb(35, 164, 85);
+  /* accent-color: whitesmoke; */
 }
+
 .poppupSubmit{
-  width: 8%;
+  width: 7%;
   position: fixed;
-  top: 29rem;
+  top: 30rem;
   background-color: rgb(35, 164, 85);
-  left: 49rem;
+  left: 50rem;
   padding: 0.7rem;
   color: white;
   border: none;
   border-radius: .5rem;
+  margin-bottom: 1rem;
 }
 /* filter poppup end */
 /* footer started start */
@@ -915,10 +1021,11 @@ input[type="radio"] + label {
   border-radius: 5px;
   text-align: center;
   border: 1px solid black;
-  width: 26%;
+  width: 23%;
   border: none;
   border-radius: .3rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: -2rem;
 }
 /* App.css */
 .StartedPopup {
@@ -941,6 +1048,7 @@ input[type="radio"] + label {
   color: #666666;
   font-size: .8rem;
   font-weight: 500;
+  margin-bottom: 1rem;
 }
 .startedList{
   display: flex;
@@ -949,6 +1057,7 @@ input[type="radio"] + label {
 }
 .startedList p{
   font-weight: 600;
+  font-size: .9rem;
 }
 .startedListHr{
   border-bottom: 1px solid rgb(218, 217, 217);
@@ -967,7 +1076,7 @@ input[type="radio"] + label {
   padding: 20px;
 }
 .startedLists{
-  padding: 20px;
+  padding: 0px 20px;
 }
 .startedDismiss{
   margin-top: -1rem;
@@ -1021,12 +1130,28 @@ progress::-moz-progress-bar {
   border-radius: .5rem;
   text-align: start;
   padding-left: 0.5rem;
-  padding-top: .0rem;
+  padding-top: 8px;
   white-space: pre-wrap;
   word-break: break-word;
   padding-right: .5rem;
+  margin-left: 1.3rem;
   /* max-height:40%; */
   /* overflow-y: scroll; */
+}
+.bg-img-div{
+  background-color: rgb(235, 237, 242);
+    border-radius: 5px;
+    box-sizing: border-box;
+    min-height: 125px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 80px 80px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin: 5px;
 }
 
  .previewTextStyle{
@@ -1046,15 +1171,26 @@ progress::-moz-progress-bar {
   font-size: .7rem;
   text-align: end;
   margin-bottom: -1.1rem;
+  margin-top: 1rem;
 }
 
 .documentVdoImg{
-  background-color: gray;
+  /* background-color: gray;
   width: -webkit-fill-available;
   position: absolute;
   margin-top: .2rem;
   height: 50%;
-  margin-left: -.5rem;
+  margin-left: -.5rem; */
+  background-color: rgb(235, 237, 242);
+  border-radius: 5px;
+  box-sizing: border-box;
+  min-height: 65px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 80px 80px;
+  overflow: hidden;
+  margin-bottom: 15px;
+
 }
 .dropImg .dropImgp{
   font-size: .7rem;

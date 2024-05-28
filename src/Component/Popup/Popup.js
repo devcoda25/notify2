@@ -26,7 +26,7 @@ const Popup = ({ onClose }) => {
   const [htmlTextFooter, setHtmlTextFooter] = useState('');
   const [isBold, setIsBold] = useState(false);
   const [selectOption, setSelectOption] = useState('IMAGE');
-  const [newImage, setNewImage] = useState('');
+  const [filePreview, setFilePreview] = useState('');
   
 
   const handleOptionChange = (e) => {
@@ -49,11 +49,15 @@ const Popup = ({ onClose }) => {
   
   if (broadcast === 'media') {
     broadcastMediaStyle = { display: 'block' };
-    alignInput = {top:'37.5rem'};
-    alignIcon = {top:'38rem'};
+    alignInput = {top:'37rem'};
+    alignIcon = {top:'37.5rem'};
     // inputExtra = {paddingBottom:'9rem'}
-    previewBodyStyleImg = {paddingTop:'5rem'}
+    // previewBodyStyleImg = {paddingTop:'5rem'}
   }
+  // if(broadcast === 'media' && filePreview !== null){
+  //   alignInput = {top:'34.5rem'};
+  //   alignIcon = {top:'35rem'};
+  // }
 
   const fileInputRef = useRef(null);
 
@@ -63,7 +67,7 @@ const Popup = ({ onClose }) => {
       console.log('Selected file:', file.name);
       let objectUrl = URL.createObjectURL(file)
       // Do something with the selected file
-      setNewImage(objectUrl)
+      setFilePreview(objectUrl)
     }
   };
 
@@ -283,6 +287,7 @@ let currentTime = `${hours}:${minutes}`;
                   <div className='dropImg'>  
                     {selectOption === 'IMAGE' && <div>
                       <p className='dropImgp'>(Image:.jpeg, .png)</p>
+                      {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg" width='70%'/> :null}
                         <div className='dropInput'>
                             <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
                             <p>or</p>
@@ -297,7 +302,8 @@ let currentTime = `${hours}:${minutes}`;
                             </div>
                         </div>
                         {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                      {/* <img src={newImage ? newImage:img} alt="Image" className="documentVdoImg"/> */}
+                    
+                     
                       
                       </div>}
                     {selectOption === 'VIDEO' && <div>
@@ -316,13 +322,11 @@ let currentTime = `${hours}:${minutes}`;
                             </div>
                         </div>
                         {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                      {/* {newImage ? <video width={100} height={100} controls>
-                  <source src={newImage} type='video/mp4' />
-                  Your browser does not support the video tag.
+                      {filePreview ? <video width={100} height={100} >
+                  <source src={filePreview} type='video/mp4' controls/>
 
                 </video>:  
-                <img src={vdo} alt="Video" />
-                } */}
+                null}
                       </div>}
                     {selectOption === 'DOCUMENT' && <div>
                       <p className='dropImgp'>(document:.pdf)</p>
@@ -419,36 +423,38 @@ let currentTime = `${hours}:${minutes}`;
             <h2 style={{fontSize:'1rem'}}>Preview</h2>
             <img src={whatsapp} alt='email' className='selectImg'/>
             <div className='previewStyle' style={inputExtra}>
-              { broadcast ==="media"&&selectOption === 'IMAGE' ? <div>
-              <img src={newImage ? newImage:img} alt="Image" className="documentVdoImg"/>
+              { broadcast ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
+              <img src={filePreview ? filePreview:img} alt="Image" className="documentVdoImg"/>
               </div> :null} 
 
-              { broadcast ==="media"&&selectOption === 'VIDEO' ? <div>
-                {newImage ? <video width={100} height={100} controls>
-                  <source src={newImage} type='video/mp4'/>
+              { broadcast ==="media"&&selectOption === 'VIDEO' ? <div className='bg-img-div'>
+                {filePreview ? <video width={100} height={100} controls>
+                  <source src={filePreview} type='video/mp4'/>
                   Your browser does not support the video tag.
                 </video>:  <img src={vdo} alt="Video" className="documentVdoImg"/>}
             
               </div> :null}
 
-              { broadcast ==="media"&&selectOption === 'DOCUMENT' ? <div>
-              {newImage ?<embed src={newImage} width="800px" height="2100px" />:  <img src={document} alt="document" className="documentVdoImg"/>}
+              { broadcast ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
+              {filePreview ?<embed src={filePreview} width="800px" height="2100px" />:  <img src={document} alt="document" className="documentVdoImg"/>}
               
               </div> :null}
 
-              <div
+              {htmlText ? <div
                 className="previewTextStyle" 
                 dangerouslySetInnerHTML={{ __html: htmlText }}
-              />
-              <div
+              />:null}
+
+              {htmlTextBody ? <div
                 className="previewBodyStyle" 
                 style={previewBodyStyleImg}
                 dangerouslySetInnerHTML={{ __html: htmlTextBody }}
-              />
-              <div
+              />:null}
+             {htmlTextFooter ?  <div
                 className="previewFooterStyle" 
                 dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
-              />
+              /> : null}
+             
               <div className='previewStyleTime'>{currentTime}</div>
             </div>
           </div>
