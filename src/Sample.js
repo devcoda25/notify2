@@ -88,7 +88,16 @@ Merry Christmas and a Happy New Year! 🎉✨
 Warmest wishes, 
 [shop name]
                 </div>
-                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY'>Use this sample</button>
+                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY' onClick={()=>{templateOnchange(`Hello 🎄🎅
+
+Wishing you a joyful and magical Christmas season!
+
+May this festive season bring you and your loved ones endless happiness and countless blessings. 
+Thank you for being our beloved customer!
+
+Merry Christmas and a Happy New Year! 🎉✨
+Warmest wishes, 
+[shop name]`)}}>Use this sample</button>
               </div>
             </div>
             <div className='choose-template__item'>
@@ -110,7 +119,14 @@ Wishing you a joyful and prosperous New Year filled with laughter, love, and exc
 Best wishes, 
 [shop name]
                 </div>
-                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY'>Use this sample</button>
+                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY' onClick={()=>{templateOnchange(`Hey 🎉🎆 
+
+As we bid farewell to the old year and welcome the new one, we wanted to take a moment to thank you for your support and trust.
+
+Wishing you a joyful and prosperous New Year filled with laughter, love, and exciting adventures!🥳✨ 
+
+Best wishes, 
+[shop name]`)}}>Use this sample</button>
               </div>
             </div>
             <div className='choose-template__item'>
@@ -129,7 +145,11 @@ Happy International Women's Day!
 
 To all the amazing women out there: keep rocking your awesomeness, breaking barriers, and shining bright! Here's to you! ✨💪🎉
                 </div>
-                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY'>Use this sample</button>
+                <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY' onClick={()=>{templateOnchange(`Hi,
+
+Happy International Women's Day!
+
+To all the amazing women out there: keep rocking your awesomeness, breaking barriers, and shining bright! Here's to you! ✨💪🎉`)}}>Use this sample</button>
               </div>
             </div>
           </div>

@@ -13,10 +13,14 @@ import vdo from '../img/mediaVdo.png';
 import document from '../img/mediaDocument.png';
 import { Padding, WidthWide } from '@mui/icons-material';
 import Sample from '../../Sample';
+import catalogImg from '../img/catalogImg.svg'
+import { IoDiamondOutline } from "react-icons/io5";
+import { FaArrowUp } from "react-icons/fa";
+import AttriubutePopup from './AttriubutePopup';
 
 const Popup = ({ onClose }) => {
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('marketing');
   const [broadcast, setBroadcast] = useState('none');
   const [selectedOption, setSelectedOption] = useState('');
   const [cleanText, setCleanText] = useState('');
@@ -31,6 +35,27 @@ const Popup = ({ onClose }) => {
   const [sampleTemplate, setSampleTemplate] = useState(false);
   const [marketingTemplate, setMarketingTemplate] = useState("standard");
   
+  const [showPopup, setShowPopup] = useState(false);
+  const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
+
+  const handleOpenAttributePop = () => {
+    setIsAttributePopOpen(true);
+  };
+
+  const handleCloseAttributePop = () => {
+    setIsAttributePopOpen(false);
+  };
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
+  const [upgradeShowPopup, setUpgradeShowPopup] = useState(false);
+
+  const upgradePopup = () => {
+    setUpgradeShowPopup(!upgradeShowPopup);
+  };
+
 
   const handleOptionChange = (e) => {
     setSelectOption(e.target.value);
@@ -175,6 +200,29 @@ let hours = String(now.getHours()).padStart(2, '0');
 let minutes = String(now.getMinutes()).padStart(2, '0');
 let currentTime = `${hours}:${minutes}`;
 
+const attributes = [
+  {
+    title:'contact',
+    values:[
+      {name:'actual_fare'},
+      {name:'actual_estimate'},
+      {name:'additional_items'},
+      {name:'address_ount'},
+      {name:'agent'}
+    ]
+  },
+  {
+    title:'Shopify',
+    values:[
+      {name:'actual_fare'},
+      {name:'actual_estimate'},
+      {name:'additional_items'},
+      {name:'address_ount'},
+      {name:'agent'}
+    ]
+  }
+]
+
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
@@ -192,9 +240,8 @@ let currentTime = `${hours}:${minutes}`;
              
               {sampleTemplate ?<Sample
               onClose={onClose}
-               closeSamplePage={()=>{
-                setSampleTemplate(false)
-              }}  templateOnchange={(samplehtmltext)=>{
+              closeSamplePage={()=>{setSampleTemplate(false)}}  
+              templateOnchange={(samplehtmltext)=>{
                 handleTextBodyChange(samplehtmltext)
                 setSampleTemplate(false)
               }}/> :null}
@@ -213,7 +260,7 @@ let currentTime = `${hours}:${minutes}`;
                     onChange={handleCategoryChange}
                     className='select1'
                   >
-                    <option value="" disabled>Marketing</option>
+                    <option value="marketing">Marketing</option>
                     <option value="authentication">Authentication</option>
                     <option value="utility">Utility</option>
                   </select>
@@ -228,6 +275,8 @@ let currentTime = `${hours}:${minutes}`;
                   </select>
                 </div>
               </div>
+
+              {category === 'marketing' ? <>
               <div className='poppupRadioCont'>
                 <div>
                   <p>Select Marketing template</p>
@@ -240,7 +289,7 @@ let currentTime = `${hours}:${minutes}`;
                     </div>
                   </button>
                   <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                    <div className={`poppupInputLabel ${marketingTemplate==="catalog" ?"radio-active":""} `}>
+                    <div onClick={togglePopup} className={`poppupInputLabel ${marketingTemplate==="catalog" ?"radio-active":""} `}>
                       {/* <input type="radio" id="catalog" name="type" value="catalog" /> */}
                       <span class="radio-btn" onClick={()=>{ setMarketingTemplate("catalog")}}></span>
                       <label htmlFor="catalog">Catalog</label><br />
@@ -260,9 +309,6 @@ let currentTime = `${hours}:${minutes}`;
                   </button>
                 </div>
               </div>
-
-          
-
               {(marketingTemplate==="standard" || marketingTemplate==="catalog" )? <>
               <div className="poppupBroadcast">
                 <h5>Broadcast title <span style={{ color: 'gray', fontWeight: '500' }}>(Optional)</span></h5>
@@ -376,9 +422,354 @@ let currentTime = `${hours}:${minutes}`;
                       </div>}
                   </div>
                 </div>
+              </div>         
+              <div className='poppupBroadcast'>
+                  <h5>Body</h5>
+                  <p>Make your messages personal using variables like and get more replies!</p>
+                  <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
+                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} />}
+                  <div className='poppupBodyInput'>
+                    <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                      handleTextBodyChange(e.target.value)
+                    }}></textarea>
+                    <div>
+                      <input type='text' disabled style={alignInput}/>
+                        <div className='poppupBodyInputIcons' style={alignIcon}>
+                          <div>
+                            <MdOutlineEmojiEmotions />
+                          </div>
+                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <div>
+                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                          </div>
+                          <div>
+                            <FaItalic style={{fontSize:'.8rem'}} />
+                          </div>
+                          <div>
+                            <MdStrikethroughS />
+                          </div>
+                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <div>
+                            <MdLink />
+                          </div>
+                        </div>
+                    </div>
+                  </div>
               </div>
+              <div className='poppupBroadcast'>
+                  <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
+                  <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                  </div>
+              </div>
+              <div className='poppupButton'>
+                  <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <p>Insert buttons so your customers can take action and engage with your message!</p>
+                  <div>
+                    <select value={selectedOption} className='poppupBroadcastInput' onChange={handleChange}>
+                      <option value="">None</option>
+                      <option value="copyOfferCode">Copy offer code</option>
+                      <option value="visitWebsite">Visit Website</option>
+                      <option value="quickReplies">Quick replies</option>
+                      <option value="callPhone">Call Phone</option>
+                    </select>
 
-               
+                    {selectedOption && (
+                      <div>
+                        {selectedOption === 'copyOfferCode' && <p>You selected: Copy offer code</p>}
+                        {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
+                        {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
+                        {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}
+                      </div>
+                    )}
+                  </div>
+                  {/* <div className='titleInput'>
+                    <input type='text' placeholder='Enter Text'/>
+                  </div> */}
+              </div>
+              <div className='poppupButtons'>
+                <p className='poppupButtons1'>Save as draft</p>
+                <p className='poppupButtons2'>Save and Submit</p>
+              </div>
+              </>:null}
+              {marketingTemplate==="catalog" ? <>
+                  <div>
+                  {showPopup && (
+                    <div className="sampopup">
+                      <div className="sampopup-content">
+                        <span className="close" onClick={togglePopup}>&times;</span>
+                        <h2 className='samPopH2'>Connect, share, sell - your way!</h2>
+                        <p className='samPopP'>Connect to your catalog and share with your customers easily.</p>
+                        <img src={catalogImg} alt='catalogImg' width='50%'/>
+                        <a className='sampopInput' href='https://live-6053.wati.io/6053/catalog' target='_blank'>Setup catalog</a>
+                      </div>
+                    </div>
+                  )}
+                  </div>
+              </>:null}
+              {marketingTemplate==="carousel" ? <>
+                <div className='carouselExtraInput' onClick={upgradePopup}>
+                  <div className='carouselIconCont'>
+                    <IoDiamondOutline className='carDiaIcon' />
+                    <div className='carouselCont'>
+                      <h5>Carousel requires an upgrade</h5>
+                      <p>We’ve made this a special pro plan feature, upgrade your plan to enjoy it!</p>
+                    </div>
+                  </div>
+                  <div className='carouselIconBtn'>
+                    <FaArrowUp className='carIcon' />
+                    {upgradeShowPopup && (
+                      <div className="upgradePopup">
+                        <div className="upgradePopup-content">
+                          <span className="close" onClick={upgradePopup}>&times;</span>
+                          <div className='upgradePop'>
+                            <div className='upgradePopTitle'>
+                              <h2>Not included in your current plan.</h2>
+                              <h5>Your Current Plan: Professional</h5>
+                            </div>
+                            <div className='upgradePopBody'>
+                              <p>Carousel template is not included in your current plan. You must <br/> upgrade your plan to use this feature.</p>
+                            </div>
+                            <div className='upgradePopFooter'>
+                              <a className='upgradePopFooterCancel' >cancel</a>
+                              <a className='upgradePopFooterNow' href='https://live-6053.wati.io/account_details/switch_plan' target='_blank'>Upgrade Now</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <p style={{fontSize:'.9rem'}}>Upgrade</p>
+                  </div>
+                </div>
+                <div className='poppupBroadcast'>
+                    <h5>Body</h5>
+                    <p>Make your messages personal using variables like and get more replies!</p>
+                    <div className="poppupBodyInputCont">
+                      <p>Add variable</p>
+                    </div>
+                    <div className='poppupBodyInput'>
+                      <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                        handleTextBodyChange(e.target.value)
+                      }}></textarea>
+                      <div>
+                        <input type='text' disabled style={alignInput}/>
+                          <div className='poppupBodyInputIcons' style={alignIcon}>
+                            <div>
+                              <MdOutlineEmojiEmotions />
+                            </div>
+                            <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                            <div>
+                              <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            </div>
+                            <div>
+                              <FaItalic style={{fontSize:'.8rem'}} />
+                            </div>
+                            <div>
+                              <MdStrikethroughS />
+                            </div>
+                            <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                            <div>
+                              <MdLink />
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              </>:null}
+              </>:null}
+
+              {category === 'authentication' ? <>
+              <div className='poppupBroadcast'>
+                  <h5>Body</h5>
+                  <p>Make your messages personal using variables like and get more replies!</p>
+                  {/* <div className="poppupBodyInputCont">
+                    <p>Add variable</p>
+                  </div> */}
+                  <div className='poppupBodyInput'>
+                    <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                      handleTextBodyChange(e.target.value)
+                    }}></textarea>
+                    <div>
+                      <input type='text' disabled style={alignInput}/>
+                        <div className='poppupBodyInputIcons' style={alignIcon}>
+                          <div>
+                            <MdOutlineEmojiEmotions />
+                          </div>
+                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <div>
+                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                          </div>
+                          <div>
+                            <FaItalic style={{fontSize:'.8rem'}} />
+                          </div>
+                          <div>
+                            <MdStrikethroughS />
+                          </div>
+                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <div>
+                            <MdLink />
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div className='ui checked checkbox'>
+                    <input type="checkbox" className='hidden'/>
+                    <label style={{fontSize:'.9rem'}}>Add security recommendation</label>
+                  </div>
+              </div>
+              <div className='poppupBroadcast'>
+                  <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
+                  <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                  </div>
+              </div>
+              <div className='poppupButton'>
+                  <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <p>Insert buttons so your customers can take action and engage with your message!</p>
+                  <div>
+                    <select value={selectedOption} className='poppupBroadcastInput' onChange={handleChange}>
+                      <option value="">None</option>
+                      <option value="copyOfferCode">Copy offer code</option>
+                      <option value="visitWebsite">Visit Website</option>
+                      <option value="quickReplies">Quick replies</option>
+                      <option value="callPhone">Call Phone</option>
+                    </select>
+
+                    {selectedOption && (
+                      <div>
+                        {selectedOption === 'copyOfferCode' && <p>You selected: Copy offer code</p>}
+                        {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
+                        {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
+                        {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}
+                      </div>
+                    )}
+                  </div>
+                  {/* <div className='titleInput'>
+                    <input type='text' placeholder='Enter Text'/>
+                  </div> */}
+              </div>
+              <div className='poppupButtons'>
+                <p className='poppupButtons1'>Save as draft</p>
+                <p className='poppupButtons2'>Save and Submit</p>
+              </div>
+              </> : null}
+
+              {category === 'utility' ? <>
+              <div className="poppupBroadcast">
+                <h5>Broadcast title <span style={{ color: 'gray', fontWeight: '500' }}>(Optional)</span></h5>
+                <p>Highlight your brand here, use images or videos, to stand out</p>
+                <div className="App">
+                  <select
+                    id="broadcast"
+                    value={broadcast}
+                    onChange={handleBroadcastChange}
+                    className="poppupBroadcastInput"
+                  >
+                    <option class="custom-option" style={{backgroundColor:'whitesmoke'}} value="none">None</option>
+                    <option class="custom-option" style={{backgroundColor:'whitesmoke'}} value="text">Text</option>
+                    <option class="custom-option" style={{backgroundColor:'whitesmoke'}} value="media">Media</option>
+                  </select>
+                </div>
+                <div className="titleInput" style={broadcastTextStyle}>
+                  <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                </div>
+                <div style={broadcastMediaStyle}>
+                  <div style={{ display: 'flex', gap: '1rem', fontSize: '.8rem', cursor: 'pointer' }}>
+                    <input
+                      type="radio"
+                      id="image"
+                      name="media"
+                      value="IMAGE"
+                      checked={selectOption === 'IMAGE'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="image">Image</label>
+                    <input
+                      type="radio"
+                      id="video"
+                      name="media"
+                      value="VIDEO"
+                      checked={selectOption === 'VIDEO'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="video">video</label>
+                    <input
+                      type="radio"
+                      id="document"
+                      name="media"
+                      value="DOCUMENT"
+                      checked={selectOption === 'DOCUMENT'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="document">document</label>
+                  </div>
+                  <div className='dropImg'>  
+                    {selectOption === 'IMAGE' && <div>
+                      <p className='dropImgp'>(Image:.jpeg, .png)</p>
+                      {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg" width='70%'/> :null}
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                    
+                     
+                      
+                      </div>}
+                    {selectOption === 'VIDEO' && <div>
+                      <p className='dropImgp'>(Video:.mp4)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {filePreview ? <video width={100} height={100} >
+                  <source src={filePreview} type='video/mp4' controls/>
+
+                </video>:  
+                null}
+                      </div>}
+                    {selectOption === 'DOCUMENT' && <div>
+                      <p className='dropImgp'>(document:.pdf)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {/* <img src={document} alt="Document" /> */}
+                      </div>}
+                  </div>
+                </div>
+              </div>         
               <div className='poppupBroadcast'>
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
@@ -449,13 +840,7 @@ let currentTime = `${hours}:${minutes}`;
                 <p className='poppupButtons1'>Save as draft</p>
                 <p className='poppupButtons2'>Save and Submit</p>
               </div>
-              </>:null}
-
-              {marketingTemplate==="catalog" ? <></>:null}
-
-              {marketingTemplate==="carousel" ? <>{marketingTemplate}</>:null}
-          
-             
+              </> : null}
           </div>
  
           <div className='bodyPoppupR'>
@@ -478,6 +863,7 @@ let currentTime = `${hours}:${minutes}`;
               {filePreview ?<embed src={filePreview} width="800px" height="2100px" />:  <img src={document} alt="document" className="documentVdoImg"/>}
               
               </div> :null}
+              
 
               {htmlText ? <div
                 className="previewTextStyle" 

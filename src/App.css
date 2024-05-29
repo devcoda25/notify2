@@ -149,6 +149,7 @@
   font-size: .8rem;
   opacity: .5;
   width: 104%;
+  outline-color: rgb(35, 164, 85);
 }
 
 .popupInput .select1{
@@ -161,6 +162,7 @@
   font-size: .8rem;
   opacity: .5;
   width: 154%;
+  outline-color: rgb(35, 164, 85);
 }
 .popupInput .select2{
   padding: .5rem;
@@ -172,6 +174,7 @@
   font-size: .8rem;
   opacity: .5;
   width: 116%;
+  outline-color: rgb(35, 164, 85);
 }
 .popupFilterInput{
   display: flex;
@@ -1234,8 +1237,8 @@ progress::-moz-progress-bar {
   border: none;
 }
 .radio-btn{
-  width: 21px;
-  height: 21px;
+  width: 17px;
+  height: 17px;
   background: rgb(255, 255, 255);
   flex: 0 0 auto;
   display: flex;
@@ -1289,4 +1292,286 @@ progress::-moz-progress-bar {
   padding: 8px 16px;
   align-items: flex-start;
   gap: 10px;
+}
+.sampopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  opacity: 1;
+}
+
+.sampopup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: .2rem;
+  position: absolute;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 30%;
+  height: 53%;
+  top: 14rem;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  color: black;
+  cursor: pointer;
+}
+.samPopH2{
+  text-align: start;
+  font-size: 1.45rem;
+  color: #2c2b2b;
+}
+.samPopP{
+  font-size: 0.7rem;
+  text-align: start;
+  color: #2c2b2b;
+  margin-top: -.8rem;
+}
+.sampopup-content .sampopInput{
+  width: 96%;
+  display:block;
+  padding: .5rem;
+  margin-top: 1rem;
+  border-radius: .2rem;
+  font-size: .8rem;
+  background-color: rgb(35, 164, 85);
+  border: 1px solid rgb(35, 164, 85);
+  text-decoration: none;
+  color: white;
+}
+.carouselExtraInput{
+  border: 1px solid rgb(235, 217, 147);
+  background-color: rgb(255, 252, 240);
+}
+.carouselIconCont{
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.carouselExtraInput{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* height: 5rem; */
+}
+.carouselCont p{
+  font-size: .8rem;
+  margin-top: -.6rem;
+}
+.carouselCont h5{
+  font-size: .9rem;
+  margin-top: .6rem;
+}
+.carouselCont{
+  text-align: start;
+}
+.carouselIconBtn{
+  border: 1px solid rgb(35, 164, 85);
+  height: 1.5rem;
+  width: 14%;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .5rem;
+  background-color: rgb(35, 164, 85);
+  border-radius: .2rem;
+  color: white;
+  cursor: pointer;
+  padding-left: 1rem;
+}
+.carouselIconBtn .carIcon{
+  border: 1px solid white;
+  color: rgb(35, 164, 85);
+  background: white;
+  border-radius: .5rem;
+  font-size: .5rem;
+  padding: .1rem;
+}
+.carDiaIcon{
+  font-size: 1.2rem;
+  color: orange;
+}
+
+
+.upgradePopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2
+}
+
+.upgradePopup-content {
+  background-color: white;
+  color: black;
+  padding: 62px 80px 40px;
+  border-radius: 10px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.close {
+  position: absolute;
+  font-size: 1.8rem;
+  color: gray;
+  cursor: pointer;
+  border: 1px solid whitesmoke;
+  background-color: whitesmoke;
+  height: 1.4rem;
+  width: 1.5rem;
+  padding: .2rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upgradePopTitle h5{
+  color: gray;
+  font-weight: 500;
+  margin-top: -1rem;
+  font-size: .9rem;
+}
+.upgradePopBody p{
+  font-size: .95rem;
+  color: gray;
+  font-weight: 400;
+}
+.upgradePopFooter .upgradePopFooterCancel{
+  width: 19%;
+  display: block;
+  padding: .5rem;
+  margin-top: 1rem;
+  border-radius: .2rem;
+  font-size: .8rem;
+  background-color: rgb(239, 238, 246);
+  border: 1px solid rgb(35, 164, 85);
+  text-decoration: none;
+  color: rgb(35, 164, 85);
+}
+.upgradePopFooter .upgradePopFooterNow{
+  width: 28%;
+  display: block;
+  padding: .5rem;
+  margin-top: 1rem;
+  border-radius: .2rem;
+  font-size: .8rem;
+  background-color: rgb(35, 164, 85);
+  border: 1px solid rgb(35, 164, 85);
+  text-decoration: none;
+  color: white;
+}
+.upgradePopFooter{
+  display: flex;
+  justify-content: end;
+  gap: .3rem;
+}
+.hidden{
+  z-index: -1;
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: rgb(35, 164, 85);
+}
+.ui.checkbox {
+  height: 100%;
+}
+.ui.checkbox {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: inline-block;
+  font-size: 1rem;
+  font-style: normal;
+  line-height: 17px;
+  min-height: 17px;
+  min-width: 17px;
+  outline: 0;
+  position: relative;
+  vertical-align: initial;
+  margin-bottom: 1rem;
+}
+.ui.checkbox input:checked ~ label::after {
+  color: rgb(35, 164, 85) !important;
+}
+.ui.checkbox label::after {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  color: rgb(35, 164, 85);
+}
+.AttPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.AttPopup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: .2rem;
+  position: relative;
+  /* text-align: center; */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 55%;
+  height: 88%;
+  overflow: auto;
+  position: absolute;
+  top: 1.7rem;
+  left: 17rem;
+}
+.attClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  color: black;
+  cursor: pointer;
+}
+.AttNav{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.AttNav a{
+  font-size: .7rem;
+  color: blue;
+}
+.attPopCont{
+  z-index: 1;
+}
+.atrrPopup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 56%; 
+  height: 85%; 
+  overflow-y: scroll;
+  position: relative;
 }
