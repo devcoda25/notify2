@@ -1575,3 +1575,32 @@ progress::-moz-progress-bar {
   overflow-y: scroll;
   position: relative;
 }
+.AddNav{
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.AddNav a{
+  font-size: .8rem;
+  color: blue;
+}
+.AddNavContactCont{
+  text-align: start;
+}
+.AttributeContactCont p{
+  margin: 0px 20px 20px 0px;
+  color: rgb(35, 164, 85);
+  border: 1px solid rgb(35, 164, 85);
+  height: 34px;
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 13px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 19px;
+}
+.AddNavContactCont h5{
+  margin-bottom: 1rem;
+}

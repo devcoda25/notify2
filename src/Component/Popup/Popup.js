@@ -233,7 +233,7 @@ const attributes = [
         <div className='bodyPoppup'>
           <div className='bodyPoppupL'>
               <div>
-                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a href='#' onClick={()=>{
+                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a href='' onClick={()=>{
                   setSampleTemplate(true)
                 }}>Use a sample</a></p>
               </div>
