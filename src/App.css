@@ -1318,8 +1318,8 @@ progress::-moz-progress-bar {
   text-align: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 30%;
-  height: 53%;
-  top: 14rem;
+  height: 55%;
+  top: 12rem;
 }
 
 .close {
@@ -1770,7 +1770,57 @@ progress::-moz-progress-bar {
 .visitAddBtnCont{
   display: flex;
   align-items: end;
+  margin-left: 9rem;
+  margin-top: -4.7rem;
 }
 .visistStaticCont{
   display: flex;
+}
+.visitBtnCont input{
+  padding: .5rem;
+  background-color: #dee4e4;
+  border: none;
+  border-radius: 5px;
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+  font-size: .8rem;
+  opacity: .5;
+  outline: rgb(35, 164, 85);
+}
+.visitAddBtn input{
+  padding: .4rem;
+  width: 42%;
+  border: 1px solid rgb(35, 164, 85);
+  color: rgb(35, 164, 85);
+  border-radius: .2rem;
+  margin-left: 12rem;
+}
+.visistStaticContSelect{
+  padding: .5rem;
+  background-color: #dee4e4;
+  border: none;
+  border-radius: 5px;
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+  font-size: .8rem;
+  opacity: .5;
+  width: 145%;
+  outline: rgb(35, 164, 85);
+}
+.visistStaticContSelect{
+  display: flex;
+  gap: 3rem;
+}
+.visitTextCont input{
+  padding: .5rem;
+  background-color: #dee4e4;
+  border: none;
+  border-radius: 5px;
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+  font-size: .8rem;
+  opacity: .5;
+  outline: rgb(35, 164, 85);
+  margin-left: 3rem;
+  width: 133%;
 }

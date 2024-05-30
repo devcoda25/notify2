@@ -202,29 +202,6 @@ let hours = String(now.getHours()).padStart(2, '0');
 let minutes = String(now.getMinutes()).padStart(2, '0');
 let currentTime = `${hours}:${minutes}`;
 
-const attributes = [
-  {
-    title:'contact',
-    values:[
-      {name:'actual_fare'},
-      {name:'actual_estimate'},
-      {name:'additional_items'},
-      {name:'address_ount'},
-      {name:'agent'}
-    ]
-  },
-  {
-    title:'Shopify',
-    values:[
-      {name:'actual_fare'},
-      {name:'actual_estimate'},
-      {name:'additional_items'},
-      {name:'address_ount'},
-      {name:'agent'}
-    ]
-  }
-]
-
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
@@ -476,7 +453,6 @@ const attributes = [
                       <option value="quickReplies">Quick replies</option>
                       <option value="callPhone">Call Phone</option>
                     </select>
-
                     {selectedOption && (
                       <div className='copyOffContWhole'>
                         {selectedOption === 'copyOfferCode'?<>
@@ -498,31 +474,30 @@ const attributes = [
                           </div>
                         </>:null}
                         {selectedOption === 'visitWebsite' ? <>
-                          <div>
+                          <div className='visitWebsiteWhole'>
                             <div className='visitAddBtnCont'>
-                              <div>
+                              <div className='visitBtnCont'>
                                 <label>0/25</label><br/>
-                                <input type='text'/>
+                                <input type='text' placeholder='Button Text'/>
                               </div>
-                              <div>
+                              <div className='visitAddBtn'>
                                 <input type='button' value='Add button'/>
                               </div>
                             </div>
                             <div className='visistStaticCont'>
                               <div>
-                                <select className='poppupBroadcastInput'>
+                                <select className='visistStaticContSelect'>
                                   <option value="static">Static</option>
                                   <option value="dynamic">Dynamic</option>
                                 </select>
                               </div>
-                              <div>
-                                <label>0/2000</label><br/>
-                                <input type='text'/>
+                              <div className='visitTextCont'>
+                                {/* <label>0/2000</label><br/> */}
+                                <input type='text' placeholder='https://www.wati.io'/>
                               </div>
                             </div>
                           </div>
                         </>:null}
-
                         {selectedOption === 'quickReplies'?<>
                           <div className='copyOffCont'>
                             <div className='quickLabels'>
@@ -534,7 +509,6 @@ const attributes = [
                             </div>
                           </div>
                         </>:null}
-
                         {selectedOption === 'callPhone'?<>
                           <div className='copyOffCont'>
                             <div className='copyOffInputs'>
@@ -552,8 +526,7 @@ const attributes = [
                             </div>
                           </div>
                         </>:null}
-                      </div>
-                      
+                      </div>                    
                     )}
                   </div>
               </div>
@@ -882,8 +855,8 @@ const attributes = [
               </div>
               <div className='poppupButton'>
                   <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
-                  <p>Insert buttons so your customers can take action and engage with your message!</p>
-                  <div>
+                  <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
+                  <div className='buttonSelect'>
                     <select value={selectedOption} className='poppupBroadcastInput' onChange={handleChange}>
                       <option value="">None</option>
                       <option value="copyOfferCode">Copy offer code</option>
@@ -891,21 +864,82 @@ const attributes = [
                       <option value="quickReplies">Quick replies</option>
                       <option value="callPhone">Call Phone</option>
                     </select>
-
                     {selectedOption && (
-                      <div>
-                        {selectedOption === 'copyOfferCode' ?<>
-                          <div>hi this is copy offer code</div>
+                      <div className='copyOffContWhole'>
+                        {selectedOption === 'copyOfferCode'?<>
+                          <div className='copyOffCont'>
+                            <div className='copyOffInputs'>
+                              <div className='copyOffLabels'>
+                                <label>15/25</label><br/>
+                                <input type='text' value={copyOffer} className='copyOffInput'/>
+                              </div>
+                              <div className='copyOffLabels'>
+                                <label>0/15</label><br/>
+                                <input type='text' placeholder='Enter coupon code to copy' className='copyCouponInput'/>
+                              </div>
+                            </div>
+                            <div className='copyCouponBtn'>
+                              {/* <button className='copyCouponButton'>Add button</button> */}
+                              <input className='copyCouponButton' value='Add button'/>
+                            </div>
+                          </div>
                         </>:null}
-                        {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
-                        {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
-                        {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}
-                      </div>
+                        {selectedOption === 'visitWebsite' ? <>
+                          <div className='visitWebsiteWhole'>
+                            <div className='visitAddBtnCont'>
+                              <div className='visitBtnCont'>
+                                <label>0/25</label><br/>
+                                <input type='text' placeholder='Button Text'/>
+                              </div>
+                              <div className='visitAddBtn'>
+                                <input type='button' value='Add button'/>
+                              </div>
+                            </div>
+                            <div className='visistStaticCont'>
+                              <div>
+                                <select className='visistStaticContSelect'>
+                                  <option value="static">Static</option>
+                                  <option value="dynamic">Dynamic</option>
+                                </select>
+                              </div>
+                              <div className='visitTextCont'>
+                                {/* <label>0/2000</label><br/> */}
+                                <input type='text' placeholder='https://www.wati.io'/>
+                              </div>
+                            </div>
+                          </div>
+                        </>:null}
+                        {selectedOption === 'quickReplies'?<>
+                          <div className='copyOffCont'>
+                            <div className='quickLabels'>
+                              <label>0/25</label><br/>
+                              <input type='text' placeholder='Button Text' className='copyCouponInput'/>
+                            </div>
+                            <div className='copyCouponBtn'>
+                              <input className='quickButton' value='Add button'/>
+                            </div>
+                          </div>
+                        </>:null}
+                        {selectedOption === 'callPhone'?<>
+                          <div className='copyOffCont'>
+                            <div className='copyOffInputs'>
+                              <div className='copyOffLabels'>
+                                <label>15/25</label><br/>
+                                <input type='text' placeholder='Button Text' className='callPhoneBtn'/>
+                              </div>
+                              <div className='copyOffLabels'>
+                                <label>0/15</label><br/>
+                                <input type='text' placeholder='Phone number with country code' className='callPhoneInput'/>
+                              </div>
+                            </div>
+                            <div className='copyCouponBtn'>
+                              <input className='copyCouponButton' value='Add button'/>
+                            </div>
+                          </div>
+                        </>:null}
+                      </div>                    
                     )}
                   </div>
-                  {/* <div className='titleInput'>
-                    <input type='text' placeholder='Enter Text'/>
-                  </div> */}
               </div>
               <div className='poppupButtons'>
                 <p className='poppupButtons1'>Save as draft</p>
