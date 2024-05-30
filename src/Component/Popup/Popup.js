@@ -34,6 +34,8 @@ const Popup = ({ onClose }) => {
   const [filePreview, setFilePreview] = useState('');
   const [sampleTemplate, setSampleTemplate] = useState(false);
   const [marketingTemplate, setMarketingTemplate] = useState("standard");
+  const [expire, setExpire] = useState(10);
+  const [copyOffer, setcopyOffer] = useState('Copy offer code')
   
   const [showPopup, setShowPopup] = useState(false);
   const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
@@ -433,8 +435,8 @@ const attributes = [
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
                     <div>
-                      <input type='text' disabled style={alignInput}/>
-                        <div className='poppupBodyInputIcons' style={alignIcon}>
+                      {/* <input type='text' disabled style={alignInput}/> */}
+                        {/* <div className='poppupBodyInputIcons' style={alignIcon}>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
@@ -452,7 +454,7 @@ const attributes = [
                           <div>
                             <MdLink />
                           </div>
-                        </div>
+                        </div> */}
                     </div>
                   </div>
               </div>
@@ -465,8 +467,8 @@ const attributes = [
               </div>
               <div className='poppupButton'>
                   <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
-                  <p>Insert buttons so your customers can take action and engage with your message!</p>
-                  <div>
+                  <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
+                  <div className='buttonSelect'>
                     <select value={selectedOption} className='poppupBroadcastInput' onChange={handleChange}>
                       <option value="">None</option>
                       <option value="copyOfferCode">Copy offer code</option>
@@ -476,17 +478,84 @@ const attributes = [
                     </select>
 
                     {selectedOption && (
-                      <div>
-                        {selectedOption === 'copyOfferCode' && <p>You selected: Copy offer code</p>}
-                        {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
-                        {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
-                        {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}
+                      <div className='copyOffContWhole'>
+                        {selectedOption === 'copyOfferCode'?<>
+                          <div className='copyOffCont'>
+                            <div className='copyOffInputs'>
+                              <div className='copyOffLabels'>
+                                <label>15/25</label><br/>
+                                <input type='text' value={copyOffer} className='copyOffInput'/>
+                              </div>
+                              <div className='copyOffLabels'>
+                                <label>0/15</label><br/>
+                                <input type='text' placeholder='Enter coupon code to copy' className='copyCouponInput'/>
+                              </div>
+                            </div>
+                            <div className='copyCouponBtn'>
+                              {/* <button className='copyCouponButton'>Add button</button> */}
+                              <input className='copyCouponButton' value='Add button'/>
+                            </div>
+                          </div>
+                        </>:null}
+                        {selectedOption === 'visitWebsite' ? <>
+                          <div>
+                            <div className='visitAddBtnCont'>
+                              <div>
+                                <label>0/25</label><br/>
+                                <input type='text'/>
+                              </div>
+                              <div>
+                                <input type='button' value='Add button'/>
+                              </div>
+                            </div>
+                            <div className='visistStaticCont'>
+                              <div>
+                                <select className='poppupBroadcastInput'>
+                                  <option value="static">Static</option>
+                                  <option value="dynamic">Dynamic</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label>0/2000</label><br/>
+                                <input type='text'/>
+                              </div>
+                            </div>
+                          </div>
+                        </>:null}
+
+                        {selectedOption === 'quickReplies'?<>
+                          <div className='copyOffCont'>
+                            <div className='quickLabels'>
+                              <label>0/25</label><br/>
+                              <input type='text' placeholder='Button Text' className='copyCouponInput'/>
+                            </div>
+                            <div className='copyCouponBtn'>
+                              <input className='quickButton' value='Add button'/>
+                            </div>
+                          </div>
+                        </>:null}
+
+                        {selectedOption === 'callPhone'?<>
+                          <div className='copyOffCont'>
+                            <div className='copyOffInputs'>
+                              <div className='copyOffLabels'>
+                                <label>15/25</label><br/>
+                                <input type='text' placeholder='Button Text' className='callPhoneBtn'/>
+                              </div>
+                              <div className='copyOffLabels'>
+                                <label>0/15</label><br/>
+                                <input type='text' placeholder='Phone number with country code' className='callPhoneInput'/>
+                              </div>
+                            </div>
+                            <div className='copyCouponBtn'>
+                              <input className='copyCouponButton' value='Add button'/>
+                            </div>
+                          </div>
+                        </>:null}
                       </div>
+                      
                     )}
                   </div>
-                  {/* <div className='titleInput'>
-                    <input type='text' placeholder='Enter Text'/>
-                  </div> */}
               </div>
               <div className='poppupButtons'>
                 <p className='poppupButtons1'>Save as draft</p>
@@ -582,7 +651,7 @@ const attributes = [
               {category === 'authentication' ? <>
               <div className='poppupBroadcast'>
                   <h5>Body</h5>
-                  <p>Make your messages personal using variables like and get more replies!</p>
+                  <p>Content for authentication message templates can’t be edited. You can add/remove additional content from the option below</p>
                   {/* <div className="poppupBodyInputCont">
                     <p>Add variable</p>
                   </div> */}
@@ -590,7 +659,7 @@ const attributes = [
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    <div>
+                    {/* <div>
                       <input type='text' disabled style={alignInput}/>
                         <div className='poppupBodyInputIcons' style={alignIcon}>
                           <div>
@@ -611,7 +680,7 @@ const attributes = [
                             <MdLink />
                           </div>
                         </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className='ui checked checkbox'>
                     <input type="checkbox" className='hidden'/>
@@ -624,31 +693,31 @@ const attributes = [
                   <div className="poppupFooterInput">
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                   </div>
+                  <div className='ui checked checkbox'>
+                    <input type="checkbox" className='hidden'/>
+                    <label style={{fontSize:'.9rem'}}>Include expiry time</label>
+                  </div>
+                  <div>
+                    <label style={{fontSize:'.9rem'}}>Expires in</label><br/>
+                    <input type='number' value={expire} className='expireInput'/>
+                  </div>
               </div>
               <div className='poppupButton'>
                   <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
-                  <p>Insert buttons so your customers can take action and engage with your message!</p>
+                  <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
                   <div>
-                    <select value={selectedOption} className='poppupBroadcastInput' onChange={handleChange}>
-                      <option value="">None</option>
-                      <option value="copyOfferCode">Copy offer code</option>
-                      <option value="visitWebsite">Visit Website</option>
-                      <option value="quickReplies">Quick replies</option>
-                      <option value="callPhone">Call Phone</option>
-                    </select>
-
-                    {selectedOption && (
-                      <div>
-                        {selectedOption === 'copyOfferCode' && <p>You selected: Copy offer code</p>}
-                        {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
-                        {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
-                        {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}
-                      </div>
-                    )}
+                    <label className='BtnTextLabel'>0/25</label><br/>
+                    <input type='text' placeholder='Button Text' className='btnText'/>
                   </div>
-                  {/* <div className='titleInput'>
-                    <input type='text' placeholder='Enter Text'/>
-                  </div> */}
+              </div>
+              <div className='sampleContentCont'>
+                <h5>Sample Content</h5>
+                <p>Just enter sample content here (it doesn’t need to be exact!)</p>
+                  <div className="sampleContent">
+                    <label className='sampleContentLabel'>0/200</label><br/>
+                    <input type='text' placeholder='Enter content for {{1}}' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                    <p style={{fontSize:'.7rem'}}>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
+                  </div>
               </div>
               <div className='poppupButtons'>
                 <p className='poppupButtons1'>Save as draft</p>
@@ -825,7 +894,9 @@ const attributes = [
 
                     {selectedOption && (
                       <div>
-                        {selectedOption === 'copyOfferCode' && <p>You selected: Copy offer code</p>}
+                        {selectedOption === 'copyOfferCode' ?<>
+                          <div>hi this is copy offer code</div>
+                        </>:null}
                         {selectedOption === 'visitWebsite' && <p>You selected: Visit Website</p>}
                         {selectedOption === 'quickReplies' && <p>You selected: Quick replies</p>}
                         {selectedOption === 'callPhone' && <p>You selected: Call Phone</p>}

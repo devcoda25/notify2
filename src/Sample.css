@@ -166,6 +166,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 1rem;
 }
 .item__category{
   padding: 5px 10px;

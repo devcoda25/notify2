@@ -162,6 +162,9 @@
   font-size: .8rem;
   opacity: .5;
   width: 154%;
+  outline: none;
+}
+.popupInput .select1:hover{
   outline-color: rgb(35, 164, 85);
 }
 .popupInput .select2{
@@ -292,7 +295,7 @@ input[type="radio"] + label {
   margin-bottom: 1rem;
   font-size: .8rem;
   opacity: .5;
-  width: 18%;
+  /* width: 20%; */
   outline: rgb(35, 164, 85);
 }
 .poppupBroadcastInput:hover{
@@ -1603,4 +1606,171 @@ progress::-moz-progress-bar {
 }
 .AddNavContactCont h5{
   margin-bottom: 1rem;
+}
+.expireInput{
+  padding: .5rem;
+  width: 25%;
+  background-color: rgb(245, 246, 250);
+  border: none;
+  margin-bottom: 1rem;
+  border-radius: .2rem;
+  border-color: rgb(245, 246, 250);
+  outline: none;
+}
+.btnText{
+  padding: .7rem;
+  width: 25%;
+  background-color: rgb(245, 246, 250);
+  border: none;
+  margin-bottom: 1rem;
+  border-radius: .2rem;
+  border-color: rgb(245, 246, 250);
+  outline: none;
+  font-size: .8rem;
+}
+.btnText::placeholder {
+  color: rgb(177, 174, 174);
+  opacity: 1; /* Firefox */
+}
+.BtnTextLabel{
+  font-size: .7rem;
+  margin-left: 9.8rem;
+}
+.sampleContent input{
+  padding: .5rem;
+  width: 97%;
+  background-color: rgb(245, 246, 250);
+  font-size: .8rem;
+  border: 1px solid #22242626;
+  border-radius: .2rem;
+}
+.sampleContent input::placeholder {
+  color: rgb(177, 174, 174);
+  opacity: 1; /* Firefox */
+}
+.sampleContentLabel{
+  font-size: .7rem;
+  margin-left: 37.8rem;;
+}
+.sampleContentCont{
+  text-align: start;
+  /* border-bottom: 1px solid #e0ebeb; */
+}
+.sampleContentCont h5{
+  color: rgb(61, 61, 61);
+  margin-bottom: -.2rem;
+}
+.sampleContentCont p{
+  color: rgb(61, 61, 61);
+  font-size: .8rem;
+}
+.sampleContentCont p a{
+  color: blue;
+  text-decoration: none;
+}
+.copyOffCont{
+  display: flex;
+  align-items: end;
+  margin-left: 8.4rem;
+  margin-top: -4.4rem;
+  margin-bottom: 1rem;
+}
+.buttonSelect{
+  margin-top: 2rem;
+}
+.copyOffInput{
+  padding: .6rem;
+  border: none;
+  background-color: rgb(245, 246, 250);
+  border-radius: .2rem;
+  width: 87%;
+  color: #000000de;
+  font-size: .75rem;
+  margin-top: -1rem;
+}
+.copyCouponInput{
+  padding: .5rem;
+  border: none;
+  background-color: rgb(245, 246, 250);
+  border-radius: .2rem;
+  margin-top: -1rem;
+}
+.copyCouponInput::placeholder {
+  color: rgb(177, 174, 174);
+  opacity: 1; 
+}
+.copyCouponButton{
+  padding: .5rem;
+  width: 51%;
+  text-align: center;
+  border: 1px solid rgb(35, 164, 85);
+  border-radius: .2rem;
+  color: rgb(35, 164, 85);
+  background: rgba(35, 164, 85, 0.05);
+}
+.copyOffInputs{
+  display: flex;
+    gap: .4rem;
+}
+.copyCouponBtn{
+  text-align: -webkit-right;
+}
+.callPhoneInput{
+  padding: .6rem;
+  border: none;
+  background-color: rgb(245, 246, 250);
+  border-radius: .2rem;
+  width: 108%;
+  font-size: .75rem;
+  margin-top: -1rem;
+}
+.callPhoneBtn{
+  padding: .6rem;
+  border: none;
+  background-color: rgb(245, 246, 250);
+  border-radius: .2rem;
+  width: 88%;
+  color: #000000de;
+  font-size: .75rem;
+  margin-top: -1rem;
+}
+.callPhoneBtn::placeholder {
+  color: rgb(177, 174, 174);
+  opacity: 1; 
+}
+.copyOffLabels{
+  display: flex;
+  flex-direction: column;
+}
+.copyOffLabels label{
+  font-size: .8rem;
+  text-align: end;
+}
+.quickLabels{
+  display: flex;
+  flex-direction: column;
+}
+.quickLabels label{
+  font-size: .8rem;
+  text-align: end;
+}
+.quickButton{
+  padding: .5rem;
+  width: 46%;
+  text-align: center;
+  border: 1px solid rgb(35, 164, 85);
+  border-radius: .2rem;
+  color: rgb(35, 164, 85);
+  background: rgba(35, 164, 85, 0.05);
+  margin-left: -3rem;
+}
+.quickLabels .copyCouponInput{
+  margin-left: .3rem;
+}
+.visitAddBtnCont{
+  display: flex;
+  align-items: end;
+}
+.visistStaticCont{
+  display: flex;
 }
