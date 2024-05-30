@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa6";
 
-const Sample = ({onClose,closeSamplePage,templateOnchange}) => {
+const Sample = ({onClose,closeSamplePage,templateOnchange,createOwnTemplateOnClick}) => {
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
@@ -28,8 +28,10 @@ const Sample = ({onClose,closeSamplePage,templateOnchange}) => {
                 <input type="text" placeholder="Search..." className="sampleTemplateSearch" />
                 <CiSearch className="icon2" />
               </div>
-              <div>
-                <button className='sampleTemplatebtn'>Create my own template</button>
+              <div onClick={()=>{
+                createOwnTemplateOnClick()
+                }}>
+                <button className='sampleTemplatebtn' >Create my own template</button>
               </div>
             </div>
           </div>
@@ -44,18 +46,18 @@ const Sample = ({onClose,closeSamplePage,templateOnchange}) => {
               </div>
               <div className='item__bottom'>
                 <div className='item__body-preview'>
-                🌹 Valentine's Day Special Deal! 🌹
-Celebrate love with exclusive offers just for you! 💕
+                🌹 Valentine's Day Special Deal! 🌹 {"{{name}}"}
+                Celebrate love with exclusive offers just for you! 💕
+                🎁 Get [X]% off on all Valentine's Day gifts! 💝 Explore our curated collection of romantic surprises. 🛍️ Shop now and make this Valentine's Day unforgettable!
 
-🎁 Get [X]% off on all Valentine's Day gifts! 💝 Explore our curated collection of romantic surprises. 🛍️ Shop now and make this Valentine's Day unforgettable!
+                 Hurry, offer valid until [End Date]!
 
-Hurry, offer valid until [End Date]!
-
-Spread love, shop smart, and cherish every moment.
-[Your name]
+                Spread love, shop smart, and cherish every moment.
+                [Your name]
                 </div>
                 <button className='sc-jIBlqr kZhSXp sc-gvcVbs eUNntY' onClick={()=>{
                   templateOnchange(`🌹 Valentine's Day Special Deal! 🌹
+      {{name}},
                   Celebrate love with exclusive offers just for you! 💕
                   
                   🎁 Get [X]% off on all Valentine's Day gifts! 💝 Explore our curated collection of romantic surprises. 🛍️ Shop now and make this Valentine's Day unforgettable!

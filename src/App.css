@@ -1604,6 +1604,10 @@ progress::-moz-progress-bar {
   font-size: 13px;
   line-height: 19px;
 }
+.AttributeContactCont p:hover{
+  background-color: #e8faef;
+  cursor: pointer;
+}
 .AddNavContactCont h5{
   margin-bottom: 1rem;
 }

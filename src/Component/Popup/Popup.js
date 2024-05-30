@@ -24,7 +24,7 @@ const Popup = ({ onClose }) => {
   const [broadcast, setBroadcast] = useState('none');
   const [selectedOption, setSelectedOption] = useState('');
   const [cleanText, setCleanText] = useState('');
-  const [cleanTextBody, setCleanTextBody] = useState('');
+  let [cleanTextBody, setCleanTextBody] = useState('');
   const [cleanTextFooter, setCleanTextFooter] = useState('');
   const [htmlText, setHtmlText] = useState('');
   const [htmlTextBody, setHtmlTextBody] = useState('');
@@ -39,6 +39,10 @@ const Popup = ({ onClose }) => {
   
   const [showPopup, setShowPopup] = useState(false);
   const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
+  const [sampleTemplateChoose, setSampleTemplateChoose] = useState(false);
+  const [fromName, setFromName] = useState("");
+  const [fromNameShow, setFromNameShow] = useState(false);
+
 
   const handleOpenAttributePop = () => {
     setIsAttributePopOpen(true);
@@ -206,24 +210,52 @@ let currentTime = `${hours}:${minutes}`;
     <div className="modal-backdrop">
       <div className="modal-content">
         <div className='popupNav'>
+{sampleTemplateChoose ? <>
+  <p className="close-button" onClick={()=>{
+    setSampleTemplate(true)
+  }
+}><RxCross2  /></p>
+</> : null}
           <p className='popupNavHead'>Create template message</p>
           <p className="close-button" onClick={onClose}><RxCross2  /></p>
         </div>
         <div className='bodyPoppup'>
           <div className='bodyPoppupL'>
               <div>
-                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a href='' onClick={()=>{
+                <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a  onClick={()=>{
                   setSampleTemplate(true)
                 }}>Use a sample</a></p>
               </div>
              
               {sampleTemplate ?<Sample
               onClose={onClose}
-              closeSamplePage={()=>{setSampleTemplate(false)}}  
+              closeSamplePage={()=>{
+                setSampleTemplate(false)
+                setSampleTemplateChoose(false)
+                setCleanTextBody("");
+                setHtmlTextBody("");
+
+                setFromName("")
+                setFromNameShow(false)
+              }}  
               templateOnchange={(samplehtmltext)=>{
+                samplehtmltext =  samplehtmltext.replaceAll('{{name}}', 'John');
+                setFromName("John")
+                setFromNameShow(true)
+
                 handleTextBodyChange(samplehtmltext)
                 setSampleTemplate(false)
-              }}/> :null}
+                setSampleTemplateChoose(true)
+              }}
+              
+              createOwnTemplateOnClick={()=>{
+                setSampleTemplateChoose(false)
+                setSampleTemplate(false)
+
+                setFromName("")
+                setFromNameShow(false)
+              }}
+              /> :null}
                
 
               <div className='popupInput'>
@@ -406,7 +438,14 @@ let currentTime = `${hours}:${minutes}`;
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
                   <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
-                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} />}
+                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                    let copyHtmlTextBody = htmlTextBody
+                    copyHtmlTextBody+=`{{${vname}}}`
+                    setHtmlTextBody(copyHtmlTextBody)
+                    setCleanTextBody(copyHtmlTextBody);
+                    setIsAttributePopOpen(false);
+
+                  }} />}
                   <div className='poppupBodyInput'>
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
@@ -442,6 +481,17 @@ let currentTime = `${hours}:${minutes}`;
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                   </div>
               </div>
+{fromNameShow ? <>
+  <div className='poppupBroadcast'>
+                  <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
+                      setFromName(e.target.value)
+                    }}/>
+                  </div>
+              </div>
+</>:""}
+              
+
               <div className='poppupButton'>
                   <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
                   <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
