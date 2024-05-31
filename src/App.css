@@ -58,6 +58,7 @@
   justify-content: space-between;
   margin-top: -1rem;
   border-bottom: 1px solid #d1e0e0;
+  margin-left: 1rem;
 }
 .popupNav .close-button{
   font-size: 1.1rem;
@@ -127,6 +128,7 @@
   border-radius: 5px;
   padding: .2rem 1rem .2rem 1rem;
   background-color: blue;
+  cursor: pointer;
 }
 .popupInput{
   display: flex;
@@ -1827,4 +1829,14 @@ progress::-moz-progress-bar {
   outline: rgb(35, 164, 85);
   margin-left: 3rem;
   width: 133%;
+}
+.splUpArrow{
+  position: absolute;
+  top: 19px;
+  left: .5rem;
+  padding: .4rem;
+  border-radius: 2.2rem;
+  background: gainsboro;
+  border: none;
+  font-size: .8rem;
 }

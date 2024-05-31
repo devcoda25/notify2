@@ -11,12 +11,13 @@ import { CgLogIn } from 'react-icons/cg';
 import img from '../img/mediaImg.png';
 import vdo from '../img/mediaVdo.png';
 import document from '../img/mediaDocument.png';
-import { Padding, WidthWide } from '@mui/icons-material';
 import Sample from '../../Sample';
 import catalogImg from '../img/catalogImg.svg'
 import { IoDiamondOutline } from "react-icons/io5";
 import { FaArrowUp } from "react-icons/fa";
 import AttriubutePopup from './AttriubutePopup';
+import { FaArrowLeft } from "react-icons/fa6";
+
 
 const Popup = ({ onClose }) => {
 
@@ -35,7 +36,8 @@ const Popup = ({ onClose }) => {
   const [sampleTemplate, setSampleTemplate] = useState(false);
   const [marketingTemplate, setMarketingTemplate] = useState("standard");
   const [expire, setExpire] = useState(10);
-  const [copyOffer, setcopyOffer] = useState('Copy offer code')
+  const [copyOffer, setcopyOffer] = useState('Copy offer code');
+  
   
   const [showPopup, setShowPopup] = useState(false);
   const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
@@ -210,13 +212,15 @@ let currentTime = `${hours}:${minutes}`;
     <div className="modal-backdrop">
       <div className="modal-content">
         <div className='popupNav'>
-{sampleTemplateChoose ? <>
-  <p className="close-button" onClick={()=>{
-    setSampleTemplate(true)
-  }
-}><RxCross2  /></p>
-</> : null}
-          <p className='popupNavHead'>Create template message</p>
+          <div>
+            {sampleTemplateChoose ? <>
+                <p className="close-button" onClick={()=>{
+                  setSampleTemplate(true)
+                }
+              }><FaArrowLeft  className='splUpArrow' /></p>
+            </> : null}
+            <p className='popupNavHead'>Create template message</p>
+          </div>
           <p className="close-button" onClick={onClose}><RxCross2  /></p>
         </div>
         <div className='bodyPoppup'>
@@ -481,17 +485,6 @@ let currentTime = `${hours}:${minutes}`;
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                   </div>
               </div>
-{fromNameShow ? <>
-  <div className='poppupBroadcast'>
-                  <div className="poppupFooterInput">
-                    <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
-                      setFromName(e.target.value)
-                    }}/>
-                  </div>
-              </div>
-</>:""}
-              
-
               <div className='poppupButton'>
                   <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
                   <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
@@ -580,6 +573,26 @@ let currentTime = `${hours}:${minutes}`;
                     )}
                   </div>
               </div>
+              {fromNameShow ? <>
+                <div className='poppupBroadcast'>
+                  {/* <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
+                      setFromName(e.target.value)
+                    }}/>
+                  </div> */}
+                  <div className='sampleContentCont'>
+                  <h5>Sample Content</h5>
+                  <p>Just enter sample content here (it doesn’t need to be exact!)</p>
+                    <div className="sampleContent">
+                      <label className='sampleContentLabel'>0/200</label><br/>
+                      <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
+                      setFromName(e.target.value)
+                      }}/>
+                      <p style={{fontSize:'.7rem'}}>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
+                    </div>
+                </div>
+                </div>
+              </>:""}
               <div className='poppupButtons'>
                 <p className='poppupButtons1'>Save as draft</p>
                 <p className='poppupButtons2'>Save and Submit</p>
