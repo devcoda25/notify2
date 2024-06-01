@@ -185,6 +185,7 @@ const Popup = ({ onClose }) => {
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
   };
+  
 
   const handleCategoryChange = (event) => {
     let choosevalue =event.target.value
@@ -192,8 +193,10 @@ const Popup = ({ onClose }) => {
    let dummyFooterTest ="{{1}} is your verification code. For your security, do not share this code."
     setCleanTextBody(`${dummyFooterTest}`);
     setHtmlTextBody(`${dummyFooterTest}`);
-    
-     setCleanTextFooter(`This code expires in ${expire} minutes.`)
+
+    let dummyFooter = `This code expires in ${expire} minutes.`
+     setCleanTextFooter(dummyFooter)
+     setHtmlTextFooter(dummyFooter)
    }
     setCategory(choosevalue);
   };
@@ -762,11 +765,12 @@ let currentTime = `${hours}:${minutes}`;
                   </div>
                   <div className='ui checked checkbox'>
                     <input checked={securityRecommandCheckedFooter} type="checkbox" className='hidden' onChange={(e)=>{
+                      let dummyFooter = ''
                       if(e.target.checked){
-                        cleanTextFooter = ''
+                        dummyFooter = `This code expires in ${expire} minutes.`
                       }
-                      setCleanTextFooter(`${cleanTextFooter}`);
-                      setHtmlTextFooter(`${cleanTextFooter}`);
+                      setCleanTextFooter(`${dummyFooter}`);
+                      setHtmlTextFooter(`${dummyFooter}`);
                       setSecurityRecommandCheckedFooter(e.target.checked)
                     }} />
                     <label style={{fontSize:'.9rem'}}>Include expiry time</label>
