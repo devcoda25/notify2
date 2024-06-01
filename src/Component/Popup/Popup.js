@@ -660,7 +660,7 @@ let currentTime = `${hours}:${minutes}`;
                 </div>
                 <div className='poppupBroadcast'>
                     <h5>Body</h5>
-                    <p>Make your messages personal using variables like and get more replies!</p>
+                    <p>Makes your messages personal using variables like and get more replies!</p>
                     <div className="poppupBodyInputCont">
                     <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
                   {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
@@ -669,7 +669,6 @@ let currentTime = `${hours}:${minutes}`;
                     setHtmlTextBody(copyHtmlTextBody)
                     setCleanTextBody(copyHtmlTextBody);
                     setIsAttributePopOpen(false);
-
                   }} />}
                     </div>
                     <div className='poppupBodyInput'>
