@@ -334,7 +334,7 @@ input[type="radio"] + label {
   background-color: rgb(245, 246, 250);
   border: none;
   border-radius: .5rem;
-  position: relative;
+  /* position: relative; */
   width: -webkit-fill-available;
   margin-bottom: 0.9rem;
   padding-top: 3.5rem;
@@ -342,21 +342,24 @@ input[type="radio"] + label {
 }
 .poppupBodyInput input{
   padding: .7rem;
-  width: 89.2%;
   border: none;
   background-color: white;
   border-radius: .2rem;
   position: absolute;
-  top: 31rem;
+  top: .5rem;
   left: 0.4rem;
+  padding-left: 27.7rem;
 }
 .poppupBodyInputIcons{
   display: flex;
   gap: 0.5rem;
   position: absolute;
-  top: 31.5rem;
+  top: 1rem;
   left: 1rem;
   color: gray;
+}
+.poppupBodyInput{
+  position: relative;
 }
 
 /* body end */
@@ -1142,8 +1145,11 @@ progress::-moz-progress-bar {
   word-break: break-word;
   padding-right: .5rem;
   margin-left: 1.3rem;
-  /* max-height:40%; */
-  /* overflow-y: scroll; */
+  /* width: 200px;
+  height: 270px;
+  overflow: auto; */
+  max-height: 17rem;
+  overflow: auto;
 }
 .bg-img-div{
   background-color: rgb(235, 237, 242);

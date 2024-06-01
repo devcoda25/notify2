@@ -44,6 +44,9 @@ const Popup = ({ onClose }) => {
   const [sampleTemplateChoose, setSampleTemplateChoose] = useState(false);
   const [fromName, setFromName] = useState("");
   const [fromNameShow, setFromNameShow] = useState(false);
+  const [securityRecommandChecked, setSecurityRecommandChecked] = useState(true);
+
+
 
 
   const handleOpenAttributePop = () => {
@@ -72,21 +75,21 @@ const Popup = ({ onClose }) => {
 
   let broadcastTextStyle = { display: 'none' };
   let broadcastMediaStyle = { display: 'none' };
-  let alignIcon = {top:'32rem'};
-  let alignInput = {top:'31.5rem'};
+  // let alignIcon = {top:'32rem'};
+  // let alignInput = {top:'31.5rem'};
   let inputExtra = {};
   let previewBodyStyleImg = {};
 
   if (broadcast === 'text') {
     broadcastTextStyle = { display: 'block' };
-    alignInput = {top:'34.5rem'};
-    alignIcon = {top:'35rem'};
+    // alignInput = {top:'34.5rem'};
+    // alignIcon = {top:'35rem'};
   }
   
   if (broadcast === 'media') {
     broadcastMediaStyle = { display: 'block' };
-    alignInput = {top:'37rem'};
-    alignIcon = {top:'37.5rem'};
+    // alignInput = {top:'37rem'};
+    // alignIcon = {top:'37.5rem'};
     // inputExtra = {paddingBottom:'9rem'}
     // previewBodyStyleImg = {paddingTop:'5rem'}
   }
@@ -182,7 +185,15 @@ const Popup = ({ onClose }) => {
   };
 
   const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
+    let choosevalue =event.target.value
+   if( choosevalue === "authentication" ){
+   let dummyFooterTest ="{{1}} is your verification code. For your security, do not share this code."
+    setCleanTextBody(`${dummyFooterTest}`);
+    setHtmlTextBody(`${dummyFooterTest}`);
+    
+     setCleanTextFooter(`This code expires in ${expire} minutes.`)
+   }
+    setCategory(choosevalue);
   };
 
   const handleBroadcastChange =(e)=>{
@@ -454,9 +465,9 @@ let currentTime = `${hours}:${minutes}`;
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    <div>
-                      {/* <input type='text' disabled style={alignInput}/> */}
-                        {/* <div className='poppupBodyInputIcons' style={alignIcon}>
+                    <div style={{position:'absolute', top:'0'}}>
+                      <input type='text' disabled/>
+                        <div className='poppupBodyInputIcons'>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
@@ -474,7 +485,7 @@ let currentTime = `${hours}:${minutes}`;
                           <div>
                             <MdLink />
                           </div>
-                        </div> */}
+                        </div>
                     </div>
                   </div>
               </div>
@@ -658,8 +669,8 @@ let currentTime = `${hours}:${minutes}`;
                         handleTextBodyChange(e.target.value)
                       }}></textarea>
                       <div>
-                        <input type='text' disabled style={alignInput}/>
-                          <div className='poppupBodyInputIcons' style={alignIcon}>
+                        <input type='text' disabled/>
+                          <div className='poppupBodyInputIcons'>
                             <div>
                               <MdOutlineEmojiEmotions />
                             </div>
@@ -695,9 +706,9 @@ let currentTime = `${hours}:${minutes}`;
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    {/* <div>
-                      <input type='text' disabled style={alignInput}/>
-                        <div className='poppupBodyInputIcons' style={alignIcon}>
+                    <div style={{position:'absolute', top:'0'}}>
+                      <input type='text' disabled/>
+                        <div className='poppupBodyInputIcons'>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
@@ -716,10 +727,19 @@ let currentTime = `${hours}:${minutes}`;
                             <MdLink />
                           </div>
                         </div>
-                    </div> */}
+                    </div>
                   </div>
                   <div className='ui checked checkbox'>
-                    <input type="checkbox" className='hidden'/>
+                    <input  checked={securityRecommandChecked} type="checkbox" className='hidden' onChange={(event)=>{
+                      let dummyFooterTest ="{{1}} is your verification code."
+                      if(event.target.checked)
+                        {
+                          dummyFooterTest="{{1}} is your verification code. For your security, do not share this code."
+                        }
+                      setCleanTextBody(`${dummyFooterTest}`);
+                      setHtmlTextBody(`${dummyFooterTest}`);
+                      setSecurityRecommandChecked(event.target.checked)
+                    }}/>
                     <label style={{fontSize:'.9rem'}}>Add security recommendation</label>
                   </div>
               </div>
@@ -730,12 +750,17 @@ let currentTime = `${hours}:${minutes}`;
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                   </div>
                   <div className='ui checked checkbox'>
-                    <input type="checkbox" className='hidden'/>
+                    <input checked={htmlTextFooter} type="checkbox" className='hidden'/>
                     <label style={{fontSize:'.9rem'}}>Include expiry time</label>
                   </div>
                   <div>
                     <label style={{fontSize:'.9rem'}}>Expires in</label><br/>
-                    <input type='number' value={expire} className='expireInput'/>
+                    <input type='number' value={expire} className='expireInput' onChange={(event)=>{
+                      let timertext =`This code expires in ${event.target.value} minutes.`
+                      setCleanTextFooter(timertext)
+                      setExpire(event.target.value)
+                      setHtmlTextFooter(timertext);
+                    }}/>
                   </div>
               </div>
               <div className='poppupButton'>
@@ -751,7 +776,7 @@ let currentTime = `${hours}:${minutes}`;
                 <p>Just enter sample content here (it doesn’t need to be exact!)</p>
                   <div className="sampleContent">
                     <label className='sampleContentLabel'>0/200</label><br/>
-                    <input type='text' placeholder='Enter content for {{1}}' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                    <input type='text' placeholder='Enter content for {{1}}'/>
                     <p style={{fontSize:'.7rem'}}>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
                   </div>
               </div>
@@ -878,16 +903,22 @@ let currentTime = `${hours}:${minutes}`;
               <div className='poppupBroadcast'>
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
-                  <div className="poppupBodyInputCont">
-                    <p>Add variable</p>
-                  </div>
+                  <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
+                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                    let copyHtmlTextBody = htmlTextBody
+                    copyHtmlTextBody+=`{{${vname}}}`
+                    setHtmlTextBody(copyHtmlTextBody)
+                    setCleanTextBody(copyHtmlTextBody);
+                    setIsAttributePopOpen(false);
+
+                  }} />}
                   <div className='poppupBodyInput'>
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
                     <div>
-                      <input type='text' disabled style={alignInput}/>
-                        <div className='poppupBodyInputIcons' style={alignIcon}>
+                      <input type='text' disabled/>
+                        <div className='poppupBodyInputIcons'>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
