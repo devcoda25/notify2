@@ -762,9 +762,12 @@ let currentTime = `${hours}:${minutes}`;
                   </div>
                   <div className='ui checked checkbox'>
                     <input checked={securityRecommandCheckedFooter} type="checkbox" className='hidden' onChange={(e)=>{
-                      setCleanTextFooter('This code expires in 10 minutes.');
-                      setHtmlTextFooter('This code expires in 10 minutes.');
-                      setSecurityRecommandCheckedFooter(e.target.validationMessage)
+                      if(e.target.checked){
+                        cleanTextFooter = ''
+                      }
+                      setCleanTextFooter(`${cleanTextFooter}`);
+                      setHtmlTextFooter(`${cleanTextFooter}`);
+                      setSecurityRecommandCheckedFooter(e.target.checked)
                     }} />
                     <label style={{fontSize:'.9rem'}}>Include expiry time</label>
                   </div>
