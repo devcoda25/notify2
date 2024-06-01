@@ -39,12 +39,14 @@ const Popup = ({ onClose }) => {
   const [copyOffer, setcopyOffer] = useState('Copy offer code');
   
   
+
   const [showPopup, setShowPopup] = useState(false);
   const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
   const [sampleTemplateChoose, setSampleTemplateChoose] = useState(false);
   const [fromName, setFromName] = useState("");
   const [fromNameShow, setFromNameShow] = useState(false);
   const [securityRecommandChecked, setSecurityRecommandChecked] = useState(true);
+  const [securityRecommandCheckedFooter, setSecurityRecommandCheckedFooter] = useState(true)
 
 
 
@@ -754,10 +756,16 @@ let currentTime = `${hours}:${minutes}`;
                   <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
                   <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                   <div className="poppupFooterInput">
-                    <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                    <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={(e)=>{
+                      handleTextFooterChange(e.target.value)
+                    }}/>
                   </div>
                   <div className='ui checked checkbox'>
-                    <input checked={htmlTextFooter} type="checkbox" className='hidden'/>
+                    <input checked={securityRecommandCheckedFooter} type="checkbox" className='hidden' onChange={(e)=>{
+                      setCleanTextFooter('This code expires in 10 minutes.');
+                      setHtmlTextFooter('This code expires in 10 minutes.');
+                      setSecurityRecommandCheckedFooter(e.target.validationMessage)
+                    }} />
                     <label style={{fontSize:'.9rem'}}>Include expiry time</label>
                   </div>
                   <div>
