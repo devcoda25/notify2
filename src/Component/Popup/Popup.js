@@ -662,7 +662,15 @@ let currentTime = `${hours}:${minutes}`;
                     <h5>Body</h5>
                     <p>Make your messages personal using variables like and get more replies!</p>
                     <div className="poppupBodyInputCont">
-                      <p>Add variable</p>
+                    <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
+                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                    let copyHtmlTextBody = htmlTextBody
+                    copyHtmlTextBody+=`{{${vname}}}`
+                    setHtmlTextBody(copyHtmlTextBody)
+                    setCleanTextBody(copyHtmlTextBody);
+                    setIsAttributePopOpen(false);
+
+                  }} />}
                     </div>
                     <div className='poppupBodyInput'>
                       <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
