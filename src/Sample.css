@@ -46,6 +46,8 @@
   .sampleTemplateSubNav1{
     display: flex;
     gap: 1rem;
+    font-size: .9rem;
+    font-weight: 500;
   }
   .sampleTemplateSubNav1 p:hover{
     color: rgb(35, 164, 85);
