@@ -360,7 +360,7 @@ let currentTime = `${hours}:${minutes}`;
                   <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                 </div>
                 <div style={broadcastMediaStyle}>
-                  <div style={{ display: 'flex', gap: '1rem', fontSize: '.8rem', cursor: 'pointer' }}>
+                  <div className='imageVdoCont'>
                     <input
                       type="radio"
                       id="image"
@@ -828,7 +828,7 @@ let currentTime = `${hours}:${minutes}`;
                   <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                 </div>
                 <div style={broadcastMediaStyle}>
-                  <div style={{ display: 'flex', gap: '1rem', fontSize: '.8rem', cursor: 'pointer' }}>
+                  <div className='imageVdoCont'>
                     <input
                       type="radio"
                       id="image"

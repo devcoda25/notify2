@@ -190,28 +190,14 @@
 /* popu end */
 
 /* radio start */
-
-/* Hide the default radio button */
-input[type="radio"] {
-  display: none;
+.imageVdoCont{
+  display: flex;
+  gap: 1rem;
+  font-size: .8rem;
+  cursor: pointer;
 }
-
-/* Create a custom radio button */
-input[type="radio"] + label:before {
-  content: "";
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  margin-right: 0.5rem;
-  vertical-align: middle;
-}
-
-/* Style the checked state of the custom radio button */
-input[type="radio"]:checked + label:before {
-  background-color: rgb(35, 164, 85);
-  border-color: rgb(35, 164, 85);
+.imageVdoCont input{
+  accent-color: green;
 }
 
 /* Align the label text vertically */
@@ -1716,9 +1702,10 @@ progress::-moz-progress-bar {
   width: 51%;
   text-align: center;
   border: 1px solid rgb(35, 164, 85);
-  border-radius: .2rem;
+  border-radius: .4rem;
   color: rgb(35, 164, 85);
   background: rgba(35, 164, 85, 0.05);
+  cursor: pointer;
 }
 .copyOffInputs{
   display: flex;
