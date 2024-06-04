@@ -1175,18 +1175,14 @@ progress::-moz-progress-bar {
 .previewStyle{
   border: 1px solid white;
   background-color: white;
-  width: 19%;
-  position: absolute;
-  top: 16rem;
-  left: 45rem;
+  width: 77%;
   border-radius: .5rem;
   text-align: start;
   white-space: pre-wrap;
   word-break: break-word;
-  margin-left: 1.3rem;
-  max-height: 18rem;
-  overflow: auto;
+  margin-left: .3rem;
   padding: 10px;
+  margin-top: .5rem;
 }
 .bg-img-div{
   background-color: rgb(235, 237, 242);
@@ -1212,7 +1208,7 @@ progress::-moz-progress-bar {
 }
 .previewBodyStyle{
   font-size: .9rem;
-  padding-bottom: 1rem;
+  padding-bottom: .5rem;
 }
 .previewFooterStyle{
   font-size: .7rem;
@@ -1221,7 +1217,7 @@ progress::-moz-progress-bar {
   color: grey;
   font-size: 12px;
   text-align: end;
-  margin-top: 1rem;
+  margin-top: .5rem;
 }
 
 .documentVdoImg{
@@ -1722,6 +1718,15 @@ progress::-moz-progress-bar {
 }
 .buttonSelect{
   margin-top: 2rem;
+  background: #f0f5f5;
+  border: none;
+  border-radius: 5px;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  font-size: .8rem;
+  /* width: 104%; */
+  outline-color: rgb(35, 164, 85);
+  text-align: start;
 }
 .copyOffInput{
   padding: .6rem;
@@ -1885,10 +1890,47 @@ progress::-moz-progress-bar {
   margin-top: -28.5rem;
   margin-left: 2rem;
 }
-.MobileScroll{
-
+.MobileScreen{
+  background-color: transparent;
+  width: 24%;
+  height: 18rem;
+  position: absolute;
+  margin-left: 1.5rem;
+  overflow: auto;
 }
-.category-select select option select{
-  background-color: #fff;
-  border-top: 1px solid rgb(109, 56, 56) !important;
+.MobileScreen::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.MobileScreen::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 5px;
+}
+ 
+/* Handle */
+.MobileScreen::-webkit-scrollbar-thumb {
+  background: rgb(177, 176, 176); 
+  border-radius: 5px;
+}
+.CategorySelect{
+  background: #f0f5f5;
+  border: none;
+  border-radius: 5px;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  font-size: .8rem;
+  outline-color: rgb(35, 164, 85);
+  text-align: start;
+}
+.BroadcastSelect{
+  background: #f0f5f5;
+  border: none;
+  border-radius: 5px;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  font-size: .8rem;
+  width: 104%;
+  outline-color: rgb(35, 164, 85);
+  text-align: start;
 }
