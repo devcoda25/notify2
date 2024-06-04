@@ -62,6 +62,7 @@ const Popup = ({ onClose }) => {
   const [marketingTemplate, setMarketingTemplate] = useState("standard");
   const [expire, setExpire] = useState(10);
   const [copyOffer, setcopyOffer] = useState('Copy offer code');
+  const [buttonText, setButtonText] = useState("");
 
   
   
@@ -114,6 +115,10 @@ const Popup = ({ onClose }) => {
   };
 
   const togglePopup = () => {
+    if(showPopup&&marketingTemplate === "catalog")
+      {
+        setMarketingTemplate("standard")
+      }
     setShowPopup(!showPopup);
   };
 
@@ -129,18 +134,8 @@ const Popup = ({ onClose }) => {
   };
 
 
-  // let broadcastTextStyle = { display: 'none' };
-  // let broadcastMediaStyle = { display: 'none' };
   let inputExtra = {};
   let previewBodyStyleImg = {};
-
-  // if (broadcast.value === 'text') {
-  //   broadcastTextStyle = { display: 'block' };
-  // }
-  
-  // if (broadcast.value === 'media') {
-  //   broadcastMediaStyle = { display: 'block' };
-  // }
 
   const fileInputRef = useRef(null);
 
@@ -532,13 +527,14 @@ let currentTime = `${hours}:${minutes}`;
               <div className='poppupButton'>
                   <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
                   <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
-                  <div className='buttonSelect' style={{width:'25%'}}>
+                  <div className='buttonSelect' style={{width:'25%', fontSize:'.75rem'}}>
                     <Dropdown
                       options={buttonSelectOption.filter(op => op.value !== selectedOption)}
                       onChange={handleButtonOption}
                       value={selectedOption}
                       placeholder="Select an option"
                     />
+                    </div>
                     {selectedOption && (
                       <div className='copyOffContWhole'>
                         {selectedOption.value === 'copyOfferCode'?<>
@@ -614,7 +610,6 @@ let currentTime = `${hours}:${minutes}`;
                         </>:null}
                       </div>                    
                     )}
-                  </div>
               </div>
               {fromNameShow ? <>
                 <div className='poppupBroadcast'>
@@ -816,7 +811,9 @@ let currentTime = `${hours}:${minutes}`;
                   <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
                   <div>
                     <label className='BtnTextLabel'>0/25</label><br/>
-                    <input type='text' placeholder='Button Text' className='btnText'/>
+                    <input type='text' placeholder='Button Text' value={buttonText}  className='btnText' onChange={(event)=>{
+                      setButtonText(event.target.value)
+                    }}/>
                   </div>
               </div>
               <div className='sampleContentCont'>
@@ -1007,6 +1004,7 @@ let currentTime = `${hours}:${minutes}`;
                       value={selectedOption}
                       placeholder="Select an option"
                     />
+                    </div>
                     {selectedOption && (
                       <div className='copyOffContWhole'>
                         {selectedOption.value === 'copyOfferCode'?<>
@@ -1082,7 +1080,6 @@ let currentTime = `${hours}:${minutes}`;
                         </>:null}
                       </div>                    
                     )}
-                  </div>
               </div>
               <div className='poppupButtons'>
                 <p className='poppupButtons1'>Save as draft</p>
@@ -1132,9 +1129,21 @@ let currentTime = `${hours}:${minutes}`;
                       className="previewFooterStyle" 
                       dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                     /> : null}
-                  
                     <div className='previewStyleTime'>{currentTime}</div>
                   </div>
+
+                    {category == 'authentication' ? <div
+                      className="previewAuthStyle" 
+                      dangerouslySetInnerHTML={{ __html: buttonText }}
+                    /> : null}
+                    {/* <div className='previewStyleAuth'>        
+                    {buttonText && category === 'authentication'  ? <div
+                      className="previewAuthStyle" 
+                      dangerouslySetInnerHTML={{ __html: buttonText }}
+                    />:null}
+                  </div> */}
+                
+
                 </div>
             </div>
           </div>
