@@ -6,7 +6,7 @@ import Sample from './Sample';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Navbar/>
       {/* <Sample/> */}
     </div>
