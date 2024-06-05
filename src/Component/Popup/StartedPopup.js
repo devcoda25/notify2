@@ -23,7 +23,7 @@ const Popup = ({ onClose }) => {
                 Click on any step to learn more about that featurel
            </div>
            <div className='progress'>
-               <p style={{color:'white', textAlign:'end'}}>0%</p>
+               <p className='progressP'>0%</p>
                <progress id="file" value="8" max="100"> 32% </progress>
            </div>
        </div>

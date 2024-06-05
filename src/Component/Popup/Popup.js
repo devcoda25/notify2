@@ -306,9 +306,9 @@ let currentTime = `${hours}:${minutes}`;
                   <label>Template Name</label>
                   <input placeholder='Template Name' type='text'/>
                 </div>
-                <div className="App" style={{width:'35%'}}>
+                <div className="App categoryWhole">
                   <label htmlFor="category">Category</label>
-                  <div className='CategorySelect' style={{width:'100%'}}>
+                  <div className='CategorySelect'>
                     <Dropdown
                       options={categorySelectOption.filter(op => op.value !== category)}
                       onChange={handleCategoryOption}
@@ -349,7 +349,7 @@ let currentTime = `${hours}:${minutes}`;
                   </button>
                   <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
                     <div className={`poppupInputLabel ${marketingTemplate==="carousel" ?"radio-active":""} `} >
-                      <div style={{display:'flex', gap:'.5rem'}}>
+                      <div className='poppupInputLabelCarousel'>
                       <span class="radio-btn" onClick={()=>{ setMarketingTemplate("carousel")}}></span>
                         {/* <input type="radio" id="carousel" name="type" value="carousel" /> */}
                         <label htmlFor="carousel">Carousel</label>
@@ -363,10 +363,10 @@ let currentTime = `${hours}:${minutes}`;
               </div>
               {(marketingTemplate==="standard" || marketingTemplate==="catalog" )? <>
               <div className="poppupBroadcast">
-                <h5>Broadcast title <span style={{ color: 'gray', fontWeight: '500' }}>(Optional)</span></h5>
+                <h5>Broadcast title <span  className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                 <p>Highlight your brand here, use images or videos, to stand out</p>
                 <div className="App">
-                  <div className='BroadcastSelect' style={{width:'18%'}}>
+                  <div className='BroadcastSelect'>
                       <Dropdown
                         id="broadcast"
                         options={broadcastSelectOption.filter(op => op.value !== broadcast)}
@@ -493,23 +493,23 @@ let currentTime = `${hours}:${minutes}`;
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    <div style={{position:'absolute', top:'0'}}>
+                    <div className='textAreaInputIcons'>
                       <input type='text' disabled/>
                         <div className='poppupBodyInputIcons'>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
-                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold className='poppupBodyInputIconGrBold' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
                           </div>
                           <div>
-                            <FaItalic style={{fontSize:'.8rem'}} />
+                            <FaItalic className='poppupBodyInputIconFaItalic'/>
                           </div>
                           <div>
                             <MdStrikethroughS />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
                             <MdLink />
                           </div>
@@ -518,16 +518,16 @@ let currentTime = `${hours}:${minutes}`;
                   </div>
               </div>
               <div className='poppupBroadcast'>
-                  <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                   <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                   <div className="poppupFooterInput">
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                   </div>
               </div>
               <div className='poppupButton'>
-                  <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                   <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
-                  <div className='buttonSelect' style={{width:'25%', fontSize:'.75rem'}}>
+                  <div className='buttonSelect'>
                     <Dropdown
                       options={buttonSelectOption.filter(op => op.value !== selectedOption)}
                       onChange={handleButtonOption}
@@ -626,7 +626,7 @@ let currentTime = `${hours}:${minutes}`;
                       <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
                       setFromName(e.target.value)
                       }}/>
-                      <p style={{fontSize:'.7rem'}}>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
+                      <p className='sampleContentContP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
                     </div>
                 </div>
                 </div>
@@ -682,7 +682,7 @@ let currentTime = `${hours}:${minutes}`;
                         </div>
                       </div>
                     )}
-                    <p style={{fontSize:'.9rem'}}>Upgrade</p>
+                    <p className='upgradeP'>Upgrade</p>
                   </div>
                 </div>
                 <div className='poppupBroadcast'>
@@ -701,23 +701,23 @@ let currentTime = `${hours}:${minutes}`;
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    <div style={{position:'absolute', top:'0'}}>
+                    <div className='textAreaInputIcons'>
                       <input type='text' disabled/>
                         <div className='poppupBodyInputIcons'>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
-                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold className='poppupBodyInputIconGrBold' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
                           </div>
                           <div>
-                            <FaItalic style={{fontSize:'.8rem'}} />
+                            <FaItalic className='poppupBodyInputIconFaItalic' />
                           </div>
                           <div>
                             <MdStrikethroughS />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
                             <MdLink />
                           </div>
@@ -739,23 +739,23 @@ let currentTime = `${hours}:${minutes}`;
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    <div style={{position:'absolute', top:'0'}}>
+                    <div  className='textAreaInputIcons'>
                       <input type='text' disabled/>
                         <div className='poppupBodyInputIcons'>
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
-                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold className='poppupBodyInputIconGrBold' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
                           </div>
                           <div>
-                            <FaItalic style={{fontSize:'.8rem'}} />
+                            <FaItalic className='poppupBodyInputIconFaItalic' />
                           </div>
                           <div>
                             <MdStrikethroughS />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
                             <MdLink />
                           </div>
@@ -773,11 +773,11 @@ let currentTime = `${hours}:${minutes}`;
                       setHtmlTextBody(`${dummyFooterTest}`);
                       setSecurityRecommandChecked(event.target.checked)
                     }}/>
-                    <label style={{fontSize:'.9rem'}}>Add security recommendation</label>
+                    <label className='addSecurity'>Add security recommendation</label>
                   </div>
               </div>
               <div className='poppupBroadcast'>
-                  <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                   <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                   <div className="poppupFooterInput">
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={(e)=>{
@@ -794,10 +794,10 @@ let currentTime = `${hours}:${minutes}`;
                       setHtmlTextFooter(`${dummyFooter}`);
                       setSecurityRecommandCheckedFooter(e.target.checked)
                     }} />
-                    <label style={{fontSize:'.9rem'}}>Include expiry time</label>
+                    <label className='expirtyTime'>Include expiry time</label>
                   </div>
                   <div>
-                    <label style={{fontSize:'.9rem'}}>Expires in</label><br/>
+                    <label className='expires'>Expires in</label><br/>
                     <input type='number' value={expire} className='expireInput' onChange={(event)=>{
                       let timertext =`This code expires in ${event.target.value} minutes.`
                       setCleanTextFooter(timertext)
@@ -807,7 +807,7 @@ let currentTime = `${hours}:${minutes}`;
                   </div>
               </div>
               <div className='poppupButton'>
-                  <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                   <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
                   <div>
                     <label className='BtnTextLabel'>0/25</label><br/>
@@ -822,7 +822,7 @@ let currentTime = `${hours}:${minutes}`;
                   <div className="sampleContent">
                     <label className='sampleContentLabel'>0/200</label><br/>
                     <input type='text' placeholder='Enter content for {{1}}'/>
-                    <p style={{fontSize:'.7rem'}}>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
+                    <p className='sampleContentLabelP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
                   </div>
               </div>
               <div className='poppupButtons'>
@@ -833,10 +833,10 @@ let currentTime = `${hours}:${minutes}`;
 
               {category === 'utility' ? <>
               <div className="poppupBroadcast">
-                <h5>Broadcast title <span style={{ color: 'gray', fontWeight: '500' }}>(Optional)</span></h5>
+                <h5>Broadcast title <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                 <p>Highlight your brand here, use images or videos, to stand out</p>
                 <div className="App">
-                  <div className='BroadcastSelect' style={{width:'18%'}}>
+                  <div className='BroadcastSelect'>
                       <Dropdown
                         id="broadcast"
                         options={broadcastSelectOption.filter(op => op.value !== broadcast)}
@@ -969,17 +969,17 @@ let currentTime = `${hours}:${minutes}`;
                           <div>
                             <MdOutlineEmojiEmotions />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
-                            <GrBold style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold className='poppupBodyInputIconGrBold' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
                           </div>
                           <div>
-                            <FaItalic style={{fontSize:'.8rem'}} />
+                            <FaItalic className='poppupBodyInputIconFaItalic' />
                           </div>
                           <div>
                             <MdStrikethroughS />
                           </div>
-                          <hr style={{marginLeft:'-.2rem', marginRight:'-.2rem'}}/>
+                          <hr className='poppupBodyInputIconsHr'/>
                           <div>
                             <MdLink />
                           </div>
@@ -988,16 +988,16 @@ let currentTime = `${hours}:${minutes}`;
                   </div>
               </div>
               <div className='poppupBroadcast'>
-                  <h5>Footer <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                   <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                   <div className="poppupFooterInput">
                     <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                   </div>
               </div>
               <div className='poppupButton'>
-                  <h5>Buttons <span style={{color:'gray', fontWeight:'500'}}>(Optional)</span></h5>
+                  <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                   <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
-                  <div className='buttonSelect' style={{width:'25%'}}>
+                  <div className='buttonSelect'>
                     <Dropdown
                       options={buttonSelectOption.filter(op => op.value !== selectedOption)}
                       onChange={handleButtonOption}
@@ -1089,7 +1089,7 @@ let currentTime = `${hours}:${minutes}`;
           </div>
  
           <div className='bodyPoppupR'>
-            <h2 style={{fontSize:'1rem'}}>Preview</h2>
+            <h2 className='bodyPoppupRPreview'>Preview</h2>
             <img src={whatsapp} alt='email' className='selectImg'/>
             
             <div className='MobileScroll'>

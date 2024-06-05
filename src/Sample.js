@@ -20,7 +20,7 @@ const Sample = ({onClose,closeSamplePage,templateOnchange,createOwnTemplateOnCli
           </div>  
           <div className='sampleTemplateSubNavs'>
             <div className='sampleTemplateSubNav1'>
-              <p style={{color:'rgb(35, 164, 85)'}}>All</p>
+              <p className='sampleTemplateSubNav1All'>All</p>
               <p>Festival</p>
             </div>
             <div className='sampleTemplateSubNav2'>
