@@ -1,44 +1,44 @@
 {
-    "data":[
-            {
-                "templateName":"to_airport_for_someone_later",
-                "Category":"Utility",
-                "Status":"Approved",
-                "Language":"English",
-                "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcast"
-            },
-            {
-                "templateName":"from_airport_ride_someone_12",
-                "Category":"Utility",
-                "Status":"Approved",
-                "Language":"English",
-                "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcast"
-            },
-            {
-                "templateName":"from_airport_for_me_today",
-                "Category":"Utility",
-                "Status":"Approved",
-                "Language":"English",
-                "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcast"
-            },
-            {
-                "templateName":"ambulance_ride_later",
-                "Category":"Utility",
-                "Status":"Approved",
-                "Language":"English",
-                "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcast"
-            },
-            {
-                "templateName":"driver_app",
-                "Category":"Marketing",
-                "Status":"Approved",
-                "Language":"English (US)",
-                "lastUpdated":"5/8/2023",
-                "Actions":"Send broadcast"
-            }
-           ]
-    }
+"data":[
+        {
+            "templateName":"to_airport_for_someone_later",
+            "Category":"Utility",
+            "Status":"Approved",
+            "Language":"English",
+            "lastUpdated":"5/8/2023",
+            "Actions":"Send broadcase"
+        },
+        {
+            "templateName":"from_airport_ride_someone_12",
+            "Category":"Utility",
+            "Status":"Approved",
+            "Language":"English",
+            "lastUpdated":"5/8/2023",
+            "Actions":"Send broadcase"
+        },
+        {
+            "templateName":"from_airport_for_me_today",
+            "Category":"Utility",
+            "Status":"Approved",
+            "Language":"English",
+            "lastUpdated":"5/8/2023",
+            "Actions":"Send broadcase"
+        },
+        {
+            "templateName":"ambulance_ride_later",
+            "Category":"Utility",
+            "Status":"Approved",
+            "Language":"English",
+            "lastUpdated":"5/8/2023",
+            "Actions":"Send broadcase"
+        },
+        {
+            "templateName":"driver_app",
+            "Category":"Marketing",
+            "Status":"Approved",
+            "Language":"English (US)",
+            "lastUpdated":"5/8/2023",
+            "Actions":"Send broadcase"
+        }
+       ]
+}

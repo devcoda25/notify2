@@ -1,14 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import Navbar from './Component/Navbar/Navbar';
-import Sample from './Sample';
-
+import BroadcastBody from "./Component/Broadcast/BroadcastBody";
+import Footer from "./Component/Footer/Footer";
+import Navbar from "./Component/Navbar/Navbar";
 
 function App() {
   return (
     <div>
       <Navbar/>
-      {/* <Sample/> */}
+      <BroadcastBody/>
+      <Footer/>
     </div>
   );
 }

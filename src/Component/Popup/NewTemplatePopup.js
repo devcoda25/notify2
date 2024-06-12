@@ -1,6 +1,6 @@
 import React, { useState, useRef  } from 'react';
 import { RxCross2 } from "react-icons/rx";
-import whatsapp from '../img/whatsapp.png'
+import whatsapp from '../Assets/img/whatsapp.png'
 import { SlDiamond } from "react-icons/sl";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { GrBold } from "react-icons/gr";
@@ -8,21 +8,21 @@ import { FaItalic } from "react-icons/fa6";
 import { MdStrikethroughS } from "react-icons/md";
 import { MdLink } from "react-icons/md";
 import { CgLogIn } from 'react-icons/cg';
-import img from '../img/mediaImg.png';
-import vdo from '../img/mediaVdo.png';
-import document from '../img/mediaDocument.png';
-import Sample from '../../Sample';
-import catalogImg from '../img/catalogImg.svg'
+import img from '../Assets/img/mediaImg.png';
+import vdo from '../Assets/img/mediaVdo.png';
+import document from '../Assets/img/mediaDocument.png';
+import catalogImg from '../Assets/img/catalogImg.svg'
 import { IoDiamondOutline } from "react-icons/io5";
 import { FaArrowUp } from "react-icons/fa";
-import AttriubutePopup from './AttriubutePopup';
+import AttributePopup from './AttributePopup';
 import { FaArrowLeft } from "react-icons/fa6";
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import SampleTemplate from './SampleTemplate';
+import '../Style.css';
 
 
-
-const Popup = ({ onClose }) => {
+const NewTemplatePopup = ({ onClose }) => {
 
   const categorySelectOption = [
     { value: 'marketing', label: 'Marketing' },
@@ -264,13 +264,12 @@ let currentTime = `${hours}:${minutes}`;
         </div>
         <div className='bodyPoppup'>
           <div className='bodyPoppupL'>
-              <div>
+              {/* <div>
                 <p className='popupBlue'>Need help getting started? Use a sample from our template gallery <a  onClick={()=>{
                   setSampleTemplate(true)
                 }}>Use a sample</a></p>
-              </div>
-             
-              {sampleTemplate ?<Sample
+              </div> */}
+              {sampleTemplate ?<SampleTemplate
               onClose={onClose}
               closeSamplePage={()=>{
                 setSampleTemplate(false)
@@ -362,6 +361,11 @@ let currentTime = `${hours}:${minutes}`;
                 </div>
               </div>
               {(marketingTemplate==="standard" || marketingTemplate==="catalog" )? <>
+              <div className='paraLinkHr'>
+                <div className='paraLink'>
+                  <p>All templates must adhere to WhatsApp's Template Message Guidelines.<a href='https://support.wati.io/l/en/article/d0ewqzh7gv-how-to-avoid-template-message-rejection?_gl=1*10pj2tu*_ga*NjY4NjgyOTg4LjE3MTU3NTA3MTA.*_ga_HYL717ZD73*MTcxNjI2NjI5MS4xNS4xLjE3MTYyNjY0NDkuNTQuMC4w' target="_blank">Click here to read</a></p>
+                </div>
+              </div>
               <div className="poppupBroadcast">
                 <h5>Broadcast title <span  className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                 <p>Highlight your brand here, use images or videos, to stand out</p>
@@ -481,7 +485,7 @@ let currentTime = `${hours}:${minutes}`;
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
                   <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
-                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                  {isAttributePopOpen && <AttributePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
                     let copyHtmlTextBody = htmlTextBody
                     copyHtmlTextBody+=`{{${vname}}}`
                     setHtmlTextBody(copyHtmlTextBody)
@@ -689,7 +693,7 @@ let currentTime = `${hours}:${minutes}`;
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
                   <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
-                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                  {isAttributePopOpen && <AttributePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
                     let copyHtmlTextBody = htmlTextBody
                     copyHtmlTextBody+=`{{${vname}}}`
                     setHtmlTextBody(copyHtmlTextBody)
@@ -951,7 +955,7 @@ let currentTime = `${hours}:${minutes}`;
                   <h5>Body</h5>
                   <p>Make your messages personal using variables like and get more replies!</p>
                   <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
-                  {isAttributePopOpen && <AttriubutePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                  {isAttributePopOpen && <AttributePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
                     let copyHtmlTextBody = htmlTextBody
                     copyHtmlTextBody+=`{{${vname}}}`
                     setHtmlTextBody(copyHtmlTextBody)
@@ -1153,4 +1157,4 @@ let currentTime = `${hours}:${minutes}`;
   );
 };
 
-export default Popup
+export default NewTemplatePopup

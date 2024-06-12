@@ -2,7 +2,7 @@ import React from 'react'
 import { RxCross2 } from "react-icons/rx";
 import { IoIosLink } from "react-icons/io";
 
-const AttriubutePopup = ({onClose,ChooseVariable}) => {
+const AttributePopup = ({onClose,ChooseVariable}) => {
 
   const attributes = [
     {
@@ -239,4 +239,4 @@ const AttriubutePopup = ({onClose,ChooseVariable}) => {
   );
 }
 
-export default AttriubutePopup;
+export default AttributePopup;

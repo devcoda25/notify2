@@ -1,10 +1,10 @@
 import React from 'react'
-import './Sample.css'
+import '../Assets/css/SampleTemplate.css'
 import { RxCross2 } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
 import { FaArrowLeft } from "react-icons/fa6";
 
-const Sample = ({onClose,closeSamplePage,templateOnchange,createOwnTemplateOnClick}) => {
+const SampleTemplate = ({onClose,closeSamplePage,templateOnchange,createOwnTemplateOnClick}) => {
   return (
     <div className="modal-backdrop">
       <div className="modal-content">
@@ -162,4 +162,4 @@ To all the amazing women out there: keep rocking your awesomeness, breaking barr
   )
 }
 
-export default Sample
+export default SampleTemplate
