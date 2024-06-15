@@ -608,6 +608,17 @@
         font-size: .9rem;
         color: #484646;
     }
+    .footerPrevious{
+        color: gray;
+        font-size: 1rem;
+    }
+    .leftRightArrow{
+        font-size: 0.8rem;
+        color: gray;
+    }
+    .previousNxtCont{
+        cursor: pointer;
+    }
     .modal-content {
         background: white;
         padding: 20px;
@@ -714,7 +725,7 @@
     text-align: start;
     border: none;
  }
- /* .Dropdown-control {
+ .Dropdown-control {
     position: relative;
     overflow: hidden;
     background-color: white;
@@ -724,9 +735,9 @@
     color: #333;
     cursor: default;
     outline: none;
-    padding: 8px 52px 8px 10px;
+    padding: 13px 52px 13px 10px;
     transition: all 200ms ease;
-} */
+}
 .categoryWhole {
     width: 35%;
 }
@@ -848,7 +859,7 @@
 }
 .paraLink a {
     color: rgb(35, 164, 85);
-    font-weight: bold;
+    font-family: roboto-medium;
 }
 .paraLinkHr{
     border-bottom: 1px solid #dfe6e6;
@@ -934,18 +945,6 @@
     color: rgb(61, 61, 61);
     font-size: .8rem;
     margin-bottom: 2rem;
-}
-.buttonSelect {
-    margin-top: 2rem;
-    background: #f0f5f5;
-    border: none;
-    border-radius: 5px;
-    margin-top: .5rem;
-    margin-bottom: .5rem;
-    font-size: .75rem;
-    outline-color: rgb(35, 164, 85);
-    text-align: start;
-    width: 25%;
 }
 .modal-content {
     background: white;
@@ -1238,7 +1237,7 @@
     display: flex;
     align-items: end;
     margin-left: 10.3rem;
-    margin-top: -4rem;
+    margin-top:  -3.5rem;
     margin-bottom: 1rem;
   }
   .buttonSelect{
@@ -1251,7 +1250,7 @@
     font-size: .75rem;
     outline-color: rgb(35, 164, 85);
     text-align: start;
-    width: 25%;
+    width: 21%;
   }
   .copyOffInput{
     padding: .6rem;
@@ -1283,10 +1282,11 @@
     color: rgb(35, 164, 85);
     background: rgba(35, 164, 85, 0.05);
     cursor: pointer;
+    outline: none;
   }
   .copyOffInputs{
     display: flex;
-      gap: .4rem;
+    gap: .4rem;
   }
   .copyCouponBtn{
     text-align: -webkit-right;
@@ -1347,7 +1347,7 @@
     display: flex;
     align-items: end;
     margin-left: 9rem;
-    margin-top: -4rem;
+    margin-top: -3.5rem;
     align-items: center;
   }
   .visistStaticCont{
@@ -1533,12 +1533,158 @@
     color: rgb(102, 102, 102);
     padding: 16px;
     white-space: nowrap;
-    width: 100%;
+    /* width: 100%; */
 }
 .previewCont{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+}
+.css-pwxzbm {
+    background-color: rgb(255, 255, 255);
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+    /* position: absolute; */
+    overflow: hidden auto;
+    min-width: 16px;
+    min-height: 16px;
+    max-width: calc(100% - 32px);
+    outline: 0px;
+    max-height: calc(100% - 96px);
+}
+.css-rmmij8 {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    box-sizing: border-box;
+    position: relative;
+    cursor: text;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: inherit;
+    font-size: inherit;
+    flex-shrink: 0;
+    margin-right: 32px;
+    margin-left: 8px;
+}
+.css-1cccqvr.css-1cccqvr.css-1cccqvr {
+    padding-right: 24px;
+    min-width: 16px;
+}
+.css-1cccqvr.MuiSelect-select {
+    height: auto;
+    min-height: 1.4375em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.css-rmmij8 .MuiTablePagination-select {
+    padding-left: 8px;
+    padding-right: 24px;
+    text-align: right;
+    text-align-last: right;
+}
+.css-1cccqvr {
+    appearance: none;
+    user-select: none;
+    border-radius: 0px;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    color: currentcolor;
+    padding: 4px 0px 5px;
+    border: 0px;
+    box-sizing: content-box;
+    background: none;
+    height: 1.4375em;
+    margin: 0px;
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    min-width: 0px;
+    width: 100%;
+    animation-name: mui-auto-fill-cancel;
+    animation-duration: 10ms;
+}
+.css-rmmij8 {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    box-sizing: border-box;
+    position: relative;
+    cursor: text;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: inherit;
+    font-size: inherit;
+    flex-shrink: 0;
+    margin-right: 32px;
+    margin-left: 8px;
+}
+.css-1k3x8v3 {
+    bottom: 0px;
+    left: 0px;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+.css-1utq5rl {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    fill: currentcolor;
+    flex-shrink: 0;
+    transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 0px;
+    top: calc(50% - 0.5em);
+    pointer-events: none;
+    color: rgba(0, 0, 0, 0.54);
+}
+ul:not(.browser-default) {
+    padding-left: 0;
+    list-style-type: none;
+}
+.icon-popup{
+    border: 1px solid black;
+    position: absolute;
+    color: white;
+    background-color: rgb(34, 33, 33);
+    font-size: .6rem;
+    padding: .2rem;
+    border-radius: 5px;
+}
+.css-1gs62wq.Mui-selected {
+    background-color: rgba(25, 118, 210, 0.08);
+}
+.css-hw3xxr .MuiTablePagination-menuItem {
+    display: flex;
+    padding: 6px 10px;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+}
+.css-r8u8y9 {
+    list-style: none;
+    margin: 0px;
+    padding: 8px 0px;
+    position: relative;
+    outline: 0px;
+    cursor: pointer;
+}
+.css-1gs62wq{
+    padding: .3rem;
+}
+.packageDropdown .Dropdown-control{
+    background-color: red!important;
 }
 
 
@@ -1628,6 +1774,23 @@
     .poppupBodyInput input {
         width: 36%;
     }
+    .byYReU {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        height: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: calc(1.5rem);
+        color: rgb(102, 102, 102);
+        padding: 16px;
+        white-space: nowrap;
+        width: 100%;
+    }
+    .kciPCL {
+        width: 11%;
+    }
 }
 
 @media only screen and (max-width: 1499px) {
@@ -1679,7 +1842,7 @@
         width: 10%;
     }
     .nav a {
-        font-size: .8rem;
+        font-size: .9rem;
     }
     .nav .lnav {
         width: 46%;
@@ -1748,5 +1911,8 @@
     }
     .paraLink {
         margin-left: -8.3rem;
+    }
+    .kciPCL {
+        width: 12%;
     }
 }

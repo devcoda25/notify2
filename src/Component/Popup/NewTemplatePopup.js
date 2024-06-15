@@ -64,6 +64,7 @@ const NewTemplatePopup = ({ onClose }) => {
   const [expire, setExpire] = useState(10);
   const [copyOffer, setcopyOffer] = useState('Copy offer code');
   const [buttonText, setButtonText] = useState("");
+  const [buttonOpen, setButtonOpen] = useState(false);
 
   
   
@@ -246,6 +247,10 @@ let hours = String(now.getHours()).padStart(2, '0');
 let minutes = String(now.getMinutes()).padStart(2, '0');
 let currentTime = `${hours}:${minutes}`;
 
+let handleButtonOpen = ()=>{
+  setButtonOpen(true);
+}
+
 
 
   return (
@@ -310,6 +315,7 @@ let currentTime = `${hours}:${minutes}`;
                   <label htmlFor="category">Type</label>
                   <div className='CategorySelect'>
                     <Dropdown
+                      className='packageDropdown'
                       options={categorySelectOption.filter(op => op.value !== category)}
                       onChange={handleCategoryOption}
                       value={category}
@@ -1272,9 +1278,10 @@ let currentTime = `${hours}:${minutes}`;
                             </div>
                             <div className='copyCouponBtn'>
                               {/* <button className='copyCouponButton'>Add button</button> */}
-                              <input className='copyCouponButton' value='Add button'/>
+                              <input className='copyCouponButton' value='Add button' onClick={handleButtonOpen}/>
                             </div>
                           </div>
+                          
                         </>:null}
                         {selectedOption.value === 'visitWebsite' ? <>
                           <div className='visitWebsiteWhole'>
