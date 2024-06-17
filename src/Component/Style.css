@@ -498,9 +498,6 @@
         padding: 1rem;
         padding-top: 2rem;
     }
-    .tableTemplateNameBorderBottom{
-        width: 643%;
-    }
     .statusBtn{
         margin: 0px auto;
         width: calc(12rem);
@@ -652,7 +649,7 @@
         margin-bottom: .5rem;
         font-size: .8rem;
         opacity: .5;
-        width: 104%;
+        width: 100%;
         outline-color: rgb(35, 164, 85);
     }
     .popupInput {
@@ -738,9 +735,6 @@
     padding: 13px 52px 13px 10px;
     transition: all 200ms ease;
 }
-.categoryWhole {
-    width: 35%;
-}
 .popupInput .select2 {
     padding: .5rem;
     background-color: #f0f5f5;
@@ -750,8 +744,7 @@
     margin-bottom: .5rem;
     font-size: .8rem;
     opacity: .5;
-    width: 125%;
-    margin-left: -1rem;
+    width: 100%;
     outline-color: rgb(35, 164, 85);
 }
 .poppupRadioCont {
@@ -827,19 +820,6 @@
     display: flex;
     gap: .5rem;
     align-items: center;
-}
-.poppupInputLabelIcon {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    border: 1px solid black;
-    width: 3rem;
-    height: 1.2rem;
-    border-radius: 2rem;
-    align-items: center;
-    background-color: #ececec;
-    border: none;
-    margin-left: .5rem;
 }
 .poppupRadio {
     display: flex;
@@ -998,6 +978,8 @@
     margin-left: .3rem;
     padding: 10px;
     margin-top: .5rem;
+    font-size: .9rem;
+    font-family: roboto-light;
 }
 .previewStyleTime {
     color: grey;
@@ -1108,6 +1090,10 @@
 }
 .popupNav .close-button {
     font-size: 1.1rem;
+    cursor: pointer;
+}
+.popupNav .close-button:hover{
+    color: #23a455;
 }
 .AddNavContactCont h5 {
     margin-bottom: 1rem;
@@ -1662,6 +1648,8 @@ ul:not(.browser-default) {
     font-size: .6rem;
     padding: .2rem;
     border-radius: 5px;
+    /* top: 20.5rem;
+    left: 77.5rem; */
 }
 .css-1gs62wq.Mui-selected {
     background-color: rgba(25, 118, 210, 0.08);
@@ -1684,10 +1672,21 @@ ul:not(.browser-default) {
     padding: .3rem;
 }
 .packageDropdown .Dropdown-control{
-    background-color: red!important;
+    background-color: #f0f5f5;
+    font-size: .8rem;
+    outline-color: rgb(35, 164, 85);
+    border: none;
+    width: 147%;
 }
-
-
+.packageDropdown .Dropdown-menu{
+    width: 146%;
+}
+.packageDropdown .Dropdown-option{
+    border-bottom: 1px solid #f0f5f5;;
+}
+.table th{
+    border-bottom: 1px solid rgb(189, 188, 188);
+}
 
 }
 
@@ -1719,9 +1718,6 @@ ul:not(.browser-default) {
     .poppupSubmit {
         top: 31rem;
         left: 61rem;
-    }
-    .tableTemplateNameBorderBottom {
-        width: 574%;
     }
     .table th {
         font-family: roboto-medium;
@@ -1758,11 +1754,57 @@ ul:not(.browser-default) {
         top: 30rem;
         left: 58rem;
     }
-    .tableTemplateNameBorderBottom {
-        width: 531%;
+    .paraLink {
+        margin-left: -5rem;
+    }
+    .modal-content {
+        width: 70%;
+        height: 85%;
+    }
+    .paraLink {
+        margin-left: -8.5rem;
+    }
+    .poppupBodyInput input {
+        width: 36%;
+    }
+    .byYReU {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        height: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: calc(1.5rem);
+        color: rgb(102, 102, 102);
+        padding: 16px;
+        white-space: nowrap;
+        width: 100%;
+    }
+    .kciPCL {
+        width: 11%;
+    }
+}
+
+@media only screen and (max-width: 1530px) {
+    .input-icon-wrapper1{
+        position: relative;
+    }
+    .input-icon-wrapper1{
+        position: relative;
+    }
+    .msgContL{
+        width: 11.5%;
+    }
+    .poppupSubmit {
+        top: 30rem;
+        left: 58rem;
     }
     .paraLink {
         margin-left: -5rem;
+    }
+    .msgContL a {
+        font-size: .9rem;
     }
     .modal-content {
         width: 70%;
@@ -1816,9 +1858,6 @@ ul:not(.browser-default) {
         top: 28.5rem;
         left: 54.5rem;
     }
-    .tableTemplateNameBorderBottom {
-        width: 480%;
-    }
     .modal-content {
         width: 75%;
         height: 85%;
@@ -1860,9 +1899,6 @@ ul:not(.browser-default) {
         top: 27rem;
         left: 52rem;
     }
-    .tableTemplateNameBorderBottom {
-        width: 449%;
-    }
     .modal-content {
         width: 80%;
     }
@@ -1902,9 +1938,6 @@ ul:not(.browser-default) {
     .poppupSubmit {
         top: 27.5rem;
         left: 51rem;
-    }
-        .tableTemplateNameBorderBottom {
-        width: 431%;
     }
     .modal-content {
         width: 82%;
