@@ -20,7 +20,7 @@ import '../Style.css';
 import { GrPersonalComputer } from "react-icons/gr";
 import sms from '../Assets/img/sms.png'
 import push from '../Assets/img/push.png'
-import plateform from '../Assets/img/plateform.png'
+import platform from '../Assets/img/platform.png'
 
 const NewTemplatePopup = ({ onClose }) => {
 
@@ -375,11 +375,11 @@ let handleButtonOpen = ()=>{
                     </div>
                   </button>
                   <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                    <div className={`poppupInputLabel ${marketingTemplate==="plateform" ?"radio-active":""} `} >
+                    <div className={`poppupInputLabel ${marketingTemplate==="platform" ?"radio-active":""} `} >
                       <div className='poppupInputLabelCarousel'>
-                      <span class="radio-btn" onClick={()=>{ setMarketingTemplate("plateform")}}></span>
-                        {/* <input type="radio" id="plateform" name="type" value="plateform" /> */}
-                        <label htmlFor="plateform">Plateform</label>
+                      <span class="radio-btn" onClick={()=>{ setMarketingTemplate("platform")}}></span>
+                        {/* <input type="radio" id="platform" name="type" value="platform" /> */}
+                        <label htmlFor="platform">Platform</label>
                       </div>
                     </div>
                   </button>
@@ -945,7 +945,7 @@ let handleButtonOpen = ()=>{
                 <p className='poppupButtons2'>Save and Submit</p>
               </div>
               </>:null}
-              {marketingTemplate==="plateform" ? <>
+              {marketingTemplate==="platform" ? <>
                 <div className='carouselExtraInput' onClick={upgradePopup}>
                   <div className='carouselIconCont'>
                     <IoDiamondOutline className='carDiaIcon' />
@@ -1738,8 +1738,8 @@ let handleButtonOpen = ()=>{
             {(marketingTemplate==="sms")? <div>
               <img src={sms} alt='smsImg'/>
             </div> :null}
-            {(marketingTemplate==="plateform")? <div>
-              <img src={plateform} alt='plateformImg'/>
+            {(marketingTemplate==="platform")? <div>
+              <img src={platform} alt='plateformImg'/>
             </div> :null}
             {(marketingTemplate==="push")? <div>
               <img src={push} alt='pushImg'/>

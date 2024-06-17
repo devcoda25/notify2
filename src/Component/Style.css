@@ -577,7 +577,6 @@
         padding: .2rem;
         background-color: #efeff5;
         border: 1px solid #e0e0eb;
-        height: -moz-fit-content;
         height: fit-content;
         cursor: pointer;
     }
@@ -835,7 +834,6 @@
     border-radius: 40px;
     border: 1px solid rgb(35, 164, 85);
     margin-top: 1rem;
-    margin-left: -9rem;
 }
 .paraLink a {
     color: rgb(35, 164, 85);
@@ -844,7 +842,8 @@
 .paraLinkHr{
     border-bottom: 1px solid #dfe6e6;
     padding-bottom: 1rem;
-    margin-left: -8rem;
+    /* margin-left: -8rem; */
+    display: flex;
 }
 .poppupBroadcast {
     text-align: start;
@@ -1648,8 +1647,6 @@ ul:not(.browser-default) {
     font-size: .6rem;
     padding: .2rem;
     border-radius: 5px;
-    /* top: 20.5rem;
-    left: 77.5rem; */
 }
 .css-1gs62wq.Mui-selected {
     background-color: rgba(25, 118, 210, 0.08);
@@ -1690,6 +1687,7 @@ ul:not(.browser-default) {
 
 }
 
+
 @media only screen and (max-width: 1739px) {
     .ApiDocs{
         display: none;
@@ -1729,9 +1727,6 @@ ul:not(.browser-default) {
         width: 65%;
         height: 85%;
     }
-    .paraLink {
-        margin-left: -8.5rem;
-    }
     .poppupBodyInput input {
         width: 36%;
     }
@@ -1754,15 +1749,9 @@ ul:not(.browser-default) {
         top: 30rem;
         left: 58rem;
     }
-    .paraLink {
-        margin-left: -5rem;
-    }
     .modal-content {
         width: 70%;
         height: 85%;
-    }
-    .paraLink {
-        margin-left: -8.5rem;
     }
     .poppupBodyInput input {
         width: 36%;
@@ -1800,18 +1789,12 @@ ul:not(.browser-default) {
         top: 30rem;
         left: 58rem;
     }
-    .paraLink {
-        margin-left: -5rem;
-    }
     .msgContL a {
         font-size: .9rem;
     }
     .modal-content {
         width: 70%;
         height: 85%;
-    }
-    .paraLink {
-        margin-left: -8.5rem;
     }
     .poppupBodyInput input {
         width: 36%;
@@ -1862,9 +1845,6 @@ ul:not(.browser-default) {
         width: 75%;
         height: 85%;
     }
-    .paraLink {
-        margin-left: -8.5rem;
-    }
     .poppupBodyInput input {
         width: 36%;
     }
@@ -1902,9 +1882,6 @@ ul:not(.browser-default) {
     .modal-content {
         width: 80%;
     }
-    .paraLink {
-        margin-left: -8.5rem;
-    }
     .poppupBodyInput input {
         width: 36.5%;
     }
@@ -1941,9 +1918,6 @@ ul:not(.browser-default) {
     }
     .modal-content {
         width: 82%;
-    }
-    .paraLink {
-        margin-left: -8.3rem;
     }
     .kciPCL {
         width: 12%;
