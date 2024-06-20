@@ -17,7 +17,8 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import SampleTemplate from './SampleTemplate';
 import '../Style.css';
-import { GrPersonalComputer } from "react-icons/gr";
+import { FaMobile } from "react-icons/fa";
+import { MdLaptopMac } from "react-icons/md";
 import sms from '../Assets/img/sms.png'
 import push from '../Assets/img/push.png'
 import platform from '../Assets/img/platform.png'
@@ -39,10 +40,7 @@ const NewTemplatePopup = ({ onClose }) => {
   ];
 
   const buttonSelectOption = [
-    { value: 'none', label: 'None' },
-    { value: 'copyOfferCode', label: 'Copy offer code' },
-    { value: 'visitWebsite', label: 'Visit Website' },
-    { value: 'quickReplies', label: 'Quick replies' },
+    { value: 'Visit Website', label: 'Visit Website' },
     { value: 'callPhone', label: 'Call Phone' },
   ];
 
@@ -274,7 +272,17 @@ let handleButtonOpen = ()=>{
   setButtonOpen(true);
 }
 
+const [isButtonChecked, setIsButtonChecked] = useState(false);
 
+  const handleButtonToggle = () => {
+    setIsButtonChecked(!isButtonChecked);
+  };
+
+  const [isPreviewChecked, setIsPreviewChecked] = useState(false);
+
+  const handlePreviewButtonToggle = () => {
+    setIsPreviewChecked(!isPreviewChecked);
+  };
 
   return (
     <div className="modal-backdrop">
@@ -389,6 +397,15 @@ let handleButtonOpen = ()=>{
                       <span class="radio-btn" onClick={()=>{ setMarketingTemplate("push")}}></span>
                         {/* <input type="radio" id="push" name="type" value="push" /> */}
                         <label htmlFor="push">Push</label>
+                      </div>
+                    </div>
+                  </button>
+                  <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                    <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
+                      <div className='poppupInputLabelCarousel'>
+                      <span class="radio-btn" onClick={()=>{ setMarketingTemplate("email")}}></span>
+                        {/* <input type="radio" id="email" name="type" value="email" /> */}
+                        <label htmlFor="email">Email</label>
                       </div>
                     </div>
                   </button>
@@ -561,91 +578,51 @@ let handleButtonOpen = ()=>{
                   </div>
               </div>
               <div className='poppupButton'>
-                  <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
-                  <p>Create up to 3 buttons that let customers respond to your message or take action.</p>
-                  <div className='buttonSelect'>
-                    <Dropdown
-                      options={buttonSelectOption.filter(op => op.value !== selectedOption)}
-                      onChange={handleButtonOption}
-                      value={selectedOption}
-                      placeholder="Select an option"
-                    />
+                <div className='poppupButtonDesign'>
+                  <div>
+                    <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Recommended)</span></h5>
+                    <p className='poppupButtonDesignP'>Add quick replies and call to actions together for extra engagement!</p>
+                  </div>
+                  <div>
+                    <label className="switch">
+                      <input type="checkbox" checked={isButtonChecked} onChange={handleButtonToggle} />
+                      <span className="slider"></span>
+                    </label>
+                  </div>
+                </div>
+                {isButtonChecked && (
+                  <div className='visitWebsiteButtonsCont'>
+                    <div className='visitWebsiteButtonCont'>
+                      <div>
+                        <Dropdown
+                          className='visitWebsiteButton'
+                          options={buttonSelectOption.filter(op => op.value !== selectedOption)}
+                          onChange={handleButtonOption}
+                          value={selectedOption}
+                          placeholder="Select an option"
+                        />
+                      </div>
+                      <div>
+                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
+                      </div>
                     </div>
-                    {selectedOption && (
-                      <div className='copyOffContWhole'>
-                        {selectedOption.value === 'copyOfferCode'?<>
-                          <div className='copyOffCont'>
-                            <div className='copyOffInputs'>
-                              <div className='copyOffLabels'>
-                                <label>15/25</label><br/>
-                                <input type='text' value={copyOffer} className='copyOffInput'/>
-                              </div>
-                              <div className='copyOffLabels'>
-                                <label>0/15</label><br/>
-                                <input type='text' placeholder='Enter coupon code to copy' className='copyCouponInput'/>
-                              </div>
-                            </div>
-                            <div className='copyCouponBtn'>
-                              {/* <button className='copyCouponButton'>Add button</button> */}
-                              <input className='copyCouponButton' value='Add button'/>
-                            </div>
-                          </div>
-                        </>:null}
-                        {selectedOption.value === 'visitWebsite' ? <>
-                          <div className='visitWebsiteWhole'>
-                            <div className='visitAddBtnCont'>
-                              <div className='visitBtnCont'>
-                                <label>0/25</label><br/>
-                                <input type='text' placeholder='Button Text'/>
-                              </div>
-                              <div className='visitAddBtn'>
-                                <input type='button' value='Add button'/>
-                              </div>
-                            </div>
-                            <div className='visistStaticCont'>
-                              <div>
-                                <select className='visistStaticContSelect'>
-                                  <option value="static">Static</option>
-                                  <option value="dynamic">Dynamic</option>
-                                </select>
-                              </div>
-                              <div className='visitTextCont'>
-                                {/* <label>0/2000</label><br/> */}
-                                <input type='text' placeholder='https://www.wati.io'/>
-                              </div>
-                            </div>
-                          </div>
-                        </>:null}
-                        {selectedOption.value === 'quickReplies'?<>
-                          <div className='copyOffCont'>
-                            <div className='quickLabels'>
-                              <label>0/25</label><br/>
-                              <input type='text' placeholder='Button Text' className='copyCouponInput'/>
-                            </div>
-                            <div className='copyCouponBtn'>
-                              <input className='quickButton' value='Add button'/>
-                            </div>
-                          </div>
-                        </>:null}
-                        {selectedOption.value === 'callPhone'?<>
-                          <div className='copyOffCont'>
-                            <div className='copyOffInputs'>
-                              <div className='copyOffLabels'>
-                                <label>15/25</label><br/>
-                                <input type='text' placeholder='Button Text' className='callPhoneBtn'/>
-                              </div>
-                              <div className='copyOffLabels'>
-                                <label>0/15</label><br/>
-                                <input type='text' placeholder='Phone number with country code' className='callPhoneInput'/>
-                              </div>
-                            </div>
-                            <div className='copyCouponBtn'>
-                              <input className='copyCouponButton' value='Add button'/>
-                            </div>
-                          </div>
-                        </>:null}
-                      </div>                    
-                    )}
+                    <div className='visitWebsiteButtonCont'>
+                        <input className='visitWebsiteInput'  type='text' placeholder='Copy offer code' disabled/>
+                      <div>
+                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
+                      </div>
+                      {/* <div className='copyOfferCont'>
+                        <input className='copyOfferCodeBtn'  type='text' placeholder='Copy offer code' disabled/>
+                        <input className=''  type='text' placeholder='Enter coupon code to copy'/>
+                      </div> */}
+                    </div>
+                    <div className='visitWebsiteButtonCont'>
+                      <input className='visitWebsiteInput'  type='text' placeholder='Quick replies' disabled/>
+                      <div>
+                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
+                      </div>
+                    </div>
+                  </div>)}
               </div>
               {fromNameShow ? <>
                 <div className='poppupBroadcast'>
@@ -864,7 +841,7 @@ let handleButtonOpen = ()=>{
                             </div>
                           </div>
                         </>:null}
-                        {selectedOption.value === 'visitWebsite' ? <>
+                        {selectedOption.value === 'visit Website' ? <>
                           <div className='visitWebsiteWhole'>
                             <div className='visitAddBtnCont'>
                               <div className='visitBtnCont'>
@@ -1056,6 +1033,240 @@ let handleButtonOpen = ()=>{
                         </div>
                     </div>
                   </div>
+              </div>
+              </>:null}
+              {(marketingTemplate==="email")? <>
+              <div className='paraLinkHr'>
+                <div className='paraLink'>
+                  <p>All templates must adhere to WhatsApp's Template Message Guidelines.<a href='https://support.wati.io/l/en/article/d0ewqzh7gv-how-to-avoid-template-message-rejection?_gl=1*10pj2tu*_ga*NjY4NjgyOTg4LjE3MTU3NTA3MTA.*_ga_HYL717ZD73*MTcxNjI2NjI5MS4xNS4xLjE3MTYyNjY0NDkuNTQuMC4w' target="_blank">Click here to read</a></p>
+                </div>
+              </div>
+              <div className="poppupBroadcast">
+                <h5>Notification title</h5>
+                <p>Highlight your brand here, use images or videos, to stand out</p>
+                <div className="App">
+                  <div className='BroadcastSelect'>
+                      <Dropdown
+                        id="broadcast"
+                        options={broadcastSelectOption.filter(op => op.value !== broadcast)}
+                        onChange={handleBroadcastOption}
+                        value={broadcast}
+                        placeholder="Select an option"
+                      />
+                  </div>
+                </div>
+                {broadcast.value == 'text' && 
+                <div className="titleInput">
+                  <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                </div>}
+                {broadcast.value == 'media' &&
+                <div>
+                  <div className='imageVdoCont'>
+                    <input
+                      type="radio"
+                      id="image"
+                      name="media"
+                      value="IMAGE"
+                      checked={selectOption === 'IMAGE'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="image">Image</label>
+                    <input
+                      type="radio"
+                      id="video"
+                      name="media"
+                      value="VIDEO"
+                      checked={selectOption === 'VIDEO'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="video">video</label>
+                    <input
+                      type="radio"
+                      id="document"
+                      name="media"
+                      value="DOCUMENT"
+                      checked={selectOption === 'DOCUMENT'}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="document">document</label>
+                  </div>
+                  <div className='dropImg'>  
+                    {selectOption === 'IMAGE' && <div>
+                      <p className='dropImgp'>(Image:.jpeg, .png)</p>
+                      {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg" width='70%'/> :null}
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                    
+                     
+                      
+                      </div>}
+                    {selectOption === 'VIDEO' && <div>
+                      <p className='dropImgp'>(Video:.mp4)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {filePreview ? <video width={100} height={100} >
+                  <source src={filePreview} type='video/mp4' controls/>
+
+                </video>:  
+                null}
+                      </div>}
+                    {selectOption === 'DOCUMENT' && <div>
+                      <p className='dropImgp'>(document:.pdf)</p>
+                        <div className='dropInput'>
+                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'/>  
+                            <p>or</p>
+                            <div>
+                              <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="dropInput2"
+                                onChange={handleFileChange}
+                              />
+                              {/* <button onClick={handleClick}>Choose File</button> */}
+                            </div>
+                        </div>
+                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
+                      {/* <img src={document} alt="Document" /> */}
+                      </div>}
+                  </div>
+                </div>
+}
+              </div>         
+              <div className='poppupBroadcast'>
+                  <h5>Body</h5>
+                  <p>Make your messages personal using variables like and get more replies!</p>
+                  <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
+                  {isAttributePopOpen && <AttributePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                    let copyHtmlTextBody = htmlTextBody
+                    copyHtmlTextBody+=`{{${vname}}}`
+                    setHtmlTextBody(copyHtmlTextBody)
+                    setCleanTextBody(copyHtmlTextBody);
+                    setIsAttributePopOpen(false);
+
+                  }} />}
+                  <div className='poppupBodyInput'>
+                    <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                      handleTextBodyChange(e.target.value)
+                    }}></textarea>
+                    <div className='textAreaInputIcons'>
+                      <input type='text' disabled/>
+                        <div className='poppupBodyInputIcons'>
+                          <div>
+                            <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
+                          </div>
+                          <div>
+                            <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
+                          </div>
+                          <div>
+                            <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
+                          </div>
+                          <div>
+                            <MdStrikethroughS className='poppupBodyInputIcon'/>
+                          </div>
+                          <div>
+                            <MdLink className='poppupBodyInputIcon'/>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div className='poppupBroadcast'>
+                  <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
+                  <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
+                  <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                  </div>
+              </div>
+              <div className='poppupButton'>
+                <div className='poppupButtonDesign'>
+                  <div>
+                    <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Recommended)</span></h5>
+                    <p className='poppupButtonDesignP'>Add quick replies and call to actions together for extra engagement!</p>
+                  </div>
+                  <div>
+                    <label className="switch">
+                      <input type="checkbox" checked={isButtonChecked} onChange={handleButtonToggle} />
+                      <span className="slider"></span>
+                    </label>
+                  </div>
+                </div>
+                {isButtonChecked && (
+                  <div className='visitWebsiteButtonsCont'>
+                    <div className='visitWebsiteButtonCont'>
+                      <div>
+                        <Dropdown
+                          className='visitWebsiteButton'
+                          options={buttonSelectOption.filter(op => op.value !== selectedOption)}
+                          onChange={handleButtonOption}
+                          value={selectedOption}
+                          placeholder="Select an option"
+                        />
+                      </div>
+                      <div>
+                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
+                      </div>
+                    </div>
+                    <div className='visitWebsiteButtonCont'>
+                        <input className='visitWebsiteInput'  type='text' placeholder='Copy offer code' disabled/>
+                      <div>
+                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
+                      </div>
+                    </div>
+                    <div className='visitWebsiteButtonCont'>
+                      <input className='visitWebsiteInput'  type='text' placeholder='Quick replies' disabled/>
+                      <div>
+                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
+                      </div>
+                    </div>
+                  </div>)}
+              </div>
+              {fromNameShow ? <>
+                <div className='poppupBroadcast'>
+                  {/* <div className="poppupFooterInput">
+                    <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
+                      setFromName(e.target.value)
+                    }}/>
+                  </div> */}
+                  <div className='sampleContentCont'>
+                  <h5>Sample Content</h5>
+                  <p>Just enter sample content here (it doesn’t need to be exact!)</p>
+                    <div className="sampleContent">
+                      <label className='sampleContentLabel'>0/200</label><br/>
+                      <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
+                      setFromName(e.target.value)
+                      }}/>
+                      <p className='sampleContentContP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
+                    </div>
+                </div>
+                </div>
+              </>:""}
+              <div className='poppupButtons'>
+                <p className='poppupButtons1'>Save as draft</p>
+                <p className='poppupButtons2'>Save and Submit</p>
               </div>
               </>:null}
               </>:null}
@@ -1353,7 +1564,7 @@ let handleButtonOpen = ()=>{
                             </div>
                           </div>
                         </>:null}
-                        {selectedOption.value === 'visitWebsite' ? <>
+                        {selectedOption.value === 'visit Website' ? <>
                           <div className='visitWebsiteWhole'>
                             <div className='visitAddBtnCont'>
                               <div className='visitBtnCont'>
@@ -1608,7 +1819,7 @@ let handleButtonOpen = ()=>{
                           </div>
                           
                         </>:null}
-                        {selectedOption.value === 'visitWebsite' ? <>
+                        {selectedOption.value === 'visit Website' ? <>
                           <div className='visitWebsiteWhole'>
                             <div className='visitAddBtnCont'>
                               <div className='visitBtnCont'>
@@ -1674,7 +1885,13 @@ let handleButtonOpen = ()=>{
           <div className='bodyPoppupR'>
             <div className='previewCont'>
               <h2 className='bodyPoppupRPreview'>Preview</h2>
-              <GrPersonalComputer />
+              <label className="switchPreview">
+                <input type="checkbox" checked={isPreviewChecked} onChange={handlePreviewButtonToggle} />
+                <span className="sliderPreview">
+                  <MdLaptopMac className="iconPreview" />
+                  <FaMobile className="iconPreview" />
+                </span>
+              </label>
             </div>
             
             {(marketingTemplate==="whatsapp")?<> <div>
@@ -1743,6 +1960,9 @@ let handleButtonOpen = ()=>{
             </div> :null}
             {(marketingTemplate==="push")? <div>
               <img src={push} alt='pushImg'/>
+            </div> :null}
+            {(marketingTemplate==="email")? <div>
+              <img src={sms} alt='smsImg'/>
             </div> :null}
             
             
