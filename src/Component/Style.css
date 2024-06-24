@@ -675,6 +675,11 @@
         margin-left: -1rem;
         margin-right: -1rem;
     }
+    .bodyPoppupR .selectImgs {
+        width: 321px;
+        margin-left: -1rem;
+        margin-right: -1rem;
+    }
     .bodyPoppupRPreview {
         font-size: 1rem;
     }
@@ -884,7 +889,7 @@
     top: .5rem;
     left: 0.4rem;
     padding-left: 27.7rem;
-    width: 36%;
+    width: 39%;
 }
 .poppupBodyInputIcons {
     display: flex;
@@ -1000,7 +1005,7 @@
     background-color: rgb(245, 246, 250);
     border: none;
     border-radius: 5px;
-    opacity: .5;
+    /* opacity: .5; */
     margin-bottom: 1rem;
     outline-color: rgb(35, 164, 85);
 }
@@ -1114,49 +1119,6 @@
 .AddNav a {
     font-size: .8rem;
     color: blue;
-}
-.carouselExtraInput {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-.carouselExtraInput {
-    border: 1px solid rgb(235, 217, 147);
-    background-color: rgb(255, 252, 240);
-}
-.carDiaIcon {
-    font-size: 1.2rem;
-    color: orange;
-}
-.carouselCont {
-    text-align: start;
-}
-.carouselIconBtn {
-    border: 1px solid rgb(35, 164, 85);
-    height: 1.5rem;
-    width: 14%;
-    display: flex;
-    align-items: center;
-    gap: .3rem;
-    padding: .5rem;
-    background-color: rgb(35, 164, 85);
-    border-radius: .2rem;
-    color: white;
-    cursor: pointer;
-    padding-left: 1rem;
-}
-.carouselIconCont {
-    display: flex;
-    align-items: center;
-    gap: .8rem;
-}
-.carouselCont h5 {
-    font-size: .9rem;
-    margin-top: .6rem;
-}
-.carouselCont p {
-    font-size: .8rem;
-    margin-top: -.6rem;
 }
 .sampopup {
     position: fixed;
@@ -1391,7 +1353,7 @@
   }
   .poppupBroadcast h5 {
     color: rgb(61, 61, 61);
-    margin-bottom: -.2rem;
+    /* margin-bottom: -.2rem; */
 }
 .poppupBroadcast p {
     color: rgb(61, 61, 61);
@@ -1812,7 +1774,7 @@ ul:not(.browser-default) {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: rgb(35, 164, 85);
     transition: 0.4s;
     border-radius: 34px;
     display: flex;
@@ -1831,11 +1793,7 @@ ul:not(.browser-default) {
     transition: 0.4s;
     border-radius: 50%;
   }
-  
-  input:checked + .sliderPreview {
-    background-color: #4CAF50;
-  }
-  
+
   input:checked + .sliderPreview:before {
     transform: translateX(14px);
   }
@@ -1854,6 +1812,136 @@ ul:not(.browser-default) {
 .copyOfferCont{
     display: flex;
 }
+.MobileScreenSms{
+    background-color: transparent;
+    width: 24%;
+    height: 18rem;
+    position: absolute;
+    margin-left: 1.5rem;
+    overflow: auto;
+    top: 12rem;
+}
+.platformMsgBtn{
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid lightgray;
+    margin-top: 1rem;
+}
+.platformMsgBtn p{
+    margin: 0.2rem;
+    color: blue;
+    font-size: .8rem;
+    margin-bottom: -.3rem;
+}
+.previewPlatformCont{
+    text-align: center;
+    line-height: .9rem;
+}
+.platformMsgCont h5{
+    margin: 0;
+    font-size: .75rem;
+}
+.platformMsgCont p{
+    margin: 0;
+    font-size: .7rem;
+}
+.previewStylePlatform {
+    border: 1px solid white;
+    background-color: white;
+    width: 72%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-left: .3rem;
+    padding: 10px;
+    margin-top: 7.5rem;
+    font-size: .9rem;
+    font-family: roboto-light;
+    height: 6rem;
+}
+.previewPlatformCont{
+    text-align: center;
+    line-height: .9rem;
+}
+.previewStylePush{
+    border: 1px solid white;
+    background-color: white;
+    width: 72%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-left: .3rem;
+    padding: 10px;
+    margin-top: 3rem;
+    font-size: .9rem;
+    font-family: roboto-light;
+}
+.previewEmailTitle{
+    border: 1px solid white;
+    background-color: white;
+    width: 72%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 1rem;
+    font-family: roboto-light;
+    padding: .5rem;
+    font-weight: 600;
+}
+.previewEmailBody{
+    border: 1px solid white;
+    background-color: white;
+    width: 72%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: .9rem;
+    font-family: roboto-light;
+    padding: .5rem;
+    margin-top: 3.5rem;
+}
+.previewPlatformCont .previewTextStyle{
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: .8rem;
+}
+.previewPlatformCont .previewBodyStyle{
+    letter-spacing: 1px;
+    margin-bottom: .3rem;
+}
+.previewPlatformCont .previewFooterStyle{
+    color: white;
+    border: 1px solid blue;
+    width: 26%;
+    padding: .3rem;
+    margin-left: 4.5rem;
+    background: blue;
+    border: none;
+    border-radius: 2rem;
+}
+.previewPushImg img{
+    width: 15%;
+}
+.previewPushCont{
+    margin-left: -5.7rem;
+    margin-top: -.7rem;
+    width: 86%;
+}
+.previewPushCont p{
+    color: blue;
+}
+.previewPushCont .previewBodyStyle{
+    margin-bottom: .5rem;
+}
+.previewPushCont .previewFooterStyle{
+    font-weight: 600;
+}
+
 
 }
 
