@@ -873,6 +873,24 @@
     text-align: start;
     width: 18%;
 }
+.BroadcastSelect .Dropdown-control{
+    background-color: rgb(245, 246, 250);
+    border: 1px solid rgb(245, 246, 250);
+}
+.BroadcastSelect .Dropdown-option {
+    border-bottom: 1px solid #f0f5f5;
+}
+.poppupBodyInputMsg textarea {
+    background-color: rgb(245, 246, 250);
+    border: none;
+    border-radius: .5rem;
+    width: -webkit-fill-available;
+    margin-bottom: 0.9rem;
+    outline: none;
+    height: 10rem;
+    width: 99%;
+    resize: none;
+}
 .poppupBroadcastTitleSpan {
     color: gray;
     font-weight: 500;
@@ -1631,14 +1649,14 @@ ul:not(.browser-default) {
     padding: .3rem;
 }
 .packageDropdown .Dropdown-control{
-    background-color: #f0f5f5;
+    background-color: rgb(246 246 255);
     font-size: .8rem;
     outline-color: rgb(35, 164, 85);
     border: none;
-    width: 147%;
+    /* width: 147%; */
 }
-.packageDropdown .Dropdown-menu{
-    width: 146%;
+.selectInputs{
+    width: 30%;
 }
 .packageDropdown .Dropdown-option{
     border-bottom: 1px solid #f0f5f5;;
@@ -1710,10 +1728,7 @@ ul:not(.browser-default) {
     outline: none;
     transition: all 200ms ease;
     border: none;
-    width: 100%;
-    padding-top: .9rem;
-    padding-bottom: .9rem;
-    padding-left: 1rem;
+    width: 104%;
 }
 .visitWebsiteButton .Dropdown-arrow {
     border-color: #999 transparent transparent;
@@ -1737,9 +1752,19 @@ ul:not(.browser-default) {
     border:1px solid  #23a455;
     color: #23a455;
     border-radius: .3rem;
-    padding: .9rem 1.5rem;
+    padding: .8rem 1.5rem;
 }
 .visitWebsiteButtonCont{
+    /* display: flex; */
+    gap:1rem;
+    margin-bottom: .5rem;
+}
+.copyOfferCodeButtonCont{
+    display: flex;
+    gap:1rem;
+    margin-bottom: .5rem;
+}
+.quickRepliesButtonCont{
     display: flex;
     gap:1rem;
     margin-bottom: .5rem;
@@ -1753,6 +1778,63 @@ ul:not(.browser-default) {
 }
 .visitWebsiteButton .Dropdown-placeholder{
     font-size: .9rem;
+}
+.visitWebsiteSelectCont{
+    display: flex;
+    gap: 1rem;
+    margin-bottom: .5rem;
+}
+.visitUsInput{
+    width: 84%;
+    padding: .9rem;
+    border-radius: .3rem;
+    border: none;
+    font-size: 1rem;
+    background: rgb(245, 246, 250);
+}
+.visithttpInput{
+    width: 200%;
+    padding: .9rem;
+    border-radius: .3rem;
+    border: none;
+    font-size: 1rem;
+    background: rgb(245, 246, 250);
+}
+.visitUsCont{
+    display: flex;
+    margin-right: 14rem;
+}
+.deleteIcon{
+    border-radius: .3rem;
+    padding: .5rem;
+    background-color: #efeff5;
+    border: 1px solid #e0e0eb;
+    height: fit-content;
+    cursor: pointer;
+}
+.visitHttpCont{
+    display: flex;
+    gap: 1rem;
+}
+.staticDropdown{
+    width: 19%;
+}
+.staticButton .Dropdown-control{
+    position: relative;
+    overflow: hidden;
+    background-color: rgb(245, 246, 250);
+    border: 1px solid #ccc;
+    border-radius: .3rem;
+    box-sizing: border-box;
+    color: #333;
+    cursor: default;
+    outline: none;
+    transition: all 200ms ease;
+    border: none;
+    width: 104%;
+    padding-top: .9rem;
+    padding-bottom: .9rem;
+    padding-left: 1rem;
 }
 .switchPreview {
     position: relative;
@@ -1925,7 +2007,7 @@ ul:not(.browser-default) {
     border-radius: 2rem;
 }
 .previewPushImg img{
-    width: 15%;
+    width: 19%;
 }
 .previewPushCont{
     margin-left: -5.7rem;
@@ -1944,7 +2026,6 @@ ul:not(.browser-default) {
 
 
 }
-
 
 @media only screen and (max-width: 1739px) {
     .ApiDocs{
@@ -1991,6 +2072,13 @@ ul:not(.browser-default) {
     .actionBtn {
         min-width: 100px;
     }
+    .visitWebsiteButton .Dropdown-control{
+        width: 111%;
+        padding-left: .6rem;
+    }
+    .visitWebsiteSelectCont {
+        gap: 1.5rem;
+    }
 }
 
 @media only screen and (max-width: 1619px) {
@@ -2030,6 +2118,10 @@ ul:not(.browser-default) {
     }
     .kciPCL {
         width: 11%;
+    }
+    .visitUsCont {
+        display: flex;
+        margin-right: 13rem;
     }
 }
 
@@ -2073,6 +2165,24 @@ ul:not(.browser-default) {
     }
     .kciPCL {
         width: 11%;
+    }
+    .visitUsInput {
+        width: 70%;
+        padding: .9rem;
+        border-radius: .3rem;
+        border: none;
+        font-size: .85rem;
+        background: rgb(245, 246, 250);
+    }
+    .visitWebsiteButton .Dropdown-control {
+        width: 108%;
+        padding-left: .6rem;
+    }
+    .visitWebsiteButton .Dropdown-placeholder {
+        font-size: .85rem;
+    }
+    .visitUsCont .visitUsConts{
+        width: 70%;
     }
 }
 

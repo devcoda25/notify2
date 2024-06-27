@@ -34,6 +34,80 @@ const NewTemplatePopup = ({ onClose }) => {
     { value: 'Green', label: 'Green' }
   ];
 
+  const languagesSelectOption = [
+    { value:'English (US)', label:'English (US)' },
+    { value:'Afrikaans', label:'Afrikaans' },
+    { value:'Albanian', label:'Albanian' },
+    { value:'Arabic', label:'Arabic' },
+    { value:'Azerbaijani', label:'Azerbaijani' },
+    { value:'Bengali', label:'Bengali' },
+    { value:'Bulgarian', label:'Bulgarian' },
+    { value:'Catalan', label:'Catalan' },
+    { value:'Chinese (CHN)', label:'Chinese (CHN)' },
+    { value:'Chinese (HKG)', label:'Chinese (HKG)' },
+    { value:'Chinese (TAI)', label:'Chinese (TAI)' },
+    { value:'Croatian', label:'Croatian' },
+    { value:'Czech', label:'Czech' },
+    { value:'Danish', label:'Danish' },
+    { value:'Dutch', label:'Dutch' },
+    { value:'English', label:'English' },
+    { value:'English (UK)', label:'English (UK)' },
+    { value:'Estonian', label:'Estonian' },
+    { value:'Filipino', label:'Filipino' },
+    { value:'Finnish', label:'Finnish' },
+    { value:'French', label:'French' },
+    { value:'Georgian', label:'Georgian' },
+    { value:'German', label:'German' },
+    { value:'Greek', label:'Greek' },
+    { value:'Gujarati', label:'Gujarati' },
+    { value:'Hausa', label:'Hausa' },
+    { value:'Hebrew', label:'Hebrew' },
+    { value:'Hindi', label:'Hindi' },
+    { value:'Hungarian', label:'Hungarian' },
+    { value:'Indonesian', label:'Indonesian' },
+    { value:'Irish', label:'Irish' },
+    { value:'Italian', label:'Italian' },
+    { value:'Japanese', label:'Japanese' },
+    { value:'Kannada', label:'Kannada' },
+    { value:'Kazakh', label:'Kazakh' },
+    { value:'Kinyarwanda', label:'Kinyarwanda' },
+    { value:'Korean', label:'Korean' },
+    { value:'Kyrgyz (Kyrgyzstan)', label:'Kyrgyz (Kyrgyzstan)' },
+    { value:'Lao', label:'Lao' },
+    { value:'Latvian', label:'Latvian' },
+    { value:'Lithuanian', label:'Lithuanian' },
+    { value:'Macedonian', label:'Macedonian' },
+    { value:'Malay', label:'Malay' },
+    { value:'Malayalam', label:'Malayalam' },
+    { value:'Marathi', label:'Marathi' },
+    { value:'Norwegian', label:'Norwegian' },
+    { value:'Persian', label:'Persian' },
+    { value:'Polish', label:'Polish' },
+    { value:'Portuguese (BR)', label:'Portuguese (BR)' },
+    { value:'Portuguese (POR)', label:'Portuguese (POR)' },
+    { value:'Punjabi', label:'Punjabi' },
+    { value:'Romanian', label:'Romanian' },
+    { value:'Russian', label:'Russian' },
+    { value:'Serbian', label:'Serbian' },
+    { value:'Slovak', label:'Slovak' },
+    { value:'Slovenian', label:'Slovenian' },
+    { value:'Spanish', label:'Spanish' },
+    { value:'Spanish (ARG)', label:'Spanish (ARG)' },
+    { value:'Spanish (SPA)', label:'Spanish (SPA)' },
+    { value:'Spanish (MEX)', label:'Spanish (MEX)' },
+    { value:'Swahili', label:'Swahili' },
+    { value:'Swedish', label:'Swedish' },
+    { value:'Tamil', label:'Tamil' },
+    { value:'Telugu', label:'Telugu' },
+    { value:'Thai', label:'Thai' },
+    { value:'Turkish', label:'Turkish' },
+    { value:'Ukrainian', label:'Ukrainian' },
+    { value:'Urdu', label:'Urdu' },
+    { value:'Uzbek', label:'Uzbek' },
+    { value:'Vietnamese', label:'Vietnamese' },
+    { value:'Zulu', label:'Zulu' },
+  ]
+
 
   const broadcastSelectOption = [
     { value: 'none', label: 'None' },
@@ -46,10 +120,17 @@ const NewTemplatePopup = ({ onClose }) => {
     { value: 'callPhone', label: 'Call Phone' },
   ];
 
+  const buttonStaticOption = [
+    {value:'Static', label:'Static'},
+    {value:'Dynamic', label:'Dynamic'},
+  ]
+
 
   const [type, setCategory] = useState(typeSelectOption[0].value);
+  const [language, setLanguage] = useState(languagesSelectOption[0].value);
   const [broadcast, setBroadcast] = useState(broadcastSelectOption[0].value);
   const [selectedOption, setSelectedOption] = useState(buttonSelectOption[0].value);
+  const [selectedStaticOption, setSelectedStaticOption] = useState(buttonStaticOption[0].value);
   const [cleanText, setCleanText] = useState('');
   let [cleanTextBody, setCleanTextBody] = useState('');
   const [cleanTextFooter, setCleanTextFooter] = useState('');
@@ -72,13 +153,19 @@ const NewTemplatePopup = ({ onClose }) => {
   
   
 
-  const [showPopup, setShowPopup] = useState(false);
   const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
   const [sampleTemplateChoose, setSampleTemplateChoose] = useState(false);
   const [fromName, setFromName] = useState("");
   const [fromNameShow, setFromNameShow] = useState(false);
   const [securityRecommandChecked, setSecurityRecommandChecked] = useState(true);
   const [securityRecommandCheckedFooter, setSecurityRecommandCheckedFooter] = useState(true)
+  let visitWebSiteObj ={type:"visit",visitData:[{visitWebsite:buttonSelectOption[0].value,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""}]}
+  let copyOfferCodeObj ={type:"copy",coperData:[]}
+  let quickReplybj ={type:"reply",ReplyData:[{buttonText:""}]}
+  const [visitWebSiteArray, setVisitWebSiteArray] = useState([visitWebSiteObj,copyOfferCodeObj,quickReplybj]);
+  let [chatReplyBox, setChatReplyBox] = useState([]);
+
+  
 
 
   const handleTypeOption = (selectedCategory) => {
@@ -103,6 +190,10 @@ const NewTemplatePopup = ({ onClose }) => {
      
   };
 
+  const handleLanguagesOption = (selectedCategory)=>{
+    setLanguage(selectedCategory.value);
+  }
+
   const handleBroadcastOption = (selectedBroadcast) =>{
     setBroadcast(selectedBroadcast);
   }
@@ -110,6 +201,10 @@ const NewTemplatePopup = ({ onClose }) => {
   const handleButtonOption = (selectedButton)=>{
     setSelectedOption(selectedButton);
   }
+  const handleStaticButtonOption =(selectedButton)=>{
+    setSelectedStaticOption(selectedButton);
+  }
+  
 
   const handleOpenAttributePop = () => {
     setIsAttributePopOpen(true);
@@ -119,19 +214,7 @@ const NewTemplatePopup = ({ onClose }) => {
     setIsAttributePopOpen(false);
   };
 
-  // const togglePopup = () => {
-  //   if(showPopup&&marketingTemplate === "sms")
-  //     {
-  //       setMarketingTemplate("whatsapp")
-  //     }
-  //   setShowPopup(!showPopup);
-  // };
-
   const [upgradeShowPopup, setUpgradeShowPopup] = useState(false);
-
-  const upgradePopup = () => {
-    setUpgradeShowPopup(!upgradeShowPopup);
-  };
 
 
   const handleOptionChange = (e) => {
@@ -145,7 +228,6 @@ const NewTemplatePopup = ({ onClose }) => {
     const file = event.target.files[0];
     if (file) {
       let objectUrl = URL.createObjectURL(file)
-      // Do something with the selected file
       setFilePreview(objectUrl)
     }
   };
@@ -242,25 +324,9 @@ const NewTemplatePopup = ({ onClose }) => {
     setIsBold(prevIsBold => !prevIsBold);
   };  
    
-  // const toggleItelic = () => {
-  //   setIsItelic(prevIsItelic => !prevIsItelic);
-  // };
   const toggleItalic = () => {
     setIsItalic(!isItalic);
   };
-
-const languages = [
-  'English (US)', 'Afrikaans', 'Albanian', 'Arabic', 'Azerbaijani', 'Bengali', 'Bulgarian', 'Catalan',
-  'Chinese (CHN)', 'Chinese (HKG)', 'Chinese (TAI)', 'Croatian', 'Czech', 'Danish', 'Dutch', 'English',
-  'English (UK)', 'Estonian', 'Filipino', 'Finnish', 'French', 'Georgian', 'German', 'Greek', 'Gujarati',
-  'Hausa', 'Hebrew', 'Hindi', 'Hungarian', 'Indonesian', 'Irish', 'Italian', 'Japanese', 'Kannada', 'Kazakh',
-  'Kinyarwanda', 'Korean', 'Kyrgyz (Kyrgyzstan)', 'Lao', 'Latvian', 'Lithuanian', 'Macedonian', 'Malay',
-  'Malayalam', 'Marathi', 'Norwegian', 'Persian', 'Polish', 'Portuguese (BR)', 'Portuguese (POR)', 'Punjabi',
-  'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Spanish', 'Spanish (ARG)', 'Spanish (SPA)',
-  'Spanish (MEX)', 'Swahili', 'Swedish', 'Tamil', 'Telugu', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Uzbek',
-  'Vietnamese', 'Zulu'
-];
-
 
 let now = new Date();
 let hours = String(now.getHours()).padStart(2, '0');
@@ -273,8 +339,18 @@ let handleButtonOpen = ()=>{
 
 const [isButtonChecked, setIsButtonChecked] = useState(false);
 
-  const handleButtonToggle = () => {
+  const handleButtonToggle = (checkedtype) => {
+    chatReplyBox =[]
+    if(!checkedtype){
+      chatReplyBox.push({type:"visit"})
+    }
+    else{
+      setVisitWebSiteArray([visitWebSiteObj,copyOfferCodeObj,quickReplybj])
+      chatReplyBox =[]
+    }
     setIsButtonChecked(!isButtonChecked);
+    setChatReplyBox(...[chatReplyBox])
+
   };
 
   const [isPreviewChecked, setIsPreviewChecked] = useState(false);
@@ -336,11 +412,11 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
               /> :null}
         
               <div className='popupInput'>
-                <div>
+                <div className='selectInputs'>
                   <label>Template Name</label>
                   <input placeholder='Template Name' type='text'/>
                 </div>
-                <div className="App categoryWhole">
+                <div className="App categoryWhole selectInputs">
                   <label htmlFor="type">Type</label>
                   <div className='CategorySelect'>
                     <Dropdown
@@ -352,7 +428,19 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     />
                   </div>
                 </div>
-                <div>
+                <div className="App categoryWhole selectInputs">
+                <label htmlFor="language">Language</label>
+                  <div className='CategorySelect'>
+                    <Dropdown
+                      className='packageDropdown'
+                      options={languagesSelectOption.filter(op => op.value !== type)}
+                      onChange={handleLanguagesOption}
+                      value={language}
+                      placeholder="Select an option"
+                    />
+                  </div>
+                </div>
+                {/* <div>
                   <label htmlFor="language">Language</label>
                   <select id="language" name="language" className='select2'>
                       <option value="" disabled selected>language...</option>
@@ -360,7 +448,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           <option key={index} value={language}>{language}</option>
                       ))}
                   </select>
-                </div>
+                </div> */}
               </div>
 
               {type === 'Yellow' ? <>
@@ -584,44 +672,168 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   </div>
                   <div>
                     <label className="switch">
-                      <input type="checkbox" checked={isButtonChecked} onChange={handleButtonToggle} />
+                      <input type="checkbox" checked={isButtonChecked} onChange={()=>{handleButtonToggle(isButtonChecked)}} />
                       <span className="slider"></span>
                     </label>
                   </div>
                 </div>
                 {isButtonChecked && (
-                  <div className='visitWebsiteButtonsCont'>
-                    <div className='visitWebsiteButtonCont'>
-                      <div>
-                        <Dropdown
-                          className='visitWebsiteButton'
-                          options={buttonSelectOption.filter(op => op.value !== selectedOption)}
-                          onChange={handleButtonOption}
-                          value={selectedOption}
-                          placeholder="Select an option"
-                        />
+               
+               visitWebSiteArray.map((ival,index)=>{
+                  return <>
+                  {ival.type ==="visit" && <> 
+                  {ival.visitData.length ===0 ? <>
+                    <Dropdown
+                      className='visitWebsiteButton'
+                      options={buttonSelectOption.filter(op => op.value !==buttonSelectOption[0].value)}
+                      onChange={(e)=>{
+                        visitWebSiteArray[index].visitWebsite=e
+                        setVisitWebSiteArray([...visitWebSiteArray])
+                      }}
+                      value={buttonSelectOption[0].value}
+                      placeholder="Select an option"
+                    />
+                    <input className='visitWebsiteButtonAdd'  type='button' value='Add button'  onClick={()=>{
+                          visitWebSiteArray[index].visitData.push({visitWebsite:buttonSelectOption[0].value,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""})
+                          chatReplyBox.push({type:"visit"})
+                          setVisitWebSiteArray([...visitWebSiteArray])
+                          setChatReplyBox([...chatReplyBox])
+                        }}/>
+                  </>: null}
+                  {ival.visitData.map((vmap,vindex)=>{
+                    let {visitWebsite,visitUsInput,staticDropdown,visithttpInput}=vmap
+                      return <div className='visitWebsiteButtonsCont'>
+                      <div className='visitWebsiteButtonCont'>
+                        <div className='visitWebsiteSelectCont'>
+                          <Dropdown
+                            className='visitWebsiteButton'
+                            options={buttonSelectOption.filter(op => op.value !== visitWebsite)}
+                            onChange={(e)=>{
+                              visitWebSiteArray[index].visitWebsite=e
+                              setVisitWebSiteArray([...visitWebSiteArray])
+                            }}
+                            value={visitWebsite}
+                            placeholder="Select an option"
+                          />
+                            <div className='visitUsCont'>
+                              <div className='visitUsConts'>
+                                <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
+                                  visitWebSiteArray[index].visitUsInput=e.target.
+                                  setVisitWebSiteArray([...visitWebSiteArray])
+                                }}/>
+                              </div>
+                              <div className='deleteIcon' onClick={()=>{
+                                visitWebSiteArray[index].visitData.splice(vindex,1)
+                                chatReplyBox.splice(index,1)
+                                setVisitWebSiteArray([...visitWebSiteArray])
+                                setChatReplyBox([...chatReplyBox])
+                              }}>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
+                          <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
+                        </svg>
+                              </div>
+                            </div>
+                            <div>
+                              {vindex ==0 && ival.visitData.length < 3?  <input className='visitWebsiteButtonAdd'  type='button' value='Add button'  onClick={()=>{
+                                let optsel =buttonSelectOption[0].value
+                                if(visitWebSiteArray[index].visitData.length ==2){
+                                  optsel =buttonSelectOption[1].value
+                                }
+                                visitWebSiteArray[index].visitData.push({visitWebsite:optsel,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""})
+                                chatReplyBox.push({type:"visit"})
+                                setVisitWebSiteArray([...visitWebSiteArray])
+                                setChatReplyBox([...chatReplyBox])
+                              }}/>:null}
+                            </div>
+                        </div>
+                        <div className='visitHttpCont'>
+                          <div className='staticDropdown'>
+                            <Dropdown
+                              className='staticButton'
+                              options={buttonStaticOption.filter(op => op.value !== staticDropdown)}
+                              onChange={(e)=>{
+                                visitWebSiteArray[index].staticDropdown=e
+                                setVisitWebSiteArray([...visitWebSiteArray])
+                              }}
+                              value={staticDropdown}
+                              placeholder="Select an option"
+                            />
+                          </div>
+                          <div>
+                            <input className='visithttpInput' value={visithttpInput}  type='text' placeholder='https://www.wati.io' onChange={(e)=>{
+                              visitWebSiteArray[index].visithttpInput=e.target.value
+                              setVisitWebSiteArray([...visitWebSiteArray])
+                            }}/>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
                       </div>
+                  })}
+                  
+                  </>}
+
+                  {ival.type ==="copy" ? <> 
+                    <div className='copyOfferCodeButtonCont'>
+                      <input className='visitWebsiteInput'  type='text' placeholder='Copy offer code' value={""} disabled/>
+                    <div>
+                      {visitWebSiteArray[index].coperData.length === 0 ?   <input className='visitWebsiteButtonAdd'  type='button' value='Add button' onClick={()=>{
+                        visitWebSiteArray[index].coperData.push({copyCouponCode:"",copyOfferCode:""})
+                        chatReplyBox.push({type:"copy"})
+                        setVisitWebSiteArray([...visitWebSiteArray])
+                        setChatReplyBox([...chatReplyBox])
+                      }}/>: null}
                     </div>
-                    <div className='visitWebsiteButtonCont'>
-                        <input className='visitWebsiteInput'  type='text' placeholder='Copy offer code' disabled/>
-                      <div>
-                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
-                      </div>
-                      {/* <div className='copyOfferCont'>
-                        <input className='copyOfferCodeBtn'  type='text' placeholder='Copy offer code' disabled/>
-                        <input className=''  type='text' placeholder='Enter coupon code to copy'/>
-                      </div> */}
+                    
+                    {visitWebSiteArray[index].coperData.length ? <>
+                      <div className='deleteIcon' onClick={()=>{
+                              visitWebSiteArray[index].coperData.splice(0,1)
+                              chatReplyBox.splice(index,1)
+                              setVisitWebSiteArray([...visitWebSiteArray])
+                              setChatReplyBox([...chatReplyBox])
+                              }}>
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
+                          <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
+                        </svg>
+                              </div>
+                    </> : null}
+                      
+                   
+                    {visitWebSiteArray[index].coperData.map((cmap)=>{
+                      let {copyCouponCode,copyOfferCode}=cmap
+                     return <div className='copyOfferCont'>
+                      <input className='copyOfferCodeBtn'  type='text' placeholder='Copy offer code' value={copyOfferCode} disabled/>
+                      <input className=''  type='text' placeholder='Enter coupon code to copy' value={copyCouponCode} onChange={(e)=>{
+                          visitWebSiteArray[index].visithttpInput=e.target.value
+                          setVisitWebSiteArray([...visitWebSiteArray])
+                      }}/>
                     </div>
-                    <div className='visitWebsiteButtonCont'>
-                      <input className='visitWebsiteInput'  type='text' placeholder='Quick replies' disabled/>
-                      <div>
-                        <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
-                      </div>
+                    })}
+                  </div>
+                  </>:null}
+               
+
+            {ival.type ==="reply" ? <> 
+              {visitWebSiteArray[index].ReplyData.map((redata,rindex)=>{
+                return <div>
+                  {ival.type+redata.buttonText + rindex}
+                </div>
+              })}
+
+            </> : null}
+                  
+                  </>
+                }) 
+                  )}
+
+
+                  {/* <div className='quickRepliesButtonCont'>
+                    <input className='visitWebsiteInput'  type='text' placeholder='Quick replies' disabled/>
+                    <div>
+                      <input className='visitWebsiteButtonAdd' type='button' value='Add button'/>
                     </div>
-                  </div>)}
+                  </div> */}
               </div>
               {fromNameShow ? <>
                 <div className='poppupBroadcast'>
@@ -652,117 +864,9 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
               <div className="poppupBroadcast">
                 <h5>Notification title</h5>
                 <p>Highlight your brand here, use images or videos, to stand out</p>
-                <div className="App">
-                  <div className='BroadcastSelect'>
-                      <Dropdown
-                        id="broadcast"
-                        options={broadcastSelectOption.filter(op => op.value !== broadcast)}
-                        onChange={handleBroadcastOption}
-                        value={broadcast}
-                        placeholder="Select an option"
-                      />
-                  </div>
-                </div>
-                {broadcast.value == 'text' && 
                 <div className="titleInput">
                   <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
-                </div>}
-                {broadcast.value == 'media' &&
-                <div>
-                  <div className='imageVdoCont'>
-                    <input
-                      type="radio"
-                      id="image"
-                      name="media"
-                      value="IMAGE"
-                      checked={selectOption === 'IMAGE'}
-                      onChange={handleOptionChange}
-                    />
-                    <label htmlFor="image">Image</label>
-                    <input
-                      type="radio"
-                      id="video"
-                      name="media"
-                      value="VIDEO"
-                      checked={selectOption === 'VIDEO'}
-                      onChange={handleOptionChange}
-                    />
-                    <label htmlFor="video">video</label>
-                    <input
-                      type="radio"
-                      id="document"
-                      name="media"
-                      value="DOCUMENT"
-                      checked={selectOption === 'DOCUMENT'}
-                      onChange={handleOptionChange}
-                    />
-                    <label htmlFor="document">document</label>
-                  </div>
-                  <div className='dropImg'>  
-                    {selectOption === 'IMAGE' && <div>
-                      <p className='dropImgp'>(Image:.jpeg, .png)</p>
-                      {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg" width='70%'/> :null}
-                        <div className='dropInput'>
-                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
-                            <p>or</p>
-                            <div>
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="dropInput2"
-                                onChange={handleFileChange}
-                              />
-                              {/* <button onClick={handleClick}>Choose File</button> */}
-                            </div>
-                        </div>
-                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                    
-                     
-                      
-                      </div>}
-                    {selectOption === 'VIDEO' && <div>
-                      <p className='dropImgp'>(Video:.mp4)</p>
-                        <div className='dropInput'>
-                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'/>  
-                            <p>or</p>
-                            <div>
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="dropInput2"
-                                onChange={handleFileChange}
-                              />
-                              {/* <button onClick={handleClick}>Choose File</button> */}
-                            </div>
-                        </div>
-                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                      {filePreview ? <video width={100} height={100} >
-                  <source src={filePreview} type='video/mp4' controls/>
-
-                </video>:  
-                null}
-                      </div>}
-                    {selectOption === 'DOCUMENT' && <div>
-                      <p className='dropImgp'>(document:.pdf)</p>
-                        <div className='dropInput'>
-                            <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'/>  
-                            <p>or</p>
-                            <div>
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="dropInput2"
-                                onChange={handleFileChange}
-                              />
-                              {/* <button onClick={handleClick}>Choose File</button> */}
-                            </div>
-                        </div>
-                        {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                      {/* <img src={document} alt="Document" /> */}
-                      </div>}
-                  </div>
                 </div>
-}
               </div>         
               <div className='poppupBroadcast'>
                   <h5>Body</h5>
@@ -776,11 +880,11 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     setIsAttributePopOpen(false);
 
                   }} />}
-                  <div className='poppupBodyInput'>
+                  <div className='poppupBodyInputMsg'>
                     <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                       handleTextBodyChange(e.target.value)
                     }}></textarea>
-                    <div className='textAreaInputIcons'>
+                    {/* <div className='textAreaInputIcons'>
                       <input type='text' disabled/>
                         <div className='poppupBodyInputIcons'>
                           <div>
@@ -799,7 +903,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             <MdLink className='poppupBodyInputIcon'/>
                           </div>
                         </div>
-                    </div>
+                    </div> */}
                   </div>
               </div>
               <div className='poppupBroadcast'>
@@ -952,10 +1056,10 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <GrBold className='poppupBodyInputIconGrBold poppupBodyInputIcon' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <FaItalic className='poppupBodyInputIconFaItalic poppupBodyInputIcon' />
+                            <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
                           </div>
                           <div>
                             <MdStrikethroughS className='poppupBodyInputIcon'/>
@@ -1114,10 +1218,10 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <GrBold className='poppupBodyInputIconGrBold poppupBodyInputIcon' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <FaItalic className='poppupBodyInputIconFaItalic poppupBodyInputIcon' />
+                            <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
                           </div>
                           <div>
                             <MdStrikethroughS className='poppupBodyInputIcon'/>
@@ -1203,7 +1307,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   </div>
                   <div>
                     <label className="switch">
-                      <input type="checkbox" checked={isButtonChecked} onChange={handleButtonToggle} />
+                      <input type="checkbox" checked={isButtonChecked} onChange={()=>{handleButtonToggle(isButtonChecked)}} />
                       <span className="slider"></span>
                     </label>
                   </div>
@@ -1283,10 +1387,10 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <GrBold className='poppupBodyInputIconGrBold poppupBodyInputIcon' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <FaItalic className='poppupBodyInputIconFaItalic poppupBodyInputIcon' />
+                            <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
                           </div>
                           <div>
                             <MdStrikethroughS className='poppupBodyInputIcon'/>
@@ -1502,19 +1606,19 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       <input type='text' disabled/>
                         <div className='poppupBodyInputIcons'>
                           <div>
-                            <MdOutlineEmojiEmotions className='poppupBodyInputIcon' />
+                            <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <GrBold className='poppupBodyInputIconGrBold poppupBodyInputIcon' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <FaItalic className='poppupBodyInputIconFaItalic poppupBodyInputIcon' />
+                            <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <MdStrikethroughS className='poppupBodyInputIcon' />
+                            <MdStrikethroughS className='poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <MdLink  className='poppupBodyInputIcon'/>
+                            <MdLink className='poppupBodyInputIcon'/>
                           </div>
                         </div>
                     </div>
@@ -1759,10 +1863,10 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <GrBold className='poppupBodyInputIconGrBold poppupBodyInputIcon' style={{ fontWeight: isBold ? 'bold' : 'normal' }}/>
+                            <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
                           </div>
                           <div>
-                            <FaItalic className='poppupBodyInputIconFaItalic poppupBodyInputIcon' />
+                            <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
                           </div>
                           <div>
                             <MdStrikethroughS className='poppupBodyInputIcon'/>
@@ -1926,6 +2030,15 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           className="previewFooterStyle" 
                           dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                         /> : null}
+                      {isButtonChecked&&chatReplyBox.length ? <>{
+                        chatReplyBox.map((ival)=>{
+                          return <>
+                          <div>{ival.type}</div>
+                          </>
+                        })
+                      }
+                      </> : null}
+                        
                       <div className='previewStyleTime'>{currentTime}</div>
                   </div>
                 </div>
