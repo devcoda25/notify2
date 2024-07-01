@@ -658,15 +658,17 @@
     }
     .bodyPoppup {
         display: flex;
-        justify-content: space-between;
     }
     .bodyPoppupL {
-        height: 30rem;
-        width: 68%;
+        height: 36rem;
+        width: 50%;
         overflow-y: scroll;
         padding-right: 2rem;
         margin: .5rem;
         position: relative;
+    }
+    .bodyPoppupR{
+        width: 47%;
     }
     .bodyPoppupR .selectImg {
         width: 321px;
@@ -674,6 +676,9 @@
         margin-top: -1.5rem;
         margin-left: -1rem;
         margin-right: -1rem;
+    }
+    .bodyPoppupR .selectDeskWhatsapp {
+        width: 100%;
     }
     .bodyPoppupR .selectImgs {
         width: 321px;
@@ -726,19 +731,6 @@
     text-align: start;
     border: none;
  }
- .Dropdown-control {
-    position: relative;
-    overflow: hidden;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    box-sizing: border-box;
-    color: #333;
-    cursor: default;
-    outline: none;
-    padding: 13px 52px 13px 10px;
-    transition: all 200ms ease;
-}
 .popupInput .select2 {
     padding: .5rem;
     background-color: #f0f5f5;
@@ -907,7 +899,7 @@
     top: .5rem;
     left: 0.4rem;
     padding-left: 27.7rem;
-    width: 39%;
+    width: 15.5%;
 }
 .poppupBodyInputIcons {
     display: flex;
@@ -916,6 +908,7 @@
     top: 1rem;
     left: 1rem;
     color: gray;
+    align-items: center;
 }
 .poppupBodyInputIcon{
     cursor: pointer;
@@ -987,7 +980,7 @@
 .preview-message__disclaimer {
     display: flex;
     margin-top: -28.5rem;
-    margin-left: 2rem;
+    margin-left: 9.5rem;
 }
 .previewStyle {
     border: 1px solid white;
@@ -997,25 +990,35 @@
     text-align: start;
     white-space: pre-wrap;
     word-break: break-word;
-    margin-left: .3rem;
     padding: 10px;
     margin-top: .5rem;
     font-size: .9rem;
     font-family: roboto-light;
 }
+.previewStyleExtra{
+    margin-top: 2.5rem;
+}
 .previewStyleTime {
     color: grey;
     font-size: 12px;
     text-align: end;
-    margin-top: .5rem;
 }
 .MobileScreen {
     background-color: transparent;
-    width: 24%;
+    width: 20%;
     height: 18rem;
     position: absolute;
-    margin-left: 1.5rem;
+    margin-left: 9.5rem;
     overflow: auto;
+}
+.DeskScreen {
+    background-color: transparent;
+    width: 20%;
+    position: absolute;
+    overflow: auto;
+    top: 15rem;
+    left: 56.5rem;
+    height: 10.8rem;
 }
 .titleInput input {
     padding: .7rem;
@@ -1227,13 +1230,15 @@
     font-size: .75rem;
     margin-top: -1rem;
   }
-  .copyCouponInput{
-    padding: .5rem;
+  .copyCouponInput {
+    padding: .9rem;
     border: none;
     background-color: rgb(245, 246, 250);
     border-radius: .2rem;
     margin-top: -1rem;
-  }
+    width: 80%;
+    margin-bottom: .5rem;
+}
   .copyCouponInput::placeholder {
     color: rgb(177, 174, 174);
     opacity: 1; 
@@ -1502,8 +1507,10 @@
 }
 .previewCont{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 .css-pwxzbm {
     background-color: rgb(255, 255, 255);
@@ -1728,7 +1735,7 @@ ul:not(.browser-default) {
     outline: none;
     transition: all 200ms ease;
     border: none;
-    width: 104%;
+    padding: .9rem 1.5rem .8rem .8rem;
 }
 .visitWebsiteButton .Dropdown-arrow {
     border-color: #999 transparent transparent;
@@ -1748,7 +1755,6 @@ ul:not(.browser-default) {
     border: none;
 }
 .visitWebsiteButtonAdd{
-    width: 100%;
     border:1px solid  #23a455;
     color: #23a455;
     border-radius: .3rem;
@@ -1761,27 +1767,29 @@ ul:not(.browser-default) {
 }
 .copyOfferCodeButtonCont{
     display: flex;
-    gap:1rem;
-    margin-bottom: .5rem;
+    gap:.5rem;
 }
 .quickRepliesButtonCont{
     display: flex;
-    gap:1rem;
+    gap:.5rem;
     margin-bottom: .5rem;
 }
 .visitWebsiteInput{
-    width: 16%;
+    width: 19%;
     padding: .9rem;
     border-radius: .3rem;
     border: none;
-    font-size: 1rem;
+    font-size: .85rem;
+    margin-bottom: .5rem;
+    height: .9rem;
 }
 .visitWebsiteButton .Dropdown-placeholder{
     font-size: .9rem;
+    color: #7e7a7a;
 }
 .visitWebsiteSelectCont{
     display: flex;
-    gap: 1rem;
+    gap: .5rem;
     margin-bottom: .5rem;
 }
 .visitUsInput{
@@ -1793,16 +1801,34 @@ ul:not(.browser-default) {
     background: rgb(245, 246, 250);
 }
 .visithttpInput{
-    width: 200%;
     padding: .9rem;
     border-radius: .3rem;
     border: none;
     font-size: 1rem;
     background: rgb(245, 246, 250);
+    width: 142%;
+}
+.visitWebsiteButton{
+    width: 24.5%;
+}
+.copyOfferInput {
+    width: 48%;
+    padding: .9rem;
+    border-radius: .3rem;
+    border: none;
+    font-size: 1rem;
+    background: rgb(245, 246, 250);
+    margin-bottom: 1.2rem;
 }
 .visitUsCont{
     display: flex;
-    margin-right: 14rem;
+    align-items: center;
+    margin-right: 2rem;
+}
+.visitAfterDelete{
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .5rem;
 }
 .deleteIcon{
     border-radius: .3rem;
@@ -1814,10 +1840,10 @@ ul:not(.browser-default) {
 }
 .visitHttpCont{
     display: flex;
-    gap: 1rem;
+    gap: .5rem;
 }
 .staticDropdown{
-    width: 19%;
+    width: 23.5%;
 }
 .staticButton .Dropdown-control{
     position: relative;
@@ -1831,10 +1857,11 @@ ul:not(.browser-default) {
     outline: none;
     transition: all 200ms ease;
     border: none;
-    width: 104%;
-    padding-top: .9rem;
-    padding-bottom: .9rem;
-    padding-left: 1rem;
+    padding: .9rem .2rem .8rem .9rem;
+    font-size: .9rem;
+}
+.staticButton .Dropdown-arrow{
+    top: 21px;
 }
 .switchPreview {
     position: relative;
@@ -1891,17 +1918,41 @@ ul:not(.browser-default) {
     border: none;
     font-size: 1rem;
 }  
-.copyOfferCont{
-    display: flex;
-}
 .MobileScreenSms{
     background-color: transparent;
     width: 24%;
     height: 18rem;
     position: absolute;
-    margin-left: 1.5rem;
+    margin-left: 9rem;
     overflow: auto;
     top: 12rem;
+    left: 39.5rem;
+}
+.MobileScreenSmsDesk{
+    background-color: transparent;
+    position: absolute;
+    overflow: auto;
+    top: 19.5rem;
+    left: 57.5rem;
+}
+.MobileScreenPush{
+    background-color: transparent;
+    width: 24%;
+    height: 18rem;
+    position: absolute;
+    margin-left: 9rem;
+    overflow: auto; 
+    top: 18rem;
+    left: 39.5rem;
+}
+.DeskScreenPush {
+    background-color: transparent;
+    width: 21%;
+    height: 18rem;
+    position: absolute;
+    overflow: auto;
+    top: 21rem;
+    left: 53.5rem;
 }
 .platformMsgBtn{
     display: flex;
@@ -1937,10 +1988,28 @@ ul:not(.browser-default) {
     word-break: break-word;
     margin-left: .3rem;
     padding: 10px;
-    margin-top: 7.5rem;
+    margin-top: 9.5rem;
     font-size: .9rem;
     font-family: roboto-light;
     height: 6rem;
+}
+.previewStylePlatformDesk {
+    border: 1px solid #252525;
+    background-color: #252525;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 10px;
+    font-size: .9rem;
+    font-family: roboto-light;
+    height: 5rem;
+    width: 10rem;
+}
+.previewStylePlatformDesk .previewTextStyle,
+.previewStylePlatformDesk .previewBodyStyle,
+.previewStylePlatformDesk .previewFooterStyle {
+    color: white;
+    text-align: center;
 }
 .previewPlatformCont{
     text-align: center;
@@ -1954,11 +2023,20 @@ ul:not(.browser-default) {
     text-align: start;
     white-space: pre-wrap;
     word-break: break-word;
-    margin-left: .3rem;
     padding: 10px;
-    margin-top: 3rem;
     font-size: .9rem;
     font-family: roboto-light;
+}
+.previewStylePushDesk {
+    border: 1px solid #f0f5f5;
+    background-color:#f0f5f5;
+    text-align: center;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 10px;
+    font-size: .9rem;
+    font-family: roboto-light;
+    height: 4rem;
 }
 .previewEmailTitle{
     border: 1px solid white;
@@ -1972,6 +2050,7 @@ ul:not(.browser-default) {
     font-family: roboto-light;
     padding: .5rem;
     font-weight: 600;
+    margin-top: 2rem;
 }
 .previewEmailBody{
     border: 1px solid white;
@@ -1991,6 +2070,7 @@ ul:not(.browser-default) {
     font-weight: 600;
     letter-spacing: 1px;
     margin-bottom: .8rem;
+    line-height: 1.3rem;
 }
 .previewPlatformCont .previewBodyStyle{
     letter-spacing: 1px;
@@ -2007,15 +2087,17 @@ ul:not(.browser-default) {
     border-radius: 2rem;
 }
 .previewPushImg img{
-    width: 19%;
+    width: 25%;
 }
 .previewPushCont{
-    margin-left: -5.7rem;
-    margin-top: -.7rem;
+    margin-left: -4.7rem;
+    margin-top: -0.4rem;
     width: 86%;
 }
-.previewPushCont p{
-    color: blue;
+.previewPushCont p {
+    color: green;
+    margin: 0rem;
+    margin-top: .7rem;
 }
 .previewPushCont .previewBodyStyle{
     margin-bottom: .5rem;
@@ -2023,7 +2105,135 @@ ul:not(.browser-default) {
 .previewPushCont .previewFooterStyle{
     font-weight: 600;
 }
-
+.previewBorder1{
+    border: 1px solid black;
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: .5rem 0rem 0rem .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+  .previewBorder2{
+    border: 1px solid black;
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: 0rem .5rem .5rem 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+  .previewBorder{
+    display: flex;
+    background: #e0dede;
+    width: 18%;
+    border-radius: .5rem;
+    cursor: pointer;
+  }
+  
+  .previewBorder1.active, .previewBorder2.active {
+    background-color: rgb(35, 164, 85);
+    color: white;
+  }
+  
+  .mobile {
+    display: block;
+  }
+  
+  .desktop {
+    display: block;
+  }
+  .platformCar{
+    border: 1px solid white;
+    background-color: white;
+    width: 15%;
+    height: 1rem;
+  }
+  .previewPlatformPopupCont{
+    display: flex;
+    color: white;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+  }
+  .previewPlatformPopupCont p{
+    font-size: .5rem;
+    font-weight: 100;
+    margin: 0rem;
+  }
+.pushNotificationCar{
+    border: 1px solid black;
+    background-color: black;
+    width: 33%;
+    height: 3rem;
+}
+.pushCarCont{
+    display: flex;
+    gap: .5rem;
+    align-items: end;
+    justify-content: space-between;
+}
+.pushContClose{
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    font-size: .9rem;
+    font-weight: bold;
+}
+.pushCarCont p{
+    font-size: .6rem;
+    margin: 0rem;
+}
+.pushCarCont .previewTextStyle{
+    font-size: .6rem;
+}
+.pushCarCont .previewBodyStyle{
+    font-size: .7rem;
+}
+.pushCarCont .previewFooterStyle{
+    font-size: .5rem;
+}
+.buttonStyle{
+    color: blue;
+    font-weight: 300;
+    font-size: .8rem;
+    text-align: center;
+}
+.DeskScreenSms {
+    background-color: transparent;
+    width: 30%;
+    height: 18rem;
+    position: absolute;
+    margin-left: 9rem;
+    overflow: auto;
+    top: 13rem;
+    left: 39.5rem;
+}
+.DeskScreenSms .previewEmailTitle{
+    border: 1px solid white;
+    background-color: red;
+    width: 74%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: .8rem;
+    font-family: roboto-light;
+    padding: .2rem;
+    font-weight: 100;
+}
+.DeskScreenSms .previewEmailBody{
+    border: 1px solid white;
+    background-color: red;
+    width: 83%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: .9rem;
+    font-family: roboto-light;
+}
 
 }
 
@@ -2067,17 +2277,53 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 36%;
+        width: 14%;
     }
     .actionBtn {
         min-width: 100px;
     }
-    .visitWebsiteButton .Dropdown-control{
-        width: 111%;
-        padding-left: .6rem;
-    }
     .visitWebsiteSelectCont {
-        gap: 1.5rem;
+        gap: .4rem;
+    }
+    .preview-message__disclaimer {
+        margin-left: 9.2rem;
+    }
+    .visitWebsiteInput{
+        padding: .9rem 1.2rem .9rem .5rem;
+    }
+    .visitWebsiteButton .Dropdown-placeholder {
+        font-size: .85rem;
+    }
+    .visitWebsiteButton .Dropdown-control {
+        padding: .9rem 1.7rem .8rem .8rem;
+    }
+    .visitUsInput{
+        font-size: .9rem;
+    }
+    .visithttpInput{
+        font-size: .9rem;
+    }
+    .copyOfferInput{
+        font-size: .9rem;
+    }
+    .DeskScreen{
+        left: 55.5rem;
+    }
+    .MobileScreenSms{
+        left: 38.5rem;
+    }
+    .MobileScreenSmsDesk {
+        left: 56.5rem;
+    }
+    .DeskScreenPush {
+        left: 52.5rem;
+    }
+    .pushCarCont p {
+        font-size: .5rem;
+    }
+    .MobileScreenPush{
+        top: 18rem;
+        left: 38.5rem;
     }
 }
 
@@ -2100,7 +2346,7 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 36%;
+        width: 14%;
     }
     .byYReU {
         display: flex;
@@ -2121,7 +2367,20 @@ ul:not(.browser-default) {
     }
     .visitUsCont {
         display: flex;
-        margin-right: 13rem;
+    }
+    .visitWebsiteButton .Dropdown-control {
+        padding: .9rem 1.7rem .8rem .8rem;
+    }
+    .MobileScreenSms {
+        left: 38.8rem;
+    }
+    .DeskScreenPush {
+        top: 21rem;
+        left: 52.8rem;
+    }
+    .MobileScreenPush{
+        top: 18rem;
+        left: 39rem;
     }
 }
 
@@ -2147,7 +2406,7 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 36%;
+        width: 9%;
     }
     .byYReU {
         display: flex;
@@ -2175,7 +2434,6 @@ ul:not(.browser-default) {
         background: rgb(245, 246, 250);
     }
     .visitWebsiteButton .Dropdown-control {
-        width: 108%;
         padding-left: .6rem;
     }
     .visitWebsiteButton .Dropdown-placeholder {
@@ -2183,6 +2441,39 @@ ul:not(.browser-default) {
     }
     .visitUsCont .visitUsConts{
         width: 70%;
+    }
+    .poppupRadio {
+        display: flex;
+        gap: .5rem;
+        margin-bottom: 1rem;
+    }
+    .DeskScreen {
+        left: 52.5rem;
+    }
+    .MobileScreenSms {
+        left: 35.8rem;
+    }
+    .previewStylePlatform{
+        margin-left: .7rem;
+    }
+    .MobileScreenSmsDesk {
+        top: 19.5rem;
+        left: 54rem;
+    }
+    .previewStylePlatformDesk {
+        height: 4rem;
+        width: 8.5rem;
+    }
+    .previewPlatformPopupCont p {
+        font-size: .4rem;
+    }
+    .DeskScreenPush {
+        top: 20rem;
+        left: 49.8rem;
+    }
+    .MobileScreenPush{
+        top: 18rem;
+        left: 36rem;
     }
 }
 
@@ -2214,7 +2505,28 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 36%;
+        width: 13.5%;
+    }
+    .DeskScreen {
+        left: 55.5rem;
+    }
+    .MobileScreenSms {
+        left: 38.5rem;
+    }
+    .previewStylePlatform {
+        margin-left: .25rem;
+    }
+    .MobileScreenSmsDesk {
+        top: 20.5rem;
+        left: 57rem;
+    }
+    .DeskScreenPush {
+        top: 21rem;
+        left: 52.5rem;
+    }
+    .MobileScreenPush{
+        top: 18rem;
+        left: 38.5rem;
     }
 }
 
@@ -2251,7 +2563,7 @@ ul:not(.browser-default) {
         width: 80%;
     }
     .poppupBodyInput input {
-        width: 36.5%;
+        width: 13.5%;
     }
 }
 
