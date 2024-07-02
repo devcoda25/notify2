@@ -854,6 +854,9 @@
     color: rgb(61, 61, 61);
     font-size: .8rem;
 }
+.BroadcastSelect .Dropdown-control:hover{
+    border-color: #23a455 !important;
+}
 .BroadcastSelect {
     background: #f0f5f5;
     border: none;
@@ -1000,7 +1003,7 @@
 }
 .previewStyleTime {
     color: grey;
-    font-size: 12px;
+    font-size: 8px;
     text-align: end;
 }
 .MobileScreen {
@@ -1232,12 +1235,15 @@
   }
   .copyCouponInput {
     padding: .9rem;
-    border: none;
+    border: 1px solid #fdfdfd;
     background-color: rgb(245, 246, 250);
     border-radius: .2rem;
     margin-top: -1rem;
     width: 80%;
     margin-bottom: .5rem;
+}
+.copyCouponInput:hover{
+    border:1px solid #23a455;
 }
   .copyCouponInput::placeholder {
     color: rgb(177, 174, 174);
@@ -1760,6 +1766,9 @@ ul:not(.browser-default) {
     border-radius: .3rem;
     padding: .8rem 1.5rem;
 }
+.visitWebsiteButtonAdd:hover{
+    background-color: #e5eee8;
+}
 .visitWebsiteButtonCont{
     /* display: flex; */
     gap:1rem;
@@ -1778,10 +1787,14 @@ ul:not(.browser-default) {
     width: 19%;
     padding: .9rem;
     border-radius: .3rem;
-    border: none;
+    border: 1px solid #fdfdfd;
     font-size: .85rem;
     margin-bottom: .5rem;
     height: .9rem;
+    background: #f3f7f6;
+}
+.visitWebsiteInput:hover{
+    border: 1px solid #23a455;
 }
 .visitWebsiteButton .Dropdown-placeholder{
     font-size: .9rem;
@@ -1792,21 +1805,40 @@ ul:not(.browser-default) {
     gap: .5rem;
     margin-bottom: .5rem;
 }
+.visitWebsiteSelectCont .Dropdown-control{
+    border: 1px solid #fdfdfd;
+}
 .visitUsInput{
     width: 84%;
     padding: .9rem;
     border-radius: .3rem;
-    border: none;
+    border: 1px solid #fdfdfd !important;
     font-size: 1rem;
     background: rgb(245, 246, 250);
+    outline: none;
+}
+.visitWebsiteSelectCont .Dropdown-control:hover{
+    border: 1px solid #23a455;
+}
+.staticDropdown .Dropdown-control{
+    border: 1px solid #fdfdfd;
+}
+.staticDropdown .Dropdown-control:hover{
+    border: 1px solid #23a455;
+}
+.visitUsInput:hover{
+    border: 1px solid #23a455 !important;
 }
 .visithttpInput{
     padding: .9rem;
     border-radius: .3rem;
-    border: none;
+    border: 1px solid #fdfdfd;
     font-size: 1rem;
     background: rgb(245, 246, 250);
     width: 142%;
+}
+.visithttpInput:hover{
+    border: 1px solid #23a455 !important;
 }
 .visitWebsiteButton{
     width: 24.5%;
@@ -1815,10 +1847,13 @@ ul:not(.browser-default) {
     width: 48%;
     padding: .9rem;
     border-radius: .3rem;
-    border: none;
+    border: 1px solid #fdfdfd;
     font-size: 1rem;
     background: rgb(245, 246, 250);
     margin-bottom: 1.2rem;
+}
+.copyOfferInput:hover{
+    border:1px solid #23a455;
 }
 .visitUsCont{
     display: flex;
@@ -1857,7 +1892,7 @@ ul:not(.browser-default) {
     outline: none;
     transition: all 200ms ease;
     border: none;
-    padding: .9rem .2rem .8rem .9rem;
+    padding: .9rem .2rem .7rem .9rem;
     font-size: .9rem;
 }
 .staticButton .Dropdown-arrow{
@@ -1947,12 +1982,13 @@ ul:not(.browser-default) {
 }
 .DeskScreenPush {
     background-color: transparent;
-    width: 21%;
+    width: 18%;
     height: 18rem;
     position: absolute;
     overflow: auto;
-    top: 21rem;
-    left: 53.5rem;
+    top: 22rem;
+    left: 56rem;
+    transition: .5s;
 }
 .platformMsgBtn{
     display: flex;
@@ -2036,7 +2072,7 @@ ul:not(.browser-default) {
     padding: 10px;
     font-size: .9rem;
     font-family: roboto-light;
-    height: 4rem;
+    height: 3rem;
 }
 .previewEmailTitle{
     border: 1px solid white;
@@ -2165,8 +2201,8 @@ ul:not(.browser-default) {
 .pushNotificationCar{
     border: 1px solid black;
     background-color: black;
-    width: 33%;
-    height: 3rem;
+    width: 21%;
+    height: 2rem;
 }
 .pushCarCont{
     display: flex;
@@ -2178,7 +2214,7 @@ ul:not(.browser-default) {
     display: flex;
     align-items: end;
     justify-content: end;
-    font-size: .9rem;
+    font-size: .6rem;
     font-weight: bold;
 }
 .pushCarCont p{
@@ -2186,18 +2222,24 @@ ul:not(.browser-default) {
     margin: 0rem;
 }
 .pushCarCont .previewTextStyle{
-    font-size: .6rem;
+    font-size: .4rem;
 }
 .pushCarCont .previewBodyStyle{
-    font-size: .7rem;
+    font-size: .5rem;
 }
 .pushCarCont .previewFooterStyle{
-    font-size: .5rem;
+    font-size: .3rem;
 }
 .buttonStyle{
     color: blue;
     font-weight: 300;
     font-size: .8rem;
+    text-align: center;
+}
+.buttonStyleDesk{
+    color: blue;
+    font-weight: 300;
+    font-size: .4rem;
     text-align: center;
 }
 .DeskScreenSms {
@@ -2207,34 +2249,160 @@ ul:not(.browser-default) {
     position: absolute;
     margin-left: 9rem;
     overflow: auto;
-    top: 13rem;
-    left: 39.5rem;
+    top: 12.5rem;
+    left: 38.5rem;
 }
 .DeskScreenSms .previewEmailTitle{
     border: 1px solid white;
-    background-color: red;
+    background-color: white;
     width: 74%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
     word-break: break-word;
-    font-size: .8rem;
+    font-size: .4rem;
     font-family: roboto-light;
     padding: .2rem;
     font-weight: 100;
 }
 .DeskScreenSms .previewEmailBody{
     border: 1px solid white;
-    background-color: red;
+    background-color: white;
     width: 83%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
     word-break: break-word;
+    font-size: .5rem;
+    font-family: roboto-light;
+}
+.DeskScreenSms .previewEmailFooter {
+    border: 1px solid white;
+    background-color: white;
+    width: 83%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: .3rem;
+    font-family: roboto-light;
+}
+.DeskScreen .previewTextStyle{
+    font-size: .4rem;
+}
+.DeskScreen .previewBodyStyle{
+    font-size: .5rem;
+}
+.DeskScreen .previewFooterStyle{
+    font-size: .3rem;
+}  
+.previewPlatformContDesk.previewTextStyle{
+    font-size: .4rem;
+}
+.previewPlatformContDesk.previewBodyStyle{
+    font-size: .5rem;
+}
+.previewPlatformContDesk.previewFooterStyle{
+    font-size: .3rem;
+}
+.deleteIcon:hover{
+    stroke: red;
+    border-color: red;
+}
+.AttributeContactCont p{
+    color: rgb(35, 164, 85);
+    font-size: .9rem;
+}
+.settingIcon{
+    font-size: .7rem;
+}
+.previewPlatformContDesk .previewTextStyle{
+    font-size: .4rem;
+}
+.previewPlatformContDesk .previewBodyStyle{
+    font-size: .5rem;
+}
+.previewPlatformContDesk .previewFooterStyle{
+    font-size: .3rem;
+}   
+.zoomed {
+    transform: scale(1.5);
+    margin-top: 5rem;
+    margin-left: -36rem;
+    width: 100%;
+    transition: .5s;
+    cursor: pointer;
+}
+.deskZoom{
+    transition: .5s;
+    width: 25%;
+    top: 17rem;
+    left: 41.5rem;
+}
+.previewContZoomed{
+    border: 1px solid white;
+    background-color: white;
+    width: 79%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 10px;
+    margin-top: .5rem;
     font-size: .9rem;
     font-family: roboto-light;
 }
-
+.titleZoomed{
+    font-size: 1rem;
+}
+.bodyZoomed{
+    font-size: 1.3rem;
+}
+.footerZoomed{
+    font-size: .9rem;
+}
+.platformtitleZoomed{
+    font-size: 1rem;
+    color: white;
+    text-align: center;
+}
+.platformbodyZoomed{
+    font-size: 1.3rem;
+    color: white;
+    text-align: center;
+}
+.platformfooterZoomed{
+    font-size: .9rem;
+    color: white;
+    text-align: center;
+}
+.platformPreviewZoom{
+    top: 26.5rem;
+    left: 42.5rem;
+    transition: .5s;
+}
+.platformPreviewContZoom{
+    height: 7rem;
+    width: 14rem;
+}
+.pushContZoom{
+    height: 5rem;
+}
+.pushPreviewZoom{
+    top: 28.5rem;
+    left: 44.5rem;
+}
+.emailPreviewContZoom{
+    top: 13.6rem;
+    left: 15.5rem;
+    transition: .5s;
+}
+.chatReplyBoxZoom{
+    color: blue;
+    font-weight: 300;
+    font-size: 1rem;
+    text-align: center;
+}
 }
 
 @media only screen and (max-width: 1739px) {
@@ -2316,7 +2484,11 @@ ul:not(.browser-default) {
         left: 56.5rem;
     }
     .DeskScreenPush {
-        left: 52.5rem;
+        left: 54.5rem;
+        top: 22rem;
+    }
+    .previewStylePushDesk{
+        height: 3rem;
     }
     .pushCarCont p {
         font-size: .5rem;
@@ -2324,6 +2496,27 @@ ul:not(.browser-default) {
     .MobileScreenPush{
         top: 18rem;
         left: 38.5rem;
+    }
+    .deskZoom{
+        left: 39.5rem;
+    }
+    .platformPreviewZoom{
+        top: 25.5rem;
+        left: 40.5rem;
+    }
+    .pushPreviewZoom {
+        left: 43.5rem;
+        top: 28rem;
+    }
+    .pushContZoom {
+        height: 5rem;
+    }
+    .DeskScreenSms {
+        left: 37.5rem;
+    }
+    .emailPreviewContZoom {
+        top: 14rem;
+        left: 15.5rem;
     }
 }
 
@@ -2375,12 +2568,16 @@ ul:not(.browser-default) {
         left: 38.8rem;
     }
     .DeskScreenPush {
-        top: 21rem;
-        left: 52.8rem;
+        top: 22rem;
+        left: 54.8rem;
     }
     .MobileScreenPush{
         top: 18rem;
         left: 39rem;
+    }
+    .pushPreviewZoom{
+        top: 28rem;
+        left: 43.5rem;
     }
 }
 
@@ -2468,12 +2665,35 @@ ul:not(.browser-default) {
         font-size: .4rem;
     }
     .DeskScreenPush {
-        top: 20rem;
-        left: 49.8rem;
+        top: 21rem;
+        left: 51.8rem;
     }
     .MobileScreenPush{
         top: 18rem;
         left: 36rem;
+    }
+    .deskZoom{
+        left: 37.5rem;
+    }
+    .platformPreviewZoom {
+        top: 24.5rem;
+        left: 37rem;
+    }
+    .platformPreviewContZoom{
+        height: 7rem;
+        width: 14rem;
+    }
+    .pushPreviewZoom{
+        top: 27rem;
+        left: 40.3rem;
+    }
+    .DeskScreenSms {
+        top: 12rem;
+        left: 35.5rem;
+    }
+    .emailPreviewContZoom {
+        top: 14rem;
+        left: 12.5rem;
     }
 }
 
@@ -2521,12 +2741,39 @@ ul:not(.browser-default) {
         left: 57rem;
     }
     .DeskScreenPush {
-        top: 21rem;
-        left: 52.5rem;
+        top: 22rem;
+        left: 54.5rem;
     }
     .MobileScreenPush{
         top: 18rem;
         left: 38.5rem;
+    }
+    .zoomed {
+        transform: scale(1.5);
+        margin-top: 5rem;
+        margin-left: -36rem;
+        width: 100%;
+        transition: .5s;
+        cursor: pointer;
+    }
+    .deskZoom{
+        left: 40.5rem;
+    }
+    .platformPreviewZoom {
+        top: 26rem;
+        left: 41rem;
+    }
+    .pushPreviewZoom{
+        top: 28rem;
+        left: 43rem;
+    }
+    .DeskScreenSms {
+        top: 12.2rem;
+        left: 37.5rem;
+    }
+    .emailPreviewContZoom{
+        top: 14rem;
+        left: 15.2rem;
     }
 }
 
@@ -2563,7 +2810,7 @@ ul:not(.browser-default) {
         width: 80%;
     }
     .poppupBodyInput input {
-        width: 13.5%;
+        width: 12.5%;
     }
 }
 
@@ -2601,5 +2848,9 @@ ul:not(.browser-default) {
     }
     .kciPCL {
         width: 12%;
+    }
+    .platformPreviewZoom {
+        top: 26rem;
+        left: 40rem;
     }
 }
