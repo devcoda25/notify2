@@ -374,19 +374,65 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
     setIsZoomed(!isZoomed);
   };
 
-  const classNames = `${mobileDeskview === 'mobile' ? "selectImg" : "selectDeskWhatsapp"} ${isZoomed ? 'zoomed' : ''}`;
+  let classNames = `${mobileDeskview === 'mobile' ? "selectImg" : "selectDeskWhatsapp"}`;
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    classNames += ' zoomed';
+  }
+  
+  const platformClass =  `${mobileDeskview == 'mobile' ? 'selectImgs' : 'selectDeskWhatsapp'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    platformClass += ' zoomed';
+  }
 
-  const platformClass =  `${mobileDeskview == 'mobile' ? 'selectImgs' : 'selectDeskWhatsapp'} ${isZoomed ? 'zoomed' : ''}`
-  const pushClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'} ${isZoomed ? 'zoomed' : ''}`
-  const emailClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'} ${isZoomed ? 'zoomed' : ''}`
-  const deskClass = `${mobileDeskview==='mobile'?'MobileScreen':'DeskScreen'} ${isZoomed ? 'deskZoom' :''}`
-  const platformPreviewClass = `${mobileDeskview=='mobile'?'MobileScreenSms':'MobileScreenSmsDesk'} ${isZoomed ? 'platformPreviewZoom' :''}`
-  const platformPreviewCont = `${mobileDeskview == 'mobile'?'previewStylePlatform':'previewStylePlatformDesk'} ${isZoomed ? 'platformPreviewContZoom' :''}`
-  const pushPreview = `${mobileDeskview=='mobile'?'MobileScreenPush':'DeskScreenPush'} ${isZoomed ? 'pushPreviewZoom' :''}`
-  const pushCont =`${mobileDeskview=='mobile'?'previewStylePush':'previewStylePushDesk'} ${isZoomed ? 'pushContZoom' :''}`
-  const emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenSms': 'DeskScreenSms'} ${isZoomed ? 'emailPreviewContZoom' :''}`
-  const chatReply = `${mobileDeskview =='desktop'?'buttonStyleDesk':'buttonStyle'} ${isZoomed ? 'chatReplyBoxZoom' :''}`
-  const emailZoomClass= `${mobileDeskview == 'mobile'? 'previewEmailBody': 'previewEmailBodyDesk'} ${isZoomed ? 'emailZoomClassZoom' :''}`
+  const pushClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    pushClass += ' zoomed';
+  }
+
+  const emailClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    emailClass += ' zoomed';
+  }
+
+  const deskClass = `${mobileDeskview==='mobile'?'MobileScreen':'DeskScreen'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    deskClass += ' deskZoom';
+  }
+ 
+  const platformPreviewClass = `${mobileDeskview=='mobile'?'MobileScreenSms':'MobileScreenSmsDesk'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    platformPreviewClass += ' platformPreviewZoom';
+  }
+
+  const platformPreviewCont = `${mobileDeskview == 'mobile'?'previewStylePlatform':'previewStylePlatformDesk'} `
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    platformPreviewCont += ' platformPreviewContZoom';
+  }
+  
+  const pushPreview = `${mobileDeskview=='mobile'?'MobileScreenPush':'DeskScreenPush'} `
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    pushPreview += ' pushPreviewZoom';
+  }
+
+  const pushCont =`${mobileDeskview=='mobile'?'previewStylePush':'previewStylePushDesk'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    pushCont += ' pushContZoom';
+  }
+
+  const emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenSms': 'DeskScreenSms'}`
+   if (mobileDeskview === 'desktop' && isZoomed) {
+    emailPreviewCont += ' emailPreviewContZoom';
+  }
+
+  const chatReply = `${mobileDeskview =='desktop'?'buttonStyleDesk':'buttonStyle'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    chatReply += ' chatReplyBoxZoom';
+  }
+
+  const emailZoomClass= `${mobileDeskview == 'mobile'? 'previewEmailBody': 'previewEmailBodyDesk'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    emailZoomClass += ' emailZoomClassZoom';
+  }
 
   return (
 
@@ -748,7 +794,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             />
                               <div className='visitUsCont'>
                                 <div className='visitUsConts'>
-                                  <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
+                                  <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' disabled onChange={(e)=>{
                                     visitWebSiteArray[index].visitUsInput=e.target.
                                     setVisitWebSiteArray([...visitWebSiteArray])
                                   }}/>
@@ -1022,7 +1068,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             />
                               <div className='visitUsCont'>
                                 <div className='visitUsConts'>
-                                  <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
+                                  <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' disabled onChange={(e)=>{
                                     visitWebSiteArray[index].visitUsInput=e.target.
                                     setVisitWebSiteArray([...visitWebSiteArray])
                                   }}/>
@@ -1257,7 +1303,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             />
                               <div className='visitUsCont'>
                                 <div className='visitUsConts'>
-                                  <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
+                                  <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' disabled onChange={(e)=>{
                                     visitWebSiteArray[index].visitUsInput=e.target.
                                     setVisitWebSiteArray([...visitWebSiteArray])
                                   }}/>
@@ -2462,7 +2508,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
               </div>
                  : null}
                   <div className={deskClass}>
-                    <div className={isZoomed ? 'previewContZoomed':"previewStyle"}>
+                    <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed':"previewStyle"}>
                       { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
                       <img src={filePreview ? filePreview:img} alt="Image" className="documentVdoImg"/>
                       </div> :null} 
@@ -2716,7 +2762,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
               <div className='MobileScroll'>
                   <div className={emailPreviewCont}>
                     <div>
-                      <div className={isZoomed?'previewEmailTitleZoom':'previewEmailTitle'}>
+                      <div className={mobileDeskview == 'desktop' && isZoomed?'previewEmailTitleZoom':'previewEmailTitle'}>
                         {htmlText ? <div
                           className={isZoomed ? 'titleZoomed':"previewTextStyle"} 
                           dangerouslySetInnerHTML={{ __html: htmlText }}

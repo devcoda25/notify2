@@ -930,6 +930,7 @@
 }
 .poppupFooterInput input {
     padding: .5rem;
+    margin-left: .1rem;
     width: 97%;
     border: none;
     background-color: rgb(245, 246, 250);
@@ -1050,12 +1051,16 @@
 }
 .dropInput1 {
     width: 100%;
-    border: none;
     background-color: #dee4e4;
     border-radius: .4rem;
     height: 1.9rem;
     font-size: .7rem;
     opacity: .5;
+    border:1px solid #fdfdfd;
+    outline: none;
+}
+.dropInput1:hover{
+    border-color: #23a455;
 }
 .dropInput2 {
     width: 59%;
@@ -2472,6 +2477,9 @@ ul:not(.browser-default) {
     }
     .visitWebsiteButton .Dropdown-control {
         padding: .9rem 1.7rem .8rem .8rem;
+    }
+    .visitWebsiteButton .Dropdown-option{
+        font-size: .9rem;
     }
     .visitUsInput{
         font-size: .9rem;
