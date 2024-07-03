@@ -1249,6 +1249,7 @@
     margin-top: -1rem;
     width: 80%;
     margin-bottom: .5rem;
+    outline: none;
 }
 .copyCouponInput:hover{
     border:1px solid #23a455;
