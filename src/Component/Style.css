@@ -988,7 +988,7 @@
 .previewStyle {
     border: 1px solid white;
     background-color: white;
-    width: 79%;
+    width: 85%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -1018,7 +1018,7 @@
 }
 .DeskScreen {
     background-color: transparent;
-    width: 20%;
+    width: 18%;
     position: absolute;
     overflow: auto;
     top: 15rem;
@@ -2031,6 +2031,7 @@ ul:not(.browser-default) {
     font-size: .9rem;
     font-family: roboto-light;
     height: 6rem;
+    overflow: auto;
 }
 .previewStylePlatformDesk {
     border: 1px solid #252525;
@@ -2043,6 +2044,7 @@ ul:not(.browser-default) {
     font-family: roboto-light;
     height: 5rem;
     width: 10rem;
+    overflow: auto;
 }
 .previewStylePlatformDesk .previewTextStyle,
 .previewStylePlatformDesk .previewBodyStyle,
@@ -2329,7 +2331,7 @@ ul:not(.browser-default) {
 }
 .deskZoom{
     transition: .5s;
-    width: 25%;
+    width: 23%;
     top: 17rem;
     left: 41.5rem;
     height: 17.3rem;
@@ -2337,7 +2339,7 @@ ul:not(.browser-default) {
 .previewContZoomed{
     border: 1px solid white;
     background-color: white;
-    width: 79%;
+    width: 89%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -2451,7 +2453,7 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 14%;
+        width: 17%;
     }
     .actionBtn {
         min-width: 100px;
@@ -2505,6 +2507,7 @@ ul:not(.browser-default) {
     }
     .deskZoom{
         left: 39.5rem;
+        width: 24%;
     }
     .platformPreviewZoom{
         top: 25.5rem;
@@ -2543,9 +2546,6 @@ ul:not(.browser-default) {
     .modal-content {
         width: 70%;
         height: 85%;
-    }
-    .poppupBodyInput input {
-        width: 14%;
     }
     .byYReU {
         display: flex;
@@ -2609,7 +2609,7 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 9%;
+        width: 12%;
     }
     .byYReU {
         display: flex;
@@ -2652,6 +2652,7 @@ ul:not(.browser-default) {
     }
     .DeskScreen {
         left: 52.5rem;
+        height: 10rem;
     }
     .MobileScreenSms {
         left: 35.8rem;
@@ -2680,6 +2681,8 @@ ul:not(.browser-default) {
     }
     .deskZoom{
         left: 37.5rem;
+        width: 23%;
+        height: 16rem;
     }
     .platformPreviewZoom {
         top: 24.5rem;
@@ -2731,7 +2734,7 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .poppupBodyInput input {
-        width: 13.5%;
+        width: 16.5%;
     }
     .DeskScreen {
         left: 55.5rem;
@@ -2816,7 +2819,7 @@ ul:not(.browser-default) {
         width: 80%;
     }
     .poppupBodyInput input {
-        width: 12.5%;
+        width: 16.5%;
     }
 }
 
@@ -2858,5 +2861,11 @@ ul:not(.browser-default) {
     .platformPreviewZoom {
         top: 26rem;
         left: 40rem;
+    }
+    .DeskScreen {
+        width: 17.5%;
+    }
+    .deskZoom{
+        width: 22.5%;
     }
 }
