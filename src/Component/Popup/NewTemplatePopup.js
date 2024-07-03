@@ -162,7 +162,7 @@ const NewTemplatePopup = ({ onClose }) => {
   const [securityRecommandCheckedFooter, setSecurityRecommandCheckedFooter] = useState(true)
   let visitWebSiteObj ={type:"Visit Us",visitData:[{visitWebsite:buttonSelectOption[0].value,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""}]}
   let copyOfferCodeObj ={type:"copy",coperData:[]}
-  let quickReplybj ={type:"reply",ReplyData:[{buttonText:""}]}
+  let quickReplybj ={type:"reply",ReplyData:[]}
   const [visitWebSiteArray, setVisitWebSiteArray] = useState([visitWebSiteObj,copyOfferCodeObj,quickReplybj]);
   let [chatReplyBox, setChatReplyBox] = useState([]);
 
@@ -173,8 +173,12 @@ const NewTemplatePopup = ({ onClose }) => {
     setHtmlText('');
     setHtmlTextBody('');
     setHtmlTextFooter('');
-    setChatReplyBox('');
     setMarketingTemplate(value);
+    if(value!=="whatsapp"){
+      setVisitWebSiteArray([visitWebSiteObj,copyOfferCodeObj,quickReplybj])
+      setChatReplyBox([])
+    }
+   
   }
 
 
@@ -1015,7 +1019,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                     </div>
                 </div>
-                <div className='poppupButton'>
+                {/* <div className='poppupButton'>
                   <div className='poppupButtonDesign'>
                     <div>
                       <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Recommended)</span></h5>
@@ -1171,7 +1175,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     </>
                   }) 
                     )}
-                </div>
+                </div> */}
                 {fromNameShow ? <>
                   <div className='poppupBroadcast'>
                     {/* <div className="poppupFooterInput">
