@@ -2650,6 +2650,9 @@ ul:not(.browser-default) {
         gap: .5rem;
         margin-bottom: 1rem;
     }
+    .dropInput2 {
+        width: 62%;
+    }
     .DeskScreen {
         left: 52.5rem;
         height: 10rem;
@@ -2732,6 +2735,9 @@ ul:not(.browser-default) {
     .modal-content {
         width: 75%;
         height: 85%;
+    }
+    .dropInput2 {
+        width: 60%;
     }
     .poppupBodyInput input {
         width: 16.5%;
