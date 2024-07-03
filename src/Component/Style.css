@@ -2756,6 +2756,7 @@ ul:not(.browser-default) {
     }
     .DeskScreen {
         left: 55.5rem;
+        width: 17.4%;
     }
     .MobileScreenSms {
         left: 38.5rem;
