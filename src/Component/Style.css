@@ -1958,13 +1958,13 @@ ul:not(.browser-default) {
 }  
 .MobileScreenSms{
     background-color: transparent;
-    width: 24%;
+    width: 20%;
     height: 18rem;
     position: absolute;
     margin-left: 9rem;
     /* overflow: auto; */
     top: 12rem;
-    left: 39.5rem;
+    left: 40.5rem;
 }
 .MobileScreenSmsDesk{
     background-color: transparent;
