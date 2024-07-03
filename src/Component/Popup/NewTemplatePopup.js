@@ -154,9 +154,6 @@ const NewTemplatePopup = ({ onClose }) => {
   const [buttonText, setButtonText] = useState("");
   const [buttonOpen, setButtonOpen] = useState(false);
 
-  
-  
-
   const [isAttributePopOpen, setIsAttributePopOpen] = useState(false);
   const [sampleTemplateChoose, setSampleTemplateChoose] = useState(false);
   const [fromName, setFromName] = useState("");
@@ -169,7 +166,15 @@ const NewTemplatePopup = ({ onClose }) => {
   const [visitWebSiteArray, setVisitWebSiteArray] = useState([visitWebSiteObj,copyOfferCodeObj,quickReplybj]);
   let [chatReplyBox, setChatReplyBox] = useState([]);
 
-  
+  const changeMarketingTemplet=(value)=>{
+    setCleanText('');
+    setCleanTextBody('');
+    setCleanTextFooter('');
+    setHtmlText('');
+    setHtmlTextBody('');
+    setHtmlTextFooter('');
+    setMarketingTemplate(value);
+  }
 
 
   const handleTypeOption = (selectedCategory) => {
@@ -238,6 +243,7 @@ const NewTemplatePopup = ({ onClose }) => {
   const handleTextChange = (event) => {
     const newText = event.target.value;
     let newHtmlText = '';
+    
   
     if (newText.length === 0) {
       newHtmlText = '';
@@ -380,7 +386,9 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
   const emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenSms': 'DeskScreenSms'} ${isZoomed ? 'emailPreviewContZoom' :''}`
   const chatReply = `${mobileDeskview =='desktop'?'buttonStyleDesk':'buttonStyle'} ${isZoomed ? 'chatReplyBoxZoom' :''}`
   const emailZoomClass= `${mobileDeskview == 'mobile'? 'previewEmailBody': 'previewEmailBodyDesk'} ${isZoomed ? 'emailZoomClassZoom' :''}`
+
   return (
+
     <div className={mobileDeskview}>
       <div className="modal-backdrop" >
         <div className="modal-content">
@@ -481,20 +489,20 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   <div className='poppupRadio'>
                     <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
                       <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                        <span class="radio-btn" onClick={()=>{ setMarketingTemplate("whatsapp")}}></span>
+                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
                         <label htmlFor="whatsapp">WhatsApp</label><br />
                       </div>
                     </button>
                     {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
                       <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                        <span class="radio-btn" onClick={()=>{ setMarketingTemplate("sms")}}></span>
+                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
                         <label htmlFor="sms">SMS</label><br />
                       </div>
                     </button>}
                     <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
                       <div className={`poppupInputLabel ${marketingTemplate==="platform" ?"radio-active":""} `} >
                         <div className='poppupInputLabelCarousel'>
-                        <span class="radio-btn" onClick={()=>{ setMarketingTemplate("platform")}}></span>
+                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("platform")}></span>
                           {/* <input type="radio" id="platform" name="type" value="platform" /> */}
                           <label htmlFor="platform">Platform</label>
                         </div>
@@ -503,7 +511,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
                       <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
                         <div className='poppupInputLabelCarousel'>
-                        <span class="radio-btn" onClick={()=>{ setMarketingTemplate("push")}}></span>
+                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
                           {/* <input type="radio" id="push" name="type" value="push" /> */}
                           <label htmlFor="push">Push</label>
                         </div>
@@ -512,7 +520,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
                       <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
                         <div className='poppupInputLabelCarousel'>
-                        <span class="radio-btn" onClick={()=>{ setMarketingTemplate("email")}}></span>
+                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
                           {/* <input type="radio" id="email" name="type" value="email" /> */}
                           <label htmlFor="email">Email</label>
                         </div>
@@ -839,12 +847,14 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                 older='Quick replies' 
                  disabled
                 />
+                
 
                 {visitWebSiteArray[index].ReplyData.map((cmap,cindex)=>{
-                return<>
-                   <input className='visitWebsiteInput' value={cmap.buttonText}  type='text' placeh
+                return<div className='replyCont'>
+                   <input className='copyOfferInput' value={cmap.buttonText}  type='text' placeh
                 older='Button text' 
-              //  disabled
+                placeholder='Button Text'
+                disabled
                 onChange={(e)=>{
                 visitWebSiteArray[index].ReplyData=e.target.value
                 setVisitWebSiteArray([...visitWebSiteArray])
@@ -861,11 +871,10 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                                     <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
                                   </svg>
                                 </div>
-                      </>
-
+                      </div>
                  })}
                       <div>
-                        {visitWebSiteArray[index].ReplyData.length < 3 ?    <input className='visitWebsiteButtonAdd' type='button' value='Add button' onClick={()=>{
+                        {visitWebSiteArray[index].ReplyData.length < 1 ?    <input className='visitWebsiteButtonAdd' type='button' value='Add button' onClick={()=>{
                            visitWebSiteArray[index].ReplyData.push({buttonText:""})
                            chatReplyBox.push({type:"reply"})
                            setVisitWebSiteArray([...visitWebSiteArray])
@@ -1162,7 +1171,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
 
                     }} />}
                     <div className='poppupBodyInput'>
-                      <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                      <textarea rows="10" cols="70" maxLength='200' placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                         handleTextBodyChange(e.target.value)
                       }}></textarea>
                       <div className='textAreaInputIcons'>
@@ -1367,9 +1376,13 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
 
                     }} />}
                     <div className='poppupBodyInput'>
+                      {mobileDeskview == 'desktop'?
                       <textarea rows="10" cols="70" maxlength="50" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                         handleTextBodyChange(e.target.value)
                       }}></textarea>
+                      :<textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                        handleTextBodyChange(e.target.value)
+                      }}></textarea>}
                       <div className='textAreaInputIcons'>
                         <input type='text' disabled/>
                           <div className='poppupBodyInputIcons'>

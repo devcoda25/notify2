@@ -988,7 +988,7 @@
 .previewStyle {
     border: 1px solid white;
     background-color: white;
-    width: 72%;
+    width: 79%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -1049,7 +1049,7 @@
     color: blue;
 }
 .dropInput1 {
-    width: 69%;
+    width: 100%;
     border: none;
     background-color: #dee4e4;
     border-radius: .4rem;
@@ -1058,7 +1058,7 @@
     opacity: .5;
 }
 .dropInput2 {
-    width: 40%;
+    width: 59%;
     background-color: #dee4e4;
     height: 1.4rem;
     outline-color: rgb(35, 164, 85);
@@ -1975,7 +1975,7 @@ ul:not(.browser-default) {
 }
 .MobileScreenPush{
     background-color: transparent;
-    width: 24%;
+    width: 21%;
     height: 18rem;
     position: absolute;
     margin-left: 9rem;
@@ -2057,7 +2057,7 @@ ul:not(.browser-default) {
 .previewStylePush{
     border: 1px solid white;
     background-color: white;
-    width: 72%;
+    width: 90%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -2132,7 +2132,7 @@ ul:not(.browser-default) {
     font-family: roboto-light;
     padding: .5rem;
     margin-top: 1.6rem;
-    height: 8rem;
+    height: 7rem;
     overflow: auto;
 }
 .previewPlatformCont .previewTextStyle{
@@ -2404,6 +2404,10 @@ ul:not(.browser-default) {
     height: 12rem;
     overflow: auto;
     width: 126%;
+}
+.replyCont{
+    display: flex;
+    gap: .5rem;
 }
 }
 
