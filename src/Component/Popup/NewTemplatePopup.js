@@ -379,57 +379,57 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
     classNames += ' zoomed';
   }
   
-  const platformClass =  `${mobileDeskview == 'mobile' ? 'selectImgs' : 'selectDeskWhatsapp'}`
+  let platformClass =  `${mobileDeskview == 'mobile' ? 'selectImgs' : 'selectDeskWhatsapp'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     platformClass += ' zoomed';
   }
 
-  const pushClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'}`
+  let pushClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     pushClass += ' zoomed';
   }
 
-  const emailClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'}`
+  let emailClass = `${mobileDeskview == 'mobile'?'selectImgs':'selectDeskWhatsapp'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     emailClass += ' zoomed';
   }
 
-  const deskClass = `${mobileDeskview==='mobile'?'MobileScreen':'DeskScreen'}`
+  let deskClass = `${mobileDeskview==='mobile'?'MobileScreen':'DeskScreen'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     deskClass += ' deskZoom';
   }
  
-  const platformPreviewClass = `${mobileDeskview=='mobile'?'MobileScreenSms':'MobileScreenSmsDesk'}`
+  let platformPreviewClass = `${mobileDeskview=='mobile'?'MobileScreenSms':'MobileScreenSmsDesk'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     platformPreviewClass += ' platformPreviewZoom';
   }
 
-  const platformPreviewCont = `${mobileDeskview == 'mobile'?'previewStylePlatform':'previewStylePlatformDesk'} `
+  let platformPreviewCont = `${mobileDeskview == 'mobile'?'previewStylePlatform':'previewStylePlatformDesk'} `
   if (mobileDeskview === 'desktop' && isZoomed) {
     platformPreviewCont += ' platformPreviewContZoom';
   }
   
-  const pushPreview = `${mobileDeskview=='mobile'?'MobileScreenPush':'DeskScreenPush'} `
+  let pushPreview = `${mobileDeskview=='mobile'?'MobileScreenPush':'DeskScreenPush'} `
   if (mobileDeskview === 'desktop' && isZoomed) {
     pushPreview += ' pushPreviewZoom';
   }
 
-  const pushCont =`${mobileDeskview=='mobile'?'previewStylePush':'previewStylePushDesk'}`
+  let pushCont =`${mobileDeskview=='mobile'?'previewStylePush':'previewStylePushDesk'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     pushCont += ' pushContZoom';
   }
 
-  const emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenSms': 'DeskScreenSms'}`
+  let emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenSms': 'DeskScreenSms'}`
    if (mobileDeskview === 'desktop' && isZoomed) {
     emailPreviewCont += ' emailPreviewContZoom';
   }
 
-  const chatReply = `${mobileDeskview =='desktop'?'buttonStyleDesk':'buttonStyle'}`
+  let chatReply = `${mobileDeskview =='desktop'?'buttonStyleDesk':'buttonStyle'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     chatReply += ' chatReplyBoxZoom';
   }
 
-  const emailZoomClass= `${mobileDeskview == 'mobile'? 'previewEmailBody': 'previewEmailBodyDesk'}`
+  let emailZoomClass= `${mobileDeskview == 'mobile'? 'previewEmailBody': 'previewEmailBodyDesk'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     emailZoomClass += ' emailZoomClassZoom';
   }
