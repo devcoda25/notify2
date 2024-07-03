@@ -1981,7 +1981,7 @@ ul:not(.browser-default) {
     margin-left: 9rem;
     overflow: auto; 
     top: 18rem;
-    left: 39.5rem;
+    left: 39.2rem;
 }
 .DeskScreenPush {
     background-color: transparent;
@@ -2110,7 +2110,7 @@ ul:not(.browser-default) {
 .previewEmailBody{
     border: 1px solid white;
     background-color: white;
-    width: 72%;
+    width: 90%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -2119,7 +2119,7 @@ ul:not(.browser-default) {
     font-family: roboto-light;
     padding: .5rem;
     margin-top: 3.5rem;
-    height: 16rem;
+    height: 17rem;
     overflow: auto;
 }
 .previewEmailBodyDesk{
@@ -2486,7 +2486,7 @@ ul:not(.browser-default) {
         left: 55.5rem;
     }
     .MobileScreenSms{
-        left: 38.5rem;
+        left: 40rem;
     }
     .MobileScreenSmsDesk {
         left: 56.5rem;
@@ -2571,7 +2571,7 @@ ul:not(.browser-default) {
         padding: .9rem 1.7rem .8rem .8rem;
     }
     .MobileScreenSms {
-        left: 38.8rem;
+        left: 39.8rem;
     }
     .DeskScreenPush {
         top: 22rem;
@@ -2579,7 +2579,7 @@ ul:not(.browser-default) {
     }
     .MobileScreenPush{
         top: 18rem;
-        left: 39rem;
+        left: 38.5rem;
     }
     .pushPreviewZoom {
         top: 30rem;
@@ -2655,7 +2655,7 @@ ul:not(.browser-default) {
         height: 10rem;
     }
     .MobileScreenSms {
-        left: 35.8rem;
+        left: 36.8rem;
     }
     .previewStylePlatform{
         margin-left: .7rem;
@@ -2743,7 +2743,7 @@ ul:not(.browser-default) {
         left: 38.5rem;
     }
     .previewStylePlatform {
-        margin-left: .25rem;
+        margin-left: 1.25rem;
     }
     .MobileScreenSmsDesk {
         top: 20.5rem;
@@ -2755,7 +2755,7 @@ ul:not(.browser-default) {
     }
     .MobileScreenPush{
         top: 18rem;
-        left: 38.5rem;
+        left: 38rem;
     }
     .zoomed {
         transform: scale(1.5);
