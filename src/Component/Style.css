@@ -1035,6 +1035,7 @@
     /* opacity: .5; */
     margin-bottom: 1rem;
     outline-color: rgb(35, 164, 85);
+    margin-left: .1rem;
 }
 .imageVdoCont {
     display: flex;
@@ -1832,6 +1833,9 @@ ul:not(.browser-default) {
 }
 .staticDropdown .Dropdown-control:hover{
     border: 1px solid #23a455;
+}
+.staticDropdown .Dropdown-option{
+    font-size: .9rem;
 }
 .visitUsInput:hover{
     border: 1px solid #23a455 !important;
