@@ -899,10 +899,10 @@
     background-color: white;
     border-radius: .2rem;
     position: absolute;
-    top: .5rem;
-    left: 0.4rem;
+    top: 0rem;
+    left: 0rem;
     padding-left: 27.7rem;
-    width: 15.5%;
+    width: 17.9%;
 }
 .poppupBodyInputIcons {
     display: flex;
@@ -922,7 +922,7 @@
     border-radius: .5rem;
     width: -webkit-fill-available;
     margin-bottom: 0.9rem;
-    padding-top: 3.5rem;
+    padding-top: 2.5rem;
     outline: none;
     height: 10rem;
     width: 99%;
