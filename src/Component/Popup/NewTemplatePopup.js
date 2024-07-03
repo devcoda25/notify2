@@ -173,6 +173,7 @@ const NewTemplatePopup = ({ onClose }) => {
     setHtmlText('');
     setHtmlTextBody('');
     setHtmlTextFooter('');
+    setChatReplyBox('');
     setMarketingTemplate(value);
   }
 
