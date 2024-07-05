@@ -18,7 +18,7 @@ const Navbar = () => {
 
 
   return (
-    <div className='container'>
+    <div>
        <div className='nav'>
         <div className='lnav'>
             <img src={logo} alt='car' className="navImg"/>

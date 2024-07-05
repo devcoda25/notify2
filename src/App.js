@@ -4,7 +4,7 @@ import Navbar from "./Component/Navbar/Navbar";
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Navbar/>
       <BroadcastBody/>
       <Footer/>

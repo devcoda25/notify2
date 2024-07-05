@@ -437,6 +437,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
   if (mobileDeskview === 'desktop' && isZoomed) {
     emailZoomClass += ' emailZoomClassZoom';
   }
+  
 
   return (
 
@@ -941,26 +942,6 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   }) 
                     )}
                 </div>
-                {fromNameShow ? <>
-                  <div className='poppupBroadcast'>
-                    {/* <div className="poppupFooterInput">
-                      <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
-                        setFromName(e.target.value)
-                      }}/>
-                    </div> */}
-                    <div className='sampleContentCont'>
-                    <h5>Sample Content</h5>
-                    <p>Just enter sample content here (it doesn’t need to be exact!)</p>
-                      <div className="sampleContent">
-                        <label className='sampleContentLabel'>0/200</label><br/>
-                        <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
-                        setFromName(e.target.value)
-                        }}/>
-                        <p className='sampleContentContP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
-                      </div>
-                  </div>
-                  </div>
-                </>:""}
                 <div className='poppupButtons'>
                   <p className='poppupButtons1'>Save as draft</p>
                   <p className='poppupButtons2'>Save and Submit</p>
@@ -1176,13 +1157,13 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   }) 
                     )}
                 </div> */}
-                {fromNameShow ? <>
+                {/* {fromNameShow ? <>
                   <div className='poppupBroadcast'>
-                    {/* <div className="poppupFooterInput">
+                    <div className="poppupFooterInput">
                       <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
                         setFromName(e.target.value)
                       }}/>
-                    </div> */}
+                    </div>
                     <div className='sampleContentCont'>
                     <h5>Sample Content</h5>
                     <p>Just enter sample content here (it doesn’t need to be exact!)</p>
@@ -1195,7 +1176,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div>
                   </div>
                   </div>
-                </>:""}
+                </>:""} */}
                 <div className='poppupButtons'>
                   <p className='poppupButtons1'>Save as draft</p>
                   <p className='poppupButtons2'>Save and Submit</p>
@@ -1838,13 +1819,13 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   }) 
                     )}
                 </div> */}
-                {fromNameShow ? <>
+                {/* {fromNameShow ? <>
                   <div className='poppupBroadcast'>
-                    {/* <div className="poppupFooterInput">
+                    <div className="poppupFooterInput">
                       <input type='text' placeholder='Enter Text' value={fromName} onChange={(e)=>{
                         setFromName(e.target.value)
                       }}/>
-                    </div> */}
+                    </div>
                     <div className='sampleContentCont'>
                     <h5>Sample Content</h5>
                     <p>Just enter sample content here (it doesn’t need to be exact!)</p>
@@ -1857,7 +1838,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div>
                   </div>
                   </div>
-                </>:""}
+                </>:""} */}
                 <div className='poppupButtons'>
                   <p className='poppupButtons1'>Save as draft</p>
                   <p className='poppupButtons2'>Save and Submit</p>
@@ -1873,7 +1854,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       <p>Add variable</p>
                     </div> */}
                     <div className='poppupBodyInput'>
-                      <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                      <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' disabled value={cleanTextBody} onChange={(e)=>{
                         handleTextBodyChange(e.target.value)
                       }}></textarea>
                       <div  className='textAreaInputIcons'>
@@ -1915,12 +1896,12 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                     <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                     <div className="poppupFooterInput">
-                      <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={(e)=>{
+                      <input type='text' placeholder='Enter Text' disabled value={cleanTextFooter} onChange={(e)=>{
                         handleTextFooterChange(e.target.value)
                       }}/>
                     </div>
                     <div className='ui checked checkbox'>
-                      <input checked={securityRecommandCheckedFooter} type="checkbox" className='hidden' onChange={(e)=>{
+                      <input checked={securityRecommandCheckedFooter} type="checkbox"  className='hidden' onChange={(e)=>{
                         let dummyFooter = ''
                         if(e.target.checked){
                           dummyFooter = `This code expires in ${expire} minutes.`
@@ -1931,7 +1912,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       }} />
                       <label className='expirtyTime'>Include expiry time</label>
                     </div>
-                    <div>
+                    {securityRecommandCheckedFooter == true && <div>
                       <label className='expires'>Expires in</label><br/>
                       <input type='number' value={expire} className='expireInput' onChange={(event)=>{
                         let timertext =`This code expires in ${event.target.value} minutes.`
@@ -1939,7 +1920,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         setExpire(event.target.value)
                         setHtmlTextFooter(timertext);
                       }}/>
-                    </div>
+                    </div>}
                 </div>
                 <div className='poppupButton'>
                     <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
@@ -2531,17 +2512,20 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div> :null}
                   
                         {htmlText ? <div
-                          className={isZoomed ? 'titleZoomed':"previewTextStyle"}
+                          className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStyle"}
                           dangerouslySetInnerHTML={{ __html: htmlText }}
                         />:null}
                         {htmlTextBody ? <div
-                          className={isZoomed ? 'bodyZoomed':"previewBodyStyle"}
+                          className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed':"previewBodyStyle"}
                           dangerouslySetInnerHTML={{ __html: htmlTextBody }}
                         />:null}
+                        <div className='timeWithCont'>
                         {htmlTextFooter ?  <div
-                            className={isZoomed ? 'footerZoomed':"previewFooterStyle"}
+                            className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewFooterStyle"}
                             dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                           /> : null}
+                          <div className='previewStyleTime'>{currentTime}</div>
+                          </div>
                         {isButtonChecked&&chatReplyBox.length ? <>{
                           chatReplyBox.map((ival)=>{
                             return <>
@@ -2550,8 +2534,6 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           })
                         }
                         </> : null}
-                          
-                        <div className='previewStyleTime'>{currentTime}</div>
                     </div>
                   </div>
               </div>
@@ -2632,15 +2614,15 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         </div>
                         :null}
                         {htmlText ? <div
-                          className={isZoomed ? 'platformtitleZoomed':"previewTextStyle"}
+                          className={mobileDeskview == 'desktop' && isZoomed ? 'platformtitleZoomed':"previewTextStyle"}
                           dangerouslySetInnerHTML={{ __html: htmlText }}
                         />:null} 
                         {htmlTextBody ? <div
-                          className={isZoomed ? 'platformbodyZoomed':"previewBodyStyle"}
+                          className={mobileDeskview == 'desktop' && isZoomed ? 'platformbodyZoomed':"previewBodyStyle"}
                           dangerouslySetInnerHTML={{ __html: htmlTextBody }}
                         />:null}
                         {htmlTextFooter ?  <div
-                            className={isZoomed ? 'platformfooterZoomed':"previewFooterStyle"}
+                            className={mobileDeskview == 'desktop' && isZoomed ? 'platformfooterZoomed':"previewFooterStyle"}
                             dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                           /> : null}
                         {isButtonChecked&&chatReplyBox.length ? <>{
@@ -2725,15 +2707,15 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                               <div>
                                 <div>
                                   {htmlText ? <div
-                                    className={isZoomed ? 'titleZoomed':"previewTextStyle"}
+                                    className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStyle"}
                                     dangerouslySetInnerHTML={{ __html: htmlText }}
                                   />:null}
                                   {htmlTextBody ? <div
-                                    className={isZoomed ? 'bodyZoomed':"previewBodyStyle"} 
+                                    className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed':"previewBodyStyle"} 
                                     dangerouslySetInnerHTML={{ __html: htmlTextBody }}
                                   />:null}
                                   {htmlTextFooter ?  <div
-                                      className={isZoomed ? 'footerZoomed':"previewFooterStyle"} 
+                                      className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewFooterStyle"} 
                                       dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                                     /> : null}
                                     {/* <div className='previewStyleTime'>{currentTime}</div> */}
@@ -2761,6 +2743,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   alt='emailImg'
                   className= {emailClass}
                   onClick={handleZoomClick} 
+                  draggable="false"
                 />
               </div> 
               <div className='MobileScroll'>
@@ -2768,19 +2751,19 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <div>
                       <div className={mobileDeskview == 'desktop' && isZoomed?'previewEmailTitleZoom':'previewEmailTitle'}>
                         {htmlText ? <div
-                          className={isZoomed ? 'titleZoomed':"previewTextStyle"} 
+                          className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStyle"} 
                           dangerouslySetInnerHTML={{ __html: htmlText }}
                         />:null}
                       </div>
                       <div className={emailZoomClass}>
                         {htmlTextBody ? <div   
-                          className={isZoomed ? 'bodyZoomed':"previewBodyStyle"} 
+                          className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed':"previewBodyStyle"} 
                           dangerouslySetInnerHTML={{ __html: htmlTextBody }}
                         />:null}
                       </div>
                       <div className='previewEmailFooter'>
                         {htmlTextFooter ?  <div
-                            className={isZoomed ? 'footerZoomed':"previewFooterStyle"} 
+                            className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewFooterStyle"} 
                             dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                           /> : null}
                         </div>
