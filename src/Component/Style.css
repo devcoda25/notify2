@@ -749,6 +749,7 @@
 .poppupRadioCont {
     margin-top: -.5rem;
     border-bottom: 1px solid #dfe6e6;
+    margin-bottom: 1rem;
 }
 .poppupRadioCont p {
     text-align: start;
@@ -1012,7 +1013,7 @@
     font-size: 12px;
     text-align: end;
     font-weight: 600;
-    width: 25%;
+    /* width: 25%; */
 }
 .MobileScreen {
     background-color: transparent;
@@ -2056,8 +2057,8 @@ ul:not(.browser-default) {
     overflow: auto;
 }
 .previewStylePlatformDesk {
-    border: 1px solid #252525;
-    background-color: #252525;
+    border: 1px solid white;
+    background-color: white;
     text-align: start;
     white-space: pre-wrap;
     word-break: break-word;
@@ -2071,7 +2072,6 @@ ul:not(.browser-default) {
 .previewStylePlatformDesk .previewTextStyle,
 .previewStylePlatformDesk .previewBodyStyle,
 .previewStylePlatformDesk .previewFooterStyle {
-    color: white;
     text-align: center;
 }
 .previewPlatformCont{
@@ -2235,14 +2235,13 @@ ul:not(.browser-default) {
     display: block;
   }
   .platformCar{
-    border: 1px solid white;
-    background-color: white;
+    border: 1px solid black;
+    background-color: black;
     width: 15%;
     height: 1rem;
   }
   .previewPlatformPopupCont{
     display: flex;
-    color: white;
     justify-content: space-between;
     margin-bottom: .5rem;
   }
@@ -2382,17 +2381,14 @@ ul:not(.browser-default) {
 }
 .platformtitleZoomed{
     font-size: 1rem;
-    color: white;
     text-align: center;
 }
 .platformbodyZoomed{
     font-size: 1.3rem;
-    color: white;
     text-align: center;
 }
 .platformfooterZoomed{
     font-size: .9rem;
-    color: white;
     text-align: center;
 }
 .platformPreviewZoom{
@@ -2447,7 +2443,8 @@ ul:not(.browser-default) {
     align-items: end;
 }
 .previewTextStyle{
-    font-size: .8rem;
+    font-size: .7rem;
+    margin-bottom: .9rem;
 }
 
 }
