@@ -498,7 +498,10 @@
         padding: 0px 2rem;
         background: rgb(255, 255, 255);
         border-radius: 5px;
-        height: 100%;
+        min-height: 738px;
+    }
+    .tableCont{
+        min-height: 692px;
     }
     .statusBtn{
         margin: 0px auto;
@@ -947,8 +950,8 @@
 }
 .poppupButton p {
     color: rgb(61, 61, 61);
-    font-size: .8rem;
-    margin-bottom: 2rem;
+    font-size: .75rem;
+    /* margin-bottom: 2rem; */
 }
 .modal-content {
     background: white;
@@ -1006,7 +1009,7 @@
 .previewStyleExtra{
     margin-top: 2.5rem;
     overflow: auto;
-    height: 22rem;
+    /* height: 22rem; */min-height: .9rem;
 }
 .previewStyleTime {
     color: #7a7777;
@@ -1437,6 +1440,11 @@
     border-radius: .2rem;
     border-color: rgb(245, 246, 250);
     outline: none;
+    margin-left: .1rem;
+    margin-top: .2rem;
+}
+.expireInput:focus{
+    border:1px solid #23a455;
 }
 .expires {
     font-size: .9rem;
@@ -1445,9 +1453,11 @@
     font-size: .7rem;
     margin-left: 9.8rem;
 }
+.btnText:focus{
+    outline:1px solid #23a455 !important;
+}
 .btnText {
     padding: .7rem;
-    width: 25%;
     background-color: rgb(245, 246, 250);
     border: none;
     margin-bottom: 1rem;
@@ -1455,6 +1465,7 @@
     border-color: rgb(245, 246, 250);
     outline: none;
     font-size: .8rem;
+    margin-left: .1rem;
 }
 .sampleContentCont {
     text-align: start;
@@ -2175,6 +2186,22 @@ ul:not(.browser-default) {
     padding: .3rem;
     border: none;
 }
+.previewSampleStyle{
+    font-size: .9rem;
+    color: rgb(38, 156, 254);;
+    font-weight: 500;
+}
+.previewSampleStyleCont{
+    width: 90%;
+    margin-top: .2rem;
+    border: 1px solid white;
+    border-radius: .5rem;
+    background-color: white;
+    padding: .3rem;
+    min-height: 1.1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 .previewPushImg img{
     width: 25%;
 }
@@ -2283,13 +2310,13 @@ ul:not(.browser-default) {
     font-size: .3rem;
 }
 .buttonStyle{
-    color: blue;
+    color: rgb(14, 113, 195);;
     font-weight: 300;
-    font-size: .8rem;
+    font-size: .7rem;
     text-align: center;
 }
 .buttonStyleDesk{
-    color: blue;
+    color: rgb(14, 113, 195);;
     font-weight: 300;
     font-size: .4rem;
     text-align: center;
@@ -2446,6 +2473,32 @@ ul:not(.browser-default) {
     font-size: .7rem;
     margin-bottom: .9rem;
 }
+.documentVdoImg{
+    width: 200px;
+    height: 100%;
+}
+.identification .Dropdown-control{
+    background-color: rgb(246 246 255);
+    border: none;
+    width: 30%;
+    font-size: .8rem;
+}
+.identification .Dropdown-menu{
+    width: 30%;
+}
+.identification .Dropdown-option {
+    border-bottom: 1px solid #f0f5f5;
+    font-size: .8rem;
+}
+.identification .Dropdown-root{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.identification .Dropdown-placeholder{
+    text-align: start;
+}
+
 
 }
 

@@ -28,6 +28,7 @@ import { CiMobile2 } from "react-icons/ci";
 import { CiDesktop } from "react-icons/ci";
 import evMarket from '../Assets/img/evmarket.svg'
 import { IoMdSettings } from "react-icons/io";
+import { yellow } from '@mui/material/colors';
 
 const NewTemplatePopup = ({ onClose }) => {
 
@@ -37,6 +38,35 @@ const NewTemplatePopup = ({ onClose }) => {
     { value: 'Blue', label: 'Blue' },
     { value: 'Green', label: 'Green' }
   ];
+
+  const Yellow = [
+    { value: 'marketing/ads', label: 'marketing/ads' },
+    { value: 'surveys', label: 'surveys' },
+    { value: 'Interactive Prompts', label: 'Interactive Prompts' }
+  ]
+
+  const Red = [
+    { value: 'Emergency', label: 'Emergency' },
+    { value: 'Account Verfication', label: 'Account Verfication' },
+    { value: '3rd-Party Authentication', label: '3rd-Party Authentication' },
+    { value: 'MFA', label: 'MFA' },
+    { value: 'Failed Activity', label: 'Failed Activity' },
+    { value: 'Rejections', label: 'Rejections' },
+    { value: 'Bad Activity', label: 'Bad Activity' }
+  ];
+
+  const Blue = [
+    { value: 'Credential Access/share', label: 'Credential Access/share' },
+    { value: 'Update notices', label: 'Update notices' },
+    { value: 'Helper tours', label: 'Helper tours' },
+    { value: 'Transactions', label: 'Transactions' }
+  ]
+
+  const Green = [
+    { value: 'Approvals', label: 'Approvals' },
+    { value: 'Lifts ', label: 'Lifts ' },
+    { value: 'success activity', label: 'success activity' }
+  ]
 
   const languagesSelectOption = [
     { value:'English (US)', label:'English (US)' },
@@ -131,6 +161,8 @@ const NewTemplatePopup = ({ onClose }) => {
 
 
   const [type, setCategory] = useState(typeSelectOption[0].value);
+  const [typeValue, setTypeValue] = useState(Yellow);
+  const [identification, setIdentification] = useState(Yellow[0].value);
   const [language, setLanguage] = useState(languagesSelectOption[0].value);
   const [broadcast, setBroadcast] = useState(broadcastSelectOption[0].value);
   const [selectedOption, setSelectedOption] = useState(buttonSelectOption[0].value);
@@ -138,9 +170,11 @@ const NewTemplatePopup = ({ onClose }) => {
   const [cleanText, setCleanText] = useState('');
   let [cleanTextBody, setCleanTextBody] = useState('');
   const [cleanTextFooter, setCleanTextFooter] = useState('');
+  const [cleanTextSample, setCleanTextSample] = useState('');
   const [htmlText, setHtmlText] = useState('');
   const [htmlTextBody, setHtmlTextBody] = useState('');
   const [htmlTextFooter, setHtmlTextFooter] = useState('');
+  const [htmlTextSample, setHtmlTextSample] = useState('');
 
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -171,9 +205,11 @@ const NewTemplatePopup = ({ onClose }) => {
     setCleanText('');
     setCleanTextBody('');
     setCleanTextFooter('');
+    setCleanTextSample('');
     setHtmlText('');
     setHtmlTextBody('');
     setHtmlTextFooter('');
+    setHtmlTextSample('');
     setMarketingTemplate(value);
     if(value!=="whatsapp"){
       setVisitWebSiteArray([visitWebSiteObj,copyOfferCodeObj,quickReplybj])
@@ -182,10 +218,14 @@ const NewTemplatePopup = ({ onClose }) => {
    
   }
 
+  const handleIdentification = (e)=>{
+    setIdentification(e.value);
+  }
+
 
   const handleTypeOption = (selectedCategory) => {
     setCategory(selectedCategory.value);
-
+    setTypeValue(selectedCategory.value);
     let choosevalue = selectedCategory.value;
     if( choosevalue === "Red" ){
     let dummyFooterTest = verificationCodeText
@@ -488,84 +528,97 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   setFromNameShow(false)
                 }}
                 /> :null}
-          
-                <div className='popupInput'>
-                  <div className='selectInputs'>
-                    <label>Template Name</label>
-                    <input placeholder='Template Name' type='text'/>
-                  </div>
-                  <div className="App categoryWhole selectInputs">
-                    <label htmlFor="type">Type</label>
-                    <div className='CategorySelect'>
-                      <Dropdown
-                        className='packageDropdown'
-                        options={typeSelectOption.filter(op => op.value !== type)}
-                        onChange={handleTypeOption}
-                        value={type}
-                        placeholder="Select an option"
-                      />
+                <div>
+                  <div className='popupInput'>
+                    <div className='selectInputs'>
+                      <label>Template Name</label>
+                      <input placeholder='Template Name' type='text'/>
+                    </div>
+                    <div className="App categoryWhole selectInputs">
+                      <label htmlFor="type">Type</label>
+                      <div className='CategorySelect'>
+                        <Dropdown
+                          className='packageDropdown'
+                          options={typeSelectOption.filter(op => op.value !== type)}
+                          onChange={handleTypeOption}
+                          value={type}
+                          placeholder="Select an option"
+                        />
+                      </div>
+                    </div>
+                    <div className="App categoryWhole selectInputs">
+                    <label htmlFor="language">Language</label>
+                      <div className='CategorySelect'>
+                        <Dropdown
+                          className='packageDropdown'
+                          options={languagesSelectOption.filter(op => op.value !== type)}
+                          onChange={handleLanguagesOption}
+                          value={language}
+                          placeholder="Select an option"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="App categoryWhole selectInputs">
-                  <label htmlFor="language">Language</label>
-                    <div className='CategorySelect'>
-                      <Dropdown
-                        className='packageDropdown'
-                        options={languagesSelectOption.filter(op => op.value !== type)}
-                        onChange={handleLanguagesOption}
-                        value={language}
-                        placeholder="Select an option"
-                      />
-                    </div>
+                  {console.log(typeValue)}
+                  <div className='identification'>
+                    <Dropdown
+                      id="broadcast"
+                      options={Yellow.filter(op => op.value !== identification)}
+                      onChange={handleIdentification}
+                      value={identification}
+                      placeholder="Select an option"
+                    />
                   </div>
                 </div>
                 {/* (type == 'Yellow' || type == 'Red' || type == 'Blue' || type == 'Green')  */}
                 {(['Yellow','Red','Blue','Green'].includes(type)) ? <>
-                  <div className='poppupRadioCont'>
                   <div>
-                    <p>Select Marketing template</p>
-                  </div>
-                  <div className='poppupRadio'>
-                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                      <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                        <label htmlFor="whatsapp">WhatsApp</label><br />
+                    <div className='poppupRadioCont'>
+                      <div>
+                        <p>Select Marketing template</p>
                       </div>
-                    </button>
-                    {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                      <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                        <label htmlFor="sms">SMS</label><br />
+                      <div className='poppupRadio'>
+                        <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                          <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
+                            <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
+                            <label htmlFor="whatsapp">WhatsApp</label><br />
+                          </div>
+                        </button>
+                        {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                          <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
+                            <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
+                            <label htmlFor="sms">SMS</label><br />
+                          </div>
+                        </button>}
+                        <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                          <div className={`poppupInputLabel ${marketingTemplate==="platform" ?"radio-active":""} `} >
+                            <div className='poppupInputLabelCarousel'>
+                            <span class="radio-btn" onClick={()=> changeMarketingTemplet("platform")}></span>
+                              {/* <input type="radio" id="platform" name="type" value="platform" /> */}
+                              <label htmlFor="platform">Platform</label>
+                            </div>
+                          </div>
+                        </button>
+                        <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                          <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
+                            <div className='poppupInputLabelCarousel'>
+                            <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
+                              {/* <input type="radio" id="push" name="type" value="push" /> */}
+                              <label htmlFor="push">Push</label>
+                            </div>
+                          </div>
+                        </button>
+                        <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
+                          <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
+                            <div className='poppupInputLabelCarousel'>
+                            <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
+                              {/* <input type="radio" id="email" name="type" value="email" /> */}
+                              <label htmlFor="email">Email</label>
+                            </div>
+                          </div>
+                        </button>
                       </div>
-                    </button>}
-                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                      <div className={`poppupInputLabel ${marketingTemplate==="platform" ?"radio-active":""} `} >
-                        <div className='poppupInputLabelCarousel'>
-                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("platform")}></span>
-                          {/* <input type="radio" id="platform" name="type" value="platform" /> */}
-                          <label htmlFor="platform">Platform</label>
-                        </div>
-                      </div>
-                    </button>
-                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                      <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                        <div className='poppupInputLabelCarousel'>
-                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                          {/* <input type="radio" id="push" name="type" value="push" /> */}
-                          <label htmlFor="push">Push</label>
-                        </div>
-                      </div>
-                    </button>
-                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                      <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
-                        <div className='poppupInputLabelCarousel'>
-                        <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
-                          {/* <input type="radio" id="email" name="type" value="email" /> */}
-                          <label htmlFor="email">Email</label>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
+                    </div>
                   </div>
                   {(marketingTemplate == 'whatsapp' || marketingTemplate == 'sms' || marketingTemplate == 'platform' || marketingTemplate == 'push' || marketingTemplate == 'email')? <>
                     {marketingTemplate == 'whatsapp' ?
@@ -627,7 +680,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       <div className='dropImg'>  
                         {selectOption === 'IMAGE' && <div>
                           <p className='dropImgp'>(Image:.jpeg, .png)</p>
-                          {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg" width='70%'/> :null}
+                          {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg"/> :null}
                             <div className='dropInput'>
                                 <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
                                 <p>or</p>
@@ -693,6 +746,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   <div className="titleInput">
                     <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                   </div>}
+                  {(['Yellow','Blue','Green'].includes(type)) ?<>
                     <div className='poppupBroadcast'>
                       <h5>Body</h5>
                       <p>Make your messages personal using variables like and get more replies!</p>
@@ -731,7 +785,6 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         </div>
                       </div>
                     </div>
-                  {(['Yellow','Blue','Green'].includes(type)) ?<>
                     <div className='poppupBroadcast'>
                       <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                       <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
@@ -940,6 +993,51 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
 
                   </>:<>
                   <div className='poppupBroadcast'>
+                    <h5>Body</h5>
+                    <p>Content for authentication message templates can’t be edited. You can add/remove additional content from the option below</p>
+                    {/* <div className="poppupBodyInputCont">
+                      <p>Add variable</p>
+                    </div> */}
+                    <div className='poppupBodyInput'>
+                      <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' disabled value={cleanTextBody} onChange={(e)=>{
+                        handleTextBodyChange(e.target.value)
+                      }}></textarea>
+                      <div  className='textAreaInputIcons'>
+                        <input type='text' disabled/>
+                          <div className='poppupBodyInputIcons'>
+                            <div>
+                              <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
+                            </div>
+                            <div>
+                              <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
+                            </div>
+                            <div>
+                              <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
+                            </div>
+                            <div>
+                              <MdStrikethroughS className='poppupBodyInputIcon'/>
+                            </div>
+                            <div>
+                              <MdLink className='poppupBodyInputIcon'/>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div className='ui checked checkbox'>
+                      <input  checked={securityRecommandChecked} type="checkbox" className='hidden' onChange={(event)=>{
+                        let dummyFooterTest ="{{1}} is your verification code."
+                        if(event.target.checked)
+                          {
+                            dummyFooterTest="{{1}} is your verification code. For your security, do not share this code."
+                          }
+                        setCleanTextBody(`${dummyFooterTest}`);
+                        setHtmlTextBody(`${dummyFooterTest}`);
+                        setSecurityRecommandChecked(event.target.checked)
+                      }}/>
+                      <label className='addSecurity'>Add security recommendation</label>
+                    </div>
+                </div>
+                  <div className='poppupBroadcast'>
                     <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                     <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                     <div className="poppupFooterInput">
@@ -974,8 +1072,9 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
                     <div>
                       <label className='BtnTextLabel'>0/25</label><br/>
-                      <input type='text' placeholder='Button Text' value={buttonText}  className='btnText' onChange={(event)=>{
-                        setButtonText(event.target.value)
+                      <input type='text' placeholder='Button Text' value={cleanTextSample}  className='btnText' onChange={(event)=>{
+                        setHtmlTextSample(event.target.value)
+                        setCleanTextSample(event.target.value);
                       }}/>
                     </div>
                 </div>
@@ -987,7 +1086,8 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       <input type='text' placeholder='Enter content for {{1}}' onChange={(e)=>{
                         let copyText = verificationCodeText
                         copyText = copyText.replace("{{1}}", e.target.value);
-                        setHtmlTextBody(copyText)                        
+                        setHtmlTextBody(copyText)
+                        
                       }}/>
                       <p className='sampleContentLabelP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
                     </div>
@@ -1026,6 +1126,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
               </div>
               {(marketingTemplate==="whatsapp" && (mobileDeskview==='mobile' || mobileDeskview==='desktop'))?<> <div className={mobileDeskview == 'desktop' ? 'zoom': null}>
                 <img 
+                  draggable="false"
                   src={mobileDeskview === 'mobile' ? whatsapp : whatsappDesk} 
                   alt='whatsappImg' 
                   className={classNames}
@@ -1079,12 +1180,20 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         }
                         </> : null}
                           </div>
+                          {(type == 'Red' && marketingTemplate == 'whatsapp')?
+                            <div className='previewSampleStyleCont'>
+                              {htmlTextSample ?  <div
+                                className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewSampleStyle"}
+                                dangerouslySetInnerHTML={{ __html: htmlTextSample }}
+                              /> : null}
+                            </div>
+                          :null}
                     </div>
                   </div>
               </>:null}
 
               {(marketingTemplate==="sms")?<> <div>
-                <img src={sms} alt='smsImg' className='selectImgs'/>
+                <img src={sms} draggable="false" alt='smsImg' className='selectImgs'/>
               </div> 
               <div className='MobileScroll'>
                   <div className='MobileScreenSms'>
@@ -1134,6 +1243,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
 
               {(marketingTemplate==="platform" && (mobileDeskview==='mobile' || mobileDeskview==='desktop'))?<> <div>
                 <img 
+                  draggable="false"
                   src={mobileDeskview=='mobile'?platform:platformDesk} 
                   alt='platformImg' 
                   className= {platformClass}
@@ -1185,6 +1295,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
 
               {(marketingTemplate==="push" && (mobileDeskview==='mobile' || mobileDeskview==='desktop'))?<> <div>
                 <img 
+                draggable="false"
                 src={mobileDeskview=='mobile'?push:pushDesk} 
                 alt='pushImg' 
                 className= {pushClass}

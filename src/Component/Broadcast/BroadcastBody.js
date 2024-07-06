@@ -153,7 +153,7 @@ const BroadcastBody = () => {
                 </div>
             </div>
           </div>
-          <div>
+          <div className='tableCont'>
             <div className="table">
               <table>
                 <tr>
