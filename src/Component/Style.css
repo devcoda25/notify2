@@ -1492,7 +1492,7 @@
 }
 .sampleContentLabel {
     font-size: .7rem;
-    margin-left: 33rem;
+    margin-left: 31.8rem;
 }
 .sampleContentCont p {
     color: rgb(61, 61, 61);
@@ -2314,6 +2314,9 @@ ul:not(.browser-default) {
     font-weight: 300;
     font-size: .7rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
 }
 .buttonStyleDesk{
     color: rgb(14, 113, 195);;
@@ -2497,6 +2500,15 @@ ul:not(.browser-default) {
 }
 .identification .Dropdown-placeholder{
     text-align: start;
+}
+.VisitImg img{
+    width: .6rem;
+    height: .6rem;
+}
+.checkedStyle{
+    padding-bottom: 1rem;
+    margin-bottom: .5rem;
+    border-bottom: 1px solid #f0f5f5;
 }
 
 

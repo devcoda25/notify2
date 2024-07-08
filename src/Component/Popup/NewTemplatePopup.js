@@ -7,7 +7,7 @@ import { MdStrikethroughS } from "react-icons/md";
 import { MdLink } from "react-icons/md";
 import img from '../Assets/img/mediaImg.png';
 import vdo from '../Assets/img/mediaVdo.png';
-import document from '../Assets/img/mediaDocument.png';
+import document from '../Assets/img/mediaDocument.png'
 import AttributePopup from './AttributePopup';
 import { FaArrowLeft } from "react-icons/fa6";
 import Dropdown from 'react-dropdown';
@@ -29,6 +29,9 @@ import { CiDesktop } from "react-icons/ci";
 import evMarket from '../Assets/img/evmarket.svg'
 import { IoMdSettings } from "react-icons/io";
 import { yellow } from '@mui/material/colors';
+import visit from '../Assets/img/visit.png';
+import copy from '../Assets/img/copy.png';
+import reply from '../Assets/img/reply.png';
 
 const NewTemplatePopup = ({ onClose }) => {
 
@@ -195,7 +198,7 @@ const NewTemplatePopup = ({ onClose }) => {
   const [securityRecommandChecked, setSecurityRecommandChecked] = useState(true);
   const [securityRecommandCheckedFooter, setSecurityRecommandCheckedFooter] = useState(true)
   let visitWebSiteObj ={type:"Visit Us",visitData:[{visitWebsite:buttonSelectOption[0].value,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""}]}
-  let copyOfferCodeObj ={type:"copy",coperData:[]}
+  let copyOfferCodeObj ={type:"copy", coperData:[]}
   let quickReplybj ={type:"reply",ReplyData:[]}
   const [visitWebSiteArray, setVisitWebSiteArray] = useState([visitWebSiteObj,copyOfferCodeObj,quickReplybj]);
   let [chatReplyBox, setChatReplyBox] = useState([]);
@@ -210,6 +213,7 @@ const NewTemplatePopup = ({ onClose }) => {
     setHtmlTextBody('');
     setHtmlTextFooter('');
     setHtmlTextSample('');
+    setFilePreview('');
     setMarketingTemplate(value);
     if(value!=="whatsapp"){
       setVisitWebSiteArray([visitWebSiteObj,copyOfferCodeObj,quickReplybj])
@@ -477,6 +481,13 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
   let emailZoomClass= `${mobileDeskview == 'mobile'? 'previewEmailBody': 'previewEmailBodyDesk'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     emailZoomClass += ' emailZoomClassZoom';
+  }
+
+  const handleSampleCont = (e)=>{
+      let copyText = verificationCodeText;
+      let newValue = e.target.value || "{{1}}"; // Use {{1}} if the input is empty
+      copyText = copyText.replace("{{1}}", newValue);
+      setHtmlTextBody(copyText);
   }
   
 
@@ -802,7 +813,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div>
                       <div>
                         <label className="switch">
-                          <input type="checkbox" checked={isButtonChecked} onChange={()=>{handleButtonToggle(isButtonChecked)}} />
+                          <input type="checkbox" checked={isButtonChecked} className={`${isButtonChecked ? 'checkedStyle' : ''}`} onChange={()=>{handleButtonToggle(isButtonChecked)}} />
                           <span className="slider"></span>
                         </label>
                       </div>
@@ -1072,7 +1083,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
                     <div>
                       <label className='BtnTextLabel'>0/25</label><br/>
-                      <input type='text' placeholder='Button Text' value={cleanTextSample}  className='btnText' onChange={(event)=>{
+                      <input type='text' placeholder='Button Text' maxLength='25' value={cleanTextSample}  className='btnText' onChange={(event)=>{
                         setHtmlTextSample(event.target.value)
                         setCleanTextSample(event.target.value);
                       }}/>
@@ -1083,12 +1094,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   <p>Just enter sample content here (it doesn’t need to be exact!)</p>
                     <div className="sampleContent">
                       <label className='sampleContentLabel'>0/200</label><br/>
-                      <input type='text' placeholder='Enter content for {{1}}' onChange={(e)=>{
-                        let copyText = verificationCodeText
-                        copyText = copyText.replace("{{1}}", e.target.value);
-                        setHtmlTextBody(copyText)
-                        
-                      }}/>
+                      <input type='text' placeholder='Enter content for {{1}}' maxLength='200' onChange={handleSampleCont}/>
                       <p className='sampleContentLabelP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
                     </div>
                 </div>
@@ -1153,7 +1159,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     
                       </div> :null}
 
-                      { broadcast ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
+                      { broadcast.value ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
                       {filePreview ?<embed src={filePreview} width="800px" height="2100px" />:  <img src={document} alt="document" className="documentVdoImg"/>}
                       
                       </div> :null}
@@ -1170,11 +1176,22 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewFooterStyle"}
                             dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
                           /> : null}
-                            <div className='previewStyleTime'>{currentTime}</div>
+                            <div className={`previewStyleTime ${isButtonChecked ? 'checkedStyle' : ''}`}>{currentTime}</div>
                             {isButtonChecked&&chatReplyBox.length ? <>{
                           chatReplyBox.map((ival)=>{
                             return <>
-                            <div className={chatReply}>{ival.type}</div>
+                            {(ival.type==="Visit Us") && <div className={chatReply}>
+                              <div className='VisitImg'><img src={visit}/></div>
+                              <div>{ival.type}</div>
+                            </div>}
+                            {(ival.type==="copy") && <div className={chatReply}>
+                              <div className='VisitImg'><img src={copy}/></div>
+                              <div>{ival.type}</div>
+                            </div>}
+                            {(ival.type==="reply") && <div className={chatReply}>
+                              <div className='VisitImg'><img src={reply}/></div>
+                              <div>{ival.type}</div>
+                            </div>}
                             </> 
                           })
                         }
@@ -1344,6 +1361,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                            {isButtonChecked&&chatReplyBox.length ? <>{
                           chatReplyBox.map((ival)=>{
                             return <>
+                            {/* {ival.type==="reply" } */}
                             <div className={chatReply}>{ival.type}</div>
                             </>
                           })
