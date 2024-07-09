@@ -1,4 +1,4 @@
-import React, { useState, useRef  } from 'react';
+import React, { useState, useRef, useEffect  } from 'react';
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { GrBold } from "react-icons/gr";
@@ -184,6 +184,7 @@ const NewTemplatePopup = ({ onClose }) => {
 
   const [selectOption, setSelectOption] = useState('IMAGE');
   const [filePreview, setFilePreview] = useState('');
+  const [errorMessageFile, setErrorMessageFile] = useState('');
   const [sampleTemplate, setSampleTemplate] = useState(false);
   const [marketingTemplate, setMarketingTemplate] = useState("whatsapp");
   const [expire, setExpire] = useState(10);
@@ -203,6 +204,8 @@ const NewTemplatePopup = ({ onClose }) => {
   const [visitWebSiteArray, setVisitWebSiteArray] = useState([visitWebSiteObj,copyOfferCodeObj,quickReplybj]);
   let [chatReplyBox, setChatReplyBox] = useState([]);
   const [verificationCodeText, setVerificationCodeText] = useState("{{1}} is your verification code. For your security, do not share this code.");
+  const [buttonCount, setButtonCount] = useState(0);
+  const [visitCont, setVisitCont] = useState('')
 
   const changeMarketingTemplet=(value)=>{
     setCleanText('');
@@ -276,6 +279,8 @@ const NewTemplatePopup = ({ onClose }) => {
 
   const handleOptionChange = (e) => {
     setSelectOption(e.target.value);
+    setFilePreview(''); 
+    setErrorMessageFile('');
   };
 
 
@@ -284,8 +289,25 @@ const NewTemplatePopup = ({ onClose }) => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      let objectUrl = URL.createObjectURL(file)
-      setFilePreview(objectUrl)
+      const fileType = file.type;
+      let isValid = false;
+
+      if (selectOption === 'IMAGE' && (fileType === 'image/jpeg' || fileType === 'image/png')) {
+        isValid = true;
+      } else if (selectOption === 'VIDEO' && fileType === 'video/mp4') {
+        isValid = true;
+      } else if (selectOption === 'DOCUMENT' && fileType === 'application/pdf') {
+        isValid = true;
+      }
+
+      if (isValid) {
+        let objectUrl = URL.createObjectURL(file);
+        setFilePreview(objectUrl);
+        setErrorMessageFile('');
+      } else {
+        setFilePreview('');
+        setErrorMessageFile(`Please select a valid ${selectOption.toLowerCase()} file.`);
+      }
     }
   };
 
@@ -410,6 +432,15 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
     setChatReplyBox(...[chatReplyBox])
 
   };
+ 
+  useEffect(()=>{
+    if(isButtonChecked == false){
+      setButtonCount(0);
+    }
+    else{
+      setButtonCount(buttonCount+1);
+    }
+  }, [isButtonChecked])
 
   const [mobileDeskview, setMobileDeskview] = useState('mobile');
 
@@ -570,7 +601,6 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div>
                     </div>
                   </div>
-                  {console.log(typeValue)}
                   <div className='identification'>
                     <Dropdown
                       id="broadcast"
@@ -581,8 +611,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     />
                   </div>
                 </div>
-                {/* (type == 'Yellow' || type == 'Red' || type == 'Blue' || type == 'Green')  */}
-                {(['Yellow','Red','Blue','Green'].includes(type)) ? <>
+                {type == 'Yellow' || type == 'Blue' || type == 'Green' || type == 'Red' ? <>
                   <div>
                     <div className='poppupRadioCont'>
                       <div>
@@ -631,34 +660,32 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div>
                     </div>
                   </div>
-                  {(marketingTemplate == 'whatsapp' || marketingTemplate == 'sms' || marketingTemplate == 'platform' || marketingTemplate == 'push' || marketingTemplate == 'email')? <>
-                    {marketingTemplate == 'whatsapp' ?
+                  {(type == 'Yellow' || type == 'Blue' || type == 'Green'|| type == 'Red') && marketingTemplate == 'whatsapp' ?<>
                     <div className='paraLinkHr'>
                       <div className='paraLink'>
                         <p>All templates must adhere to WhatsApp's Template Message Guidelines.<a href='https://support.wati.io/l/en/article/d0ewqzh7gv-how-to-avoid-template-message-rejection?_gl=1*10pj2tu*_ga*NjY4NjgyOTg4LjE3MTU3NTA3MTA.*_ga_HYL717ZD73*MTcxNjI2NjI5MS4xNS4xLjE3MTYyNjY0NDkuNTQuMC4w' target="_blank">Click here to read</a></p>
                       </div>
-                    </div>: null }
-                    {marketingTemplate == 'whatsapp' ? 
-                    <div className="poppupBroadcast">
-                    <h5>Notification title</h5>
-                    <p>Highlight your brand here, use images or videos, to stand out</p>
-                    <div className="App">
-                      <div className='BroadcastSelect'>
-                          <Dropdown
-                            id="broadcast"
-                            options={broadcastSelectOption.filter(op => op.value !== broadcast)}
-                            onChange={handleBroadcastOption}
-                            value={broadcast}
-                            placeholder="Select an option"
-                          />
-                      </div>
                     </div>
-                    {broadcast.value == 'text' && 
-                    <div className="titleInput">
-                      <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
-                    </div>}
-                    {broadcast.value == 'media' &&
-                    <div>
+                    <div className="poppupBroadcast">
+                      <h5>Notification title</h5>
+                      <p>Highlight your brand here, use images or videos, to stand out</p>
+                      <div className="App">
+                        <div className='BroadcastSelect'>
+                            <Dropdown
+                              id="broadcast"
+                              options={broadcastSelectOption.filter(op => op.value !== broadcast)}
+                              onChange={handleBroadcastOption}
+                              value={broadcast}
+                              placeholder="Select an option"
+                            />
+                        </div>
+                      </div>
+                      {broadcast.value == 'text' && 
+                      <div className="titleInput">
+                        <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                      </div>}
+                      {broadcast.value == 'media' &&
+                      <div>
                       <div className='imageVdoCont'>
                         <input
                           type="radio"
@@ -677,7 +704,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           checked={selectOption === 'VIDEO'}
                           onChange={handleOptionChange}
                         />
-                        <label htmlFor="video">video</label>
+                        <label htmlFor="video">Video</label>
                         <input
                           type="radio"
                           id="document"
@@ -686,79 +713,86 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           checked={selectOption === 'DOCUMENT'}
                           onChange={handleOptionChange}
                         />
-                        <label htmlFor="document">document</label>
+                        <label htmlFor="document">Document</label>
                       </div>
-                      <div className='dropImg'>  
-                        {selectOption === 'IMAGE' && <div>
-                          <p className='dropImgp'>(Image:.jpeg, .png)</p>
-                          {filePreview ?  <img src={filePreview} alt="Image" className="documentVdoImg"/> :null}
+                      <div className='dropImg'>
+                        {selectOption === 'IMAGE' && (
+                          <div>
+                            <p className='dropImgp'>(Image: .jpeg, .png)</p>
+                            {filePreview && <img src={filePreview} alt="Image" className="documentVdoFile" />}
                             <div className='dropInput'>
-                                <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'/>  
-                                <p>or</p>
-                                <div>
-                                  <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    className="dropInput2"
-                                    onChange={handleFileChange}
-                                  />
-                                  {/* <button onClick={handleClick}>Choose File</button> */}
-                                </div>
+                              <input
+                                className='dropInput1'
+                                type='text'
+                                placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'
+                              />
+                              <p>or</p>
+                              <div>
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  className="dropInput2"
+                                  onChange={handleFileChange}
+                                />
+                              </div>
                             </div>
-                            {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                        
-                        
-                          
-                          </div>}
-                        {selectOption === 'VIDEO' && <div>
-                          <p className='dropImgp'>(Video:.mp4)</p>
+                          </div>
+                        )}
+                        {selectOption === 'VIDEO' && (
+                          <div>
+                            <p className='dropImgp'>(Video: .mp4)</p>
+                            {filePreview && (
+                              <video controls>
+                                <source src={filePreview} type='video/mp4' className='documentVdoFile' />
+                              </video>
+                            )}
                             <div className='dropInput'>
-                                <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'/>  
-                                <p>or</p>
-                                <div>
-                                  <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    className="dropInput2"
-                                    onChange={handleFileChange}
-                                  />
-                                  {/* <button onClick={handleClick}>Choose File</button> */}
-                                </div>
+                              <input
+                                className='dropInput1'
+                                type='text'
+                                placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'
+                              />
+                              <p>or</p>
+                              <div>
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  className="dropInput2"
+                                  onChange={handleFileChange}
+                                />
+                              </div>
                             </div>
-                            {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                          {filePreview ? <video width={100} height={100} >
-                      <source src={filePreview} type='video/mp4' controls/>
-
-                    </video>:  
-                    null}
-                          </div>}
-                        {selectOption === 'DOCUMENT' && <div>
-                          <p className='dropImgp'>(document:.pdf)</p>
+                          </div>
+                        )}
+                        {selectOption === 'DOCUMENT' && (
+                          <div>
+                            <p className='dropImgp'>(Document: .pdf)</p>
+                            {filePreview && (<embed src={filePreview} className='documentVdoFile' />)}
                             <div className='dropInput'>
-                                <input className='dropInput1' type='text' placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'/>  
-                                <p>or</p>
-                                <div>
-                                  <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    className="dropInput2"
-                                    onChange={handleFileChange}
-                                  />
-                                  {/* <button onClick={handleClick}>Choose File</button> */}
-                                </div>
+                              <input
+                                className='dropInput1'
+                                type='text'
+                                placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'
+                              />
+                              <p>or</p>
+                              <div>
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  className="dropInput2"
+                                  onChange={handleFileChange}
+                                />
+                              </div>
                             </div>
-                            {/* <input className='dropInput3' type='text' placeholder='Add Variable'/> */}
-                          {/* <img src={document} alt="Document" /> */}
-                          </div>}
+                          </div>
+                        )}
+                        {errorMessageFile && <p style={{color:'red'}}>{errorMessageFile}</p>}
                       </div>
                     </div>
-    }
-                  </div>:
-                  <div className="titleInput">
-                    <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
-                  </div>}
-                  {(['Yellow','Blue','Green'].includes(type)) ?<>
-                    <div className='poppupBroadcast'>
+      }
+                    </div>
+                    {type != 'Red' ?<>
+                      <div className='poppupBroadcast'>
                       <h5>Body</h5>
                       <p>Make your messages personal using variables like and get more replies!</p>
                       <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
@@ -795,6 +829,332 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             </div>
                         </div>
                       </div>
+                      </div>
+                      <div className='poppupBroadcast'>
+                      <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
+                      <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
+                      <div className="poppupFooterInput">
+                        <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                      </div>
+                      </div>
+                      <div className='poppupButton'>
+                      <div className='poppupButtonDesign'>
+                        <div>
+                          <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Recommended)</span><span className='ButtonCount'>{buttonCount}/7</span></h5>
+                          <p className='poppupButtonDesignP'>Add quick replies and call to actions together for extra engagement!</p>
+                        </div>
+                        <div>
+                          <label className="switch">
+                            <input type="checkbox" checked={isButtonChecked} className={`${isButtonChecked ? 'checkedStyle' : ''}`} onChange={()=>{handleButtonToggle(isButtonChecked)}} />
+                            <span className="slider"></span>
+                          </label>
+                        </div>
+                      </div>
+                      {isButtonChecked && (
+                    
+                    visitWebSiteArray.map((ival,index)=>{
+                        return <>
+                        {ival.type ==="Visit Us" && <> 
+                        <div className='visitAfterDelete'>{ival.visitData.length ===0 ? <>
+                          <Dropdown
+                            className='visitWebsiteButton'
+                            options={buttonSelectOption.filter(op => op.value !==buttonSelectOption[0].value)}
+                            onChange={(e)=>{
+                              visitWebSiteArray[index].visitWebsite=e
+                              setVisitWebSiteArray([...visitWebSiteArray])
+                            }}
+                            value={buttonSelectOption[0].value}
+                            placeholder="Select an option"
+                          />
+                          <input className='visitWebsiteButtonAdd'  type='button' value='Add button'  onClick={()=>{
+                                visitWebSiteArray[index].visitData.push({visitWebsite:buttonSelectOption[0].value,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""})
+                                chatReplyBox.push({type:"Visit Us"})
+                                setVisitWebSiteArray([...visitWebSiteArray])
+                                setChatReplyBox([...chatReplyBox])
+                              }}/>
+                        </>: null}</div>
+                        {ival.visitData.map((vmap,vindex)=>{
+                          let {visitWebsite,visitUsInput,staticDropdown,visithttpInput}=vmap
+                            return <div className='visitWebsiteButtonsCont'>
+                            <div className='visitWebsiteButtonCont'>
+                              <div className='visitWebsiteSelectCont'>
+                                <Dropdown
+                                  className='visitWebsiteButton'
+                                  options={buttonSelectOption.filter(op => op.value !== visitWebsite)}
+                                  onChange={(e)=>{
+                                    visitWebSiteArray[index].visitWebsite=e
+                                    setVisitWebSiteArray([...visitWebSiteArray])
+                                  }}
+                                  value={visitWebsite}
+                                  placeholder="Select an option"
+                                />
+                                  <div className='visitUsCont'>
+                                    <div className='visitUsConts'>
+                                      <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
+                                        visitWebSiteArray[index].visitUsInput=e.target.value
+                                        setVisitWebSiteArray([...visitWebSiteArray])
+                                        setVisitCont(e.target.value)
+                                      }}/>
+                                    </div>
+                                    <div className='deleteIcon' onClick={()=>{
+                                      visitWebSiteArray[index].visitData.splice(vindex,1)
+                                      chatReplyBox.splice(index,1)
+                                      setVisitWebSiteArray([...visitWebSiteArray])
+                                      setChatReplyBox([...chatReplyBox])
+                                      setButtonCount(buttonCount-1)
+                                    }}>
+                                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
+                                        <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
+                                      </svg>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    {vindex ==0 && ival.visitData.length < 3?  <input className='visitWebsiteButtonAdd'  type='button' value='Add button'  onClick={()=>{
+                                      let optsel =buttonSelectOption[0].value
+                                      if(visitWebSiteArray[index].visitData.length ==2){
+                                        optsel =buttonSelectOption[1].value
+                                      }
+                                      visitWebSiteArray[index].visitData.push({visitWebsite:optsel,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""})
+                                      chatReplyBox.push({type:"Visit Us"})
+                                      setVisitWebSiteArray([...visitWebSiteArray])
+                                      setChatReplyBox([...chatReplyBox])
+                                      setButtonCount(buttonCount+1)
+                                    }}/>:null}
+                                  </div>
+                              </div>
+                              <div className='visitHttpCont'>
+                                <div className='staticDropdown'>
+                                  <Dropdown
+                                    className='staticButton'
+                                    options={buttonStaticOption.filter(op => op.value !== staticDropdown)}
+                                    onChange={(e)=>{
+                                      visitWebSiteArray[index].staticDropdown=e
+                                      setVisitWebSiteArray([...visitWebSiteArray])
+                                    }}
+                                    value={staticDropdown}
+                                    placeholder="Select an option"
+                                  />
+                                </div>
+                                <div>
+                                  <input className='visithttpInput' value={visithttpInput}  type='text' placeholder='https://www.wati.io' onChange={(e)=>{
+                                    visitWebSiteArray[index].visithttpInput=e.target.value
+                                    setVisitWebSiteArray([...visitWebSiteArray])
+                                  }}/>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                        })}
+                        
+                        </>}
+
+                        {ival.type ==="copy" ? <> 
+                          <div className='copyOfferCodeButtonCont'>
+                            <input className='visitWebsiteInput'  type='text' placeholder='Copy offer code' value={""} disabled/>
+                          <div>
+                            {visitWebSiteArray[index].coperData.length === 0 ?   <input className='visitWebsiteButtonAdd'  type='button' value='Add button' onClick={()=>{
+                              visitWebSiteArray[index].coperData.push({copyCouponCode:"",copyOfferCode:""})
+                              chatReplyBox.push({type:"copy"})
+                              setVisitWebSiteArray([...visitWebSiteArray])
+                              setChatReplyBox([...chatReplyBox])
+                              setButtonCount(buttonCount+1)
+                            }}/>: null}
+                          </div>
+                          {visitWebSiteArray[index].coperData.map((cmap)=>{
+                            let {copyCouponCode,copyOfferCode}=cmap
+                          return <div className='copyOfferCont'>
+                            <input className='copyOfferInput'  type='text' placeholder='Copy offer code' value={copyOfferCode} disabled/>
+                            <input className='copyCouponInput'  type='text' placeholder='Enter coupon code to copy' value={copyCouponCode} onChange={(e)=>{
+                                visitWebSiteArray[index].visithttpInput=e.target.value
+                                setVisitWebSiteArray([...visitWebSiteArray])
+                            }}/>
+                          </div>
+                          })}
+                          {visitWebSiteArray[index].coperData.length ? <>
+                            <div className='deleteIcon' onClick={()=>{
+                                    visitWebSiteArray[index].coperData.splice(0,1)
+                                    chatReplyBox.splice(index,1)
+                                    setVisitWebSiteArray([...visitWebSiteArray])
+                                    setChatReplyBox([...chatReplyBox])
+                                    setButtonCount(buttonCount-1)
+                                    }}>
+                                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
+                                <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
+                              </svg>
+                            </div>
+                          </> : null}
+                        </div>
+                        </>:null}                   
+
+                        {ival.type ==="reply" ? <div className='quickRepliesButtonCont'>
+
+                    <input className='visitWebsiteInput' value={"Quick replies"}  type='text' placeh
+                    older='Quick replies' 
+                    disabled
+                    />
+                    
+
+                    {visitWebSiteArray[index].ReplyData.map((cmap,cindex)=>{
+                    return<div className='replyCont'>
+                      <input className='copyOfferInput' value={cmap.buttonText}  type='text' placeh
+                    older='Button text' 
+                    placeholder='Button Text'
+                    disabled
+                    onChange={(e)=>{
+                    visitWebSiteArray[index].ReplyData=e.target.value
+                    setVisitWebSiteArray([...visitWebSiteArray])
+              }}/>
+              
+                  <div className='deleteIcon' onClick={()=>{
+                                      visitWebSiteArray[index].ReplyData.splice(cindex,1)
+                                      chatReplyBox.splice(index,1)
+                                      setVisitWebSiteArray([...visitWebSiteArray])
+                                      setChatReplyBox([...chatReplyBox])
+                                      setButtonCount(buttonCount-1)
+                                    }}>
+                                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
+                                        <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
+                                      </svg>
+                                    </div>
+                          </div>
+                    })}
+                          <div>
+                            {visitWebSiteArray[index].ReplyData.length < 3 ?    <input className='visitWebsiteButtonAdd' type='button' value='Add button' onClick={()=>{
+                              visitWebSiteArray[index].ReplyData.push({buttonText:""})
+                              chatReplyBox.push({type:"reply"})
+                              setVisitWebSiteArray([...visitWebSiteArray])
+                              setChatReplyBox([...chatReplyBox])
+                              setButtonCount(buttonCount+1)
+                              
+                            }}/> : null}
+                        
+
+                          </div>
+                        </div> : null}
+                        
+                        </>
+                      }) 
+                        )}
+                      </div>
+                    </>:<>
+                      <div className='poppupBroadcast'>
+                      <h5>Body</h5>
+                      <p>Content for authentication message templates can’t be edited. You can add/remove additional content from the option below</p>
+                      {/* <div className="poppupBodyInputCont">
+                        <p>Add variable</p>
+                      </div> */}
+                      <div className='poppupBodyInput'>
+                        <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' disabled value={cleanTextBody} onChange={(e)=>{
+                          handleTextBodyChange(e.target.value)
+                        }}></textarea>
+                        <div  className='textAreaInputIcons'>
+                          <input type='text' disabled/>
+                            <div className='poppupBodyInputIcons'>
+                              <div>
+                                <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
+                              </div>
+                              <div>
+                                <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
+                              </div>
+                              <div>
+                                <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
+                              </div>
+                              <div>
+                                <MdStrikethroughS className='poppupBodyInputIcon'/>
+                              </div>
+                              <div>
+                                <MdLink className='poppupBodyInputIcon'/>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div className='ui checked checkbox'>
+                        <input  checked={securityRecommandChecked} type="checkbox" className='hidden' onChange={(event)=>{
+                          let dummyFooterTest ="{{1}} is your verification code."
+                          if(event.target.checked)
+                            {
+                              dummyFooterTest="{{1}} is your verification code. For your security, do not share this code."
+                            }
+                          setCleanTextBody(`${dummyFooterTest}`);
+                          setHtmlTextBody(`${dummyFooterTest}`);
+                          setSecurityRecommandChecked(event.target.checked)
+                        }}/>
+                        <label className='addSecurity'>Add security recommendation</label>
+                      </div>
+                      </div>
+                      <div className='poppupBroadcast'>
+                      <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
+                      <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
+                      <div className="poppupFooterInput">
+                        <input type='text' placeholder='Enter Text' disabled value={cleanTextFooter} onChange={(e)=>{
+                          handleTextFooterChange(e.target.value)
+                        }}/>
+                      </div>
+                      <div className='ui checked checkbox'>
+                        <input checked={securityRecommandCheckedFooter} type="checkbox"  className='hidden' onChange={(e)=>{
+                          let dummyFooter = ''
+                          if(e.target.checked){
+                            dummyFooter = `This code expires in ${expire} minutes.`
+                          }
+                          setCleanTextFooter(`${dummyFooter}`);
+                          setHtmlTextFooter(`${dummyFooter}`);
+                          setSecurityRecommandCheckedFooter(e.target.checked)
+                        }} />
+                        <label className='expirtyTime'>Include expiry time</label>
+                      </div>
+                      {securityRecommandCheckedFooter == true && <div>
+                        <label className='expires'>Expires in</label><br/>
+                        <input type='number' value={expire} className='expireInput' onChange={(event)=>{
+                          let timertext =`This code expires in ${event.target.value} minutes.`
+                          setCleanTextFooter(timertext)
+                          setExpire(event.target.value)
+                          setHtmlTextFooter(timertext);
+                        }}/>
+                      </div>}
+                      </div>
+                      <div className='poppupButton'>
+                          <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
+                          <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
+                          <div>
+                            <label className='BtnTextLabel'>0/25</label><br/>
+                            <input type='text' placeholder='Button Text' maxLength='25' value={cleanTextSample}  className='btnText' onChange={(event)=>{
+                              setHtmlTextSample(event.target.value)
+                              setCleanTextSample(event.target.value);
+                            }}/>
+                          </div>
+                      </div>
+                      <div className='sampleContentCont'>
+                        <h5>Sample Content</h5>
+                        <p>Just enter sample content here (it doesn’t need to be exact!)</p>
+                          <div className="sampleContent">
+                            <label className='sampleContentLabel'>0/200</label><br/>
+                            <input type='text' placeholder='Enter content for {{1}}' maxLength='200' onChange={handleSampleCont}/>
+                            <p className='sampleContentLabelP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
+                          </div>
+                      </div>
+                    </>}
+                  </>:null}
+                  {(type == 'Yellow' || type == 'Blue' || type == 'Green'|| type == 'Red') && marketingTemplate == 'sms' ? <>
+                    <div className='poppupBroadcast'>
+                      <h5>Body</h5>
+                      <p>Make your messages personal using variables like and get more replies!</p>
+                      <button onClick={handleOpenAttributePop} color="primary" class="sc-jIBlqr kZhSXp button-addVariable" data-testid="messageTemplate-addTemplateModal-body-addVariable-button" target="_self">Add Variable</button>
+                      {isAttributePopOpen && <AttributePopup onClose={handleCloseAttributePop} ChooseVariable={(vname)=>{
+                        let copyHtmlTextBody = htmlTextBody
+                        copyHtmlTextBody+=`{{${vname}}}`
+                        setHtmlTextBody(copyHtmlTextBody)
+                        setCleanTextBody(copyHtmlTextBody);
+                        setIsAttributePopOpen(false);
+
+                      }} />}
+                      <div className='poppupBodyInput'>
+                        <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                          handleTextBodyChange(e.target.value)
+                        }}></textarea>
+                      </div>
                     </div>
                     <div className='poppupBroadcast'>
                       <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
@@ -803,309 +1163,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                       </div>
                     </div>
-
-                    {(marketingTemplate == 'whatsapp' || marketingTemplate == 'platform') && 
-                    <div className='poppupButton'>
-                    <div className='poppupButtonDesign'>
-                      <div>
-                        <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Recommended)</span></h5>
-                        <p className='poppupButtonDesignP'>Add quick replies and call to actions together for extra engagement!</p>
-                      </div>
-                      <div>
-                        <label className="switch">
-                          <input type="checkbox" checked={isButtonChecked} className={`${isButtonChecked ? 'checkedStyle' : ''}`} onChange={()=>{handleButtonToggle(isButtonChecked)}} />
-                          <span className="slider"></span>
-                        </label>
-                      </div>
-                    </div>
-                    {isButtonChecked && (
-                  
-                  visitWebSiteArray.map((ival,index)=>{
-                      return <>
-                      {ival.type ==="Visit Us" && <> 
-                      <div className='visitAfterDelete'>{ival.visitData.length ===0 ? <>
-                        <Dropdown
-                          className='visitWebsiteButton'
-                          options={buttonSelectOption.filter(op => op.value !==buttonSelectOption[0].value)}
-                          onChange={(e)=>{
-                            visitWebSiteArray[index].visitWebsite=e
-                            setVisitWebSiteArray([...visitWebSiteArray])
-                          }}
-                          value={buttonSelectOption[0].value}
-                          placeholder="Select an option"
-                        />
-                        <input className='visitWebsiteButtonAdd'  type='button' value='Add button'  onClick={()=>{
-                              visitWebSiteArray[index].visitData.push({visitWebsite:buttonSelectOption[0].value,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""})
-                              chatReplyBox.push({type:"Visit Us"})
-                              setVisitWebSiteArray([...visitWebSiteArray])
-                              setChatReplyBox([...chatReplyBox])
-                            }}/>
-                      </>: null}</div>
-                      {ival.visitData.map((vmap,vindex)=>{
-                        let {visitWebsite,visitUsInput,staticDropdown,visithttpInput}=vmap
-                          return <div className='visitWebsiteButtonsCont'>
-                          <div className='visitWebsiteButtonCont'>
-                            <div className='visitWebsiteSelectCont'>
-                              <Dropdown
-                                className='visitWebsiteButton'
-                                options={buttonSelectOption.filter(op => op.value !== visitWebsite)}
-                                onChange={(e)=>{
-                                  visitWebSiteArray[index].visitWebsite=e
-                                  setVisitWebSiteArray([...visitWebSiteArray])
-                                }}
-                                value={visitWebsite}
-                                placeholder="Select an option"
-                              />
-                                <div className='visitUsCont'>
-                                  <div className='visitUsConts'>
-                                    <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' disabled onChange={(e)=>{
-                                      visitWebSiteArray[index].visitUsInput=e.target.
-                                      setVisitWebSiteArray([...visitWebSiteArray])
-                                    }}/>
-                                  </div>
-                                  <div className='deleteIcon' onClick={()=>{
-                                    visitWebSiteArray[index].visitData.splice(vindex,1)
-                                    chatReplyBox.splice(index,1)
-                                    setVisitWebSiteArray([...visitWebSiteArray])
-                                    setChatReplyBox([...chatReplyBox])
-                                  }}>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
-                                      <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
-                                    </svg>
-                                  </div>
-                                </div>
-                                <div>
-                                  {vindex ==0 && ival.visitData.length < 3?  <input className='visitWebsiteButtonAdd'  type='button' value='Add button'  onClick={()=>{
-                                    let optsel =buttonSelectOption[0].value
-                                    if(visitWebSiteArray[index].visitData.length ==2){
-                                      optsel =buttonSelectOption[1].value
-                                    }
-                                    visitWebSiteArray[index].visitData.push({visitWebsite:optsel,visitUsInput:"",staticDropdown:buttonStaticOption[0].value,visithttpInput:""})
-                                    chatReplyBox.push({type:"Visit Us"})
-                                    setVisitWebSiteArray([...visitWebSiteArray])
-                                    setChatReplyBox([...chatReplyBox])
-                                  }}/>:null}
-                                </div>
-                            </div>
-                            <div className='visitHttpCont'>
-                              <div className='staticDropdown'>
-                                <Dropdown
-                                  className='staticButton'
-                                  options={buttonStaticOption.filter(op => op.value !== staticDropdown)}
-                                  onChange={(e)=>{
-                                    visitWebSiteArray[index].staticDropdown=e
-                                    setVisitWebSiteArray([...visitWebSiteArray])
-                                  }}
-                                  value={staticDropdown}
-                                  placeholder="Select an option"
-                                />
-                              </div>
-                              <div>
-                                <input className='visithttpInput' value={visithttpInput}  type='text' placeholder='https://www.wati.io' onChange={(e)=>{
-                                  visitWebSiteArray[index].visithttpInput=e.target.value
-                                  setVisitWebSiteArray([...visitWebSiteArray])
-                                }}/>
-                              </div>
-                            </div>
-                          </div>
-                          </div>
-                      })}
-                      
-                      </>}
-
-                      {ival.type ==="copy" ? <> 
-                        <div className='copyOfferCodeButtonCont'>
-                          <input className='visitWebsiteInput'  type='text' placeholder='Copy offer code' value={""} disabled/>
-                        <div>
-                          {visitWebSiteArray[index].coperData.length === 0 ?   <input className='visitWebsiteButtonAdd'  type='button' value='Add button' onClick={()=>{
-                            visitWebSiteArray[index].coperData.push({copyCouponCode:"",copyOfferCode:""})
-                            chatReplyBox.push({type:"copy"})
-                            setVisitWebSiteArray([...visitWebSiteArray])
-                            setChatReplyBox([...chatReplyBox])
-                          }}/>: null}
-                        </div>
-                        {visitWebSiteArray[index].coperData.map((cmap)=>{
-                          let {copyCouponCode,copyOfferCode}=cmap
-                        return <div className='copyOfferCont'>
-                          <input className='copyOfferInput'  type='text' placeholder='Copy offer code' value={copyOfferCode} disabled/>
-                          <input className='copyCouponInput'  type='text' placeholder='Enter coupon code to copy' value={copyCouponCode} onChange={(e)=>{
-                              visitWebSiteArray[index].visithttpInput=e.target.value
-                              setVisitWebSiteArray([...visitWebSiteArray])
-                          }}/>
-                        </div>
-                        })}
-                        {visitWebSiteArray[index].coperData.length ? <>
-                          <div className='deleteIcon' onClick={()=>{
-                                  visitWebSiteArray[index].coperData.splice(0,1)
-                                  chatReplyBox.splice(index,1)
-                                  setVisitWebSiteArray([...visitWebSiteArray])
-                                  setChatReplyBox([...chatReplyBox])
-                                  }}>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
-                              <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
-                            </svg>
-                          </div>
-                        </> : null}
-                      </div>
-                      </>:null}
-                  
-
-                {ival.type ==="reply" ? <div className='quickRepliesButtonCont'>
-
-                  <input className='visitWebsiteInput' value={"Quick replies"}  type='text' placeh
-                  older='Quick replies' 
-                  disabled
-                  />
-                  
-
-                  {visitWebSiteArray[index].ReplyData.map((cmap,cindex)=>{
-                  return<div className='replyCont'>
-                    <input className='copyOfferInput' value={cmap.buttonText}  type='text' placeh
-                  older='Button text' 
-                  placeholder='Button Text'
-                  disabled
-                  onChange={(e)=>{
-                  visitWebSiteArray[index].ReplyData=e.target.value
-                  setVisitWebSiteArray([...visitWebSiteArray])
-            }}/>
-            
-                <div className='deleteIcon' onClick={()=>{
-                                    visitWebSiteArray[index].ReplyData.splice(cindex,1)
-                                    chatReplyBox.splice(index,1)
-                                    setVisitWebSiteArray([...visitWebSiteArray])
-                                    setChatReplyBox([...chatReplyBox])
-                                  }}>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333" className='deleteIconHover'></path>
-                                      <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round" className='deleteIconHover'></path>
-                                    </svg>
-                                  </div>
-                        </div>
-                  })}
-                        <div>
-                          {visitWebSiteArray[index].ReplyData.length < 1 ?    <input className='visitWebsiteButtonAdd' type='button' value='Add button' onClick={()=>{
-                            visitWebSiteArray[index].ReplyData.push({buttonText:""})
-                            chatReplyBox.push({type:"reply"})
-                            setVisitWebSiteArray([...visitWebSiteArray])
-                            setChatReplyBox([...chatReplyBox])
-                            
-                          }}/> : null}
-                      
-
-                        </div>
-                      </div> : null}
-                      
-                      </>
-                    }) 
-                      )}
-                    </div>}
-
-                  </>:<>
-                  <div className='poppupBroadcast'>
-                    <h5>Body</h5>
-                    <p>Content for authentication message templates can’t be edited. You can add/remove additional content from the option below</p>
-                    {/* <div className="poppupBodyInputCont">
-                      <p>Add variable</p>
-                    </div> */}
-                    <div className='poppupBodyInput'>
-                      <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' disabled value={cleanTextBody} onChange={(e)=>{
-                        handleTextBodyChange(e.target.value)
-                      }}></textarea>
-                      <div  className='textAreaInputIcons'>
-                        <input type='text' disabled/>
-                          <div className='poppupBodyInputIcons'>
-                            <div>
-                              <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
-                            </div>
-                            <div>
-                              <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
-                            </div>
-                            <div>
-                              <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
-                            </div>
-                            <div>
-                              <MdStrikethroughS className='poppupBodyInputIcon'/>
-                            </div>
-                            <div>
-                              <MdLink className='poppupBodyInputIcon'/>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                    <div className='ui checked checkbox'>
-                      <input  checked={securityRecommandChecked} type="checkbox" className='hidden' onChange={(event)=>{
-                        let dummyFooterTest ="{{1}} is your verification code."
-                        if(event.target.checked)
-                          {
-                            dummyFooterTest="{{1}} is your verification code. For your security, do not share this code."
-                          }
-                        setCleanTextBody(`${dummyFooterTest}`);
-                        setHtmlTextBody(`${dummyFooterTest}`);
-                        setSecurityRecommandChecked(event.target.checked)
-                      }}/>
-                      <label className='addSecurity'>Add security recommendation</label>
-                    </div>
-                </div>
-                  <div className='poppupBroadcast'>
-                    <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
-                    <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
-                    <div className="poppupFooterInput">
-                      <input type='text' placeholder='Enter Text' disabled value={cleanTextFooter} onChange={(e)=>{
-                        handleTextFooterChange(e.target.value)
-                      }}/>
-                    </div>
-                    <div className='ui checked checkbox'>
-                      <input checked={securityRecommandCheckedFooter} type="checkbox"  className='hidden' onChange={(e)=>{
-                        let dummyFooter = ''
-                        if(e.target.checked){
-                          dummyFooter = `This code expires in ${expire} minutes.`
-                        }
-                        setCleanTextFooter(`${dummyFooter}`);
-                        setHtmlTextFooter(`${dummyFooter}`);
-                        setSecurityRecommandCheckedFooter(e.target.checked)
-                      }} />
-                      <label className='expirtyTime'>Include expiry time</label>
-                    </div>
-                    {securityRecommandCheckedFooter == true && <div>
-                      <label className='expires'>Expires in</label><br/>
-                      <input type='number' value={expire} className='expireInput' onChange={(event)=>{
-                        let timertext =`This code expires in ${event.target.value} minutes.`
-                        setCleanTextFooter(timertext)
-                        setExpire(event.target.value)
-                        setHtmlTextFooter(timertext);
-                      }}/>
-                    </div>}
-                </div>
-                <div className='poppupButton'>
-                    <h5>Buttons <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
-                    <p>Basic authentication with quick setup. Your customers copy and paste the code into your app.</p>
-                    <div>
-                      <label className='BtnTextLabel'>0/25</label><br/>
-                      <input type='text' placeholder='Button Text' maxLength='25' value={cleanTextSample}  className='btnText' onChange={(event)=>{
-                        setHtmlTextSample(event.target.value)
-                        setCleanTextSample(event.target.value);
-                      }}/>
-                    </div>
-                </div>
-                <div className='sampleContentCont'>
-                  <h5>Sample Content</h5>
-                  <p>Just enter sample content here (it doesn’t need to be exact!)</p>
-                    <div className="sampleContent">
-                      <label className='sampleContentLabel'>0/200</label><br/>
-                      <input type='text' placeholder='Enter content for {{1}}' maxLength='200' onChange={handleSampleCont}/>
-                      <p className='sampleContentLabelP'>Make sure not to include any actual user or customer information, and provide only sample content in your examples. <a href='https://developers.facebook.com/docs/whatsapp/message-templates/guidelines' target='_blank'>Learn more</a></p>
-                    </div>
-                </div>
-                  </>}
-                   
-                    <div className='poppupButtons'>
-                      <p className='poppupButtons1'>Save as draft</p>
-                      <p className='poppupButtons2'>Save and Submit</p>
-                    </div>
-                    </> : null }
-
+                  </> : null}
                 </>: null}
               </div>
   
@@ -1147,12 +1205,16 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                  : null}
                   <div className={deskClass}>
                     <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed':"previewStyle"}>
-                      { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
+                      {/* { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
                       <img src={filePreview ? filePreview:img} alt="Image" className="documentVdoImg"/>
-                      </div> :null} 
+                      </div> :null}  */}
+
+                      { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
+                      {filePreview ?<img src={filePreview}/>:  <img src={img} alt="img" className="documentVdoImg"/>}
+                      </div> :null}
 
                       { broadcast.value ==="media"&&selectOption === 'VIDEO' ? <div className='bg-img-div'>
-                        {filePreview ? <video width={100} height={100} controls>
+                        {filePreview ? <video className='documentVdoFile' controls>
                           <source src={filePreview} type='video/mp4'/>
                           Your browser does not support the video tag.
                         </video>:  <img src={vdo} alt="Video" className="documentVdoImg"/>}
@@ -1160,8 +1222,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                       </div> :null}
 
                       { broadcast.value ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
-                      {filePreview ?<embed src={filePreview} width="800px" height="2100px" />:  <img src={document} alt="document" className="documentVdoImg"/>}
-                      
+                      {filePreview ?<embed src={filePreview} className='documentVdoFile' />:  <img src={document} alt="document" className="documentVdoImg"/>}
                       </div> :null}
                   
                         {htmlText ? <div
@@ -1182,7 +1243,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                             return <>
                             {(ival.type==="Visit Us") && <div className={chatReply}>
                               <div className='VisitImg'><img src={visit}/></div>
-                              <div>{ival.type}</div>
+                              <div>{ival.type}{visitCont}</div>
                             </div>}
                             {(ival.type==="copy") && <div className={chatReply}>
                               <div className='VisitImg'><img src={copy}/></div>
@@ -1323,7 +1384,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                     <div className={pushCont}>
                       { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
                       <img src={filePreview ? filePreview:img} alt="Image" className="documentVdoImg"/>
-                      </div> :null} 
+                      </div> :null}      documentVdoImg
 
                       { broadcast.value ==="media"&&selectOption === 'VIDEO' ? <div className='bg-img-div'>
                         {filePreview ? <video width={100} height={100} controls>

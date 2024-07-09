@@ -1713,8 +1713,8 @@ ul:not(.browser-default) {
 .switch {
     position: relative;
     display: inline-block;
-    width: 2.2rem;
-    height: 1.3rem;
+    width: 2.3rem;
+    height: 1.28rem;
 }
   
   .switch input {
@@ -1751,7 +1751,7 @@ ul:not(.browser-default) {
   }
   
   input:checked + .slider:before {
-    transform: translateX(18px);
+    transform: translateX(19px);
   }
 .poppupButtonDesign{
     display: flex;
@@ -2317,6 +2317,7 @@ ul:not(.browser-default) {
     display: flex;
     justify-content: center;
     gap: .5rem;
+    margin-bottom: .9rem;
 }
 .buttonStyleDesk{
     color: rgb(14, 113, 195);;
@@ -2477,9 +2478,14 @@ ul:not(.browser-default) {
     margin-bottom: .9rem;
 }
 .documentVdoImg{
+    width: 75px;
+    height: 100%;
+}
+.documentVdoFile{
     width: 200px;
     height: 100%;
 }
+
 .identification .Dropdown-control{
     background-color: rgb(246 246 255);
     border: none;
@@ -2510,6 +2516,17 @@ ul:not(.browser-default) {
     margin-bottom: .5rem;
     border-bottom: 1px solid #f0f5f5;
 }
+.ButtonCount{
+    border: 1px solid #23a455;
+    background: #23a455;
+    color: white;
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .2rem;
+    border-radius: 1rem;
+    margin-left: .3rem;
+}
+
 
 
 }
