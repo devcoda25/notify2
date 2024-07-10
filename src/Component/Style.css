@@ -757,8 +757,10 @@
 .poppupRadioCont p {
     text-align: start;
     font-size: .7rem;
-    font-weight: 700;
     color: rgb(63, 63, 63);
+}
+.selectMarketing{
+    font-weight: 700;
 }
 .market-radio__button {
     border: 1px solid rgb(211, 211, 211);
@@ -936,6 +938,18 @@
     width: 99%;
     resize: none;
 }
+.poppupBodyInputSms textarea{
+    background-color: rgb(245, 246, 250);
+    border: none;
+    border-radius: .5rem;
+    width: -webkit-fill-available;
+    margin-bottom: 0.9rem;
+    /* padding-top: 2.5rem; */
+    outline: none;
+    height: 10rem;
+    width: 99%;
+    resize: none;
+}
 .poppupFooterInput input {
     padding: .5rem;
     margin-left: .1rem;
@@ -1008,8 +1022,6 @@
 }
 .previewStyleExtra{
     margin-top: 2.5rem;
-    overflow: auto;
-    /* height: 22rem; */min-height: .9rem;
 }
 .previewStyleTime {
     color: #7a7777;
@@ -1999,6 +2011,8 @@ ul:not(.browser-default) {
     /* overflow: auto; */
     top: 14rem;
     left: 40.5rem;
+    height: 4.9rem;
+    min-height: 24rem;
 }
 .MobileScreenSmsDesk{
     background-color: transparent;
@@ -2483,7 +2497,7 @@ ul:not(.browser-default) {
 }
 .documentVdoFile{
     width: 200px;
-    height: 100%;
+    height: 150px;
 }
 
 .identification .Dropdown-control{
@@ -2935,6 +2949,9 @@ ul:not(.browser-default) {
     .input-icon-wrapper1{
         position: relative;
     }
+    .tableUpdate{
+        width: 16%;
+    }
     .msgContL{
         width: 13%;
     }
@@ -2969,6 +2986,9 @@ ul:not(.browser-default) {
         padding-bottom: 3rem;
         display: flex;
         flex-wrap: wrap;
+    }
+    .tableUpdate{
+        width: 22%;
     }
     .msgContRLeft {
         width: 90%;
