@@ -3019,12 +3019,14 @@ ul:not(.browser-default) {
         left: 40rem;
     }
 }
+
 @media only screen and (max-width: 1330px){
     .poppupSubmit {
         top: 26.5rem;
         left: 50rem;
     }
 }
+
 @media only screen and (max-width: 1064px){
     .poppupSubmit {
         top: 25rem;
