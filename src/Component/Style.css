@@ -2338,6 +2338,9 @@ ul:not(.browser-default) {
     font-weight: 300;
     font-size: .4rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: .3rem;
 }
 .DeskScreenSms {
     background-color: transparent;
@@ -2505,6 +2508,7 @@ ul:not(.browser-default) {
     border: none;
     width: 30%;
     font-size: .8rem;
+    padding: 8px 8px 8px 10px;
 }
 .identification .Dropdown-menu{
     width: 30%;
@@ -2521,9 +2525,23 @@ ul:not(.browser-default) {
 .identification .Dropdown-placeholder{
     text-align: start;
 }
-.VisitImg img{
+.DeskScreen .previewStyleTime{
+    font-size: .4rem;
+}
+.previewContZoomed .previewStyleTime{
+    font-size: .8rem;
+}
+.MobileScreen .VisitImg img{
     width: .6rem;
     height: .6rem;
+}
+.VisitImg img{
+    width: .3rem;
+    height: .3rem;
+}
+.VisitImgDesk img{
+    width: .7rem;
+    height: .7rem;
 }
 .checkedStyle{
     padding-bottom: 1rem;

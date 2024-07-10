@@ -255,21 +255,21 @@ const NewTemplatePopup = ({ onClose }) => {
 
     // setTypeValue(selectedCategory.value);
     let choosevalue = selectedCategory.value;
-    if( choosevalue === "Red" ){
-    let dummyFooterTest = verificationCodeText
-     setCleanTextBody(`${dummyFooterTest}`);
-     setHtmlTextBody(`${dummyFooterTest}`);
+    // if( choosevalue === "Red" ){
+    // let dummyFooterTest = verificationCodeText
+    //  setCleanTextBody(`${dummyFooterTest}`);
+    //  setHtmlTextBody(`${dummyFooterTest}`);
  
-     let dummyFooter = `This code expires in ${expire} minutes.`
-      setCleanTextFooter(dummyFooter)
-      setHtmlTextFooter(dummyFooter)
-    }
-    else{
-      setCleanTextBody('');
-      setHtmlTextBody('');
-      setCleanTextFooter('');
-      setHtmlTextFooter('');
-    }
+    //  let dummyFooter = `This code expires in ${expire} minutes.`
+    //   setCleanTextFooter(dummyFooter)
+    //   setHtmlTextFooter(dummyFooter)
+    // }
+    // else{
+    //   setCleanTextBody('');
+    //   setHtmlTextBody('');
+    //   setCleanTextFooter('');
+    //   setHtmlTextFooter('');
+    // }
      
   };
 
@@ -2456,15 +2456,15 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           chatReplyBox.map((ival)=>{
                             return <>
                             {(ival.type==="Visit Us") && <div className={chatReply}>
-                              <div className='VisitImg'><img src={visit}/></div>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={visit}/></div>
                               <div>{ival.type}{visitCont}</div>
                             </div>}
                             {(ival.type==="copy") && <div className={chatReply}>
-                              <div className='VisitImg'><img src={copy}/></div>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={copy}/></div>
                               <div>{ival.type}</div>
                             </div>}
                             {(ival.type==="reply") && <div className={chatReply}>
-                              <div className='VisitImg'><img src={reply}/></div>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={reply}/></div>
                               <div>{ival.type}</div>
                             </div>}
                             </> 
@@ -2574,11 +2574,23 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         {isButtonChecked&&chatReplyBox.length ? <>{
                           chatReplyBox.map((ival)=>{
                             return <>
-                            <div className={chatReply}>{ival.type}</div>
-                            </>
+                            {(ival.type==="Visit Us") && <div className={chatReply}>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={visit}/></div>
+                              <div>{ival.type}{visitCont}</div>
+                            </div>}
+                            {(ival.type==="copy") && <div className={chatReply}>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={copy}/></div>
+                              <div>{ival.type}</div>
+                            </div>}
+                            {(ival.type==="reply") && <div className={chatReply}>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={reply}/></div>
+                              <div>{ival.type}</div>
+                            </div>}
+                            </> 
                           })
                         }
                         </> : null}
+                        
                       </div>
                     </div>
                   </div>
