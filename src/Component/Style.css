@@ -2448,9 +2448,11 @@ ul:not(.browser-default) {
 .titleZoomed{
     font-size: .8rem;
     width: 101%;
+    margin-bottom: .7rem;
 }
 .bodyZoomed{
     font-size: 1rem;
+    margin-bottom: .7rem;
 }
 .footerZoomed{
     font-size: .9rem;

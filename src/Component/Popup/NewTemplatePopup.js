@@ -205,6 +205,8 @@ const NewTemplatePopup = ({ onClose }) => {
   const [verificationCodeText, setVerificationCodeText] = useState("{{1}} is your verification code. For your security, do not share this code.");
   const [buttonCount, setButtonCount] = useState(0);
   const [visitCont, setVisitCont] = useState('')
+  const [isButtonChecked, setIsButtonChecked] = useState(false);
+
 
   const changeMarketingTemplet=(value)=>{
     setCleanText('');
@@ -218,7 +220,9 @@ const NewTemplatePopup = ({ onClose }) => {
     setFilePreview('');
     setSelectOption('IMAGE');
     setBroadcast(broadcastSelectOption[0].value);
+    setIsButtonChecked(false);
     setMarketingTemplate(value);
+    
     if(value!=="whatsapp"){
       setVisitWebSiteArray([visitWebSiteObj,copyOfferCodeObj,quickReplybj])
       setChatReplyBox([])
@@ -238,18 +242,23 @@ const NewTemplatePopup = ({ onClose }) => {
       case 'Red':
         setTypeValue(Red);
         setIdentification(Red[0]);
+        setMarketingTemplate("sms")
+        // setMarketingTemplate("platform")
         break;
       case 'Blue':
         setTypeValue(Blue);
         setIdentification(Blue[0]);
+        setMarketingTemplate("platform")
         break;
       case 'Green':
         setTypeValue(Green);
         setIdentification(Green[0]);
+        setMarketingTemplate("platform")
         break;
       default:
         setTypeValue(Yellow);
         setIdentification(Yellow[0]);
+        setMarketingTemplate("whatsapp")
     }
 
     // setTypeValue(selectedCategory.value);
@@ -437,7 +446,6 @@ let handleButtonOpen = ()=>{
   setButtonOpen(true);
 }
 
-const [isButtonChecked, setIsButtonChecked] = useState(false);
 
   const handleButtonToggle = (checkedtype) => {
     chatReplyBox =[]
@@ -1405,6 +1413,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                                   chatReplyBox.push({type:"Visit Us"})
                                   setVisitWebSiteArray([...visitWebSiteArray])
                                   setChatReplyBox([...chatReplyBox])
+                                  setButtonCount(buttonCount+1)
                                 }}/>
                           </>: null}</div>
                           {ival.visitData.map((vmap,vindex)=>{
