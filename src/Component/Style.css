@@ -2002,6 +2002,9 @@ ul:not(.browser-default) {
     border: none;
     font-size: 1rem;
 }  
+.video{
+    max-height: 200px;
+}
 .MobileScreenSms{
     background-color: transparent;
     width: 20%;
