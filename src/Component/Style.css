@@ -1020,9 +1020,9 @@
     margin-top: .5rem;
     font-family: roboto-light;
 }
-.previewStyleExtra{
+/* .previewStyleExtra{
     margin-top: 2.5rem;
-}
+} */
 .previewStyleTime {
     color: #7a7777;
     font-size: 12px;
@@ -1825,7 +1825,7 @@ ul:not(.browser-default) {
 }
 .quickRepliesButtonCont{
     display: flex;
-    gap:.5rem;
+    gap:.3rem;
     margin-bottom: .5rem;
 }
 .visitWebsiteInput{
@@ -2014,11 +2014,15 @@ ul:not(.browser-default) {
     height: 4.9rem;
     min-height: 24rem;
 }
+.MobileScroll .MobileScreenSms{
+    overflow: auto;
+    height: 2rem;
+}
 .MobileScreenSmsDesk{
     background-color: transparent;
     position: absolute;
     overflow: auto;
-    top: 19.5rem;
+    top: 20.5rem;
     left: 57.5rem;
 }
 .MobileScreenPush{
@@ -2090,7 +2094,7 @@ ul:not(.browser-default) {
     padding: 10px;
     font-size: .9rem;
     font-family: roboto-light;
-    height: 5rem;
+    height: 4rem;
     width: 10rem;
     overflow: auto;
 }
@@ -2126,10 +2130,10 @@ ul:not(.browser-default) {
     font-family: roboto-light;
     height: 3rem;
 }
-.previewEmailTitle{
+.MobileScreenSms .previewEmailTitle{
     border: 1px solid #e9e9e900;
     background-color: #e9e9e900;
-    width: 74%;
+    width: 86%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -2138,9 +2142,11 @@ ul:not(.browser-default) {
     font-family: roboto-light;
     padding: .2rem;
     font-weight: 600;
+    position: absolute;
+    top: 0%;
 }
 .previewEmailTitleZoom{
-    border: 1px solid white;
+    /* border: 1px solid white; */
     background-color: white;
     width: 123%;
     border-radius: .5rem;
@@ -2153,7 +2159,7 @@ ul:not(.browser-default) {
     font-weight: 600;
     margin-top: 2rem;
 }
-.previewEmailBody{
+.MobileScreenSms .previewEmailBody{
     border: 1px solid #e9e9e900;
     background-color: #e9e9e900;
     width: 90%;
@@ -2164,9 +2170,10 @@ ul:not(.browser-default) {
     font-size: .9rem;
     font-family: roboto-light;
     padding: .5rem;
-    margin-top: 3.5rem;
     height: 17rem;
     overflow: auto;
+    position: absolute;
+    top: 18%;
 }
 .previewEmailBodyDesk{
     border: 1px solid white;
@@ -2342,14 +2349,44 @@ ul:not(.browser-default) {
     justify-content: center;
     gap: .3rem;
 }
-.DeskScreenSms {
+.DeskScreenSms .previewEmailTitle {
     background-color: transparent;
-    width: 30%;
+    width: 25%;
     height: 18rem;
     position: absolute;
     margin-left: 9rem;
     top: 14.1rem;
     left: 38.5rem;
+    word-break: break-word;
+}
+.DeskScreenSms .previewEmailBodyDesk {
+    background-color: transparent;
+    width: 26%;
+    height: 8rem;
+    position: absolute;
+    margin-left: 9rem;
+    top: 14.5rem;
+    left: 38.5rem;
+}
+.emailPreviewContZoom .emailZoomClassZoom{
+    background-color: transparent;
+    width: 54%;
+    height: 18rem;
+    position: absolute;
+    margin-left: 9rem;
+    top: 21.5rem;
+    left: 10.5rem;
+    transition: .5s;
+}
+.emailPreviewContZoom .previewEmailTitleZoom{
+    background-color: transparent;
+    width: 54%;
+    height: 18rem;
+    position: absolute;
+    margin-left: 9rem;
+    top: 17rem;
+    left: 10.5rem;
+    transition: .5s;
 }
 .DeskScreen .previewTextStyle{
     font-size: .4rem;
@@ -2390,18 +2427,17 @@ ul:not(.browser-default) {
     font-size: .3rem;
 }   
 .zoomed {
-    transform: scale(1.5);
-    margin-top: 5rem;
+    transform: scale(2.1);
+    margin-top: 11rem;
     margin-left: -36rem;
-    width: 100%;
     transition: .5s;
     cursor: pointer;
 }
 .deskZoom{
     transition: .5s;
     width: 23%;
-    top: 17rem;
-    left: 41.5rem;
+    top: 20rem;
+    left: 47.5rem;
     height: 17.3rem;
 }
 .previewContZoomed{
@@ -2440,8 +2476,8 @@ ul:not(.browser-default) {
     text-align: center;
 }
 .platformPreviewZoom{
-    top: 26.5rem;
-    left: 42.5rem;
+    top: 35.5rem;
+    left: 49.6rem;
     transition: .5s;
 }
 .platformPreviewContZoom{
@@ -2452,13 +2488,13 @@ ul:not(.browser-default) {
     height: 3rem;
 }
 .pushPreviewZoom {
-    top: 29.5rem;
-    left: 37.5rem;
+    top: 39.5rem;
+    left: 44.5rem;
     width: 27.5%;
 }
 .emailPreviewContZoom{
-    top: 14.2rem;
-    left: 15.5rem;
+    top: 17.2rem;
+    left: 12rem;
     transition: .5s;
 }
 .chatReplyBoxZoom{
@@ -2493,6 +2529,7 @@ ul:not(.browser-default) {
 .previewTextStyle{
     font-size: .7rem;
     margin-bottom: .9rem;
+    text-align: start;
 }
 .documentVdoImg{
     width: 75px;
@@ -2554,7 +2591,7 @@ ul:not(.browser-default) {
     color: white;
     font-size: .7rem;
     font-weight: 600;
-    padding: .2rem;
+    padding: .2rem .5rem;
     border-radius: 1rem;
     margin-left: .3rem;
 }
@@ -2658,16 +2695,16 @@ ul:not(.browser-default) {
         left: 38.5rem;
     }
     .deskZoom{
-        left: 39.5rem;
+        left: 46.5rem;
         width: 24%;
     }
     .platformPreviewZoom{
-        top: 25.5rem;
-        left: 40.5rem;
+        top: 35.5rem;
+        left: 49rem;
     }
     .pushPreviewZoom {
-        left: 36.5rem;
-        top: 30rem;
+        left: 43.5rem;
+        top: 39rem;
     }
     .pushContZoom {
         height: 3rem;
@@ -2676,8 +2713,8 @@ ul:not(.browser-default) {
         left: 37.5rem;
     }
     .emailPreviewContZoom {
-        top: 14rem;
-        left: 15.5rem;
+        top: 17rem;
+        left: 11.5rem;
     }
 }
 
@@ -2733,8 +2770,8 @@ ul:not(.browser-default) {
         left: 38.5rem;
     }
     .pushPreviewZoom {
-        top: 30rem;
-        left: 36.5rem;
+        top: 40rem;
+        left: 44.5rem;
     }
 }
 
@@ -2824,6 +2861,26 @@ ul:not(.browser-default) {
     .previewPlatformPopupCont p {
         font-size: .4rem;
     }
+    .DeskScreenSms .previewEmailTitle {
+        left: 35.5rem;
+    }
+    .DeskScreenSms .previewEmailBodyDesk {
+        background-color: transparent;
+        width: 26%;
+        height: 8rem;
+        position: absolute;
+        margin-left: 9rem;
+        top: 14rem;
+        left: 35.5rem;
+    }
+    .emailPreviewContZoom .previewEmailTitleZoom {
+        left: 8.5rem;
+    }
+    .emailPreviewContZoom .previewEmailBodyDesk {
+        left: 8.5rem;
+        top: 21.5rem;
+    }
+    
     .DeskScreenPush {
         top: 21rem;
         left: 51.8rem;
@@ -2832,22 +2889,22 @@ ul:not(.browser-default) {
         top: 18rem;
         left: 36rem;
     }
-    .deskZoom{
-        left: 37.5rem;
+    .deskZoom {
+        left: 43.5rem;
         width: 23%;
         height: 16rem;
     }
     .platformPreviewZoom {
-        top: 24.5rem;
-        left: 37rem;
+        top: 33.5rem;
+        left: 44rem;
     }
     .platformPreviewContZoom{
         height: 7rem;
         width: 14rem;
     }
     .pushPreviewZoom {
-        top: 29rem;
-        left: 33.7rem;
+        top: 38rem;
+        left: 40.7rem;
     }
     .DeskScreenSms {
         top: 12rem;
@@ -2884,6 +2941,21 @@ ul:not(.browser-default) {
     .modal-content {
         width: 75%;
         height: 85%;
+    }
+    .DeskScreenSms .previewEmailTitle {
+        left: 37.5rem;
+        top: 14.3rem;
+    }
+    .DeskScreenSms .previewEmailBodyDesk {
+        left: 37.5rem;
+    }
+    .emailPreviewContZoom .previewEmailTitleZoom {
+        left: 14.5rem;
+        top: 14.5rem;
+    }
+    .emailPreviewContZoom .previewEmailBodyDesk {
+        left: 14.5rem;
+        top: 17.5rem;
     }
     .dropInput2 {
         width: 60%;
@@ -2925,11 +2997,12 @@ ul:not(.browser-default) {
         cursor: pointer;
     }
     .deskZoom{
-        left: 40.5rem;
+        top: 17rem;
+        left: 43.5rem;
     }
     .platformPreviewZoom {
         top: 26rem;
-        left: 41rem;
+        left: 40.5rem;
     }
     .pushPreviewZoom {
         top: 30rem;
