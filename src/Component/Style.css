@@ -620,17 +620,6 @@
     .previousNxtCont{
         cursor: pointer;
     }
-    .modal-content {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        width: 73%;
-        height: 85%;
-        overflow-y: scroll;
-        position: relative;
-    }
     .popupNav {
         display: flex;
         justify-content: space-between;
@@ -2179,7 +2168,7 @@ ul:not(.browser-default) {
     top: 18%;
 }
 .previewEmailBodyDesk{
-    border: 1px solid white;
+    /* border: 1px solid white; */
     background-color: white;
     width: 80%;
     border-radius: .5rem;
@@ -2538,9 +2527,9 @@ ul:not(.browser-default) {
     width: 75px;
     height: 100%;
 }
-.documentVdoFile{
-    /* width: 200px; */
-    height: 150px;
+.documentVdoFile {
+    max-width: 100%;
+    min-height: 124px;
 }
 
 .identification .Dropdown-control{

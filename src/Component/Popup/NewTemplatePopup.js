@@ -185,9 +185,7 @@ const NewTemplatePopup = ({ onClose }) => {
   const [filePreview, setFilePreview] = useState('');
   const [errorMessageFile, setErrorMessageFile] = useState('');
   const [sampleTemplate, setSampleTemplate] = useState(false);
-  console.log(identification);
   const [marketingTemplate, setMarketingTemplate] = useState("whatsapp");
-  console.log(marketingTemplate);
   const [expire, setExpire] = useState(10);
   const [copyOffer, setcopyOffer] = useState('Copy offer code');
   const [buttonText, setButtonText] = useState("");
@@ -2394,13 +2392,12 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                   >
                     <CiMobile2 />
                   </div>
-                  {marketingTemplate !== 'sms'?
                   <div 
                   className={`previewBorder2 ${mobileDeskview === 'desktop' ? 'active' : null}`} 
                   onClick={() => handleMobileDeskView('desktop')}
                 >
                   <CiDesktop />
-                </div> : null }
+                </div>
                 </div>
               </div>
               {(marketingTemplate==="whatsapp" && (mobileDeskview==='mobile' || mobileDeskview==='desktop'))?<> <div className={mobileDeskview == 'desktop' ? 'zoom': null}>
