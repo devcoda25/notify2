@@ -1279,7 +1279,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                               <div>
                                 <p className='dropImgp'>(Video: .mp4)</p>
                                 {filePreview && (
-                                  <video controls>
+                                  <video controls className='video'>
                                     <source src={filePreview} type='video/mp4' className='documentVdoFile' />
                                   </video>
                                 )}

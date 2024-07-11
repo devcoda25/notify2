@@ -2539,7 +2539,7 @@ ul:not(.browser-default) {
     height: 100%;
 }
 .documentVdoFile{
-    width: 200px;
+    /* width: 200px; */
     height: 150px;
 }
 
