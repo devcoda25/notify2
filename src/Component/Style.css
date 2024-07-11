@@ -2477,7 +2477,7 @@ ul:not(.browser-default) {
     width: 14rem;
 }
 .pushContZoom {
-    height: 3rem;
+    height: 4rem;
 }
 .pushPreviewZoom {
     top: 39.5rem;
@@ -2506,7 +2506,7 @@ ul:not(.browser-default) {
 }
 .previewBodyStyle{
     font-size: .9rem;
-    margin-bottom: .9rem;
+    margin-bottom: .4rem;
 }
 .previewFooterStyle{
     font-size: .7rem;
@@ -2520,8 +2520,13 @@ ul:not(.browser-default) {
 }
 .previewTextStyle{
     font-size: .7rem;
-    margin-bottom: .9rem;
+    margin-bottom: .4rem;
     text-align: start;
+}
+.previewTextStylePush{
+    font-size: .4rem;
+    margin-bottom: .4rem;
+    text-align: center;
 }
 .documentVdoImg{
     width: 75px;
@@ -2676,9 +2681,6 @@ ul:not(.browser-default) {
         left: 54.5rem;
         top: 22rem;
     }
-    .previewStylePushDesk{
-        height: 3rem;
-    }
     .pushCarCont p {
         font-size: .5rem;
     }
@@ -2697,9 +2699,6 @@ ul:not(.browser-default) {
     .pushPreviewZoom {
         left: 43.5rem;
         top: 39rem;
-    }
-    .pushContZoom {
-        height: 3rem;
     }
     .DeskScreenSms {
         left: 37.5rem;
@@ -2762,7 +2761,7 @@ ul:not(.browser-default) {
         left: 38.5rem;
     }
     .pushPreviewZoom {
-        top: 40rem;
+        top: 39rem;
         left: 44.5rem;
     }
 }
@@ -2895,7 +2894,7 @@ ul:not(.browser-default) {
         width: 14rem;
     }
     .pushPreviewZoom {
-        top: 38rem;
+        top: 37rem;
         left: 40.7rem;
     }
     .DeskScreenSms {
@@ -2997,7 +2996,7 @@ ul:not(.browser-default) {
         left: 40.5rem;
     }
     .pushPreviewZoom {
-        top: 30rem;
+        top: 29rem;
         left: 36rem;
     }
     .DeskScreenSms {

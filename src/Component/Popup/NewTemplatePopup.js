@@ -1605,7 +1605,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                           <h5>Notification title</h5>
                           <p>Highlight your brand here, use images or videos, to stand out</p>
                           <div className="titleInput">
-                            <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                            <input maxLength='20' type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                           </div>
                         </div>
                         <div className='poppupBroadcast'>
@@ -1621,7 +1621,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
 
                       }} />}
                       <div className='poppupBodyInput'>
-                        <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                        <textarea rows="10" cols="70" maxLength='20' placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
                           handleTextBodyChange(e.target.value)
                         }}></textarea>
                         <div className='textAreaInputIcons'>
@@ -1650,7 +1650,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                         <h5>Footer <span className='poppupBroadcastTitleSpan'>(Optional)</span></h5>
                         <p>Footers are great to add any disclaimers or to add a thoughtful PS</p>
                         <div className="poppupFooterInput">
-                          <input type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
+                          <input maxLength='20' type='text' placeholder='Enter Text' value={cleanTextFooter} onChange={handleTextFooterChange}/>
                         </div>
                         </div>
                         {/* <div className='poppupButton'>
@@ -2665,7 +2665,7 @@ const [isButtonChecked, setIsButtonChecked] = useState(false);
                               <div>
                                 <div>
                                   {htmlText ? <div
-                                    className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStyle"}
+                                    className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStylePush"}
                                     dangerouslySetInnerHTML={{ __html: htmlText }}
                                   />:null}
                                   {htmlTextBody ? <div
