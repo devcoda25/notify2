@@ -242,8 +242,8 @@ const NewTemplatePopup = ({ onClose }) => {
       case 'Red':
         setTypeValue(Red);
         setIdentification(Red[0]);
-        setMarketingTemplate("sms")
-        // setMarketingTemplate("platform")
+        // setMarketingTemplate("sms")
+        setMarketingTemplate("platform")
         break;
       case 'Blue':
         setTypeValue(Blue);
