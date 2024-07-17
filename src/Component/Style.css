@@ -675,14 +675,14 @@
     .bodyPoppupR .selectImgs {
         margin-left: -1rem;
         margin-right: -1rem;
-        width: 306px;
-        height: 543px;
+        width: 333px;
+        height: 560px;
     }
     .bodyPoppupRPreview {
         font-size: 1rem;
     }
     .bodyPoppupL::-webkit-scrollbar {
-        width: 8px;
+        width: 9px;
       }
       
     .bodyPoppupL::-webkit-scrollbar-track {
@@ -695,13 +695,13 @@
     }
     
   .modal-content::-webkit-scrollbar {
-    width: 10px;
+    width: 9px;
   }
   .modal-content::-webkit-scrollbar-track {
     border-radius: 10px; 
   }
   .modal-content::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: rgb(161, 161, 161); 
     border-radius: 10px;
   }
   ::-webkit-scrollbar {
@@ -959,7 +959,7 @@
 }
 .modal-content {
     background: white;
-    padding: 20px;
+    padding: 20px 0px 0px 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -1000,6 +1000,16 @@
     margin-top: -28.5rem;
     margin-left: 9.5rem;
 }
+.MobileScreenPlat{
+    background-color: transparent;
+    width: 47%;
+    /* height: 18rem; */
+    position: absolute;
+    /* margin-left: 9.5rem; */
+    overflow: auto;
+    top: -30rem;
+    left: 9.5rem;
+}
 .MobileScreen .previewStyle {
     border: 1px solid white;
     background-color: white;
@@ -1039,13 +1049,13 @@
 }
 .MobileScreen {
     background-color: transparent;
-    width: 45%;
+    width: 47%;
     /* height: 18rem; */
     position: absolute;
     /* margin-left: 9.5rem; */
     overflow: auto;
     top: -8rem;
-    left: 9.5rem;
+    left: 9rem;
 }
 .DeskScreen {
     background-color: transparent;
@@ -2016,19 +2026,25 @@ ul:not(.browser-default) {
 }
 .MobileScreenSms{
     background-color: transparent;
-    width: 20%;
-    height: 18rem;
+    width: 47%;
+    /* height: 18rem; */
     position: absolute;
-    margin-left: 9rem;
-    /* overflow: auto; */
-    top: 14rem;
-    left: 40.5rem;
-    height: 4.9rem;
-    min-height: 24rem;
-}
-.MobileScroll .MobileScreenSms{
+    /* margin-left: 9.5rem; */
     overflow: auto;
-    height: 2rem;
+    top: -9rem;
+    left: 9rem;
+}
+.MobileScreenSms .previewStyle {
+    border: 1px solid white;
+    background-color: white;
+    width: 78%;
+    border-radius: .5rem;
+    text-align: start;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 10px;
+    margin-top: .5rem;
+    font-family: roboto-light;
 }
 .MobileScreenSmsDesk{
     background-color: transparent;
@@ -2439,7 +2455,7 @@ ul:not(.browser-default) {
     font-size: .3rem;
 }   
 .zoomed {
-    transform: scale(2.1);
+    transform: scale(2);
     margin-top: 11rem;
     margin-left: -36rem;
     transition: .5s;

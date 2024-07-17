@@ -508,7 +508,7 @@ let handleButtonOpen = ()=>{
     deskClass += ' deskZoom';
   }
  
-  let platformPreviewClass = `${mobileDeskview=='mobile'?'MobileScreenSms':'MobileScreenSmsDesk'}`
+  let platformPreviewClass = `${mobileDeskview=='mobile'?'MobileScreenPlat':'MobileScreenSmsDesk'}`
   if (mobileDeskview === 'desktop' && isZoomed) {
     platformPreviewClass += ' platformPreviewZoom';
   }
