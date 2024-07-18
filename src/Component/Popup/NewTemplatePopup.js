@@ -207,7 +207,16 @@ const NewTemplatePopup = ({ onClose }) => {
   const [buttonCount, setButtonCount] = useState(0);
   const [visitCont, setVisitCont] = useState('')
   const [isButtonChecked, setIsButtonChecked] = useState(false);
+  const [textareaCount, setTextareaCount] = useState(0);
 
+  useEffect(() => {
+    setTextareaCount(cleanTextBody.length);
+  }, [cleanTextBody]);
+
+  const textareaStyle = {
+    color: textareaCount > 1024 ? 'red' : 'black',
+    border: textareaCount > 1024 ? '2px solid red' : ''
+  };
 
   const changeMarketingTemplet=(value)=>{
     setCleanText('');
@@ -1348,27 +1357,35 @@ let handleButtonOpen = ()=>{
                         setIsAttributePopOpen(false);
 
                       }} />}
+                      <div style={{color:'red', marginBottom:'1rem'}}>
+                        {textareaCount > 1024 ? "Body can't be empty or more than 1024 characters"  : null}
+                      </div>
                       <div className='poppupBodyInput'>
-                        <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                        <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' style={textareaStyle} value={cleanTextBody} onChange={(e)=>{
                           handleTextBodyChange(e.target.value)
                         }}></textarea>
                         <div className='textAreaInputIcons'>
-                          <input type='text' disabled/>
-                            <div className='poppupBodyInputIcons'>
-                              <div>
-                                <MdOutlineEmojiEmotions className='poppupBodyInputIcon'/>
+                          {/* <input type='text' disabled/> */}
+                            <div className='poppupBodyDiv'>
+                              <div className='poppupBodyInputIcons'>
+                                <div>
+                                  <MdOutlineEmojiEmotions className='poppupBodyInputIcon poppupBodyInputIconColor'/>
+                                </div>
+                                <div>
+                                  <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconColor poppupBodyInputIcon'/>
+                                </div>
+                                <div>
+                                  <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconColor poppupBodyInputIconColor'/>
+                                </div>
+                                <div>
+                                  <MdStrikethroughS className='poppupBodyInputIcon poppupBodyInputIconColor'/>
+                                </div>
+                                <div>
+                                  <MdLink className='poppupBodyInputIcon poppupBodyInputIconColor'/>
+                                </div>
                               </div>
-                              <div>
-                                <GrBold onClick={toggleBold} style={{ cursor: 'pointer', fontWeight: isBold ? 'bold' : 'normal'}} className='poppupBodyInputIconGrBold poppupBodyInputIcon'/>
-                              </div>
-                              <div style={{fontSize:'.85rem'}}>
-                                <FaItalic onClick={toggleItalic} style={{cursor:'pointer', fontStyle: isItalic ? 'italic' : 'normal' }} className='poppupBodyInputIconFaItalic poppupBodyInputIcon'/>
-                              </div>
-                              <div>
-                                <MdStrikethroughS className='poppupBodyInputIcon'/>
-                              </div>
-                              <div>
-                                <MdLink className='poppupBodyInputIcon'/>
+                              <div className='poppupBodyInputCont'>
+                                  <h5>{textareaCount}/1024</h5>
                               </div>
                             </div>
                         </div>

@@ -896,17 +896,33 @@
     padding-left: 27.7rem;
     width: 15.7%;
 }
+.poppupBodyInputCont{
+    display: flex;
+    gap: 0.5rem;
+    position: absolute;
+    top: -0.2rem;
+    left: 39rem;
+}
 .poppupBodyInputIcons {
     display: flex;
     gap: 0.5rem;
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: .5rem;
+    left: .5rem;
     color: gray;
     align-items: center;
+    background-color: white;
+    width: 96.5%;
+    height: 2rem;
+    padding: .15rem;
+    border-radius: .2rem;
 }
 .poppupBodyInputIcon{
     cursor: pointer;
+    font-size: 1.5rem;
+}
+.poppupBodyInputIconColor{
+    fill: rgb(51, 51, 51);
 }
 .poppupBodyInput textarea {
     background-color: rgb(245, 246, 250);
