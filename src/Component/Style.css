@@ -973,9 +973,9 @@
     text-align: center;
     width: 75%;
     height: 90%;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .poppupButtons .poppupButtons1 {
     border: 1px solid rgb(35, 164, 85);
@@ -2642,6 +2642,10 @@ ul:not(.browser-default) {
     border-radius: 1rem;
     margin-left: .3rem;
 }
+.footerCount{
+    margin-left: 42rem;
+    margin-bottom: 0.3rem;
+}
 
 
 
@@ -2683,9 +2687,16 @@ ul:not(.browser-default) {
         top: -30rem;
         left: 8.7rem;
     }
+    .poppupBodyInputCont{
+        top: -0.2rem;
+        left: 30rem;
+    }
     .MobileScreenSms {
         width: 49%;
         left: 9rem;
+    }
+    .footerCount {
+        margin-left: 32rem;
     }
     .msgContL{
         width: 11%;
@@ -2880,6 +2891,13 @@ ul:not(.browser-default) {
     .msgContL a {
         font-size: .9rem;
     }
+    .poppupBodyInputCont {
+        top: -0.2rem;
+        left: 28rem;
+    }
+    .footerCount {
+        margin-left: 30.5rem;
+    }
     .MobileScreenEmail .previewEmailTitle {
         width: 44%;
         left: 7.5rem;
@@ -3012,6 +3030,9 @@ ul:not(.browser-default) {
     .nav .rnav{
         width: 26%;
     }
+    .footerCount {
+        margin-left: 32rem;
+    }
     .nav a {
         font-size: 0.85rem;
     }
@@ -3020,6 +3041,10 @@ ul:not(.browser-default) {
     }
     .input-icon-wrapper1{
         position: relative;
+    }
+    .poppupBodyInputCont {
+        top: -0.2rem;
+        left: 30rem;
     }
     .MobileScreenEmail .previewEmailTitle {
         left: 8.5rem;
