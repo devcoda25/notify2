@@ -146,7 +146,7 @@ const NewTemplatePopup = ({ onClose }) => {
 
 
   const broadcastSelectOption = [
-    { value: 'none', label: 'None' },
+    { value: 'None', label: 'None' },
     { value: 'text', label: 'Text' },
     { value: 'media', label: 'Media' },
   ];
@@ -171,6 +171,7 @@ const NewTemplatePopup = ({ onClose }) => {
   const [selectedStaticOption, setSelectedStaticOption] = useState(buttonStaticOption[0].value);
   const [cleanText, setCleanText] = useState('');
   let [cleanTextBody, setCleanTextBody] = useState('');
+  {console.log(cleanTextBody.length)};
   const [cleanTextFooter, setCleanTextFooter] = useState('');
   const [cleanTextSample, setCleanTextSample] = useState('');
   const [htmlText, setHtmlText] = useState('');
@@ -528,7 +529,7 @@ let handleButtonOpen = ()=>{
     pushCont += ' pushContZoom';
   }
 
-  let emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenSms': 'DeskScreenSms'}`
+  let emailPreviewCont = `${mobileDeskview == 'mobile'? 'MobileScreenEmail': 'DeskScreenSms'}`
    if (mobileDeskview === 'desktop' && isZoomed) {
     emailPreviewCont += ' emailPreviewContZoom';
   }
