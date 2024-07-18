@@ -22,24 +22,7 @@
     src: url(../Component//Assets//font/Roboto-Thin.ttf);
 }
   
-@media screen and (max-width: 1920px), screen and (max-height: 990px) {
-    .modal-content {
-        background: white;
-        padding: 20px 0px 0px 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        width: 75%;
-        /* height: 90%; */
-        /* overflow-y: scroll; */
-        position: relative;
-    }
-}
-@media screen and (max-width: 1920px), screen and (min-height: 990px) {
-
-/* } */
-
-/* @media only screen and (max-width: 1920px) { */
+@media only screen and (max-width: 1920px) {
     .nav{
         display: flex;
         justify-content: space-between;
@@ -974,8 +957,9 @@
     text-align: center;
     width: 75%;
     height: 90%;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     position: relative;
+    overflow: hidden;
 }
 .poppupButtons .poppupButtons1 {
     border: 1px solid rgb(35, 164, 85);
