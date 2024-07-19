@@ -31,6 +31,7 @@ import { IoMdSettings } from "react-icons/io";
 import visit from '../Assets/img/visit.png';
 import copy from '../Assets/img/copy.png';
 import reply from '../Assets/img/reply.png';
+import call from '../Assets/img/call.png'
 
 const NewTemplatePopup = ({ onClose }) => {
 
@@ -1479,7 +1480,7 @@ let handleButtonOpen = ()=>{
                                
                                     <div className='visitUsCont'>
                                       <div className='visitUsConts'>
-                                        <input className='visitUsInput' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
+                                        <input className='visitUsInput' maxLength='25' value={visitUsInput} type='text' placeholder='Visit Us' onChange={(e)=>{
                                           visitWebSiteArray[index].visitData[vindex].visitUsInput=e.target.value
                                           chatReplyBox[vindex].typedText=e.target.value
                                           setVisitWebSiteArray([...visitWebSiteArray])
@@ -1548,14 +1549,8 @@ let handleButtonOpen = ()=>{
                              
                              {vmap.type==="callPhone" && <>
                                <div>
-                                    <input className='visithttpInput' value={buttonText}  type='text' placeholder='https://www.wati.io' onChange={(e)=>{
+                                    <input className='callhttpInput' value={buttonText}  type='text' placeholder='https://www.wati.io' onChange={(e)=>{
                                       visitWebSiteArray[index].buttonText=e.target.value
-                                      setVisitWebSiteArray([...visitWebSiteArray])
-                                    }}/>
-                                  </div>
-                                  <div>
-                                    <input className='visithttpInput' value={countryCodeText}  type='text' placeholder='https://www.wati.io' onChange={(e)=>{
-                                      visitWebSiteArray[index].countryCodeText=e.target.value
                                       setVisitWebSiteArray([...visitWebSiteArray])
                                     }}/>
                                   </div>
@@ -2346,8 +2341,8 @@ let handleButtonOpen = ()=>{
                               <div> {ival.typedText}</div>
                             </div>}
                             {(ival.type==="callPhone") && <div className={chatReply}>
-                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={visit}/></div>
-                              <div>Call phone {visitCont}</div>
+                              <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={call}/></div>
+                              <div>{ival.typedText}</div>
                             </div>}
                             {(ival.type==="copy") && <div className={chatReply}>
                               <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={copy}/></div>

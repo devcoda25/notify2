@@ -21,7 +21,9 @@
     font-family: roboto-thin;
     src: url(../Component//Assets//font/Roboto-Thin.ttf);
 }
-  
+
+
+
 @media only screen and (max-width: 1920px) {
     .nav{
         display: flex;
@@ -1915,6 +1917,16 @@ ul:not(.browser-default) {
     width: 142%;
     outline: none;
 }
+.callhttpInput{
+    padding: .9rem;
+    border-radius: .3rem;
+    border: 1px solid #fdfdfd;
+    font-size: 1rem;
+    background: rgb(245, 246, 250);
+    width: 45%;
+    outline: none;
+    margin-left: 11.3rem;
+}
 .visithttpInput:hover{
     border: 1px solid #23a455 !important;
 }
@@ -2706,6 +2718,10 @@ ul:not(.browser-default) {
     }
     .portCont {
         padding: 4px 0px;
+    }
+    .callhttpInput{
+        width: 52%;
+        margin-left: 8.8rem;
     }
     .broadcastBodyCont{
         padding-bottom: 3rem;
