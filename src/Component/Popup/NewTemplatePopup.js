@@ -224,7 +224,6 @@ const NewTemplatePopup = ({ onClose }) => {
   }, [cleanTextFooter]);
 
   const footerStyle={
-    // border: footerCount > 60 ? '2px solid red' : null,
     outline: footerCount > 60 ? '2px solid red' : null,
     color: footerCount > 60 ? 'red' : null
   }
