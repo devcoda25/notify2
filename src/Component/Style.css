@@ -903,7 +903,7 @@
     gap: 0.5rem;
     position: absolute;
     top: -0.2rem;
-    left: 39rem;
+    left: 38.7rem;
 }
 .poppupBodyInputIcons {
     display: flex;
@@ -921,10 +921,12 @@
 }
 .poppupBodyInputIcon{
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 .poppupBodyInputIconColor{
     fill: rgb(51, 51, 51);
+    display: flex;
+    align-items: center;
 }
 .poppupBodyInput textarea {
     background-color: rgb(245, 246, 250);
@@ -975,9 +977,9 @@
     text-align: center;
     width: 75%;
     height: 90%;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     position: relative;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 .poppupButtons .poppupButtons1 {
     border: 1px solid rgb(35, 164, 85);
@@ -1024,7 +1026,7 @@
 .MobileScreen .previewStyle {
     border: 1px solid white;
     background-color: white;
-    width: 78%;
+    /* width: 78%; */
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -1036,7 +1038,7 @@
 .DeskScreen .previewStyle {
     border: 1px solid white;
     background-color: white;
-    width: 77%;
+    width: 83%;
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -1058,24 +1060,36 @@
 .MobileScroll{
     position: relative;
 }
+
 .MobileScreen {
-    background-color: transparent;
-    width: 43%;
-    /* height: 18rem; */
+    width: 100%;
     position: absolute;
-    /* margin-left: 9.5rem; */
-    overflow: auto;
-    top: -9rem;
-    left: 13rem;
+    bottom: 20px;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    padding: 5px;
+    height: auto;
+    max-height: 23rem;
+    overflow-y: auto;
+}
+.MobileScrollWpMobile {
+    width: 16rem;
+    height: 24rem;
+    position: relative;
+    overflow: hidden;
+    top: -27rem;
+    left: 12.7rem;
 }
 .DeskScreen {
-    background-color: transparent;
-    width: 56%;
+    width: 96%;
     position: absolute;
-    overflow: auto;
-    top: -12rem;
-    left: 15rem;
-    height: 10.8rem;
+    bottom: 20px;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    padding: 5px;
+    height: auto;
+    max-height: 15rem;
+    overflow-y: auto;
 }
 .titleInput input {
     padding: .7rem;
@@ -2046,20 +2060,27 @@ ul:not(.browser-default) {
 .video{
     max-height: 200px;
 }
-.MobileScreenSms{
-    background-color: transparent;
-    width: 42%;
-    /* height: 18rem; */
+.MobileScreenSms {
+    width: 89%;
     position: absolute;
-    /* margin-left: 9.5rem; */
-    overflow: auto;
-    top: -10rem;
-    left: 13rem;
+    bottom: 20px;
+    word-wrap: break-word;
+    padding: 5px;
+    height: auto;
+    max-height: 23rem;
+    overflow-y: auto;
+}
+.MobileScrollSms {
+    width: 16.8rem;
+    height: 10rem;
+    position: relative;
+    top: -15rem;
+    left: 12.8rem;
 }
 .MobileScreenSms .previewStyle {
     border: 1px solid white;
     background-color: white;
-    width: 78%;
+    /* width: 78%; */
     border-radius: .5rem;
     text-align: start;
     white-space: pre-wrap;
@@ -2485,12 +2506,11 @@ ul:not(.browser-default) {
     transition: .5s;
     cursor: pointer;
 }
-.deskZoom{
+.deskZoom {
     transition: .5s;
     width: 100%;
-    top: -7rem;
-    left: -14rem;
-    height: 17.3rem;
+    /* height: 32.3rem; */
+    max-height: 29rem;
 }
 .previewContZoomed{
     border: 1px solid white;
@@ -2658,8 +2678,28 @@ ul:not(.browser-default) {
     margin-left: 42rem;
     margin-bottom: 0.3rem;
 }
-
-
+.MobileScrollWpDesk {
+    width: 25rem;
+    height: 15rem;
+    position: relative;
+    overflow: hidden;
+    top: -22rem;
+    left: 14.5rem;
+}
+.MobileScrollWpDeskZoom {
+    transition: .5s;
+    width: 47rem;
+    height: 30rem;
+    position: relative;
+    overflow: hidden;
+    top: -31rem;
+    left: -14.5rem;
+}
+.errorThrow{
+    color: red;
+    margin-bottom: 1rem;
+    font-size: .9rem;
+}
 
 
 }
@@ -2688,8 +2728,32 @@ ul:not(.browser-default) {
         left: 8rem;
     }
     .DeskScreen {
-        top: -10rem;
+        width: 92%;
+        max-height: 11rem;
+    }
+    .MobileScrollWpDesk {
+        width: 20rem;
+        height: 12rem;
+        position: relative;
+        overflow: hidden;
+        top: -17.5rem;
         left: 11.5rem;
+    }
+    .MobileScrollWpDeskZoom {
+        transition: .5s;
+        width: 37rem;
+        height: 23rem;
+        position: relative;
+        overflow: hidden;
+        top: -23rem;
+        left: -12.5rem;
+    }
+    .MobileScrollSms {
+        width: 32rem;
+        height: 10rem;
+        position: relative;
+        top: -15rem;
+        left: -1rem;
     }
     .previewStylePlatform {
         width: 83%;
@@ -2701,7 +2765,7 @@ ul:not(.browser-default) {
     }
     .poppupBodyInputCont{
         top: -0.2rem;
-        left: 30rem;
+        left: 29rem;
     }
     .MobileScreenSms {
         width: 49%;
@@ -2744,8 +2808,11 @@ ul:not(.browser-default) {
         height: 85%;
     }
     .MobileScreen {
-        width: 51%;
-        left: 8.5rem;
+        /* width: 51%;  */
+        left: 0.5rem;
+    }
+    .MobileScrollWpMobile {
+        left: 7.8rem;
     }
     .poppupBodyInput input {
         width: 14%;
@@ -2828,8 +2895,10 @@ ul:not(.browser-default) {
         transition: .5s;
     }
     .deskZoom {
-        top: -8rem;
-        left: -12rem;
+        transition: .5s;
+        width: 100%;
+        /* height: 32.3rem; */
+        max-height: 29rem;
     }
     .zoomed {
         margin-left: -38rem;
@@ -2849,6 +2918,13 @@ ul:not(.browser-default) {
     }
     .msgContL{
         width: 11.5%;
+    }
+    .MobileScrollSms {
+        /* width: 33rem;
+        height: 10rem;
+        position: relative;
+        top: -15rem; */
+        left: -1rem;
     }
     .poppupSubmit {
         left: 58rem;
@@ -2909,7 +2985,18 @@ ul:not(.browser-default) {
     }
     .poppupBodyInputCont {
         top: -0.2rem;
-        left: 28rem;
+        left: 27rem;
+    }
+    .MobileScreenSms {
+        width: 51%;
+        left: 9rem;
+    }
+    .MobileScrollSms {
+        width: 32rem;
+        height: 10rem;
+        position: relative;
+        top: -15rem;
+        left: -1rem;
     }
     .footerCount {
         margin-left: 30.5rem;
@@ -2971,8 +3058,8 @@ ul:not(.browser-default) {
     .dropInput2 {
         width: 62%;
     }
-    .MobileScreen {
-        left: 7.5rem;
+    .MobileScrollWpMobile {
+        left: 6.8rem;
     }
     .MobileScreenPlat{
         left: 8rem;
@@ -3037,6 +3124,21 @@ ul:not(.browser-default) {
         top: 14rem;
         left: 12.5rem;
     }
+    .MobileScrollWpDesk {
+        width: 18rem;
+        height: 12rem;
+        top: -17.5rem;
+        left: 11.5rem;
+    }
+    .MobileScrollWpDeskZoom {
+        transition: .5s;
+        width: 35rem;
+        height: 23rem;
+        position: relative;
+        overflow: hidden;
+        top: -23rem;
+        left: -12.5rem;
+    }
 }
 
 @media only screen and (max-width: 1499px) {
@@ -3060,7 +3162,7 @@ ul:not(.browser-default) {
     }
     .poppupBodyInputCont {
         top: -0.2rem;
-        left: 30rem;
+        left: 29rem;
     }
     .MobileScreenEmail .previewEmailTitle {
         left: 8.5rem;
@@ -3099,8 +3201,8 @@ ul:not(.browser-default) {
     .poppupBodyInput input {
         width: 13.5%;
     }
-    .MobileScreen {
-        left: 8.5rem;
+    .MobileScrollWpMobile {
+        left: 7.5rem;
     }
     .MobileScreenPlat {
         left: 8.8rem;
@@ -3130,13 +3232,13 @@ ul:not(.browser-default) {
         transition: .5s;
         cursor: pointer;
     }
-    .deskZoom {
+    /* .deskZoom {
         transition: .5s;
         width: 78%;
         top: -9rem;
         left: -9rem;
         height: 17.3rem;
-    }
+    } */
     .platformPreviewZoom {
         top: 28rem;
         left: 41rem;
@@ -3158,7 +3260,23 @@ ul:not(.browser-default) {
         top: -17.5rem;
     }
     .DeskScreen {
-        top: -10.5rem;
+        width: 101%;
+        max-height: 11rem;
+    }
+    .MobileScrollWpDeskZoom {
+        transition: .5s;
+        width: 27.5rem;
+        height: 17rem;
+        position: relative;
+        overflow: hidden;
+        top: -20rem;
+        left: -9.5rem;
+    }
+    .deskZoom {
+        transition: .5s;
+        width: 100%;
+        /* height: 32.3rem; */
+        max-height: 29rem;
     }
 }
 
@@ -3198,6 +3316,9 @@ ul:not(.browser-default) {
     }
     .poppupBodyInput input {
         width: 14%;
+    }
+    .MobileScrollWpDeskZoom {
+        top: -19.5rem;
     }
 }
 
