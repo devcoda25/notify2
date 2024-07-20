@@ -1137,7 +1137,7 @@
     border-color: #23a455;
 }
 .dropInput2 {
-    width: 59%;
+    width: 55%;
     background-color: #dee4e4;
     height: 1.4rem;
     outline-color: rgb(35, 164, 85);
@@ -2763,6 +2763,9 @@ ul:not(.browser-default) {
     }
     .input-icon-wrapper1{
         position: relative;
+    }
+    .dropInput2 {
+        width: 60%;
     }
     .textareaSms {
         margin-left: 30rem;
