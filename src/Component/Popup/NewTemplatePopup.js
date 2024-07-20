@@ -152,6 +152,11 @@ const NewTemplatePopup = ({ onClose }) => {
     { value: 'media', label: 'Media' },
   ];
 
+  const broadcastSelectOptionEmail =[
+    { value: 'None', label: 'None' },
+    { value: 'media', label: 'Media' },
+  ]; 
+
   const buttonSelectOption = [
     { value: 'Visit Website', label: 'Visit Website' },
     { value: 'callPhone', label: 'Call Phone' },
@@ -1722,11 +1727,11 @@ let handleButtonOpen = ()=>{
                               setIsAttributePopOpen(false);
 
                             }} />}
-                            <div className='errorThrow'>
+                            {/* <div className='errorThrow'>
                               {textareaCount > 1024 ? "Body can't be empty or more than 1024 characters"  : null}
-                            </div>
+                            </div> */}
                             <div className='poppupBodyInput'>
-                              <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' style={textareaStyle} value={cleanTextBody} onChange={(e)=>{
+                              <textarea rows="10" maxLength='20' cols="70" placeholder='press `control\` to add a variable' style={textareaStyle} value={cleanTextBody} onChange={(e)=>{
                                 handleTextBodyChange(e.target.value)
                               }}></textarea>
                               <div className='textAreaInputIcons'>
@@ -1749,9 +1754,9 @@ let handleButtonOpen = ()=>{
                                         <MdLink className='poppupBodyInputIcon poppupBodyInputIconColor'/>
                                       </div>
                                     </div>
-                                    <div className='poppupBodyInputCont'>
+                                    {/* <div className='poppupBodyInputCont'>
                                         <h5>{textareaCount}/1024</h5>
-                                    </div>
+                                    </div> */}
                                   </div>
                               </div>
                             </div>
@@ -2283,7 +2288,7 @@ let handleButtonOpen = ()=>{
                             <h5>Notification title</h5>
                             <p>Highlight your brand here, use images or videos, to stand out</p>
                             <div className="titleInput">
-                              <input maxLength='60' type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                              <input maxLength='55' type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                             </div>
                           </div>
                           <div className="poppupBroadcast">
@@ -2293,17 +2298,13 @@ let handleButtonOpen = ()=>{
                               <div className='BroadcastSelect'>
                                   <Dropdown
                                     id="broadcast"
-                                    options={broadcastSelectOption.filter(op => op.value !== broadcast)}
+                                    options={broadcastSelectOptionEmail.filter(op => op.value !== broadcast)}
                                     onChange={handleBroadcastOption}
                                     value={broadcast}
                                     placeholder="Select an option"
                                   />
                               </div>
                             </div>
-                            {broadcast.value == 'text' && 
-                            <div className="titleInput">
-                              <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
-                            </div>}
                             {broadcast.value == 'media' &&
                             <div>
                             <div className='imageVdoCont'>
