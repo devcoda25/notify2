@@ -649,7 +649,7 @@
         display: flex;
     }
     .bodyPoppupL {
-        height: 51rem;
+        height: 45rem;
         width: 50%;
         overflow-y: scroll;
         padding-right: 2rem;
@@ -976,7 +976,7 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 75%;
-    height: 90%;
+    height: auto;
     /* overflow-y: scroll; */
     position: relative;
     overflow: hidden;
