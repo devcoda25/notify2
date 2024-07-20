@@ -2288,7 +2288,7 @@ let handleButtonOpen = ()=>{
                             <h5>Notification title</h5>
                             <p>Highlight your brand here, use images or videos, to stand out</p>
                             <div className="titleInput">
-                              <input maxLength='55' type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                              <input maxLength='40' type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                             </div>
                           </div>
                           <div className="poppupBroadcast">
