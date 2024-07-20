@@ -630,7 +630,10 @@ let handleButtonOpen = ()=>{
                     <div className='popupInput'>
                       <div className='selectInputs'>
                         <label>Template Name</label>
-                        <input placeholder='Template Name' type='text'/>
+                        <input
+                          placeholder='Template Name'
+                          type='text'
+                        />
                       </div>
                       <div className="App categoryWhole selectInputs">
                         <label htmlFor="type">Type</label>
@@ -1290,7 +1293,7 @@ let handleButtonOpen = ()=>{
                               {selectOption === 'IMAGE' && (
                                 <div>
                                   <p className='dropImgp'>(Image: .jpeg, .png)</p>
-                                  {filePreview && <img src={filePreview} alt="Image" className="documentVdoFile" />}
+                                  {filePreview && <img src={filePreview} alt="Image" className="documentVdoFileTxt" />}
                                   <div className='dropInput'>
                                     <input
                                       className='dropInput1'
@@ -1661,8 +1664,12 @@ let handleButtonOpen = ()=>{
                             )}
                           </div>
                           <div className='poppupButtons'>
-                            <p className='poppupButtons1'>Save as draft</p>
-                            <p className='poppupButtons2'>Save and Submit</p>
+                            <div>
+                              <p className='poppupButtons1'>Save as draft</p>
+                            </div>
+                            <div>
+                              <p className='poppupButtons2'>Save and submit</p>
+                            </div>
                           </div>
                         </>}
 
@@ -1681,8 +1688,12 @@ let handleButtonOpen = ()=>{
                               setIsAttributePopOpen(false);
 
                             }} />}
+                            <div className='errorThrow'>
+                              {textareaCount > 1024 ? "Body can't be empty or more than 1024 characters"  : null}
+                            </div>
+                            <span className='textareaSms'>{textareaCount}/1024</span>
                             <div className='poppupBodyInputSms'>
-                              <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' value={cleanTextBody} onChange={(e)=>{
+                              <textarea rows="10" cols="70" placeholder='press `control\` to add a variable' style={textareaStyle} value={cleanTextBody} onChange={(e)=>{
                                 handleTextBodyChange(e.target.value)
                               }}></textarea>
                             </div>
@@ -2274,6 +2285,131 @@ let handleButtonOpen = ()=>{
                             <div className="titleInput">
                               <input maxLength='60' type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
                             </div>
+                          </div>
+                          <div className="poppupBroadcast">
+                            <h5>Media</h5>
+                            <p>Highlight your brand here, use images or videos, to stand out</p>
+                            <div className="App">
+                              <div className='BroadcastSelect'>
+                                  <Dropdown
+                                    id="broadcast"
+                                    options={broadcastSelectOption.filter(op => op.value !== broadcast)}
+                                    onChange={handleBroadcastOption}
+                                    value={broadcast}
+                                    placeholder="Select an option"
+                                  />
+                              </div>
+                            </div>
+                            {broadcast.value == 'text' && 
+                            <div className="titleInput">
+                              <input type="text" value={cleanText} onChange={handleTextChange} placeholder="Enter Text" />
+                            </div>}
+                            {broadcast.value == 'media' &&
+                            <div>
+                            <div className='imageVdoCont'>
+                              <input
+                                type="radio"
+                                id="image"
+                                name="media"
+                                value="IMAGE"
+                                checked={selectOption === 'IMAGE'}
+                                onChange={handleOptionChange}
+                              />
+                              <label htmlFor="image">Image</label>
+                              <input
+                                type="radio"
+                                id="video"
+                                name="media"
+                                value="VIDEO"
+                                checked={selectOption === 'VIDEO'}
+                                onChange={handleOptionChange}
+                              />
+                              <label htmlFor="video">Video</label>
+                              <input
+                                type="radio"
+                                id="document"
+                                name="media"
+                                value="DOCUMENT"
+                                checked={selectOption === 'DOCUMENT'}
+                                onChange={handleOptionChange}
+                              />
+                              <label htmlFor="document">Document</label>
+                            </div>
+                            <div className='dropImg'>
+                              {selectOption === 'IMAGE' && (
+                                <div>
+                                  <p className='dropImgp'>(Image: .jpeg, .png)</p>
+                                  {filePreview && <img src={filePreview} alt="Image" className="documentVdoFileTxt" />}
+                                  <div className='dropInput'>
+                                    <input
+                                      className='dropInput1'
+                                      type='text'
+                                      placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png'
+                                    />
+                                    <p>or</p>
+                                    <div>
+                                      <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="dropInput2"
+                                        onChange={handleFileChange}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectOption === 'VIDEO' && (
+                                <div>
+                                  <p className='dropImgp'>(Video: .mp4)</p>
+                                  {filePreview && (
+                                    <video controls className='video'>
+                                      <source src={filePreview} type='video/mp4' className='documentVdoFile' />
+                                    </video>
+                                  )}
+                                  <div className='dropInput'>
+                                    <input
+                                      className='dropInput1'
+                                      type='text'
+                                      placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4'
+                                    />
+                                    <p>or</p>
+                                    <div>
+                                      <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="dropInput2"
+                                        onChange={handleFileChange}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectOption === 'DOCUMENT' && (
+                                <div>
+                                  <p className='dropImgp'>(Document: .pdf)</p>
+                                  {filePreview && (<embed src={filePreview} className='documentVdoFile' />)}
+                                  <div className='dropInput'>
+                                    <input
+                                      className='dropInput1'
+                                      type='text'
+                                      placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf'
+                                    />
+                                    <p>or</p>
+                                    <div>
+                                      <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="dropInput2"
+                                        onChange={handleFileChange}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                              {errorMessageFile && <p style={{color:'red'}}>{errorMessageFile}</p>}
+                            </div>
+                          </div>
+            }
                           </div>
                           <div className='poppupBroadcast'>
                             <h5>Body</h5>
@@ -2880,6 +3016,22 @@ let handleButtonOpen = ()=>{
                         />:null}
                       </div>
                       <div className={emailZoomClass}>
+                        { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
+                        {filePreview ?<img src={filePreview} className='documentVdoFile'/>:  <img src={img} alt="img" className="documentVdoImg"/>}
+                        </div> :null}
+
+                        { broadcast.value ==="media"&&selectOption === 'VIDEO' ? <div className='bg-img-div'>
+                          {filePreview ? <video className='documentVdoFile' controls>
+                            <source src={filePreview} type='video/mp4'/>
+                            Your browser does not support the video tag.
+                          </video>:  <img src={vdo} alt="Video" className="documentVdoImg"/>}
+                      
+                        </div> :null}
+
+                        { broadcast.value ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
+                        {filePreview ?<embed src={filePreview} className='documentVdoFile' />:  <img src={document} alt="document" className="documentVdoImg"/>}
+                        </div> :null}
+                        
                         {htmlTextBody ? <div   
                           className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed':"previewBodyStyle"} 
                           dangerouslySetInnerHTML={{ __html: htmlTextBody }}
