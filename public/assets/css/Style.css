@@ -5,29 +5,76 @@
 .container{
     width: 100%;
 }
-@font-face {
-    font-family: roboto-italic;
-    src: url(../Component//Assets//font/Roboto-Italic.ttf);
-}
-@font-face {
-    font-family: roboto-regular;
-    src: url(../Component//Assets//font/Roboto-Regular.ttf);
-}
-@font-face {
-    font-family: roboto-light;
-    src: url(../Component//Assets//font/Roboto-Light.ttf);
-}
-@font-face {
-    font-family: roboto-medium;
-    src: url(../Component//Assets//font/Roboto-Medium.ttf);
-}
-@font-face {
-    font-family: roboto-thin;
-    src: url(../Component//Assets//font/Roboto-Thin.ttf);
-}
 
 
+/********** custom style ************/
 
+.mr-10{
+    margin-right: 10px;
+}
+.dropdown-item{
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    height: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: calc(1.5rem);
+    color: rgb(102, 102, 102);
+    padding: 16px;
+    white-space: nowrap;
+    width: 100%;
+}
+.table th{
+    color: rgb(51,51, 51);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.exportWholeCont{
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right:#ccc solid 1px;
+}
+/* .border-right{
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right:#ccc solid 1px;
+} */
+ .poppupBroadcast h5{
+    font-size: 15px !important;
+    margin-bottom: 10px !important;
+    margin-top: 20px !important;
+    font-weight: 600;
+ }
+ .poppupButtonDesign h5{
+    font-size: 15px !important;
+    margin-bottom: 10px !important;
+    margin-top: 20px !important;
+    font-weight: 600;
+ }
+ .paraLink p{
+    margin-bottom: 0 !important;
+    padding: 7px !important;
+ }
+ .btn-light-green{
+    color: #23a455 !important;
+    background:rgba(35, 164, 85, 0.05) !important;
+    border: rgb(35, 164, 85) solid 1px !important;
+ }
+ .btn-green{
+    background:#23a455 !important;
+    color:#fff !important;
+ }
+ .mb-20{
+    margin-bottom: 20px;
+ }
+ .bodyPoppupL{
+    padding-right: 15px;
+ }
+ .copyOfferCodeButtonCont{
+    margin-bottom: 10px;
+ }
+/********** custom style end ************/
 @media only screen and (max-width: 1920px) {
     .nav{
         display: flex;
@@ -185,7 +232,7 @@
     .msgCont{
         width: 100%;
         display: flex;
-        font-family: roboto-regular;
+        /* font-family: "roboto-regular";  */
     }
     .msgContL{
         width: 233px;
@@ -264,7 +311,7 @@
     }
     .input-field2 {
         width: 150%;
-        padding: .9rem;
+        padding: .9rem 1.5rem;
         border: 1px solid rgb(232, 234, 242);
         border-radius: 4px;
         box-sizing: border-box;
@@ -483,7 +530,7 @@
         margin-top: -8rem;
       }
       .tableTemplateName{
-        width: 10%;
+        /* width: 10%; */
         text-align: start;
       }
       .table .action {
@@ -499,10 +546,9 @@
         text-align: center;
     }
     .table th{
-        font-family: roboto-medium;
-        font-size: 1.2rem;
+        /* font-size: 1.2rem;
         font-weight: 500;
-        padding-bottom: 1rem;
+        padding-bottom: 1rem; */
     }
     .table{
         padding: 0px 2rem;
@@ -522,7 +568,7 @@
         border-radius: 100px;
         font-size: 1rem;
         /* line-height: calc(3rem); */
-        padding: 0px 12px;
+        padding:0px 12px 5px 12px;
         text-transform: lowercase;
         text-align: center;
         background-color: rgb(233, 246, 238);
@@ -533,7 +579,7 @@
         --color: #23a455;
         background: rgba(35, 164, 85, 0.05);
         color: var(--color);
-        padding: 0.7rem 1.5rem;
+        padding: 0.1rem 1rem;
         border-radius: 5px;
         cursor: pointer;
         border-width: 1px;
@@ -637,8 +683,8 @@
     }
     .popupInput label {
         display: flex;
-        font-size: .7rem;
-        font-weight: 700;
+        font-size:13px;
+        font-weight: 600;
         color: rgb(63, 63, 63);
     }
     .popupInput input {
@@ -680,7 +726,7 @@
         margin-left: -1rem;
         margin-right: -1rem;
         width: 333px;
-        height: 560px;
+        /* height: 560px; */
     }
     .bodyPoppupRPreview {
         font-size: 1rem;
@@ -747,11 +793,12 @@
 }
 .poppupRadioCont p {
     text-align: start;
-    font-size: .7rem;
+    font-size:13px;
     color: rgb(63, 63, 63);
+    font-weight: 600;
 }
 .selectMarketing{
-    font-weight: 700;
+    font-weight: 600;
 }
 .market-radio__button {
     border: 1px solid rgb(211, 211, 211);
@@ -919,15 +966,16 @@
     display: flex;
     gap: 0.5rem;
     position: absolute;
-    top: .5rem;
-    left: .5rem;
+    top: .0rem;
+    left: .0rem;
     color: gray;
     align-items: center;
     background-color: white;
-    width: 96.5%;
-    height: 2rem;
+    width:100%;
+    height: 2.5rem;
     padding: .15rem;
     border-radius: .2rem;
+    border: rgb(245, 246, 250) solid 5px;
 }
 .poppupBodyInputIcon{
     cursor: pointer;
@@ -944,7 +992,7 @@
     border-radius: .5rem;
     width: -webkit-fill-available;
     margin-bottom: 0.9rem;
-    padding-top: 3.5rem;
+    padding:2.2rem 1rem;
     outline: none;
     height: 10rem;
     width: 99%;
@@ -1096,7 +1144,7 @@
     position: relative;
     overflow: hidden;
     top: -27rem;
-    left: 12.7rem;
+    left:1.3rem; 
 }
 .DeskScreen {
     width: 96%;
@@ -1474,6 +1522,7 @@
   }
   .poppupBroadcast h5 {
     color: rgb(61, 61, 61);
+    margin-top: 15px !important;
     /* margin-bottom: -.2rem; */
 }
 .poppupBroadcast p {
@@ -2857,22 +2906,21 @@ ul:not(.browser-default) {
     .poppupSubmit {
         left: 61rem;
     }
-    .table th {
-        font-family: roboto-medium;
+    /* .table th {
         font-size: 1.1rem;
         font-weight: 100;
         padding-bottom: 1rem;
-    }
+    } */
     .modal-content {
         /*width: 65%;
          height: 85%; */
     }
     .MobileScreen {
-        /* width: 51%;  */
-        left: 0.5rem;
+        /* width: 51%;  
+        left: 0.5rem;*/
     }
     .MobileScrollWpMobile {
-        left: 7.8rem;
+        /* left: 7.8rem; */
     }
     .poppupBodyInput input {
         width: 14%;

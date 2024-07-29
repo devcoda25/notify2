@@ -3,13 +3,14 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { PiExport } from "react-icons/pi";
 import { BiImport } from "react-icons/bi";
-import '../Style.css'
+// import '../Style.css'
 import NewTemplatePopup from '../Popup/NewTemplatePopup';
 import DataJsonFile from '../Data.json';
 import { IoMdArrowDropdown } from "react-icons/io";
 import { CgArrowLongLeft } from "react-icons/cg";
 import { CgArrowLongRight } from "react-icons/cg";
-
+import Button from 'react-bootstrap/Button';
+import NewPopup from '../newpopup';
 
 const BroadcastBody = () => {
 
@@ -29,7 +30,10 @@ const BroadcastBody = () => {
     const togglePopup = () => {
       setIsPopupOpen(!isPopupOpen);
     };
-  
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const handleOpenModal = () => {
       setIsModalOpen(true);
     };
@@ -136,7 +140,7 @@ const BroadcastBody = () => {
                     <div className='exportWholeCont'>
                     <p className='ImportExport'><svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.10189 0.825209L9.10189 10.8594" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.5322 3.27344L9.10223 0.833437L6.67223 3.27344" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12.963 5.78125H13.7405C15.4364 5.78125 16.8105 7.15542 16.8105 8.85208V12.9221C16.8105 14.6137 15.4397 15.9846 13.748 15.9846L4.46471 15.9846C2.76888 15.9846 1.39388 14.6096 1.39388 12.9137L1.39388 8.84292C1.39388 7.15208 2.76555 5.78125 4.45638 5.78125L5.24138 5.78125" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Export</p>
                     </div>
-                    <span className="exportImportHr"></span>
+                    {/* <span className="exportImportHr"></span> */}
                     <div className='importWholeCont'>
                     <p className='ImportExport'><svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.10189 10.8623L9.10189 0.828125" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.5322 8.42188L9.10223 10.8619L6.67223 8.42187" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12.963 5.77344H13.7405C15.4364 5.77344 16.8105 7.1476 16.8105 8.84427V12.9143C16.8105 14.6059 15.4397 15.9768 13.748 15.9768L4.46471 15.9768C2.76888 15.9768 1.39388 14.6018 1.39388 12.9059L1.39388 8.8351C1.39388 7.14427 2.76555 5.77344 4.45638 5.77344L5.24138 5.77344" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg> Import</p>
                     </div>
@@ -147,8 +151,9 @@ const BroadcastBody = () => {
                     {/* <div>
                     <h4 className='vdoCont'><img src={vdo}/> <a href="https://www.youtube.com/watch?v=Zyk7bby9URE" target="_blank">Watch Tutorial</a></h4>
                     </div> */}
-                    <button className='btn' onClick={handleOpenModal}>New Template Message</button>
-                    {isModalOpen && <NewTemplatePopup onClose={handleCloseModal} />}
+                    <button className='btn' onClick={handleShow}>New Template Message</button>
+                    {/* {isModalOpen && <NewTemplatePopup onClose={handleCloseModal} />} */}
+                    <NewPopup show={show} setShow={setShow}/>
                 </div>
                 </div>
             </div>
@@ -173,8 +178,8 @@ const BroadcastBody = () => {
                   <td>{val.Language}</td>
                   <td>{val.lastUpdated}</td>
                   <td className="action">
-                    <button className="actionBtn">{val.Actions}</button>
-                    <hr className="tableTemplateNameHr" />
+                   <button className="actionBtn">{val.Actions}</button>
+                     <hr className="tableTemplateNameHr" /> 
                     <span className="actionSpanCopy" onMouseEnter={() => setCopyIconHover(key)}
                         onMouseLeave={() => setCopyIconHover(null)}>
                       <div>
