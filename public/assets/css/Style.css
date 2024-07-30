@@ -74,6 +74,11 @@
  .copyOfferCodeButtonCont{
     margin-bottom: 10px;
  }
+ .nav .lnav a{
+    line-height: 24px;
+    border-bottom: #ccc solid 1px;
+    padding: 10px 5px;
+ }
 /********** custom style end ************/
 @media only screen and (max-width: 1920px) {
     .nav{

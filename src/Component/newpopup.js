@@ -2114,8 +2114,6 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                             }} /> : null}
                                                                                         </div>
                                                                                     </div>
-
-
                                                                                     {vmap.type === "visitUs" && <div className='visitHttpCont'>
                                                                                         <div className='staticDropdown'>
                                                                                             <Dropdown

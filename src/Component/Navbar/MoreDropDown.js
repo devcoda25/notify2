@@ -1,5 +1,9 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import { LuUsers2 } from "react-icons/lu";
+import { MdOutlineSettingsSuggest } from "react-icons/md";
+import { MdOutlineWebhook } from "react-icons/md";
+import { TiLink } from "react-icons/ti";
+import { TbListDetails } from "react-icons/tb";
 function MoreDropDown() {
   return (
     <Dropdown>
@@ -8,11 +12,11 @@ function MoreDropDown() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">User Management</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Integrations</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Webhooks</Dropdown.Item>
-        <Dropdown.Item href="#/action-4">Commerce</Dropdown.Item>
-        <Dropdown.Item href="#/action-5">Account Details</Dropdown.Item>
+        <Dropdown.Item href="#/action-1"><LuUsers2 />  User Management</Dropdown.Item>
+        <Dropdown.Item href="#/action-2"><MdOutlineSettingsSuggest /> Integrations</Dropdown.Item>
+        <Dropdown.Item href="#/action-3"><MdOutlineWebhook /> Webhooks</Dropdown.Item>
+        <Dropdown.Item href="#/action-4"><TiLink /> Commerce</Dropdown.Item>
+        <Dropdown.Item href="#/action-5"><TbListDetails /> Account Details</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
