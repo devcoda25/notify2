@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FiInbox } from "react-icons/fi";
-import logo from '../Assets/img/showFile.png'
+import logo from '../Assets/img/ev-notify-logo.png'
 import { PiBroadcastDuotone } from "react-icons/pi";
 import { RiContactsBook2Line } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";

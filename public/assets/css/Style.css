@@ -76,7 +76,7 @@
  }
  .nav .lnav a{
     line-height: 24px;
-    border-bottom: #ccc solid 1px;
+    /* border-bottom: #ccc solid 1px; */
     padding: 10px 5px;
  }
 /********** custom style end ************/
@@ -94,7 +94,7 @@
         justify-content: space-around;
         align-items: center;
         text-align: center;
-        width: 50%;
+        width: 60%;
         padding-left: .5rem;
     }
     .nav .rnav{
@@ -108,7 +108,8 @@
 
     }
     .nav .lnav .navImg{
-        width: 8%;
+       /* width: 8%;*/
+       width: 120px;
     }
     .nav .lnav li{
         list-style-type: none;
