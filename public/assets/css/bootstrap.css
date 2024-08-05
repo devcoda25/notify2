@@ -510,8 +510,21 @@ progress {
 }
 @media (min-width:1200px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl {
-    max-width: 1140px
+    /* max-width: 1140px */
+    max-width: 100%;
   }
+}
+@media (min-width:1366px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    /* max-width: 1320px */
+    max-width: 100%;
+  }
+  .MobileScrollWpMobile {
+    left: 1.5rem;
+} 
+.MobileScreenSms {
+  left: 2.5rem;
+}
 }
 @media (min-width:1400px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
