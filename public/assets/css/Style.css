@@ -646,11 +646,11 @@
         padding: 0px 2rem;
         background: rgb(255, 255, 255);
         border-radius: 5px;
-        min-height: 738px;
+        /* min-height: 738px; */
     }
 
     .tableCont {
-        min-height: 692px;
+         min-height: 700px; 
     }
 
     .statusBtn {
@@ -1314,11 +1314,10 @@
 
     .MobileScrollWpMobile {
         width: 16rem;
-        height: 24rem;
         position: relative;
         overflow: hidden;
-        top: -27rem;
-        left: 1.3rem;
+        top: 10rem;
+        left: 0;
     }
 
     .DeskScreen {
