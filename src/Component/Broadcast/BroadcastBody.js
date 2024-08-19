@@ -150,7 +150,7 @@ const BroadcastBody = () => {
                     {/* <div>
                     <h4 className='vdoCont'><img src={vdo}/> <a href="https://www.youtube.com/watch?v=Zyk7bby9URE" target="_blank">Watch Tutorial</a></h4>
                     </div> */}
-                    <button className='btn' onClick={handleShow}>New Template Message</button>
+                    <button className='btn' onClick={handleShow}>New Template Message test</button>
                     {/* {isModalOpen && <NewTemplatePopup onClose={handleCloseModal} />} */}
                     <NewPopup show={show} setShow={setShow}/>
                 </div>
