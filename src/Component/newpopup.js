@@ -34,7 +34,8 @@ import { IoMdSettings } from "react-icons/io";
 import visit from './Assets/img/visit.png';
 import copy from './Assets/img/copy.png';
 import reply from './Assets/img/reply.png';
-import call from './Assets/img/call.png'
+import call from './Assets/img/call.png';
+
 function NewPopup({ show, setShow, onClose }) {
     const typeSelectOption = [
         { value: 'Yellow', label: 'Yellow' },
@@ -513,10 +514,10 @@ function NewPopup({ show, setShow, onClose }) {
         MobileScrollWp += ' MobileScrollWpDeskZoom';
     }
 
-    let deskClass = `${mobileDeskview === 'mobile' ? 'MobileScreen' : 'DeskScreen'}`
-    if (mobileDeskview === 'desktop' && isZoomed) {
-        deskClass += ' deskZoom';
-    }
+    let deskClass = `${mobileDeskview==='mobile'?'MobileScreen':'DeskScreen'}`
+  if (mobileDeskview === 'desktop' && isZoomed) {
+    deskClass += ' deskZoom';
+  }
 
     let platformPreviewClass = `${mobileDeskview == 'mobile' ? 'MobileScreenPlat' : 'MobileScreenSmsDesk'}`
     if (mobileDeskview === 'desktop' && isZoomed) {
@@ -2667,7 +2668,7 @@ function NewPopup({ show, setShow, onClose }) {
                                     />
                                 </div>
                                    
-                                        <div >
+                                        {/* <div >
                                             <div className={deskClass}>
                                                 <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
                                                     {broadcast.value === "media" && selectOption === 'IMAGE' ? <div className='bg-img-div'>
@@ -2732,8 +2733,76 @@ function NewPopup({ show, setShow, onClose }) {
                                                     </div>
                                                     : null}
                                             </div>
+                                        </div> */}
+                            <div className={MobileScrollWp}>
+                            <div className={deskClass}>
+                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed':"previewStyle"}>
+
+                                { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
+                                {filePreview ?<img src={filePreview} className='documentVdoFile'/>:  <img src={img} alt="img" className="documentVdoImg"/>}
+                                </div> :null}
+
+                                { broadcast.value ==="media"&&selectOption === 'VIDEO' ? <div className='bg-img-div'>
+                                    {filePreview ? <video className='documentVdoFile' controls>
+                                    <source src={filePreview} type='video/mp4'/>
+                                    Your browser does not support the video tag.
+                                    </video>:  <img src={vdo} alt="Video" className="documentVdoImg"/>}
+                                
+                                </div> :null}
+
+                                { broadcast.value ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
+                                {filePreview ?<embed src={filePreview} className='documentVdoFile' />:  <img src={document} alt="document" className="documentVdoImg"/>}
+                                </div> :null}
+                            
+                                    {htmlText ? <div
+                                    className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStyle"}
+                                    dangerouslySetInnerHTML={{ __html: htmlText }}
+                                    />:null}
+                                    {htmlTextBody ? <div
+                                    className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed':"previewBodyStyle"}
+                                    dangerouslySetInnerHTML={{ __html: htmlTextBody }}
+                                    />:null}
+                                    {htmlTextFooter ?  <div
+                                        className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewFooterStyle"}
+                                        dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
+                                    /> : null}
+                                        <div className={`previewStyleTime ${isButtonChecked ? 'checkedStyle' : ''}`}>{currentTime}</div>
+                                        {isButtonChecked&&chatReplyBox.length ? <>{
+                                    chatReplyBox.map((ival,index)=>{
+                                        return <>
+                                        {(ival.type==="Visit Us") && <div className={chatReply}>
+                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={visit}/></div>
+                                        <div> {ival.typedText}</div>
+                                        </div>}
+                                        {(ival.type==="callPhone") && <div className={chatReply}>
+                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={call}/></div>
+                                        <div>{ival.typedText}</div>
+                                        </div>}
+                                        {(ival.type==="copy") && <div className={chatReply}>
+                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={copy}/></div>
+                                        <div>{ival.type}</div>
+                                        </div>}
+                                        {(ival.type==="reply") && <div className={chatReply}>
+                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={reply}/></div>
+                                        <div>{ival.type}</div>
+                                        </div>}
+                                        </> 
+                                    })
+                                    }
+                                    </> : null}
+                                    </div>
+                                    {(type == 'Red' && marketingTemplate == 'whatsapp')?
+                                        <div className='previewSampleStyleCont'>
+                                        {htmlTextSample ?  <div
+                                            className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewSampleStyle"}
+                                            dangerouslySetInnerHTML={{ __html: htmlTextSample }}
+                                        /> : null}
                                         </div>
+                                    :null}
+                                </div>
+                        </div>
                                    
+
                                 </> : null}
 
                                 {(marketingTemplate === "sms") ? <> <div>

@@ -4,7 +4,6 @@ import { CiSearch } from "react-icons/ci";
 import { PiExport } from "react-icons/pi";
 import { BiImport } from "react-icons/bi";
 // import '../Style.css'
-import NewTemplatePopup from '../Popup/NewTemplatePopup';
 import DataJsonFile from '../Data.json';
 import { IoMdArrowDropdown } from "react-icons/io";
 import { CgArrowLongLeft } from "react-icons/cg";
