@@ -234,7 +234,7 @@ function NewPopup({ show, setShow, onClose }) {
         color: footerCount > 60 ? 'red' : null
     }
 
-    const changeMarketingTemplet = (value) => {
+    const changeMarketingTemplate = (value) => {
         setCleanText('');
         setCleanTextBody('');
         setCleanTextFooter('');
@@ -477,6 +477,10 @@ function NewPopup({ show, setShow, onClose }) {
     }, [isButtonChecked])
 
     const [mobileDeskview, setMobileDeskview] = useState('mobile');
+    console.log(mobileDeskview);
+    console.log(marketingTemplate);
+    
+    
 
     const handleMobileDeskView = (type) => {
         setMobileDeskview(type);
@@ -656,38 +660,44 @@ function NewPopup({ show, setShow, onClose }) {
                                                 {/* Yellow */}
 
                                                 {(identification.value == 'marketing/ads') && <div className='poppupRadio'>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("whatsapp")}></span>
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "whatsapp" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("whatsapp")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""}`}>
+                                                            <span className="radio-btn"></span>
                                                             <label htmlFor="whatsapp">WhatsApp</label><br />
                                                         </div>
                                                     </button>
-                                                    {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "sms" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("sms")}></span>
-                                                            <label htmlFor="sms">SMS</label><br />
-                                                        </div>
-                                                    </button>}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    {mobileDeskview === 'mobile' && (
+                                                        <button 
+                                                            className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "sms" ? "active__standardbutton" : ""}`}
+                                                            onClick={() => changeMarketingTemplate("sms")}
+                                                        >
+                                                            <div className={`poppupInputLabel ${marketingTemplate === "sms" ? "radio-active" : ""}`}>
+                                                                <span className="radio-btn"></span>
+                                                                <label htmlFor="sms">SMS</label><br />
+                                                            </div>
+                                                        </button>
+                                                    )}
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -695,38 +705,33 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'surveys') && <div className='poppupRadio'>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("whatsapp")}></span>
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "whatsapp" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("whatsapp")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""}`}>
+                                                            <span className="radio-btn"></span>
                                                             <label htmlFor="whatsapp">WhatsApp</label><br />
                                                         </div>
                                                     </button>
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -734,118 +739,85 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'Interactive Prompts') && <div className='poppupRadio'>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("whatsapp")}></span>
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "whatsapp" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("whatsapp")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""}`}>
+                                                            <span className="radio-btn"></span>
                                                             <label htmlFor="whatsapp">WhatsApp</label><br />
                                                         </div>
                                                     </button>
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
-                                <label htmlFor="email">Email</label>
-                              </div>
-                            </div>
-                          </button> */}
                                                 </div>}
 
                                                 {/* Red */}
 
                                                 {(identification.value == 'Emergency') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "sms" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("sms")}></span>
-                                                            <label htmlFor="sms">SMS</label><br />
-                                                        </div>
-                                                    </button>}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    {mobileDeskview === 'mobile' && (
+                                                        <button 
+                                                            className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "sms" ? "active__standardbutton" : ""}`}
+                                                            onClick={() => changeMarketingTemplate("sms")}
+                                                        >
+                                                            <div className={`poppupInputLabel ${marketingTemplate === "sms" ? "radio-active" : ""}`}>
+                                                                <span className="radio-btn"></span>
+                                                                <label htmlFor="sms">SMS</label><br />
+                                                            </div>
+                                                        </button>
+                                                    )}
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "push" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("push")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("push")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="push">Push</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
-                                <label htmlFor="email">Email</label>
-                              </div>
-                            </div>
-                          </button> */}
                                                 </div>}
 
                                                 {(identification.value == 'Account Verfication') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "sms" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("sms")}></span>
-                                                            <label htmlFor="sms">SMS</label><br />
-                                                        </div>
-                                                    </button>}
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="platform" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("platform")}></span>
-                                <label htmlFor="platform">Platform</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    {mobileDeskview === 'mobile' && (
+                                                        <button 
+                                                            className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "sms" ? "active__standardbutton" : ""}`}
+                                                            onClick={() => changeMarketingTemplate("sms")}
+                                                        >
+                                                            <div className={`poppupInputLabel ${marketingTemplate === "sms" ? "radio-active" : ""}`}>
+                                                                <span className="radio-btn"></span>
+                                                                <label htmlFor="sms">SMS</label><br />
+                                                            </div>
+                                                        </button>
+                                                    )}
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -853,77 +825,60 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == '3rd-Party Authentication') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "push" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("push")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("push")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="push">Push</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
-                                <label htmlFor="email">Email</label>
-                              </div>
-                            </div>
-                          </button> */}
                                                 </div>}
 
                                                 {(identification.value == 'MFA') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "push" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("push")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("push")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="push">Push</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -931,38 +886,44 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'Failed Activity') && <div className='poppupRadio'>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""} `}>
-                                                            <span class="radio-btn" onClick={() => changeMarketingTemplet("whatsapp")}></span>
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "whatsapp" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("whatsapp")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "whatsapp" ? "radio-active" : ""}`}>
+                                                            <span className="radio-btn"></span>
                                                             <label htmlFor="whatsapp">WhatsApp</label><br />
                                                         </div>
                                                     </button>
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "push" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("push")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("push")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="push">Push</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -970,38 +931,24 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'Rejections') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -1009,38 +956,35 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'Bad Activity') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "push" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("push")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("push")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="push">Push</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -1050,38 +994,24 @@ function NewPopup({ show, setShow, onClose }) {
                                                 {/* Blue */}
 
                                                 {((identification.value == 'Credential Access/share') || (identification.value == 'Update notices') || (identification.value == 'Transactions')) && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -1089,79 +1019,51 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'Helper tours') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="email" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("email")}></span>
-                                <label htmlFor="email">Email</label>
-                              </div>
-                            </div>
-                          </button> */}
                                                 </div>}
 
                                                 {/* Green */}
 
                                                 {((identification.value == 'Approvals') || (identification.value == 'Lifts')) && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "push" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("push")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "push" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("push")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="push">Push</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
@@ -1169,38 +1071,24 @@ function NewPopup({ show, setShow, onClose }) {
                                                 </div>}
 
                                                 {(identification.value == 'success activity') && <div className='poppupRadio'>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="whatsapp" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("whatsapp")}></span>
-                              <label htmlFor="whatsapp">WhatsApp</label><br />
-                            </div>
-                          </button> */}
-                                                    {/* {mobileDeskview === 'mobile' && <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="sms" ?"radio-active":""} `}>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("sms")}></span>
-                              <label htmlFor="sms">SMS</label><br />
-                            </div>
-                          </button>} */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "platform" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("platform")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "platform" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("platform")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="platform">Platform</label>
                                                             </div>
                                                         </div>
                                                     </button>
-                                                    {/* <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                            <div className={`poppupInputLabel ${marketingTemplate==="push" ?"radio-active":""} `} >
-                              <div className='poppupInputLabelCarousel'>
-                              <span class="radio-btn" onClick={()=> changeMarketingTemplet("push")}></span>
-                                <label htmlFor="push">Push</label>
-                              </div>
-                            </div>
-                          </button> */}
-                                                    <button className='sc-jIBlqr bsHFOv market-radio__button button-standard active__standardbutton'>
-                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""} `} >
+                                                    <button 
+                                                        className={`sc-jIBlqr bsHFOv market-radio__button button-standard ${marketingTemplate === "email" ? "active__standardbutton" : ""}`}
+                                                        onClick={() => changeMarketingTemplate("email")}
+                                                    >
+                                                        <div className={`poppupInputLabel ${marketingTemplate === "email" ? "radio-active" : ""}`}>
                                                             <div className='poppupInputLabelCarousel'>
-                                                                <span class="radio-btn" onClick={() => changeMarketingTemplet("email")}></span>
+                                                                <span className="radio-btn"></span>
                                                                 <label htmlFor="email">Email</label>
                                                             </div>
                                                         </div>
