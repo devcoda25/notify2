@@ -514,10 +514,10 @@ function NewPopup({ show, setShow, onClose }) {
         MobileScrollWp += ' MobileScrollWpDeskZoom';
     }
 
-    let deskClass = `${mobileDeskview==='mobile'?'MobileScreen':'DeskScreen'}`
-  if (mobileDeskview === 'desktop' && isZoomed) {
-    deskClass += ' deskZoom';
-  }
+    let deskClass = `${mobileDeskview === 'mobile' ? 'MobileScreen' : 'DeskScreen'}`
+    if (mobileDeskview === 'desktop' && isZoomed) {
+        deskClass += ' deskZoom';
+    }
 
     let platformPreviewClass = `${mobileDeskview == 'mobile' ? 'MobileScreenPlat' : 'MobileScreenSmsDesk'}`
     if (mobileDeskview === 'desktop' && isZoomed) {
@@ -1420,7 +1420,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                 value={buttonSelectOption[0].value}
                                                                                 placeholder="Select an option"
                                                                             />
-                                                                            <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                            <button className='btn btn-light-green' onClick={() => {
 
                                                                                 let valueConditionBased = buttonSelectOption[0].value;
                                                                                 let iconBox = "Visit Us";
@@ -1440,7 +1440,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                 setVisitWebSiteArray([...visitWebSiteArray])
                                                                                 setChatReplyBox([...chatReplyBox])
                                                                                 setButtonCount(buttonCount + 1)
-                                                                            }} />
+                                                                            }} >Add Button</button>
                                                                         </> : null}</div>
                                                                         {ival.visitData.map((vmap, vindex) => {
                                                                             let { visitWebsite, visitUsInput, staticDropdown, visithttpInput, countryCodeText, buttonText } = vmap
@@ -1483,7 +1483,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                             </div>
                                                                                         </div>
                                                                                         <div>
-                                                                                            {vindex == 0 && ival.visitData.length < 3 ? <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                                            {vindex == 0 && ival.visitData.length < 3 ? <button className='btn btn-light-green' onClick={() => {
 
                                                                                                 let valueConditionBased = buttonSelectOption[0].value;
                                                                                                 let iconBox = "Visit Us";
@@ -1502,7 +1502,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                                 setVisitWebSiteArray([...visitWebSiteArray])
                                                                                                 setChatReplyBox([...chatReplyBox])
                                                                                                 setButtonCount(buttonCount + 1)
-                                                                                            }} /> : null}
+                                                                                            }} >Add Button</button> : null}
                                                                                         </div>
                                                                                     </div>
 
@@ -1549,13 +1549,13 @@ function NewPopup({ show, setShow, onClose }) {
                                                                         <div className='copyOfferCodeButtonCont'>
                                                                             <input className='visitWebsiteInput' type='text' placeholder='Copy offer code' value={""} disabled />
                                                                             <div>
-                                                                                {visitWebSiteArray[index].coperData.length === 0 ? <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                                {visitWebSiteArray[index].coperData.length === 0 ? <button className='btn btn-light-green' onClick={() => {
                                                                                     visitWebSiteArray[index].coperData.push({ copyCouponCode: "", copyOfferCode: "" })
                                                                                     chatReplyBox.push({ type: "copy", typedText: "" })
                                                                                     setVisitWebSiteArray([...visitWebSiteArray])
                                                                                     setChatReplyBox([...chatReplyBox])
                                                                                     setButtonCount(buttonCount + 1)
-                                                                                }} /> : null}
+                                                                                }} >Add Button</button> : null}
                                                                             </div>
                                                                             {visitWebSiteArray[index].coperData.map((cmap) => {
                                                                                 let { copyCouponCode, copyOfferCode } = cmap
@@ -1618,14 +1618,14 @@ function NewPopup({ show, setShow, onClose }) {
                                                                             </div>
                                                                         })}</div>
                                                                         <div>
-                                                                            {visitWebSiteArray[index].ReplyData.length < 3 ? <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                            {visitWebSiteArray[index].ReplyData.length < 3 ? <button className='btn btn-light-green' onClick={() => {
                                                                                 visitWebSiteArray[index].ReplyData.push({ buttonText: "" })
                                                                                 chatReplyBox.push({ type: "reply", typedText: "" })
                                                                                 setVisitWebSiteArray([...visitWebSiteArray])
                                                                                 setChatReplyBox([...chatReplyBox])
                                                                                 setButtonCount(buttonCount + 1)
 
-                                                                            }} /> : null}
+                                                                            }} >Add Button</button> : null}
 
 
                                                                         </div>
@@ -2027,7 +2027,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                 value={buttonSelectOption[0].value}
                                                                                 placeholder="Select an option"
                                                                             />
-                                                                            <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                            <button className='btn btn-light-green' onClick={() => {
 
                                                                                 let valueConditionBased = buttonSelectOption[0].value;
                                                                                 let iconBox = "Visit Us";
@@ -2047,7 +2047,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                 setVisitWebSiteArray([...visitWebSiteArray])
                                                                                 setChatReplyBox([...chatReplyBox])
                                                                                 setButtonCount(buttonCount + 1)
-                                                                            }} />
+                                                                            }} >Add Button</button>
                                                                         </> : null}</div>
                                                                         {ival.visitData.map((vmap, vindex) => {
                                                                             let { visitWebsite, visitUsInput, staticDropdown, visithttpInput, countryCodeText, buttonText } = vmap
@@ -2090,7 +2090,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                             </div>
                                                                                         </div>
                                                                                         <div>
-                                                                                            {vindex == 0 && ival.visitData.length < 3 ? <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                                            {vindex == 0 && ival.visitData.length < 3 ? <button className='btn btn-light-green' onClick={() => {
 
                                                                                                 let valueConditionBased = buttonSelectOption[0].value;
                                                                                                 let iconBox = "Visit Us";
@@ -2109,7 +2109,7 @@ function NewPopup({ show, setShow, onClose }) {
                                                                                                 setVisitWebSiteArray([...visitWebSiteArray])
                                                                                                 setChatReplyBox([...chatReplyBox])
                                                                                                 setButtonCount(buttonCount + 1)
-                                                                                            }} /> : null}
+                                                                                            }} >Add Button</button> : null}
                                                                                         </div>
                                                                                     </div>
                                                                                     {vmap.type === "visitUs" && <div className='visitHttpCont'>
@@ -2154,13 +2154,13 @@ function NewPopup({ show, setShow, onClose }) {
                                                                         <div className='copyOfferCodeButtonCont'>
                                                                             <input className='visitWebsiteInput' type='text' placeholder='Copy offer code' value={""} disabled />
                                                                             <div>
-                                                                                {visitWebSiteArray[index].coperData.length === 0 ? <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                                {visitWebSiteArray[index].coperData.length === 0 ? <button className='btn btn-light-green' onClick={() => {
                                                                                     visitWebSiteArray[index].coperData.push({ copyCouponCode: "", copyOfferCode: "" })
                                                                                     chatReplyBox.push({ type: "copy", typedText: "" })
                                                                                     setVisitWebSiteArray([...visitWebSiteArray])
                                                                                     setChatReplyBox([...chatReplyBox])
                                                                                     setButtonCount(buttonCount + 1)
-                                                                                }} /> : null}
+                                                                                }} >Add Button</button> : null}
                                                                             </div>
                                                                             {visitWebSiteArray[index].coperData.map((cmap) => {
                                                                                 let { copyCouponCode, copyOfferCode } = cmap
@@ -2223,14 +2223,14 @@ function NewPopup({ show, setShow, onClose }) {
                                                                             </div>
                                                                         })}</div>
                                                                         <div>
-                                                                            {visitWebSiteArray[index].ReplyData.length < 3 ? <input className='btn btn-light-green' type='button' value='Add button' onClick={() => {
+                                                                            {visitWebSiteArray[index].ReplyData.length < 3 ? <button className='btn btn-light-green' onClick={() => {
                                                                                 visitWebSiteArray[index].ReplyData.push({ buttonText: "" })
                                                                                 chatReplyBox.push({ type: "reply", typedText: "" })
                                                                                 setVisitWebSiteArray([...visitWebSiteArray])
                                                                                 setChatReplyBox([...chatReplyBox])
                                                                                 setButtonCount(buttonCount + 1)
 
-                                                                            }} /> : null}
+                                                                            }} > Add Button</button> : null}
 
 
                                                                         </div>
@@ -2667,8 +2667,8 @@ function NewPopup({ show, setShow, onClose }) {
                                         onClick={handleZoomClick}
                                     />
                                 </div>
-                                   
-                                        {/* <div >
+
+                                    {/* <div >
                                             <div className={deskClass}>
                                                 <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
                                                     {broadcast.value === "media" && selectOption === 'IMAGE' ? <div className='bg-img-div'>
@@ -2734,74 +2734,74 @@ function NewPopup({ show, setShow, onClose }) {
                                                     : null}
                                             </div>
                                         </div> */}
-                            <div className={MobileScrollWp}>
-                            <div className={deskClass}>
-                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed':"previewStyle"}>
+                                    <div className={MobileScrollWp}>
+                                        <div className={deskClass}>
+                                            <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
 
-                                { broadcast.value ==="media"&&selectOption === 'IMAGE' ? <div className='bg-img-div'>
-                                {filePreview ?<img src={filePreview} className='documentVdoFile'/>:  <img src={img} alt="img" className="documentVdoImg"/>}
-                                </div> :null}
+                                                {broadcast.value === "media" && selectOption === 'IMAGE' ? <div className='bg-img-div'>
+                                                    {filePreview ? <img src={filePreview} className='documentVdoFile' /> : <img src={img} alt="img" className="documentVdoImg" />}
+                                                </div> : null}
 
-                                { broadcast.value ==="media"&&selectOption === 'VIDEO' ? <div className='bg-img-div'>
-                                    {filePreview ? <video className='documentVdoFile' controls>
-                                    <source src={filePreview} type='video/mp4'/>
-                                    Your browser does not support the video tag.
-                                    </video>:  <img src={vdo} alt="Video" className="documentVdoImg"/>}
-                                
-                                </div> :null}
+                                                {broadcast.value === "media" && selectOption === 'VIDEO' ? <div className='bg-img-div'>
+                                                    {filePreview ? <video className='documentVdoFile' controls>
+                                                        <source src={filePreview} type='video/mp4' />
+                                                        Your browser does not support the video tag.
+                                                    </video> : <img src={vdo} alt="Video" className="documentVdoImg" />}
 
-                                { broadcast.value ==="media"&&selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
-                                {filePreview ?<embed src={filePreview} className='documentVdoFile' />:  <img src={document} alt="document" className="documentVdoImg"/>}
-                                </div> :null}
-                            
-                                    {htmlText ? <div
-                                    className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed':"previewTextStyle"}
-                                    dangerouslySetInnerHTML={{ __html: htmlText }}
-                                    />:null}
-                                    {htmlTextBody ? <div
-                                    className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed':"previewBodyStyle"}
-                                    dangerouslySetInnerHTML={{ __html: htmlTextBody }}
-                                    />:null}
-                                    {htmlTextFooter ?  <div
-                                        className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewFooterStyle"}
-                                        dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
-                                    /> : null}
-                                        <div className={`previewStyleTime ${isButtonChecked ? 'checkedStyle' : ''}`}>{currentTime}</div>
-                                        {isButtonChecked&&chatReplyBox.length ? <>{
-                                    chatReplyBox.map((ival,index)=>{
-                                        return <>
-                                        {(ival.type==="Visit Us") && <div className={chatReply}>
-                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={visit}/></div>
-                                        <div> {ival.typedText}</div>
-                                        </div>}
-                                        {(ival.type==="callPhone") && <div className={chatReply}>
-                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={call}/></div>
-                                        <div>{ival.typedText}</div>
-                                        </div>}
-                                        {(ival.type==="copy") && <div className={chatReply}>
-                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={copy}/></div>
-                                        <div>{ival.type}</div>
-                                        </div>}
-                                        {(ival.type==="reply") && <div className={chatReply}>
-                                        <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg' }><img src={reply}/></div>
-                                        <div>{ival.type}</div>
-                                        </div>}
-                                        </> 
-                                    })
-                                    }
-                                    </> : null}
-                                    </div>
-                                    {(type == 'Red' && marketingTemplate == 'whatsapp')?
-                                        <div className='previewSampleStyleCont'>
-                                        {htmlTextSample ?  <div
-                                            className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed':"previewSampleStyle"}
-                                            dangerouslySetInnerHTML={{ __html: htmlTextSample }}
-                                        /> : null}
+                                                </div> : null}
+
+                                                {broadcast.value === "media" && selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
+                                                    {filePreview ? <embed src={filePreview} className='documentVdoFile' /> : <img src={document} alt="document" className="documentVdoImg" />}
+                                                </div> : null}
+
+                                                {htmlText ? <div
+                                                    className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed' : "previewTextStyle"}
+                                                    dangerouslySetInnerHTML={{ __html: htmlText }}
+                                                /> : null}
+                                                {htmlTextBody ? <div
+                                                    className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed' : "previewBodyStyle"}
+                                                    dangerouslySetInnerHTML={{ __html: htmlTextBody }}
+                                                /> : null}
+                                                {htmlTextFooter ? <div
+                                                    className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed' : "previewFooterStyle"}
+                                                    dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
+                                                /> : null}
+                                                <div className={`previewStyleTime ${isButtonChecked ? 'checkedStyle' : ''}`}>{currentTime}</div>
+                                                {isButtonChecked && chatReplyBox.length ? <>{
+                                                    chatReplyBox.map((ival, index) => {
+                                                        return <>
+                                                            {(ival.type === "Visit Us") && <div className={chatReply}>
+                                                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={visit} /></div>
+                                                                <div> {ival.typedText}</div>
+                                                            </div>}
+                                                            {(ival.type === "callPhone") && <div className={chatReply}>
+                                                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={call} /></div>
+                                                                <div>{ival.typedText}</div>
+                                                            </div>}
+                                                            {(ival.type === "copy") && <div className={chatReply}>
+                                                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={copy} /></div>
+                                                                <div>{ival.type}</div>
+                                                            </div>}
+                                                            {(ival.type === "reply") && <div className={chatReply}>
+                                                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={reply} /></div>
+                                                                <div>{ival.type}</div>
+                                                            </div>}
+                                                        </>
+                                                    })
+                                                }
+                                                </> : null}
+                                            </div>
+                                            {(type == 'Red' && marketingTemplate == 'whatsapp') ?
+                                                <div className='previewSampleStyleCont'>
+                                                    {htmlTextSample ? <div
+                                                        className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed' : "previewSampleStyle"}
+                                                        dangerouslySetInnerHTML={{ __html: htmlTextSample }}
+                                                    /> : null}
+                                                </div>
+                                                : null}
                                         </div>
-                                    :null}
-                                </div>
-                        </div>
-                                   
+                                    </div>
+
 
                                 </> : null}
 

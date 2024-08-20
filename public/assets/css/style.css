@@ -2242,12 +2242,12 @@
     }
 
     .visitWebsiteInput {
-        width: 19%;
+        width: 23%;
         padding: .9rem;
         border-radius: .3rem;
         border: 1px solid #fdfdfd;
         font-size: .85rem;
-        margin-bottom: .5rem;
+        /* margin-bottom: .5rem; */
         height: .9rem;
         background: #f3f7f6;
     }
@@ -2273,7 +2273,7 @@
 
     .visitUsInput {
         width: 84%;
-        padding: .9rem;
+        padding:10px 12px;
         border-radius: .3rem;
         border: 1px solid #fdfdfd !important;
         font-size: 1rem;
@@ -2302,12 +2302,12 @@
     }
 
     .visithttpInput {
-        padding: .9rem;
+        padding: 10px 12px;
         border-radius: .3rem;
         border: 1px solid #fdfdfd;
         font-size: 1rem;
         background: rgb(245, 246, 250);
-        width: 142%;
+        width: 100%;
         outline: none;
     }
 
@@ -2358,7 +2358,7 @@
 
     .deleteIcon {
         border-radius: .3rem;
-        padding: .5rem;
+        padding:5px;
         background-color: #efeff5;
         border: 1px solid #e0e0eb;
         height: fit-content;
@@ -2386,7 +2386,7 @@
         outline: none;
         transition: all 200ms ease;
         border: none;
-        padding: .9rem .2rem .7rem .9rem;
+        padding: 10px 12px;
         font-size: .9rem;
     }
 
@@ -3418,7 +3418,7 @@
     }
 
     .visitWebsiteInput {
-        padding: .9rem 1.2rem .9rem .5rem;
+        padding:18px 12px;
     }
 
     .visitWebsiteButton .Dropdown-placeholder {
@@ -3426,7 +3426,7 @@
     }
 
     .visitWebsiteButton .Dropdown-control {
-        padding: .9rem 1.7rem .8rem .8rem;
+        padding:10px 12px;
     }
 
     .visitWebsiteButton .Dropdown-option {
