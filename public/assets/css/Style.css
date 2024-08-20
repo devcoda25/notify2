@@ -650,7 +650,7 @@
     }
 
     .tableCont {
-         min-height: 700px; 
+        min-height: 700px;
     }
 
     .statusBtn {
@@ -1318,8 +1318,8 @@
         top: -3rem;
         width: 17rem;
     }
-    
-.MobileScreen .previewStyle {
+
+    .MobileScreen .previewStyle {
         border: 1px solid white;
         background-color: white;
         border-radius: .5rem;
@@ -3219,7 +3219,7 @@
         margin-bottom: 1rem;
         font-size: .9rem;
     }
-    
+
 }
 
 @media only screen and (max-height: 1280px) {
@@ -3267,10 +3267,10 @@
     }
 
     .MobileScreen {
-        width: 51%;  
+        width: 90%;
         left: 0.5rem;
     }
-    
+
     .dropInput2 {
         /* width: 60%;*/
     }
@@ -3391,7 +3391,7 @@
          height: 85%; */
     }
 
-    
+
 
     .MobileScrollWpMobile {
         /* left: 7.8rem; */
@@ -3920,7 +3920,7 @@
 
     .zoomed {
         transform: scale(1.5);
-        margin-top: 5rem;
+        margin-top: -1rem;
         margin-left: -36rem;
         width: 100%;
         transition: .5s;
@@ -3935,8 +3935,8 @@
         height: 17.3rem;
     } */
     .platformPreviewZoom {
-        top: 28rem;
-        left: 41rem;
+        top: 6rem;
+        left:14rem;
     }
 
     .pushPreviewZoom {
@@ -4031,7 +4031,11 @@
     }
 
     .MobileScrollWpDeskZoom {
-        top: -19.5rem;
+        position: absolute;
+        top: 13.5rem;
+        left: 17rem;
+        width: 20%;
+        height: 6rem;
     }
 }
 
