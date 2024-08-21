@@ -203,7 +203,8 @@ function NewPopup({ show, setShow, onClose }) {
     const [fromNameShow, setFromNameShow] = useState(false);
     const [securityRecommandChecked, setSecurityRecommandChecked] = useState(true);
     const [securityRecommandCheckedFooter, setSecurityRecommandCheckedFooter] = useState(true)
-    let visitWebSiteObj = { type: "Visit Us", visitData: [{ visitWebsite: buttonSelectOption[0].value, visitUsInput: "", staticDropdown: buttonStaticOption[0].value, visithttpInput: "", type: "visitUs" }] }
+    let visitWebSiteObj = { type: "Visit Us", visitData: [] }
+    //{ visitWebsite: buttonSelectOption[0].value, visitUsInput: "", staticDropdown: buttonStaticOption[0].value, visithttpInput: "", type: "visitUs" }
     let copyOfferCodeObj = { type: "copy", coperData: [] }
     let quickReplybj = { type: "reply", ReplyData: [] }
     const [visitWebSiteArray, setVisitWebSiteArray] = useState([visitWebSiteObj, copyOfferCodeObj, quickReplybj]);
@@ -214,6 +215,7 @@ function NewPopup({ show, setShow, onClose }) {
     const [isButtonChecked, setIsButtonChecked] = useState(false);
     const [textareaCount, setTextareaCount] = useState(0);
     const [footerCount, setFooterCount] = useState(0);
+    const [smsCursor, setSmsCursor] = useState('');
 
     useEffect(() => {
         setTextareaCount(cleanTextBody.length);
@@ -455,13 +457,13 @@ function NewPopup({ show, setShow, onClose }) {
 
     const handleButtonToggle = (checkedtype) => {
         chatReplyBox = []
-        if (!checkedtype) {
-            chatReplyBox.push({ type: "Visit Us", typedText: "Visit Us" })
-        }
-        else {
+        // if (!checkedtype) {
+        //     chatReplyBox.push({ type: "Visit Us", typedText: "Visit Us" })
+        // }
+        // else {
             setVisitWebSiteArray([visitWebSiteObj, copyOfferCodeObj, quickReplybj])
             chatReplyBox = []
-        }
+        // }
         setIsButtonChecked(!isButtonChecked);
         setChatReplyBox(...[chatReplyBox])
 
@@ -471,15 +473,12 @@ function NewPopup({ show, setShow, onClose }) {
         if (isButtonChecked == false) {
             setButtonCount(0);
         }
-        else {
-            setButtonCount(buttonCount + 1);
-        }
+        // else {
+        //     setButtonCount(buttonCount + 1);
+        // }
     }, [isButtonChecked])
 
     const [mobileDeskview, setMobileDeskview] = useState('mobile');
-    console.log(mobileDeskview);
-    console.log(marketingTemplate);
-    
     
 
     const handleMobileDeskView = (type) => {
@@ -565,10 +564,19 @@ function NewPopup({ show, setShow, onClose }) {
         setHtmlTextBody(copyText);
     }
     
-    const handleShowa = () => setShow(true);
     const handleClose = () => setShow(false);
     const handleClosea = () => setShow(false);
-   
+
+        const [isDisabled, setIsDisabled] = useState(false);
+      
+        useEffect(() => {
+          if (mobileDeskview === 'mobile' && marketingTemplate === 'sms') {
+            setIsDisabled(true);
+          } else {
+            setIsDisabled(false);
+          }
+        }, [mobileDeskview, marketingTemplate]);
+    
     return (
         <>
             <Modal show={show} onHide={handleClose} size="xl">
@@ -2538,91 +2546,33 @@ function NewPopup({ show, setShow, onClose }) {
                                         >
                                             <CiMobile2 />
                                         </div>
-                                        <div
+                                        {/* <div
                                             className={`previewBorder2 ${mobileDeskview === 'desktop' ? 'active' : null}`}
                                             onClick={() => handleMobileDeskView('desktop')}
+                                            style={smsCursor}
                                         >
                                             <CiDesktop />
+                                        </div> */}
+                                        <div
+                                            className={`previewBorder2 ${mobileDeskview === 'desktop' ? 'active' : ''}`}
+                                            onClick={!isDisabled ? () => handleMobileDeskView('desktop') : null}
+                                            style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
+                                            >
+                                            <div style={{ pointerEvents: isDisabled ? 'none' : 'auto' }}>
+                                                <CiDesktop />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button className='btn' onClick={handleShowa}>New Template</button>
+                                {mobileDeskview == 'desktop' && (<button className='btn'>View Template</button>)}
                                 {(marketingTemplate === "whatsapp" && (mobileDeskview === 'mobile' || mobileDeskview === 'desktop')) ? <> <div className={mobileDeskview == 'desktop' ? 'zoom' : null}>
                                     <img
                                         draggable="false"
                                         src={mobileDeskview === 'mobile' ? whatsapp : whatsappDesk}
                                         alt='whatsappImg'
                                         className={classNames}
-                                        onClick={handleZoomClick}
                                     />
                                 </div>
-
-                                    {/* <div >
-                                            <div className={deskClass}>
-                                                <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
-                                                    {broadcast.value === "media" && selectOption === 'IMAGE' ? <div className='bg-img-div'>
-                                                        {filePreview ? <img src={filePreview} className='documentVdoFile' /> : <img src={img} alt="img" className="documentVdoImg" />}
-                                                    </div> : null}
-
-                                                    {broadcast.value === "media" && selectOption === 'VIDEO' ? <div className='bg-img-div'>
-                                                        {filePreview ? <video className='documentVdoFile' controls>
-                                                            <source src={filePreview} type='video/mp4' />
-                                                            Your browser does not support the video tag.
-                                                        </video> : <img src={vdo} alt="Video" className="documentVdoImg" />}
-
-                                                    </div> : null}
-
-                                                    {broadcast.value === "media" && selectOption === 'DOCUMENT' ? <div className='bg-img-div'>
-                                                        {filePreview ? <embed src={filePreview} className='documentVdoFile' /> : <img src={document} alt="document" className="documentVdoImg" />}
-                                                    </div> : null}
-
-                                                    {htmlText ? <div
-                                                        className={mobileDeskview == 'desktop' && isZoomed ? 'titleZoomed' : "previewTextStyle"}
-                                                        dangerouslySetInnerHTML={{ __html: htmlText }}
-                                                    /> : null}
-                                                    {htmlTextBody ? <div
-                                                        className={mobileDeskview == 'desktop' && isZoomed ? 'bodyZoomed' : "previewBodyStyle"}
-                                                        dangerouslySetInnerHTML={{ __html: htmlTextBody }}
-                                                    /> : null}
-                                                    {htmlTextFooter ? <div
-                                                        className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed' : "previewFooterStyle"}
-                                                        dangerouslySetInnerHTML={{ __html: htmlTextFooter }}
-                                                    /> : null}
-                                                    <div className={`previewStyleTime ${isButtonChecked ? 'checkedStyle' : ''}`}>{currentTime}</div>
-                                                    {isButtonChecked && chatReplyBox.length ? <>{
-                                                        chatReplyBox.map((ival, index) => {
-                                                            return <>
-                                                                {(ival.type === "Visit Us") && <div className={chatReply}>
-                                                                    <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={visit} /></div>
-                                                                    <div> {ival.typedText}</div>
-                                                                </div>}
-                                                                {(ival.type === "callPhone") && <div className={chatReply}>
-                                                                    <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={call} /></div>
-                                                                    <div>{ival.typedText}</div>
-                                                                </div>}
-                                                                {(ival.type === "copy") && <div className={chatReply}>
-                                                                    <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={copy} /></div>
-                                                                    <div>{ival.type}</div>
-                                                                </div>}
-                                                                {(ival.type === "reply") && <div className={chatReply}>
-                                                                    <div className={mobileDeskview == 'desktop' && isZoomed ? 'VisitImgDesk' : 'VisitImg'}><img src={reply} /></div>
-                                                                    <div>{ival.type}</div>
-                                                                </div>}
-                                                            </>
-                                                        })
-                                                    }
-                                                    </> : null}
-                                                </div>
-                                                {(type == 'Red' && marketingTemplate == 'whatsapp') ?
-                                                    <div className='previewSampleStyleCont'>
-                                                        {htmlTextSample ? <div
-                                                            className={mobileDeskview == 'desktop' && isZoomed ? 'footerZoomed' : "previewSampleStyle"}
-                                                            dangerouslySetInnerHTML={{ __html: htmlTextSample }}
-                                                        /> : null}
-                                                    </div>
-                                                    : null}
-                                            </div>
-                                        </div> */}
                                     <div className={MobileScrollWp}>
                                         <div className={deskClass}>
                                             <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
@@ -2978,12 +2928,12 @@ function NewPopup({ show, setShow, onClose }) {
                 </Modal.Body>
 
             </Modal>
-            <Modal show={show} onHide={handleClosea} size="md">
+            {/* <Modal show={show} onHide={handleClosea} size="md">
                 <Modal.Header closeButton>
                     <Modal.Title>Create </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>dfdfdfdfdfdf</Modal.Body>
-                </Modal>
+                </Modal> */}
         </>
     );
 }
