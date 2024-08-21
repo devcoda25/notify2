@@ -564,8 +564,11 @@ function NewPopup({ show, setShow, onClose }) {
         copyText = copyText.replace("{{1}}", newValue);
         setHtmlTextBody(copyText);
     }
+    
+    const handleShowa = () => setShow(true);
     const handleClose = () => setShow(false);
-
+    const handleClosea = () => setShow(false);
+   
     return (
         <>
             <Modal show={show} onHide={handleClose} size="xl">
@@ -1473,13 +1476,10 @@ function NewPopup({ show, setShow, onClose }) {
                                                                     </> : null}
 
                                                                     {ival.type === "reply" ? <div className='quickRepliesButtonCont'>
-
                                                                         <input className='visitWebsiteInput' value={"Quick replies"} type='text' placeh
                                                                             older='Quick replies'
                                                                             disabled
                                                                         />
-
-
                                                                         <div> {visitWebSiteArray[index].ReplyData.map((cmap, cindex) => {
                                                                             return <div className='replyCont'>
                                                                                 <input className='copyOfferInput' value={cmap.buttonText} type='text' placeh
@@ -2546,6 +2546,7 @@ function NewPopup({ show, setShow, onClose }) {
                                         </div>
                                     </div>
                                 </div>
+                                <button className='btn' onClick={handleShowa}>New Template</button>
                                 {(marketingTemplate === "whatsapp" && (mobileDeskview === 'mobile' || mobileDeskview === 'desktop')) ? <> <div className={mobileDeskview == 'desktop' ? 'zoom' : null}>
                                     <img
                                         draggable="false"
@@ -2694,6 +2695,7 @@ function NewPopup({ show, setShow, onClose }) {
                                 </> : null}
 
                                 {(marketingTemplate === "sms") ? <> <div>
+                                   
                                     <img src={sms} draggable="false" alt='smsImg' className='selectImgs' />
 
                                 </div>
@@ -2976,6 +2978,12 @@ function NewPopup({ show, setShow, onClose }) {
                 </Modal.Body>
 
             </Modal>
+            <Modal show={show} onHide={handleClosea} size="md">
+                <Modal.Header closeButton>
+                    <Modal.Title>Create </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>dfdfdfdfdfdf</Modal.Body>
+                </Modal>
         </>
     );
 }
