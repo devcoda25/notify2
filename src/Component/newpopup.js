@@ -2571,16 +2571,20 @@ function NewPopup({ show, setShow, onClose }) {
                                     </div>
                                 </div>
                                 {mobileDeskview == 'desktop' && (<button className='btn' onClick={handleZoomClick}>View Template</button>)}
-                                {(marketingTemplate === "whatsapp" && (mobileDeskview === 'mobile' || mobileDeskview === 'desktop')) ? <> <div className={mobileDeskview == 'desktop' ? 'zoom' : null}>
-                                    <img
-                                        draggable="false"
-                                        src={mobileDeskview === 'mobile' ? whatsapp : whatsappDesk}
-                                        alt='whatsappImg'
-                                        className={classNames}
-                                        // onClick={handleZoomClick}
-                                    />
-                                </div>
-                                {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
+                                
+                                {(marketingTemplate === "whatsapp" && (mobileDeskview === 'mobile' || mobileDeskview === 'desktop')) ? <>
+                                {/* <div className={isZoomed ? 'zoomed-overlay' : ''}> */}
+                                    <div className={mobileDeskview == 'desktop' ? 'zoom' : null}>
+                                        <img
+                                            draggable="false"
+                                            src={mobileDeskview === 'mobile' ? whatsapp : whatsappDesk}
+                                            alt='whatsappImg'
+                                            className={classNames}
+                                            // onClick={handleZoomClick}
+                                        />
+                                    </div>
+                                    {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
+                                {/* </div> */}
                                     <div className={MobileScrollWp}>
                                         <div className={deskClass}>
                                             <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
@@ -2709,8 +2713,10 @@ function NewPopup({ show, setShow, onClose }) {
                                         src={mobileDeskview == 'mobile' ? platform : platformDesk}
                                         alt='platformImg'
                                         className={platformClass}
-                                        onClick={handleZoomClick} />
+                                        // onClick={handleZoomClick}
+                                         />
                                 </div>
+                                {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
                                     <div className={mobileDeskview == 'mobile' ? 'MobileScroll' : 'MobileScrollDesk'}>
                                         <div className={platformPreviewClass}>
                                             <div className={platformPreviewCont}>
@@ -2777,8 +2783,10 @@ function NewPopup({ show, setShow, onClose }) {
                                         src={mobileDeskview == 'mobile' ? push : pushDesk}
                                         alt='pushImg'
                                         className={pushClass}
-                                        onClick={handleZoomClick} />
+                                        // onClick={handleZoomClick}
+                                         />
                                 </div>
+                                {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
                                     <div>
                                         <div className={pushPreview}>
                                             <div className={pushCont}>
@@ -2876,10 +2884,11 @@ function NewPopup({ show, setShow, onClose }) {
                                         src={mobileDeskview === 'mobile' ? email : emailDesk}
                                         alt='emailImg'
                                         className={emailClass}
-                                        onClick={handleZoomClick}
+                                        // onClick={handleZoomClick}
                                         draggable="false"
                                     />
                                 </div>
+                                {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
                                     <div className='MobileScroll'>
                                         <div className={emailPreviewCont}>
                                             <div>
