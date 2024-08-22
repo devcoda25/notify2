@@ -561,6 +561,17 @@
         z-index: 1;
     }
 
+    .imgZoom-btn {
+        position: absolute;
+        top: .5rem;
+        left: 59rem;
+        background: none;
+        border: none;
+        font-size: 27px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
     .popup-content h2 {
         margin-top: 0;
     }
@@ -2965,15 +2976,29 @@
         letter-spacing: 1px;
     }
 
-    .zoomed {
-        transform: scale(2);
+    .zoomed  {
+        transform: scale(3);
         /* margin-top: 11rem; */
-        margin-top: 0;
-        margin-left: -26rem;
+        margin-top: 6rem;
+        margin-left: -21rem;
         transition: .5s;
         cursor: pointer;
         position: absolute;
         width: 25% !important;
+        /* position: relative; */
+        background: #fff;
+        padding: -1px 361px 50px 143px;
+        border-radius: 10px;
+        max-width: 90%;
+        max-height: 90%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-closed {
+        transform: scale(0);
+        opacity: 0;
+        transition: transform 0.5s, opacity 0.5s;
+        pointer-events: none;
     }
 
     .deskZoom {
@@ -3206,12 +3231,12 @@
         top: -31rem;
         left: -14.5rem; */
         transition: .5s;
-        width: 20rem;
-        height: 14rem;
+        width: 26rem;
+        height: 12rem;
         position: absolute;
         overflow: auto;
-        top: 54px;
-        left: 25rem;
+        top: 17rem;
+        left: 31rem;
     }
 
     .errorThrow {

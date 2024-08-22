@@ -488,9 +488,12 @@ function NewPopup({ show, setShow, onClose }) {
     const [isZoomed, setIsZoomed] = useState(false);
 
     const handleZoomClick = () => {
-        setIsZoomed(!isZoomed);
+        setIsZoomed(true);
     };
 
+    const handleCloseClick = () => {
+        setIsZoomed(false);
+    };
 
     let classNames = `${mobileDeskview === 'mobile' ? "selectImgs" : "selectDeskWhatsapp"}`;
     if (mobileDeskview === 'desktop' && isZoomed) {
@@ -576,6 +579,16 @@ function NewPopup({ show, setShow, onClose }) {
             setIsDisabled(false);
           }
         }, [mobileDeskview, marketingTemplate]);
+
+        const [isOpen, setIsOpen] = useState(false);
+
+        const openPopup = () => {
+            setIsOpen(true);
+        };
+
+        const closePopup = () => {
+            setIsOpen(false);
+        };
     
     return (
         <>
@@ -2546,13 +2559,6 @@ function NewPopup({ show, setShow, onClose }) {
                                         >
                                             <CiMobile2 />
                                         </div>
-                                        {/* <div
-                                            className={`previewBorder2 ${mobileDeskview === 'desktop' ? 'active' : null}`}
-                                            onClick={() => handleMobileDeskView('desktop')}
-                                            style={smsCursor}
-                                        >
-                                            <CiDesktop />
-                                        </div> */}
                                         <div
                                             className={`previewBorder2 ${mobileDeskview === 'desktop' ? 'active' : ''}`}
                                             onClick={!isDisabled ? () => handleMobileDeskView('desktop') : null}
@@ -2564,15 +2570,17 @@ function NewPopup({ show, setShow, onClose }) {
                                         </div>
                                     </div>
                                 </div>
-                                {mobileDeskview == 'desktop' && (<button className='btn'>View Template</button>)}
+                                {mobileDeskview == 'desktop' && (<button className='btn' onClick={handleZoomClick}>View Template</button>)}
                                 {(marketingTemplate === "whatsapp" && (mobileDeskview === 'mobile' || mobileDeskview === 'desktop')) ? <> <div className={mobileDeskview == 'desktop' ? 'zoom' : null}>
                                     <img
                                         draggable="false"
                                         src={mobileDeskview === 'mobile' ? whatsapp : whatsappDesk}
                                         alt='whatsappImg'
                                         className={classNames}
+                                        // onClick={handleZoomClick}
                                     />
                                 </div>
+                                {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
                                     <div className={MobileScrollWp}>
                                         <div className={deskClass}>
                                             <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewContZoomed' : "previewStyle"}>
