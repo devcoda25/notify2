@@ -3514,7 +3514,11 @@
     }
 
     .MobileScreenPush {
-        left: 38.5rem;
+        /* left: 38.5rem; */
+        left: 50rem;
+        top: 14rem;
+        width: 23%;
+        height: 10rem;
     }
 
     .platformPreviewZoom {
@@ -3525,8 +3529,11 @@
     }
 
     .pushPreviewZoom {
-        left: 42.5rem;
-        top: 39rem;
+        /* left: 42.5rem;
+        top: 39rem; */
+        left: 16rem;
+        top: 10rem;
+        width: 55%;
     }
 
     .DeskScreenSms {
