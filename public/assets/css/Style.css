@@ -102,6 +102,10 @@
 /********** custom style end ************/
 
 @media only screen and (max-width: 1920px) {
+    .MobileScroll {
+        position: relative;
+    }
+
     .nav {
         display: flex;
         justify-content: space-between;
@@ -2515,24 +2519,32 @@
 
     .MobileScreenPush {
         background-color: transparent;
-        width: 17%;
-        height: 18rem;
+        /* width: 17%; */
+        height: 5rem;
         position: absolute;
-        margin-left: 9rem;
+        margin-left: 0;
         overflow: auto;
         top: 19rem;
-        left: 53.2rem;
+        left: 52.2rem;
     }
 
     .DeskScreenPush {
-        background-color: transparent;
+        /* background-color: transparent;
         width: 18%;
         height: 18rem;
         position: absolute;
         overflow: auto;
         top: 29rem;
         left: 70.3rem;
+        transition: .5s; */
+        width: 23%;
+        height: 7rem;
+        position: absolute;
+        overflow: auto;
+        top: 9rem;
+        left: 51rem;
         transition: .5s;
+        background: #fff;
     }
 
     .platformMsgBtn {
@@ -3075,9 +3087,13 @@
     }
 
     .pushPreviewZoom {
-        top: 45.5rem;
+        /* top: 45.5rem;
         left: 55.5rem;
-        width: 27.5%;
+        width: 27.5%; */
+        top: 10.5rem;
+        left: 18.5rem;
+        width: 50%;
+        height: 12rem;
     }
 
     .emailPreviewContZoom {
@@ -3282,6 +3298,10 @@
 }
 
 @media only screen and (max-width: 1536px) {
+    .MobileScroll {
+        position: relative;
+    }
+
     .ApiDocs {
         display: none;
     }
