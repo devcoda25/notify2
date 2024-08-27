@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { RiCalendarView } from "react-icons/ri";
 // import { CustomScroll } from "react-custom-scroll";
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
@@ -2570,7 +2571,7 @@ function NewPopup({ show, setShow, onClose }) {
                                         </div>
                                     </div>
                                 </div>
-                                {mobileDeskview == 'desktop' && (<button className='btn' onClick={handleZoomClick}>View Template</button>)}
+                                {mobileDeskview == 'desktop' && (<button className='btn view-template' onClick={handleZoomClick}>View Screen <RiCalendarView size={20} /> </button>)}
                                 
                                 {(marketingTemplate === "whatsapp" && (mobileDeskview === 'mobile' || mobileDeskview === 'desktop')) ? <>
                                 {/* <div className={isZoomed ? 'zoomed-overlay' : ''}> */}
