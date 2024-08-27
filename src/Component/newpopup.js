@@ -2890,7 +2890,7 @@ function NewPopup({ show, setShow, onClose }) {
                                     />
                                 </div>
                                 {mobileDeskview == 'desktop' && isZoomed && (<button type="button" aria-label="Close" className='imgZoom-btn' onClick={handleCloseClick}>X</button>)}
-                                    <div className='MobileScroll'>
+                                    <div className={isZoomed ? '' : 'MobileScroll'}>
                                         <div className={emailPreviewCont}>
                                             <div>
                                                 <div className={mobileDeskview == 'desktop' && isZoomed ? 'previewEmailTitleZoom' : 'previewEmailTitle'}>

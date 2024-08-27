@@ -3962,13 +3962,23 @@
     }
 
     .DeskScreenPush {
-        top: 24rem;
-        left: 55rem;
+        /* top: 24rem;
+        left: 55rem; */
+        top: 9rem;
+        left: 52rem;
+        height: 6rem;
+        background: #fff;
     }
 
     .MobileScreenPush {
-        left: 38rem;
-        top: 10rem;
+        /* left: 38rem;
+        top: 10rem; */
+        left: 52rem;
+        top: 9rem;
+        position: absolute;
+        width: auto;
+        margin-left: 0;
+        height: auto;
     }
 
     .zoomed {
@@ -3993,8 +4003,11 @@
     }
 
     .pushPreviewZoom {
-        top: 29.5rem;
-        left: 36.5rem;
+        /* top: 29.5rem;
+        left: 36.5rem; */
+        top: 8.5rem;
+        left: 24.5rem;
+        height: 9rem;
     }
 
     .DeskScreenSms {
