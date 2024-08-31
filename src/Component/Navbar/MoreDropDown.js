@@ -7,7 +7,7 @@ import { TbListDetails } from "react-icons/tb";
 function MoreDropDown() {
   return (
     <Dropdown>
-      <Dropdown.Toggle variant="default" id="dropdown-basic"><i class="fa fa-ellipsis-h mr-10" aria-hidden="true"></i>
+      <Dropdown.Toggle variant="default" id="dropdown-basic"><i className="fa fa-ellipsis-h mr-10" aria-hidden="true"></i>
       More
       </Dropdown.Toggle>
 

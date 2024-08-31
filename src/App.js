@@ -1,14 +1,11 @@
-import BroadcastBody from "./Component/Broadcast/BroadcastBody";
-import Footer from "./Component/Footer/Footer";
-import Navbar from "./Component/Navbar/Navbar";
+import React from "react";
+import BaseLayouts from "./Layouts/baselayouts";
 
 function App() {
   return (
-    <div className="container">
-      <Navbar/>
-      <BroadcastBody/>
-      <Footer/>
-    </div>
+    <React.Fragment>
+      <BaseLayouts></BaseLayouts>
+    </React.Fragment>
   );
 }
 

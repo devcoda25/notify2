@@ -1,0 +1,225 @@
+.your-emails li {
+  padding: 0 5px !important;
+}
+
+.your-emails>li:hover {
+  background: #dbdfef;
+}
+
+.ticket-title {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ticket-title h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.ticket-title p {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 0 !important;
+}
+
+.email>span {
+  float: left !important;
+  padding-top: 12px !important;
+  margin-right: 5px !important;
+}
+
+.hum-clock i {
+  color: #999 !important;
+  font-size: 24px !important;
+}
+
+.hub-alert {
+  color: #f00 !important;
+  font-size: 24px !important;
+}
+
+.hum-avator img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.alert-count {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #fff !important;
+  font-size: 14px !important;
+  padding: 4px 4px 4px 7px !important;
+  display: block;
+  float: right !important;
+  font-weight: 600 !important;
+  line-height: 0 !important;
+  margin-top: 14px;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 27px !important;
+  top: 116px !important;
+  z-index: 9999 !important;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #a90000;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+  Sidebar wrapper styles
+  Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+  */
+
+/* General sidebar styles */
+.bm-menu {
+  background: #fff !important;
+  padding: 2em 1em 0 !important;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mail-create-date {
+  margin-left: 20px;
+  clear: left !important;
+  margin-bottom: 0 !important;
+}
+
+.mail-create-date span {
+  margin-right: 10px;
+}
+
+.mail-time {
+  border-left: #666 solid 1px;
+  padding-left: 10px;
+}
+.inbox-control{
+  position: absolute;
+  top:35px;
+  right: 20px;
+}
+
+.team-hum-avator img{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-left: -5px;
+}
+.status-upload{
+  width: 95% !important;
+}
+.mail-send-btn{
+  float: right;
+}
+.mail-send-btn span{
+  margin-right: 10px;
+  margin-top: 15px;
+  float: left;
+}
+.inline-form {
+  margin-top: 0 !important;
+}
+.inline-form > label {
+  background: #fff;
+  color: #777;
+  font-size: 14px !important;
+  font-weight: normal;
+  padding: 1px 19px;
+  position: absolute;
+  right: 10px;
+  text-transform: uppercase;
+  top: 12px !important;
+}
+.color-222{
+  color: #222 !important;
+}
+.white-bg{
+  background: #fff !important;
+}
+.feed-tittle{
+  width: 100%;
+  padding-bottom: 0 !important;
+}
+.feed-tittle span{
+  float: right;
+  color: #222 !important;
+  margin-right: 30px !important;
+}
+.timeline-detail{
+  border: #999 solid 1px;
+}
+.custom-todo{
+  padding: 1px 5px !important;
+}
+.w-90{
+  width: 90% !important;
+}
+.green-color{
+  color: #07cb57 !important;
+}
+.down-arrow-btn{
+  position: absolute;
+  right: 20px;
+  top: 30px;
+}
+.down-arrow-btn i{
+  color: #999 !important;
+}
+.divider{
+  height:30px;
+  clear: both;
+}
+.contact-form > form .row > div > img {
+  left: 16px;
+  line-height: 16px;
+  margin-top: 0;
+  position: absolute;
+  top: 8rem;
+  width: 28px;
+  border-radius: 50%;
+}

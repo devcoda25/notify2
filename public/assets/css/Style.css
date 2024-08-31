@@ -15,7 +15,9 @@
 }
 
 /********** custom style ************/
-
+.bg-white{
+    background-color: #fff !important;
+}
 .mr-10 {
     margin-right: 10px;
 }
