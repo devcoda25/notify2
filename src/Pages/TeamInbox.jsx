@@ -1,18 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import BurgerSidebar from '../Component/humburgerdiv';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import TeamBurgerLeftNav from '../Component/teamburgerMenu';
+import PriorityDropDown from '../Component/assigneddrop';
+import AssigneeDropDown from '../Component/AssigneeDrop';
+import TicketType from '../Component/TicketType';
+import ReporterType from '../Component/Reporter';
+
 // import { Navbar } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
 
 const TeamInbox = () => {
+    const [isOpenSideMenu, setIsOpenSideMenu] = useState(true)
     return (
         <>
             <div id="outer-container">
-                <BurgerSidebar></BurgerSidebar>
+                <BurgerSidebar setIsOpenSideMenu={setIsOpenSideMenu} isOpenSideMenu={isOpenSideMenu} />
                 <main id="page-wrap">
-                    <div className="main-content">
+                    <div className={` ${!isOpenSideMenu ? "main-content" : "w-80"}`}>
                         <div className="panel-content">
                             <div className="row">
-                                <div className="col-lg-8 col-md-8 col=sm-12">
+                                <div className="col-lg-9 col-md-9 col=sm-12">
                                     <div className="widget">
                                         <div className="widget-title">
                                             <h3>Tickets Title</h3>
@@ -83,42 +94,64 @@ const TeamInbox = () => {
                                     </div>
                                     {/* Left column end */}
                                 </div>
-                                <div className="col-lg-4 col-md-4 col-sm-12">
+                                <div className="col-lg-3 col-md-3 col-sm-12">
                                     <div className="widget">
                                         <div className="widget-title">
+
                                             <div className="btn-group">
-                                                <button data-original-title="" type="button" className="btn-primary mini">To Do</button>
-                                                <button data-original-title="" type="button" className="btn-primary mini dropdown-toggle" data-toggle="dropdown"> <span className="caret"></span> </button>
-                                                <ul className="dropdown-menu" role="menu">
+                                                {/* <button data-original-title="" type="button" className="btn-primary mini">To Do</button> 
+                                                <button data-original-title="" type="button" className="btn-primary mini dropdown-toggle" data-toggle="dropdown"> <span className="caret"></span> </button>*/}
+                                                <DropdownButton data-bs-theme="default" id="dropdown-basic-button" title="To Do" size='sm'>
+                                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                                </DropdownButton>
+
+                                                {/* <ul className="dropdown-menu" role="menu">
                                                     <li><a data-original-title="" href="#">Action</a></li>
                                                     <li><a data-original-title="" href="#">Another action</a></li>
                                                     <li><a data-original-title="" href="#">Something else here</a></li>
                                                     <li className="divider"></li>
                                                     <li><a data-original-title="" href="#">Separated link</a></li>
-                                                </ul>
+                                                </ul> */}
                                             </div>
                                             <div className="widget-controls"> <span className="close-content"><i className="fa fa-times"></i></span></div>
                                         </div>
                                         <div className="support-ticket-sec w-90">
                                             <div id="contact">
                                                 <div className="contact-form">
-                                                    <form >
-                                                        <div className="row">
-                                                            <div className="col-lg-12 col-md-12">
+                                                    <div className="row">
+                                                        <div className="col-lg-12 col-md-12">
+                                                            <div className='dropdownsection'>
                                                                 <h6>Priority</h6>
-                                                                <i className="fa fa-minus-circle green-color"></i>
-                                                                <input type="text" placeholder="Medium" />
-                                                                <span className='down-arrow-btn'><i className="fa fa-chevron-down" aria-hidden="true"></i>
-                                                                </span>
-                                                                <div className='divider'>&nbsp;</div>
-                                                                <h6>Assigned</h6>
-                                                                <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                                                                <input type="text" placeholder="Medium" />
-                                                                <span className='down-arrow-btn'><i className="fa fa-chevron-down" aria-hidden="true"></i>
-                                                                </span>
+                                                                <PriorityDropDown />
+                                                            </div>
+                                                            <div className='dropdownsection'>
+                                                                <h6><span>Assigned To</span> <span>Assign to me</span></h6>
+                                                                <AssigneeDropDown />
+                                                            </div>
+                                                            <div className='dropdownsection'>
+                                                                <h6>Administarative</h6>
+                                                                <Form.Select aria-label="Default select example">
+                                                                    <option>Medium</option>
+                                                                    <option value="1">High</option>
+                                                                    <option value="2">Low</option>
+                                                                </Form.Select>
+                                                            </div>
+                                                            <div className='dropdownsection'>
+                                                                <h6>Ticket Type</h6>
+                                                                <TicketType />
+                                                            </div>
+                                                            <div className='dropdownsection'>
+                                                                <h6>Due Date</h6>
+                                                               <input className='form-control' type='date'/>
+                                                            </div>
+                                                            <div className='dropdownsection'>
+                                                                <h6>Reporter</h6>
+                                                              <ReporterType/>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

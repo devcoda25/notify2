@@ -1,8 +1,16 @@
-import React from 'react';
-import { slide as Menu } from 'react-burger-menu';
+import React, { useState } from 'react';
+import { push as Menu } from 'react-burger-menu';
 
-const CustomBurgerIcon = () => <i className="fa fa-bars" aria-hidden="true"></i>;
-const BurgerSidebar = () => {
+
+
+const BurgerSidebar = ({isOpenSideMenu, setIsOpenSideMenu}) => {
+   
+const CustomBurgerIcon = () => <i className="fa fa-bars" aria-hidden="true" onClick={changeBurgerIcon}></i>;
+
+    // function changeBurgerIcon(){
+    //     alert("test")
+    //     setIsOpenSideMenu((prev)=>!prev);
+    // }
     var styles = {
         bmBurgerButton: {
             position: 'fixed',
@@ -19,19 +27,22 @@ const BurgerSidebar = () => {
         },
         bmCrossButton: {
             height: '24px',
-            width: '24px'
+            width: '24px',
+            display:'none'
         },
         bmCross: {
             background: '#bdc3c7'
         },
         bmMenuWrap: {
             position: 'fixed',
-            height: '100%'
+            height: '100%',
+            // left:'200px'
         },
         bmMenu: {
             background: '#373a47',
             padding: '2em 1em 0',
-            fontSize: '1.15em'
+            fontSize: '1.15em',
+            height:'auto'
         },
         bmMorphShape: {
             fill: '#373a47'
@@ -45,10 +56,17 @@ const BurgerSidebar = () => {
         },
         bmOverlay: {
             background: 'rgba(0, 0, 0, 0.3)'
+        },
+        maincontent:{
+            width:'80%'
         }
     }
+    const changeBurgerIcon = () => {
+        alert('safkj');
+        setIsOpenSideMenu(false);
+      };
     return (
-        <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'320px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
+        <Menu noOverlay styles={styles} customBurgerIcon={<i className="fa fa-bars" aria-hidden="true" onClick={changeBurgerIcon}></i>}  width={'300px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
             <div className="widget mt-0">
                 <div className="widget-title p-2">
                     <span><i className="fa fa-bars" aria-hidden="true"></i></span>
