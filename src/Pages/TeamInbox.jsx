@@ -14,13 +14,35 @@ import ReporterType from '../Component/Reporter';
 // import { Link } from 'react-router-dom';
 
 const TeamInbox = () => {
+
+    const [isFullWidth, setIsFullWidth] = useState(true);
+
+    useEffect(() => {
+        const outerContainer = document.getElementById('outer-container');
+
+        const checkStyle = () => {
+            if (outerContainer.style.width === '100%' && outerContainer.style.overflow === 'hidden') {
+                setIsFullWidth(false);
+            } else {
+                setIsFullWidth(true);
+            }
+        };
+
+        checkStyle();
+
+        // Observe changes to the outerContainer style
+        const observer = new MutationObserver(checkStyle);
+        observer.observe(outerContainer, { attributes: true, attributeFilter: ['style'] });
+
+        return () => observer.disconnect();
+    }, []);
     
     return (
         <>
-            <div id="outer-container">
+            <div id="outer-container" style={{ width: '100%', overflow: 'hidden' }}>
                 <BurgerSidebar  />
                 <main id="page-wrap">
-                    <div className="main-content">
+                    <div className="main-content" style={{width: isFullWidth ? '100%' : '80%',}}>
                         <div className="panel-content">
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
