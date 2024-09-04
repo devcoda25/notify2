@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { push as Menu } from 'react-burger-menu';
 
-
-
-const BurgerSidebar = ({isOpenSideMenu, setIsOpenSideMenu}) => {
+const BurgerSidebar  = () => {
    
-const CustomBurgerIcon = () => <i className="fa fa-bars" aria-hidden="true" onClick={changeBurgerIcon}></i>;
+    const CustomBurgerIcon = () => <i className="fa fa-bars" aria-hidden="true"></i>;
 
     // function changeBurgerIcon(){
     //     alert("test")
@@ -61,12 +59,9 @@ const CustomBurgerIcon = () => <i className="fa fa-bars" aria-hidden="true" onCl
             width:'80%'
         }
     }
-    const changeBurgerIcon = () => {
-        alert('safkj');
-        setIsOpenSideMenu(false);
-      };
+
     return (
-        <Menu noOverlay styles={styles} customBurgerIcon={<i className="fa fa-bars" aria-hidden="true" onClick={changeBurgerIcon}></i>}  width={'300px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
+        <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'320px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
             <div className="widget mt-0">
                 <div className="widget-title p-2">
                     <span><i className="fa fa-bars" aria-hidden="true"></i></span>

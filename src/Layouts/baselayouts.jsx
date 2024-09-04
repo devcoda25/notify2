@@ -11,8 +11,9 @@ const BaseLayouts = () => {
                 <Navbar></Navbar>
                 <BrowserRouter>
                     <Routes>
-                        <Route path='BroadcastBody' element={<BroadcastBody/>}/>
-                       <Route path='Teaminbox' element={<TeamInbox/>}/>
+                        <Route path='/' element={<BroadcastBody />} />
+                        <Route path='BroadcastBody' element={<BroadcastBody />} />
+                        <Route path='Teaminbox' element={<TeamInbox />} />
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>

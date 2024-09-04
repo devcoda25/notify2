@@ -14,13 +14,13 @@ import ReporterType from '../Component/Reporter';
 // import { Link } from 'react-router-dom';
 
 const TeamInbox = () => {
-    const [isOpenSideMenu, setIsOpenSideMenu] = useState(true)
+    
     return (
         <>
             <div id="outer-container">
-                <BurgerSidebar setIsOpenSideMenu={setIsOpenSideMenu} isOpenSideMenu={isOpenSideMenu} />
+                <BurgerSidebar  />
                 <main id="page-wrap">
-                    <div className={` ${!isOpenSideMenu ? "main-content" : "w-80"}`}>
+                    <div className="main-content">
                         <div className="panel-content">
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
