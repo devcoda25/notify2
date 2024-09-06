@@ -39,7 +39,7 @@ const TeamInbox = () => {
     
     return (
         <>
-            <div id="outer-container" style={{ width: '100%', overflow: 'hidden' }}>
+            <div id="outer-container" className='main-wrapper' style={{ width: '100%', overflow: 'hidden' }}>
                 <BurgerSidebar  />
                 <main id="page-wrap">
                     <div className="main-content" style={{width: isFullWidth ? '100%' : '80%',}}>

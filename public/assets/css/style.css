@@ -9,15 +9,16 @@
 
 .view-template {
     position: absolute;
-    top: 3.5rem;
-    right: 2.5rem;
-    z-index: 999;
+    top: 2.5rem;
+    /* right:3.5rem;
+    z-index: 999; */
 }
 
 /********** custom style ************/
-.bg-white{
+.bg-white {
     background-color: #fff !important;
 }
+
 .mr-10 {
     margin-right: 10px;
 }
@@ -27,7 +28,7 @@
     gap: 8px;
     cursor: pointer;
     height: inherit;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 500;
     line-height: calc(1.5rem);
     color: rgb(102, 102, 102);
@@ -54,14 +55,14 @@
     border-right:#ccc solid 1px;
 } */
 .poppupBroadcast h5 {
-    font-size: 15px !important;
+    /* font-size: 15px !important; */
     margin-bottom: 10px !important;
     margin-top: 20px !important;
     font-weight: 600;
 }
 
 .poppupButtonDesign h5 {
-    font-size: 15px !important;
+    /* font-size: 15px !important; */
     margin-bottom: 10px !important;
     margin-top: 20px !important;
     font-weight: 600;
@@ -101,6 +102,47 @@
     padding: 10px 5px;
 }
 
+.poppupInputLabel label {
+    margin-bottom: 0;
+}
+
+.bsHFOv {
+    height: auto !important;
+}
+
+.poppupRadioCont p {
+    font-size: 13px;
+    margin-bottom: 15px !important;
+    margin-top: 15px !important;
+}
+
+.popupInput input {
+    padding: .8rem;
+    background-color: #f0f5f5;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    opacity: .5;
+    width: 100%;
+    outline-color: rgb(35, 164, 85);
+}
+
+.packageDropdown .Dropdown-control {
+    font-size: 1rem;
+}
+
+.paraLink p {
+    margin: 0 !important;
+}
+.main-header{
+    position: fixed;
+    width: 100%;
+    z-index: 99999;
+}
+.main-wrapper{
+    position: relative;
+    top: 60px;
+}
 /********** custom style end ************/
 
 @media only screen and (max-width: 1920px) {
@@ -161,7 +203,7 @@
     .nav a {
         color: rgb(102, 102, 102);
         font-weight: 500;
-        font-size: .9rem;
+        /* font-size: .9rem; */
         display: flex;
         align-items: center;
         gap: .5rem;
@@ -352,7 +394,7 @@
         border-radius: 4px;
         box-sizing: border-box;
         outline-color: #23a455;
-        font-size: 11.4px;
+        font-size: 14px;
         font-weight: 600;
     }
 
@@ -485,8 +527,8 @@
         align-items: center;
         justify-content: center;
         display: flex;
-        font-size: .9rem;
-        font-weight: 400;
+        /* font-size: .9rem; */
+        font-weight: 600;
         margin-bottom: 0;
     }
 
@@ -576,8 +618,9 @@
 
     .imgZoom-btn {
         position: absolute;
-        top: 1rem;
-        left: 59rem;
+        top: -4rem;
+        right: 0;
+        /* left: 18rem; */
         background: none;
         border: none;
         font-size: 27px;
@@ -821,20 +864,14 @@
 
     .popupInput label {
         display: flex;
-        font-size: 13px;
         font-weight: 600;
         color: rgb(63, 63, 63);
     }
 
     .popupInput input {
-        padding: .5rem;
-        background-color: #f0f5f5;
-        border: none;
         border-radius: 5px;
         margin-top: .5rem;
         margin-bottom: .5rem;
-        font-size: .8rem;
-        opacity: .5;
         margin-left: .1rem;
         width: 100%;
         outline-color: rgb(35, 164, 85);
@@ -919,7 +956,7 @@
         border-radius: 5px;
         margin-top: .5rem;
         margin-bottom: .5rem;
-        font-size: .8rem;
+        /* font-size: .8rem; */
         outline-color: rgb(35, 164, 85);
         text-align: start;
         border: none;
@@ -946,7 +983,6 @@
 
     .poppupRadioCont p {
         text-align: start;
-        font-size: 13px;
         color: rgb(63, 63, 63);
         font-weight: 600;
     }
@@ -1071,7 +1107,7 @@
 
     .poppupBroadcast p {
         color: rgb(61, 61, 61);
-        font-size: .8rem;
+        /* font-size: .8rem; */
     }
 
     .BroadcastSelect .Dropdown-control:hover {
@@ -1085,7 +1121,7 @@
         border-radius: 5px;
         margin-top: .5rem;
         margin-bottom: .5rem;
-        font-size: .8rem;
+        /* font-size: .8rem; */
         outline-color: rgb(35, 164, 85);
         text-align: start;
         width: 18%;
@@ -1174,7 +1210,7 @@
         border-radius: .5rem;
         width: -webkit-fill-available;
         margin-bottom: 0.9rem;
-        padding: 2.2rem 1rem;
+        padding: 2.5rem 1rem;
         outline: none;
         height: 10rem;
         width: 99%;
@@ -1210,8 +1246,8 @@
 
     .poppupButton p {
         color: rgb(61, 61, 61);
-        font-size: .75rem;
-        /* margin-bottom: 2rem; */
+        /* font-size: .75rem;
+         margin-bottom: 2rem; */
     }
 
     /* .modal-content {
@@ -1340,7 +1376,7 @@
         left: 12.7rem; */
         position: relative;
         top: -3rem;
-        width: 17rem;
+        width: 19rem;
     }
 
     .MobileScreen .previewStyle {
@@ -1788,7 +1824,7 @@
 
     .poppupBroadcast p {
         color: rgb(61, 61, 61);
-        font-size: .8rem;
+        /* font-size: .8rem; */
     }
 
     .hidden {
@@ -2118,7 +2154,6 @@
 
     .packageDropdown .Dropdown-control {
         background-color: rgb(246 246 255);
-        font-size: .8rem;
         outline-color: rgb(35, 164, 85) !important;
         border: none;
         /* width: 147%; */
@@ -2515,8 +2550,8 @@
         background-color: transparent;
         position: absolute;
         overflow: auto;
-        left: 51rem;
-        top: 10rem;
+        left: 4rem;
+        top: 8rem;
     }
 
     .MobileScreenPush {
@@ -2604,8 +2639,8 @@
         padding: 10px;
         font-size: 14px;
         font-family: roboto-light;
-        height: 6rem;
-        width: 16rem;
+        height: 8rem;
+        width: 19rem;
         overflow: auto;
     }
 
@@ -2918,19 +2953,19 @@
         width: 63%;
         height: 6rem;
         position: absolute;
-        margin-left: 9rem;
-        top: -12rem;
-        left: -4rem;
+        /* margin-left: 9rem; */
+        top: -13rem;
+        left: 6rem;
     }
 
     .emailPreviewContZoom .emailZoomClassZoom {
         background-color: transparent;
-        width: 100%;
+        width: 600px;
         height: 18rem;
         position: absolute;
-        margin-left: 9rem;
-        top: -27rem;
-        left: -32.5rem;
+        /* margin-left: 9rem; */
+        top: 11rem;
+        left: -27rem;
         transition: .5s;
     }
 
@@ -2950,7 +2985,7 @@
     }
 
     .DeskScreen .previewBodyStyle {
-        font-size: .5rem;
+        /* font-size: .5rem; */
     }
 
     .DeskScreen .previewFooterStyle {
@@ -2989,7 +3024,7 @@
     }
 
     .previewPlatformContDesk .previewBodyStyle {
-        font-size: .5rem;
+        /* font-size: .5rem; */
     }
 
     .previewPlatformContDesk .previewFooterStyle {
@@ -3000,12 +3035,12 @@
     .zoomed {
         transform: scale(3);
         /* margin-top: 11rem; */
-        margin-top: 6rem;
+        margin-top: 9rem;
         margin-left: -21rem;
         transition: .5s;
         cursor: pointer;
         position: absolute;
-        width: 25% !important;
+        width: 25%;
         /* position: relative; */
         background: #fff;
         padding: -1px 361px 50px 143px;
@@ -3052,6 +3087,7 @@
     .bodyZoomed {
         font-size: 1rem;
         margin-bottom: .7rem;
+        /* width: 40rem; */
     }
 
     .footerZoomed {
@@ -3074,14 +3110,14 @@
     }
 
     .platformPreviewZoom {
-        top: 5rem;
-        left: 20rem;
+        top: 8rem;
+        left: -35rem;
         transition: .5s;
     }
 
     .platformPreviewContZoom {
-        height: 11rem;
-        width: 22rem;
+        height: 17rem;
+        width: 54rem;
     }
 
     .pushContZoom {
@@ -3114,7 +3150,7 @@
     .emailZoomClassZoom {
         height: 12rem;
         overflow: auto;
-        width: 126%;
+        /* width: 126%; */
     }
 
     .replyCont {
@@ -3170,7 +3206,6 @@
         background-color: rgb(246 246 255);
         border: none;
         width: 30%;
-        font-size: .8rem;
         padding: 8px 8px 8px 10px;
     }
 
@@ -3180,7 +3215,6 @@
 
     .identification .Dropdown-option {
         border-bottom: 1px solid #f0f5f5;
-        font-size: .8rem;
     }
 
     .identification .Dropdown-root {
@@ -3239,29 +3273,22 @@
     }
 
     .MobileScrollWpDesk {
-        width: 12rem;
-        height: 15rem;
+        width: 14rem;
+        height: 14rem;
         position: relative;
         overflow: hidden;
         top: -18rem;
-        left: 7.5rem;
+        left: 8.5rem;
     }
 
     .MobileScrollWpDeskZoom {
-        /* transition: .5s;
-        width: 47rem;
-        height: 30rem;
-        position: relative;
-        overflow: hidden;
-        top: -31rem;
-        left: -14.5rem; */
         transition: .5s;
-        width: 26rem;
-        height: 12rem;
+        width: 39rem;
+        height: 31rem;
         position: absolute;
         overflow: auto;
-        top: 17rem;
-        left: 31rem;
+        top: 4rem;
+        left: -17rem;
     }
 
     .errorThrow {
@@ -3321,7 +3348,7 @@
     }
 
     .MobileScreen {
-        width: 90%;
+        width: 100%;
         left: 0.5rem;
     }
 
@@ -3350,8 +3377,9 @@
     }
 
     .DeskScreen {
-        width: 55%;
-        max-height: 7rem;
+        width: 60%;
+        max-height: 9rem;
+        left:0.5rem;
     }
 
     .MobileScrollWpDesk {
@@ -3365,12 +3393,13 @@
 
     .MobileScrollWpDeskZoom {
         transition: .5s;
-        width: 28rem;
+        width: 33rem;
         height: 20rem;
         position: absolute;
         overflow-y: auto;
         top: 8rem;
-        left: 29rem;
+        /* left: 29rem; */
+        left: -18rem;
 
     }
 
@@ -3398,7 +3427,7 @@
     }
 
     .MobileScreenSms {
-        width: 49%;
+        width: 50%;
         left: 9rem;
     }
 
@@ -3502,8 +3531,8 @@
     }
 
     .MobileScreenSmsDesk {
-        left: 51.3rem;
-        top: 10rem;
+        left: 3.5rem;
+        top: 9rem;
     }
 
     .DeskScreenPush {
@@ -3521,13 +3550,6 @@
         top: 14rem;
         width: 23%;
         height: 10rem;
-    }
-
-    .platformPreviewZoom {
-        top: 5rem;
-        left: 20rem;
-        width: 32rem;
-        height: 20rem;
     }
 
     .pushPreviewZoom {
@@ -3554,14 +3576,16 @@
         height: 7rem;
         top: -17.5rem;
         left: -1.5rem;
-    } */
+    } */ 
 
     .emailPreviewContZoom .emailZoomClassZoom {
         height: 14rem;
         position: absolute;
         top: 12rem;
-        left: 13rem;
-        width: 42%;
+        left: -27rem;
+        width: 40rem;
+        margin-left: 0;
+        padding: 0 15px;
     }
 
     .deskZoom {
@@ -3572,6 +3596,7 @@
 
     .zoomed {
         /* margin-left: -38rem; */
+        width: 75% !important;
     }
 
     .DeskScreenSms .previewEmailTitle {
@@ -3581,19 +3606,30 @@
 
     .platformPreviewZoom {
         top: 5rem;
-        left: 20rem;
-        width: 32rem;
+        /* left: 20rem; */
+        left: -30rem;
+        /* width: 32rem; */
         height: 20rem;
     }
 
     .platformPreviewContZoom {
         height: 14rem;
-        width: 32rem;
+        /* width: 32rem; */
+        width: 39rem;
         top: 6rem;
         position: relative;
         overflow-y: auto;
     }
-
+    .imgZoom-btn {
+        position: absolute;
+        top: -1rem;
+        right: 8rem;
+        background: none;
+        border: none;
+        font-size: 27px;
+        cursor: pointer;
+        z-index: 1;
+      }
     /* .MobileScreenPlat{
         position: relative;
     } */

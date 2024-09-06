@@ -735,10 +735,10 @@ progress {
 
 @media (min-width:1280px) {
   .MobileScrollWpMobile{
-    left: 1.5rem;
+    left: 1rem;
   }
   .MobileScreenSms {
-    left: 2rem;
+    left: 3.2rem;
   }
   .MobileScreenPlat {
     left: 1.8rem;

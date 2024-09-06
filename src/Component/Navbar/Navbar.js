@@ -19,13 +19,13 @@ const Navbar = () => {
 
 
   return (
-    <div>
+    <div className='main-header'>
        <div className='nav bg-white'>
         <div className='lnav'>
             <img src={logo} alt='car' className="navImg"/>
             <span className='border'></span>
-            <li><a href='#'><FiInbox />Team Inbox</a></li>
-            <li className='solo'><a href='#'><PiBroadcastDuotone />Broadcast</a></li>
+            <li><a href='teaminbox'><FiInbox />Team Inbox</a></li>
+            <li className='solo'><a href='BroadcastBody'><PiBroadcastDuotone />Broadcast</a></li>
             <li><a href='#'><RiContactsBook2Line />Contacts</a></li>
             <li><a href='#'><FiSettings />Automations</a></li>
             <li className='Analytics'><a href='#'><BiGridAlt  />Analytics</a></li>
