@@ -65,8 +65,8 @@
   position: fixed;
   width: 36px;
   height: 30px;
-  left: 22px !important;
-  top: 100px !important;
+  left: 222px !important;
+  top: 105px !important;
   z-index: 9999 !important;
 }
 
@@ -138,33 +138,39 @@
   border-left: #666 solid 1px;
   padding-left: 10px;
 }
-.inbox-control{
+
+.inbox-control {
   position: absolute;
-  top:35px;
+  top: 35px;
   right: 20px;
 }
 
-.team-hum-avator img{
+.team-hum-avator img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   margin-left: -5px;
 }
-.status-upload{
+
+.status-upload {
   width: 95% !important;
 }
-.mail-send-btn{
+
+.mail-send-btn {
   float: right;
 }
-.mail-send-btn span{
+
+.mail-send-btn span {
   margin-right: 10px;
   margin-top: 15px;
   float: left;
 }
+
 .inline-form {
   margin-top: 0 !important;
 }
-.inline-form > label {
+
+.inline-form>label {
   background: #fff;
   color: #777;
   font-size: 14px !important;
@@ -175,53 +181,159 @@
   text-transform: uppercase;
   top: 12px !important;
 }
-.color-222{
+
+.color-222 {
   color: #222 !important;
 }
-.white-bg{
+
+.white-bg {
   background: #fff !important;
 }
-.feed-tittle{
+
+.feed-tittle {
   width: 100%;
   padding-bottom: 0 !important;
 }
-.feed-tittle span{
+
+.feed-tittle span {
   float: right;
   color: #222 !important;
   margin-right: 30px !important;
 }
-.timeline-detail{
+
+.timeline-detail {
   border: #999 solid 1px;
 }
-.custom-todo{
+
+.custom-todo {
   padding: 1px 5px !important;
 }
-.w-90{
+
+.w-90 {
   width: 90% !important;
 }
-.green-color{
+
+.green-color {
   color: #07cb57 !important;
 }
-.down-arrow-btn{
+
+.down-arrow-btn {
   position: absolute;
   right: 20px;
   top: 30px;
 }
-.down-arrow-btn i{
+
+.down-arrow-btn i {
   color: #999 !important;
 }
+
 /* .divider{
   height:30px;
   clear: both;
 } */
 
-.w-80{max-width: 80%;}
-.dropdownsection{
+.w-80 {
+  max-width: 80%;
+}
+
+.dropdownsection {
   margin-bottom: 20px;
 }
-.dropdownsection h6{
+
+.dropdownsection h6 {
   margin-bottom: 12px;
   display: inline-flex;
   justify-content: space-between;
   width: 100%;
+  font-size: 14px !important;
+  font-weight: 600;
+}
+
+.amimation {
+  transition: 0.5s;
+  transform: translate3d(50%, 0px, 0px);
+}
+
+.widget-title h6 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ticket-filter-contain {
+  position: fixed;
+  z-index: 9;
+  background: #fff;
+   left: 32rem; 
+}
+.ticket-filter-body{
+max-height: 320px;
+overflow: auto;
+}
+.ticket-filters {
+  position: relative;
+  padding: 15px;
+  width: 320px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.ticket-filter-btn button {
+  background: none !important;
+  color: #6f6f6f !important;
+  border: none !important;
+  position: relative;
+}
+
+.ticket-filter-title {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ticket-sub-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+}
+.ticket-filter-footer button{
+  background: #0d6efd !important;
+  color: #fff !important;
+}
+.ticket-filter-footer button:hover{
+  background: #0b5ed7 !important;
+}
+.ticket-filter-footer{
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.input-btn{
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.name-this{
+  width: 50% !important;
+}
+.todo-line{
+  padding: 0 10px;
+}
+.todoinprogress-contain{
+  display: inline-flex;
+  margin-bottom: 15px;
+  padding: 10px 5px 0 5px;
+  width: 200px;
+}
+.todoicons{
+  margin-right: 15px;
+}
+.todo-text h4{
+  margin-bottom: 5px;
+}
+.todoarrow-right{}
+.ticket-view-accordin{
+  width:180px;
+  height: 500px;
+  position: absolute;
+  left: 0;
+  background: #dbdfef;
 }

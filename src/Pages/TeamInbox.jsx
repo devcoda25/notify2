@@ -9,12 +9,12 @@ import PriorityDropDown from '../Component/assigneddrop';
 import AssigneeDropDown from '../Component/AssigneeDrop';
 import TicketType from '../Component/TicketType';
 import ReporterType from '../Component/Reporter';
+import TeaamInboxAccordion from '../Component/TeamInboxAccordin';
 
 // import { Navbar } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
 
 const TeamInbox = () => {
-
     const [isFullWidth, setIsFullWidth] = useState(true);
 
     useEffect(() => {
@@ -36,16 +36,21 @@ const TeamInbox = () => {
 
         return () => observer.disconnect();
     }, []);
-    
+
     return (
         <>
             <div id="outer-container" className='main-wrapper' style={{ width: '100%', overflow: 'hidden' }}>
-                <BurgerSidebar  />
+                <div className='ticket-view-accordin'>
+                    <h4>Ticket View</h4>
+                </div>
+                <BurgerSidebar />
                 <main id="page-wrap">
-                    <div className="main-content" style={{width: isFullWidth ? '100%' : '80%',}}>
+                    <div className="main-content" style={{ width: isFullWidth ? '100%' : '80%', }}>
                         <div className="panel-content">
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
+
+
                                     <div className="widget">
                                         <div className="widget-title">
                                             <h3>Tickets Title</h3>
@@ -119,23 +124,39 @@ const TeamInbox = () => {
                                 <div className="col-lg-3 col-md-3 col-sm-12">
                                     <div className="widget">
                                         <div className="widget-title">
-
                                             <div className="btn-group">
-                                                {/* <button data-original-title="" type="button" className="btn-primary mini">To Do</button> 
-                                                <button data-original-title="" type="button" className="btn-primary mini dropdown-toggle" data-toggle="dropdown"> <span className="caret"></span> </button>*/}
-                                                <DropdownButton data-bs-theme="default" id="dropdown-basic-button" title="To Do" size='sm'>
-                                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                                                </DropdownButton>
-
-                                                {/* <ul className="dropdown-menu" role="menu">
-                                                    <li><a data-original-title="" href="#">Action</a></li>
-                                                    <li><a data-original-title="" href="#">Another action</a></li>
-                                                    <li><a data-original-title="" href="#">Something else here</a></li>
-                                                    <li className="divider"></li>
-                                                    <li><a data-original-title="" href="#">Separated link</a></li>
-                                                </ul> */}
+                                                <Dropdown data-bs-theme="default" size='md'>
+                                                    <Dropdown.Toggle>To Do <span className='todo-line'>|</span></Dropdown.Toggle>
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item href="#">
+                                                            <div className='todoinprogress-contain'>
+                                                                <div className='todoicons'><i className="fa fa-arrow-right todoarrow-right" aria-hidden="true"></i></div>
+                                                                <div className='todo-text'>
+                                                                    <h4>Work In Progress</h4>
+                                                                    <p>In Progress</p>
+                                                                </div>
+                                                            </div>
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item href="#">
+                                                            <div className='todoinprogress-contain'>
+                                                                <div className='todoicons'><i className="fa fa-arrow-right todoarrow-right" aria-hidden="true"></i></div>
+                                                                <div className='todo-text'>
+                                                                    <h4>Needs review</h4>
+                                                                    <p>In Progress</p>
+                                                                </div>
+                                                            </div>
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item href="#">
+                                                            <div className='todoinprogress-contain'>
+                                                                <div className='todoicons'><i className="fa fa-arrow-right todoarrow-right" aria-hidden="true"></i></div>
+                                                                <div className='todo-text'>
+                                                                    <h4>Completed</h4>
+                                                                    <p>Done</p>
+                                                                </div>
+                                                            </div>
+                                                        </Dropdown.Item>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
                                             </div>
                                             <div className="widget-controls"> <span className="close-content"><i className="fa fa-times"></i></span></div>
                                         </div>
@@ -143,7 +164,7 @@ const TeamInbox = () => {
                                             <div id="contact">
                                                 <div className="contact-form">
                                                     <div className="row">
-                                                        <div className="col-lg-12 col-md-12">
+                                                        <div className="col-lg-12 col-md-12 col-sm-12">
                                                             <div className='dropdownsection'>
                                                                 <h6>Priority</h6>
                                                                 <PriorityDropDown />
@@ -166,17 +187,22 @@ const TeamInbox = () => {
                                                             </div>
                                                             <div className='dropdownsection'>
                                                                 <h6>Due Date</h6>
-                                                               <input className='form-control' type='date'/>
+                                                                <input className='form-control' type='date' />
                                                             </div>
                                                             <div className='dropdownsection'>
                                                                 <h6>Reporter</h6>
-                                                              <ReporterType/>
+                                                                <ReporterType />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className='add-tags mb-3'>
+                                            <div className="widget-title"><h6>Tags</h6></div>
+                                            <div className='tag'><button className='btn btn-default'>Add Tag +</button></div>
+                                        </div>
+                                        <TeaamInboxAccordion />
                                     </div>
                                 </div>
                             </div>

@@ -2556,7 +2556,7 @@ textarea.form-control-lg {
   background-position: right .75rem center;
   background-size: 16px 12px;
   border: 1px solid #ced4da;
-  border-radius: .25rem;
+  border-radius: .6rem;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2891,8 +2891,10 @@ textarea.form-control-lg {
 }
 
 .form-floating>.form-select {
-  padding-top: 1.625rem;
-  padding-bottom: .625rem
+  padding-top: 1rem;
+  padding-bottom: .625rem;
+  padding-left: 5rem;
+  height: 42px;
 }
 
 .form-floating>.form-control:not(:-moz-placeholder-shown)~label {
@@ -2903,13 +2905,16 @@ textarea.form-control-lg {
 .form-floating>.form-control:focus~label,
 .form-floating>.form-control:not(:placeholder-shown)~label,
 .form-floating>.form-select~label {
-  opacity: .65;
-  transform: scale(.85) translateY(-.5rem) translateX(.15rem)
+  /* opacity: .65; */
+  transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+  color: #222;
+  top:.5rem;
 }
 
 .form-floating>.form-control:-webkit-autofill~label {
   opacity: .65;
-  transform: scale(.85) translateY(-.5rem) translateX(.15rem)
+  transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+
 }
 
 .input-group {
