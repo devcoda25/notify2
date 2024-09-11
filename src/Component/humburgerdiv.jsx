@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-const BurgerSidebar = () => {
+const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
     const [open, setOpen] = useState(false);
     // const [isVisible, setIsVisible] = useState(false);
 
@@ -21,7 +21,7 @@ const BurgerSidebar = () => {
             height: '30px',
             left: '27px',
             top: '116px',
-          display:'none'
+            display:'none'
           
         },
         bmBurgerBars: {
@@ -33,6 +33,7 @@ const BurgerSidebar = () => {
         bmCrossButton: {
             height: '24px',
             width: '24px',
+            display: 'none'
 
         },
         bmCross: {
@@ -67,15 +68,30 @@ const BurgerSidebar = () => {
         }
     }
     function ticketview(){
-        alert("test")
-        var closeButton = document.querySelector('.bm-burger-button');
-            closeButton.click();
+        // var closeButton = document.querySelector('#react-burger-menu-btn');
+            // closeButton.click();
+            let bm_menu_wrap = document.querySelector(".bm-menu-wrap")
+            setTicketView((prev)=>{
+                if(prev){
+                    bm_menu_wrap.style.left = 0
+                }else{
+                    bm_menu_wrap.style.left = "200px"
+                }
+                return !prev;
+            });
+    }
+    function ticketClose(){
+        setTicketView(false);
+        setIsClose((prev)=>!prev)
+        document.querySelector('#react-burger-cross-btn').click()
     }
 
     return (
         <>
        
                     <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'320px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
+                        {!isClose &&
+                        <div onClick={ticketClose}>close</div>}
                         <div className="widget mt-0">
                             <div className="widget-title p-2">
                                 <span onClick={ticketview}><i className="fa fa-bars" aria-hidden="true"></i></span>

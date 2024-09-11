@@ -36,21 +36,30 @@ const TeamInbox = () => {
 
         return () => observer.disconnect();
     }, []);
-
+    const [ticketView, setTicketView] = useState(true)
+    const [isClose, setIsClose] = useState(false)
+    function ticketOpen(){
+        setTicketView(false);
+        setIsClose((prev)=>!prev)
+        let bm_menu_wrap = document.querySelector(".bm-menu-wrap")
+        bm_menu_wrap.style.left = 0
+        document.querySelector('#react-burger-cross-btn').click()
+    }
     return (
         <>
             <div id="outer-container" className='main-wrapper' style={{ width: '100%', overflow: 'hidden' }}>
+                {ticketView && 
                 <div className='ticket-view-accordin'>
                     <h4>Ticket View</h4>
-                </div>
-                <BurgerSidebar />
+                </div>}
+                <BurgerSidebar setTicketView={setTicketView} setIsClose={setIsClose} isClose={isClose}/>
                 <main id="page-wrap">
-                    <div className="main-content" style={{ width: isFullWidth ? '100%' : '80%', }}>
+                    <div className={` ${isClose ? "close" : ""} main-content ${ticketView ? "ticketview" : ""}`} style={{ width: isFullWidth ? '100%' : '80%', }}>
                         <div className="panel-content">
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
-
-
+                                    {isClose && 
+                                    <div onClick={ticketOpen}>arrow</div>}
                                     <div className="widget">
                                         <div className="widget-title">
                                             <h3>Tickets Title</h3>
