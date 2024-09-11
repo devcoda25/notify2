@@ -16,7 +16,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
     // }
     var styles = {
         bmBurgerButton: {
-            position: 'absolute',
+            position: 'fixed',
             width: '36px',
             height: '30px',
             left: '27px',
@@ -40,7 +40,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
             background: '#bdc3c7'
         },
         bmMenuWrap: {
-            position: 'fixed',
+            position: 'absolute',
             height: '100%',
             left: '200px'
         },
