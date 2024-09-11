@@ -16,7 +16,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
     // }
     var styles = {
         bmBurgerButton: {
-            position: 'fixed',
+            position: 'absolute',
             width: '36px',
             height: '30px',
             left: '27px',
@@ -91,10 +91,10 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
        
                     <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'320px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
                         {!isClose &&
-                        <div onClick={ticketClose}>close</div>}
+                        <div className='close-line' onClick={ticketClose}>&nbsp;</div>}
                         <div className="widget mt-0">
                             <div className="widget-title p-2">
-                                <span onClick={ticketview}><i className="fa fa-bars" aria-hidden="true"></i></span>
+                                <span className='ticketview-open' onClick={ticketview}><i className="fa fa-bars" aria-hidden="true"></i></span>
                                 <h3>My Tickets</h3>
                                 <div className="widget-controls ticket-filter-contain ticket-filter-btn">
                                     <Button

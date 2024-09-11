@@ -10,6 +10,7 @@ import AssigneeDropDown from '../Component/AssigneeDrop';
 import TicketType from '../Component/TicketType';
 import ReporterType from '../Component/Reporter';
 import TeaamInboxAccordion from '../Component/TeamInboxAccordin';
+import Accordion from 'react-bootstrap/Accordion';
 
 // import { Navbar } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
@@ -38,9 +39,9 @@ const TeamInbox = () => {
     }, []);
     const [ticketView, setTicketView] = useState(true)
     const [isClose, setIsClose] = useState(false)
-    function ticketOpen(){
+    function ticketOpen() {
         setTicketView(false);
-        setIsClose((prev)=>!prev)
+        setIsClose((prev) => !prev)
         let bm_menu_wrap = document.querySelector(".bm-menu-wrap")
         bm_menu_wrap.style.left = 0
         document.querySelector('#react-burger-cross-btn').click()
@@ -48,19 +49,39 @@ const TeamInbox = () => {
     return (
         <>
             <div id="outer-container" className='main-wrapper' style={{ width: '100%', overflow: 'hidden' }}>
-                {ticketView && 
-                <div className='ticket-view-accordin'>
-                    <h4>Ticket View</h4>
-                </div>}
-                <BurgerSidebar setTicketView={setTicketView} setIsClose={setIsClose} isClose={isClose}/>
+                {ticketView &&
+                    <div className='ticket-view-accordin'>
+                        <Accordion defaultActiveKey="0">
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header>Ticket Views</Accordion.Header>
+                                <Accordion.Body>
+                                    <ul className='ticket-view-dropdown'>
+                                        <li>My Tickets <span>9</span></li>
+                                        <li>Past Due <span>4</span></li>
+                                        <li>High Priority<span>90</span></li>
+                                        <li>Unassigned<span>512</span></li>
+                                        <li>All Tickets<span>2,451</span></li>
+                                    </ul>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                            <Accordion.Item>
+                                <Accordion.Header>Live Chat</Accordion.Header>
+                            </Accordion.Item>
+                            <Accordion.Item>
+                                <Accordion.Header>Boards</Accordion.Header>
+                            </Accordion.Item>
+                        </Accordion>
+                    </div>}
+                <BurgerSidebar setTicketView={setTicketView} setIsClose={setIsClose} isClose={isClose} />
                 <main id="page-wrap">
-                    <div className={` ${isClose ? "close" : ""} main-content ${ticketView ? "ticketview" : ""}`} style={{ width: isFullWidth ? '100%' : '80%', }}>
+                    <div className={`${isClose ? "allleftnavclose" : ""} main-content ${ticketView ? "ticketview" : ""}`} >
                         <div className="panel-content">
+                            {isClose &&
+                                <div className='all-close-arrow-btn' onClick={ticketOpen}><i className="fa fa-angle-double-right" aria-hidden="true"></i>
+                                </div>}
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
-                                    {isClose && 
-                                    <div onClick={ticketOpen}>arrow</div>}
-                                    <div className="widget">
+                                    <div className="widget mt-0">
                                         <div className="widget-title">
                                             <h3>Tickets Title</h3>
                                             <p className='mail-create-date'><span><i className="fa fa-bug" aria-hidden="true"></i></span><span>TKT-02 NOFg000000000</span><span className='mail-time'>Created 31/08/24 10:57 PST</span></p>
@@ -131,7 +152,7 @@ const TeamInbox = () => {
                                     {/* Left column end */}
                                 </div>
                                 <div className="col-lg-3 col-md-3 col-sm-12">
-                                    <div className="widget">
+                                    <div className="widget mt-0">
                                         <div className="widget-title">
                                             <div className="btn-group">
                                                 <Dropdown data-bs-theme="default" size='md'>

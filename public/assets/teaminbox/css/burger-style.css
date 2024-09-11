@@ -99,7 +99,7 @@
 /* General sidebar styles */
 .bm-menu {
   background: #fff !important;
-  padding: 2em 1em 0 !important;
+  padding: 1em 1em 0 !important;
   font-size: 1.15em;
 }
 
@@ -260,20 +260,24 @@
 }
 
 .ticket-filter-contain {
-  position: fixed;
+  /* position: fixed; */
+  position:absolute;
   z-index: 9;
   background: #fff;
-   left: 32rem; 
+  left: 18rem;
 }
-.ticket-filter-body{
-max-height: 320px;
-overflow: auto;
+
+.ticket-filter-body {
+  max-height: 320px;
+  overflow: auto;
 }
+
 .ticket-filters {
-  position: relative;
+  position: fixed;
   padding: 15px;
   width: 320px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: #fff;
 }
 
 .ticket-filter-btn button {
@@ -294,46 +298,155 @@ overflow: auto;
   font-weight: 600;
   color: #666;
 }
-.ticket-filter-footer button{
+
+.ticket-filter-footer button {
   background: #0d6efd !important;
   color: #fff !important;
 }
-.ticket-filter-footer button:hover{
+
+.ticket-filter-footer button:hover {
   background: #0b5ed7 !important;
 }
-.ticket-filter-footer{
+
+.ticket-filter-footer {
   display: inline-flex;
   justify-content: space-between;
   width: 100%;
 }
-.input-btn{
+
+.input-btn {
   display: inline-flex;
   width: 100%;
   justify-content: space-between;
 }
-.name-this{
+
+.name-this {
   width: 50% !important;
 }
-.todo-line{
+
+.todo-line {
   padding: 0 10px;
 }
-.todoinprogress-contain{
+
+.todoinprogress-contain {
   display: inline-flex;
   margin-bottom: 15px;
   padding: 10px 5px 0 5px;
   width: 200px;
 }
-.todoicons{
+
+.todoicons {
   margin-right: 15px;
 }
-.todo-text h4{
+
+.todo-text h4 {
   margin-bottom: 5px;
 }
-.todoarrow-right{}
-.ticket-view-accordin{
-  width:180px;
+
+.todoarrow-right {}
+
+.ticket-view-accordin {
+  width: 200px;
   height: 500px;
   position: absolute;
   left: 0;
-  background: #dbdfef;
+  /* top: 20px; */
+  padding-top: 1rem;
+}
+
+/******** Main wrapper control ******/
+#page-wrap {
+  /* position: relative;
+  left: 205px; */
+}
+
+.ticketview {
+  width: 65%;
+  left: 205px !important;
+}
+
+.ticket-view-dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 28px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticket-view-dropdown li:hover {
+  background: #037dfd;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.ticket-view-dropdown li span {
+  padding: 2px 7px;
+  background: #fff;
+  border-radius: 5px;
+  color: #0b2040;
+}
+
+.accordion-item {
+  background: none !important;
+}
+
+.accordion-button {
+  background: none !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.accordion-header {
+  background: #dde3ea !important;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #0b2040 !important;
+}
+
+.ticketview-open {
+  cursor: pointer;
+}
+
+.close-line {
+  min-height: 100%;
+  position: absolute;
+  width: 3px;
+  right: 0px;
+}
+
+.close-line:hover {
+  background-color: #0b5ed7;
+}
+
+.allleftnavclose {
+  width: 100% !important;
+}
+
+.all-close-arrow-btn {
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 1536px) {
+  .main-content {
+    width: 80%;
+  }
+
+  .ticketview {
+   width: 65% !important;
+  }
+}
+
+@media only screen and (max-width: 1920px) {
+  .main-content {
+    width: 80%;
+  }
+
+  .ticketview {
+    width: 72%;
+  }
 }
