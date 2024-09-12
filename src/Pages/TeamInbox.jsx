@@ -77,8 +77,8 @@ const TeamInbox = () => {
                     <div className={`${isClose ? "allleftnavclose" : ""} main-content ${ticketView ? "ticketview" : ""}`} >
                         <div className="panel-content">
                             {isClose &&
-                                <div className='all-close-arrow-btn' onClick={ticketOpen}><i className="fa fa-angle-double-right" aria-hidden="true"></i>
-                                </div>}
+                                <span className='all-close-arrow-btn' onClick={ticketOpen}><i className="fa fa-angle-double-right" aria-hidden="true"></i>
+                                </span>}
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
                                     <div className="widget mt-0">
