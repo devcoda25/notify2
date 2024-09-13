@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import TeamInbox from '../Pages/TeamInbox';
 import BroadcastBody from '../Component/Broadcast/BroadcastBody';
 import Navbar from '../Component/Navbar/Navbar';
+import ContactUs from '../Pages/contactus';
 const BaseLayouts = () => {
 
     return (
@@ -11,9 +12,10 @@ const BaseLayouts = () => {
                 <Navbar></Navbar>
                 <BrowserRouter>
                     <Routes>
-                        <Route path='/' element={<BroadcastBody />} />
-                        <Route path='BroadcastBody' element={<BroadcastBody />} />
+                        <Route path='/' element={<TeamInbox />} />
                         <Route path='Teaminbox' element={<TeamInbox />} />
+                        <Route path='BroadcastBody' element={<BroadcastBody />} />
+                        <Route path='contactus' element={<ContactUs/>}/>
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>

@@ -134,14 +134,140 @@
 .paraLink p {
     margin: 0 !important;
 }
-.main-header{
+
+.main-header {
     position: fixed;
     width: 100%;
     z-index: 99999;
 }
-.main-wrapper{
+
+.main-wrapper {
     position: relative;
     top: 60px;
+    padding: 10px 40px 40px 30px;
+    display: block;
+    background: #fff;
+}
+
+.top-bar-contacts {
+    float: right;
+    margin-top: 14px;
+}
+
+.top-bar-contacts li {
+    display: inline-flex;
+}
+
+.watch-tut {
+    margin-right: 30px;
+    font-size: 1.1rem;
+    color: rgb(38, 156, 254);
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+}
+
+.watch-tut i {
+    color: rgb(38, 156, 254);
+    font-size: 2rem;
+}
+
+.search-input {}
+
+.search-input li {
+    display: inline-flex;
+    margin-right: 10px;
+}
+
+.search-input select {
+    padding: 10px !important;
+    width: 150px;
+}
+
+.search-input input {
+    padding: 20px !important;
+}
+
+.search-btn img {
+    width: 42px;
+}
+
+.red-delete-icon {
+    margin-left: 15px;
+}
+
+.red-delete-icon img {
+    width: 28px;
+}
+
+.search-export {
+    display: flex;
+    justify-content: end;
+}
+
+.search-export li {
+    display: inline-flex;
+    line-height: 14px;
+    margin-right: 10px;
+}
+
+.bg-f5f6fa {
+    background: #f5f6fa !important;
+}
+
+.search-export button>img {
+    margin-right: 10px !important;
+}
+
+.sea-btn-inn {
+    padding: 10px;
+    border-top-left-radius: 25px !important;
+    border-bottom-left-radius: 25px !important;
+    border-top-right-radius: 25px !important;
+    border-bottom-right-radius: 25px !important;
+    background: #fff !important;
+}
+
+.btn-upload {
+    padding-right: 10px !important;
+    border-right: #7a7777 solid 1px !important;
+}
+
+.btn-upload:hover {
+    color: #23a455 !important;
+}
+
+.btn-download {
+    padding-left: 10px !important;
+}
+
+.btn-download:hover {
+    color: #23a455 !important;
+}
+.contact-check input{
+    position: static !important;
+}
+.contact-arti span{
+    background: rgb(245, 246, 250);
+    border-radius: 25%;
+    padding:0.5rem 1rem;
+    align-items: center;
+    font-size: 14px;
+}
+.check-img{
+    width: 32px;
+}
+.cont-arti-edit-delete a{
+    color: #7a7777;
+    background: rgb(245, 246, 250);
+    border: 1px solid rgb(206, 208, 206);
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 1.3rem;
+    margin-right: 10px;
+}
+.cont-arti-edit-delete a:hover{
+    color: #4CAF50;
 }
 /********** custom style end ************/
 
@@ -2173,7 +2299,7 @@
     }
 
     .table th {
-        border-bottom: 1px solid rgb(189, 188, 188);
+        /* border-bottom: 1px solid rgb(189, 188, 188); */
         padding: 2rem 10px;
     }
 
@@ -3379,7 +3505,7 @@
     .DeskScreen {
         width: 60%;
         max-height: 9rem;
-        left:0.5rem;
+        left: 0.5rem;
     }
 
     .MobileScrollWpDesk {
@@ -3576,7 +3702,7 @@
         height: 7rem;
         top: -17.5rem;
         left: -1.5rem;
-    } */ 
+    } */
 
     .emailPreviewContZoom .emailZoomClassZoom {
         height: 14rem;
@@ -3620,6 +3746,7 @@
         position: relative;
         overflow-y: auto;
     }
+
     .imgZoom-btn {
         position: absolute;
         top: -1rem;
@@ -3629,7 +3756,8 @@
         font-size: 27px;
         cursor: pointer;
         z-index: 1;
-      }
+    }
+
     /* .MobileScreenPlat{
         position: relative;
     } */

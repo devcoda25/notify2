@@ -155,7 +155,7 @@ a {
 .widget {
   background: #ffffff;
   border: 1px solid #e7e7e7;
-  float: left;
+  /* float: left; */
   margin-top: 20px;
   position: relative;
   width: 100%;
@@ -1423,13 +1423,13 @@ body.modal-open header {
 }
 
 .panel-content {
-  float: left;
+  /* float: left;  */
   margin-bottom: 40px;
   width: 100%;
 }
 
 .main-title-sec {
-  float: left;
+  /* float: left; */
   width: 100%;
 }
 
