@@ -13,9 +13,10 @@
 }
 
 .ticket-title h3 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #333;
+  margin-bottom: 5px;
 }
 
 .ticket-title p {
@@ -39,10 +40,12 @@
   color: #f00 !important;
   font-size: 24px !important;
 }
-
+.hum-avator{
+  margin-top: 2px;
+}
 .hum-avator img {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
 }
 
@@ -101,6 +104,7 @@
   background: #fff !important;
   padding: 1em 1em 0 !important;
   font-size: 1.15em;
+  border-top-left-radius: 20px;
 }
 
 /* Morph shape necessary with bubble or elastic */
@@ -153,7 +157,7 @@
 }
 
 .status-upload {
-  width: 95% !important;
+  /* width: 95% !important; */
 }
 
 .mail-send-btn {
@@ -196,13 +200,12 @@
 }
 
 .feed-tittle span {
-  float: right;
   color: #222 !important;
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
 }
 
 .timeline-detail {
-  border: #999 solid 1px;
+  /* border: #999 solid 1px; */
 }
 
 .custom-todo {
@@ -330,9 +333,9 @@
 
 .todoinprogress-contain {
   display: inline-flex;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   padding: 10px 5px 0 5px;
-  width: 200px;
+  /* width: 200px; */
 }
 
 .todoicons {
@@ -349,9 +352,9 @@
   width: 200px;
   height: 500px;
   position: absolute;
-  left: 0;
-  /* top: 20px; 
-  padding-top: 1rem;*/
+  left: 22px;
+  top: 20px; 
+ /* padding-top: 1rem;*/
 }
 
 /******** Main wrapper control ******/
@@ -364,7 +367,9 @@
   width: 65%;
   left: 205px !important;
 }
-
+.ticket-view-dropdown{
+  margin-bottom: 0 !important;
+}
 .ticket-view-dropdown li {
   padding: 5px 10px;
   cursor: pointer;
@@ -390,6 +395,7 @@
 
 .accordion-item {
   background: none !important;
+  border: none !important;
 }
 
 .accordion-button {
@@ -399,13 +405,23 @@
 }
 
 .accordion-header {
-  background: #dde3ea !important;
+  background: #dde3ea;
+  border-radius: 10px;
 }
-
+.acc-icon-text{
+  font-size: 14px;
+  font-weight: 600;
+}
+.acc-icon-text i{
+  font-size: 20px;
+  margin-right: 10px;
+}
 .accordion-button:not(.collapsed) {
   color: #0b2040 !important;
 }
-
+.accordion-body{
+  padding: 0.5rem !important;
+}
 .ticketview-open {
   cursor: pointer;
 }
@@ -432,13 +448,22 @@
   padding: 5px;
   background: #fff;
   border: #ccc solid 1px;
-  position: relative;
+  /* position: relative;
   top:26px;
   left: -20px;
-  z-index: 99999;
+  z-index: 99999; */
+  position: absolute;
+  left: -13px;
+  width: 24px;
+  min-height: 100%;
+  border-top-left-radius: 10px;
+  z-index: 99;
 }
 
 @media only screen and (max-width: 1536px) {
+  .bm-menu-wrap{
+    left: 225px;
+  }
   .main-content {
     width: 80%;
   }
@@ -449,6 +474,9 @@
 }
 
 @media only screen and (max-width: 1920px) {
+  .bm-menu-wrap{
+    left: 231px;
+  }
   .main-content {
     width: 80%;
   }
@@ -456,4 +484,52 @@
   .ticketview {
     width: 72%;
   }
+}
+.ticket-view-accordin .accordion-item:first-of-type .accordion-button{
+  border: None !important;
+}
+/* .accordion-button {
+  position: relative;
+  padding-left: 3rem; 
+}
+
+.accordion-button::after {
+  font-size: 1.2rem; 
+  position: absolute;
+  left: 1rem; 
+  top: 50%;
+  transform: translateY(-50%);
+} */
+
+.btrr-20{
+  border-top-right-radius: 20px !important;
+}
+.custom-nav-tab{
+  justify-content: left !important;
+}
+.support-ticket-sec .tab-content{
+  padding: 0 !important;
+}
+.nav-tabs .nav-link.active{
+  border-bottom: #037dfd solid 2px !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+.nav-tabs .nav-link{
+  padding-left: 0 !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  padding-right: 15px !important;
+  font-weight: 600;
+  margin-right: 20px;
+}
+.txt-11{
+  font-size: 11px;
+}
+.task-felid .accordion-header{
+  background: #fff !important;
+}
+.ptb20{
+  padding: 20px 10px !important;
 }

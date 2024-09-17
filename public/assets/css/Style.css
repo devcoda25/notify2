@@ -144,9 +144,12 @@
 .main-wrapper {
     position: relative;
     top: 60px;
-    padding: 10px 40px 40px 30px;
+    padding:0px 0px 0px 20px;
+    margin: 0 20px;
     display: block;
-    background: #fff;
+    background: #f5f6fa;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
 }
 
 .top-bar-contacts {

@@ -3,7 +3,7 @@ import Accordion from 'react-bootstrap/Accordion';
 
 function TeaamInboxAccordion() {
     return (
-        <Accordion defaultActiveKey="">
+        <Accordion defaultActiveKey="" className='task-felid'>
             <Accordion.Item eventKey="0">
                 <Accordion.Header>Tasks</Accordion.Header>
                 <Accordion.Body>

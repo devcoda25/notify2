@@ -11,6 +11,8 @@ import TicketType from '../Component/TicketType';
 import ReporterType from '../Component/Reporter';
 import TeaamInboxAccordion from '../Component/TeamInboxAccordin';
 import Accordion from 'react-bootstrap/Accordion';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 // import { Navbar } from 'react-bootstrap';
 // import { Link } from 'react-router-dom';
@@ -48,7 +50,7 @@ const TeamInbox = () => {
     }
     return (
         <>
-            <div id="outer-container" className='main-wrapper' style={{ width: '100%', overflow: 'hidden' }}>
+            <div id="outer-container" className='main-wrapper'>
                 {ticketView &&
                     <div className='ticket-view-accordin'>
                         <Accordion defaultActiveKey="0">
@@ -63,13 +65,12 @@ const TeamInbox = () => {
                                         <li>All Tickets<span>2,451</span></li>
                                     </ul>
                                 </Accordion.Body>
+                                <ul>
+                                    <li><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>
+                                    <li><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
+                                </ul>
                             </Accordion.Item>
-                            <Accordion.Item>
-                                <Accordion.Header>Live Chat</Accordion.Header>
-                            </Accordion.Item>
-                            <Accordion.Item>
-                                <Accordion.Header>Boards</Accordion.Header>
-                            </Accordion.Item>
+
                         </Accordion>
                     </div>}
                 <BurgerSidebar setTicketView={setTicketView} setIsClose={setIsClose} isClose={isClose} />
@@ -77,12 +78,12 @@ const TeamInbox = () => {
                     <div className={`${isClose ? "allleftnavclose" : ""} main-content ${ticketView ? "ticketview" : ""}`} >
                         <div className="panel-content">
                             {isClose &&
-                                <span className='all-close-arrow-btn' onClick={ticketOpen}><i className="fa fa-angle-double-right" aria-hidden="true"></i>
-                                </span>}
+                                <div className='all-close-arrow-btn' onClick={ticketOpen}><i className="fa fa-angle-double-right" aria-hidden="true"></i>
+                                </div>}
                             <div className="row">
                                 <div className="col-lg-9 col-md-9 col=sm-12">
                                     <div className="widget mt-0">
-                                        <div className="widget-title">
+                                        <div className="widget-title white-bg">
                                             <h3>Tickets Title</h3>
                                             <p className='mail-create-date'><span><i className="fa fa-bug" aria-hidden="true"></i></span><span>TKT-02 NOFg000000000</span><span className='mail-time'>Created 31/08/24 10:57 PST</span></p>
                                             <div className="widget-controls inbox-control"> <span className="close-content"><i className="fa fa-envelope-o"></i></span> <span className="expand-content"><i className="fa fa-eye"></i> 5</span> <span className="refresh-content"><i className="fa fa-ellipsis-h"></i></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar2.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/ok.jpg" alt="" /></span></div>
@@ -90,27 +91,41 @@ const TeamInbox = () => {
                                         {/* Widget title end */}
 
                                         <div className="support-ticket-sec">
-                                            <div className="status-upload">
-                                                <form>
-                                                    <div className="inline-form">
-                                                        <label className="c-label">CC</label>
-                                                        <input className="input-style" type="text" placeholder="To" />
+                                            <Tabs
+                                                defaultActiveKey="puplic"
+                                                transition={false}
+                                                id="tab-example"
+                                                className="custom-nav-tab mb-0 pl-2 pb-0"
+                                            >
+                                                <Tab eventKey="puplic" title="Puplic Reply">
+                                                    <div className="status-upload">
+                                                        <form>
+                                                            <div className="inline-form">
+                                                                <label className="c-label">CC</label>
+                                                                <input className="input-style" type="text" placeholder="To" />
+                                                            </div>
+                                                            <textarea placeholder="What are you doing right now?"></textarea>
+                                                            <ul>
+                                                                <li><a title="Audio" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-bold"></i></a></li>
+                                                                <li><a title="Video" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-italic"></i></a></li>
+                                                                <li><a title="Sound Record" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-underline"></i></a></li>
+                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-picture-o"></i></a></li>
+                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-paperclip"></i></a></li>
+                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-file-archive-o"></i></a></li>
+                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-comment-o"></i></a></li>
+                                                            </ul>
+                                                            <div className='mail-send-btn'><span><label>Ask to KB <input type='checkbox' /></label></span>
+                                                                <button type="submit" className="green-bg"><i className="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <textarea placeholder="What are you doing right now?"></textarea>
-                                                    <ul>
-                                                        <li><a title="Audio" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-bold"></i></a></li>
-                                                        <li><a title="Video" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-italic"></i></a></li>
-                                                        <li><a title="Sound Record" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-underline"></i></a></li>
-                                                        <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-picture-o"></i></a></li>
-                                                        <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-paperclip"></i></a></li>
-                                                        <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-file-archive-o"></i></a></li>
-                                                        <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-comment-o"></i></a></li>
-                                                    </ul>
-                                                    <div className='mail-send-btn'><span><label>Ask to KB <input type='checkbox' /></label></span>
-                                                        <button type="submit" className="green-bg"><i className="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                </Tab>
+                                                <Tab eventKey="private" title="Private Comment">
+                                                    Tab content for Private Comments
+                                                </Tab>
+                                            </Tabs>
+
+
                                         </div>
                                         {/* Widget end */}
                                     </div>
@@ -122,12 +137,13 @@ const TeamInbox = () => {
                                                         <div className="user-timeline"> <span><img src="assets/teaminbox/images/resource/user1.jpg" alt="" /></span> </div>
                                                         <div className="timeline-detail">
                                                             <div className="timeline-head white-bg">
-                                                                <h3 className='color-222 feed-tittle'>Jonathan Gardel <span>Aug/31/24 14:30</span></h3>
-                                                                <div className="social-share p-0"> <a title=""><i className="fa fa-chevron-down" aria-hidden="true"></i>                                                                </a></div>
+                                                                <h3 className='color-222 feed-tittle'><span>Jonathan Gardel<br /> <i className='small-txt'>To Name Name@gmail.com</i></span> <span className='txt-11'>Aug/31/24 14:30 PM</span></h3>
+                                                                <div className="social-share p-0"> <a className='cmd-down-arrow' title=""><i className="fa fa-chevron-down" aria-hidden="true"></i>                                                                </a></div>
                                                             </div>
                                                             <div className="timeline-content pt-0">
                                                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </p>
                                                             </div>
+                                                            <div className='attach-img-btn'><button className='mr-2'>Snap-short.png<br /><span className='small-txt'>01 Sep 2024 4:30 PM</span></button><button>Snap-short.png<br /><span className='small-txt'>01 Sep 2024 4:30 PM</span></button></div>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -136,12 +152,13 @@ const TeamInbox = () => {
                                                         <div className="user-timeline"> <span><img src="assets/teaminbox/images/resource/user1.jpg" alt="" /></span> </div>
                                                         <div className="timeline-detail">
                                                             <div className="timeline-head white-bg">
-                                                                <h3 className='color-222 feed-tittle'>Jonathan Gardel <span>Aug/31/24 14:30</span></h3>
-                                                                <div className="social-share p-0"> <a title=""><i className="fa fa-chevron-down" aria-hidden="true"></i>                                                                </a></div>
+                                                                <h3 className='color-222 feed-tittle'><span>Jonathan Gardel<br /> <i className='small-txt'>To Name Name@gmail.com</i></span> <span className='txt-11'>Aug/31/24 14:30 PM</span></h3>
+                                                                <div className="social-share p-0"> <a className='cmd-down-arrow' title=""><i className="fa fa-chevron-down" aria-hidden="true"></i>                                                                </a></div>
                                                             </div>
                                                             <div className="timeline-content pt-0">
                                                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </p>
                                                             </div>
+                                                           
                                                         </div>
                                                     </div>
                                                 </li>
@@ -151,9 +168,9 @@ const TeamInbox = () => {
                                     </div>
                                     {/* Left column end */}
                                 </div>
-                                <div className="col-lg-3 col-md-3 col-sm-12">
-                                    <div className="widget mt-0">
-                                        <div className="widget-title">
+                                <div className="col-lg-3 col-md-3 col-sm-12 pl-0 pr-0">
+                                    <div className="widget mt-0 btrr-20">
+                                        <div className="widget-title ptb20">
                                             <div className="btn-group">
                                                 <Dropdown data-bs-theme="default" size='md'>
                                                     <Dropdown.Toggle>To Do <span className='todo-line'>|</span></Dropdown.Toggle>
