@@ -12217,7 +12217,12 @@ fieldset:disabled .btn {
 }
 
 /* automation page */
-
+.maincontent{
+  position: relative;
+  top: 60px;
+  background: white;
+  padding: 0 15px 10px;
+}
 .automation-content{
   float: left;
   width: 100%;

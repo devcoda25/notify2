@@ -150,7 +150,7 @@ const Analytics = () => {
 
   
     return (
-        <div className='main-wrapper'>
+        <div className='maincontent'>
             <div className='msgCont'>
                 <div className='msgContL'>
                     <li className='solo'><a><svg width='20' height='20' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><g id="Inbox_Analytics" data-name="Inbox Analytics"><path d="M11.78,33.72H1v-20H11.78ZM3,31.72H9.78v-16H3Z" fill="#309e69"/><path d="M35,33.72H24.22V7.9H35Zm-8.78-2H33V9.9H26.22Z" fill="#309e69"/><path d="M23.39,33.72H12.61V2.28H23.39Zm-8.78-2h6.78V4.28H14.61Z" fill="#309e69"/></g></svg><span >Inbox Analytics</span></a></li>

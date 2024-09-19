@@ -4,7 +4,7 @@ const Automations = () => {
    
     return (
 
-        <div className='main-wrapper'>
+        <div className='maincontent'>
             <div className='msgCont'>
                 <div className='msgContL'>
                     <li className='solo'><a><svg  width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><g id="_1_Default_action" data-name="1_Default action"><path d="M28.08,33H7.92A6.92,6.92,0,0,1,1,26.08V9.92A6.92,6.92,0,0,1,7.92,3H28.08A6.92,6.92,0,0,1,35,9.92V26.08A6.92,6.92,0,0,1,28.08,33ZM7.92,5A4.93,4.93,0,0,0,3,9.92V26.08A4.93,4.93,0,0,0,7.92,31H28.08A4.93,4.93,0,0,0,33,26.08V9.92A4.93,4.93,0,0,0,28.08,5Z" fill="#309e69"/><path d="M18,19a1,1,0,0,1-.64-.23l-11-9.1A1,1,0,1,1,7.56,8.13L18,16.71,28.45,8.13a1,1,0,0,1,1.26,1.54l-11.12,9.1A1,1,0,0,1,18,19Z" fill="#309e69"/></g></svg><span >Default Action</span></a></li>
