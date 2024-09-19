@@ -42,7 +42,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
         bmMenuWrap: {
             position: 'absolute',
             height: '100%',
-            left: '225px'
+            borderRight: '1px solid #e7e7e7',
         },
         bmMenu: {
             background: '#373a47',
@@ -75,7 +75,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
                 if(prev){
                     bm_menu_wrap.style.left = 0
                 }else{
-                    bm_menu_wrap.style.left = "200px"
+                    bm_menu_wrap.style.left = "225px"
                 }
                 return !prev;
             });
@@ -89,11 +89,11 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
     return (
         <>
        
-                    <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'320px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
+                    <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'310px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
                         {!isClose &&
                         <div className='close-line' onClick={ticketClose}>&nbsp;</div>}
                         <div className="widget mt-0">
-                            <div className="widget-title p-2">
+                            <div className="widget-title p-20">
                                 <span className='ticketview-open' onClick={ticketview}><i className="fa fa-bars" aria-hidden="true"></i></span>
                                 <h3>My Tickets</h3>
                                 <div className="widget-controls ticket-filter-contain ticket-filter-btn">
