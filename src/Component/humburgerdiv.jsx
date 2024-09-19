@@ -42,7 +42,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
         bmMenuWrap: {
             position: 'absolute',
             height: '100%',
-            left: '200px'
+            left: '225px'
         },
         bmMenu: {
             background: '#373a47',
