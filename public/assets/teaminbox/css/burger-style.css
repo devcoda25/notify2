@@ -1,9 +1,11 @@
 .your-emails li {
-  padding: 0 5px !important;
+  padding: 0 15px !important;
+  border-left: #fff solid 5px;
 }
 
 .your-emails>li:hover {
-  background: #dbdfef;
+  background: #e9f6ee;
+  border-left: #23a455 solid 5px;
 }
 
 .ticket-title {
@@ -102,9 +104,10 @@
 /* General sidebar styles */
 .bm-menu {
   background: #fff !important;
-  padding: 1em 1em 0 !important;
+  padding:0 !important;
   font-size: 1.15em;
   border-top-left-radius: 20px;
+  box-shadow: -25px 0px 20px -20px rgba(151, 151, 151, 0.45);
 }
 
 /* Morph shape necessary with bubble or elastic */
@@ -132,6 +135,7 @@
   margin-left: 20px;
   clear: left !important;
   margin-bottom: 0 !important;
+  display: inline-block;
 }
 
 .mail-create-date span {
@@ -145,15 +149,18 @@
 
 .inbox-control {
   position: absolute;
-  top: 35px;
+  top: 25px;
   right: 20px;
 }
-
+.team-hum-avator{
+  width: 26px;
+}
 .team-hum-avator img {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   margin-left: -5px;
+  border: #fff solid 2px;
 }
 
 .status-upload {
@@ -267,7 +274,7 @@
   position:absolute;
   z-index: 9;
   background: #fff;
-  left: 18rem;
+  left: 19rem;
 }
 
 .ticket-filter-body {
@@ -352,7 +359,7 @@
   width: 200px;
   height: 500px;
   position: absolute;
-  left: 22px;
+  left:15px;
   top: 20px; 
  /* padding-top: 1rem;*/
 }
@@ -365,7 +372,7 @@
 
 .ticketview {
   width: 65%;
-  left: 205px !important;
+  left: 210px !important;
 }
 .ticket-view-dropdown{
   margin-bottom: 0 !important;
@@ -425,7 +432,9 @@
 .ticketview-open {
   cursor: pointer;
 }
-
+.ticketview-open i{
+  font-size: 16px !important;
+}
 .close-line {
   min-height: 100%;
   position: absolute;
@@ -531,5 +540,8 @@
   background: #fff !important;
 }
 .ptb20{
-  padding: 20px 10px !important;
+  padding: 19px 10px !important;
+}
+.p-20{
+  padding: 20px !important;
 }

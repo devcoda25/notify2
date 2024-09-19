@@ -74,18 +74,18 @@ const TeamInbox = () => {
                         </Accordion>
                     </div>}
                 <BurgerSidebar setTicketView={setTicketView} setIsClose={setIsClose} isClose={isClose} />
-                <main id="page-wrap">
-                    <div className={`${isClose ? "allleftnavclose" : ""} main-content ${ticketView ? "ticketview" : ""}`} >
+                <main id="page-wrap" className={`${isClose ? "allleftnavclose" : ""} main-content ${ticketView ? "ticketview" : ""}`}>
+                    <div>
                         <div className="panel-content">
                             {isClose &&
                                 <div className='all-close-arrow-btn' onClick={ticketOpen}><i className="fa fa-angle-double-right" aria-hidden="true"></i>
                                 </div>}
-                            <div className="row">
-                                <div className="col-lg-9 col-md-9 col=sm-12">
+                            <div className="row m-0">
+                                <div className="col-lg-9 col-md-9 col=sm-12 p-0">
                                     <div className="widget mt-0">
-                                        <div className="widget-title white-bg">
-                                            <h3>Tickets Title</h3>
-                                            <p className='mail-create-date'><span><i className="fa fa-bug" aria-hidden="true"></i></span><span>TKT-02 NOFg000000000</span><span className='mail-time'>Created 31/08/24 10:57 PST</span></p>
+                                        <div className="widget-title white-bg float-none">
+                                            <h3 className='w-100'>Tickets Title</h3>
+                                            <div className='mail-create-date'><span><i className="fa fa-bug" aria-hidden="true"></i></span><span>TKT-02 NOFg000000000</span><span className='mail-time'>Created 31/08/24 10:57 PST</span></div>
                                             <div className="widget-controls inbox-control"> <span className="close-content"><i className="fa fa-envelope-o"></i></span> <span className="expand-content"><i className="fa fa-eye"></i> 5</span> <span className="refresh-content"><i className="fa fa-ellipsis-h"></i></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar2.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/ok.jpg" alt="" /></span></div>
                                         </div>
                                         {/* Widget title end */}
