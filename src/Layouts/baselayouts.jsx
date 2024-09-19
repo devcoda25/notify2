@@ -5,6 +5,7 @@ import BroadcastBody from '../Component/Broadcast/BroadcastBody';
 import Navbar from '../Component/Navbar/Navbar';
 import ContactUs from '../Pages/contactus';
 import Automations from '../Pages/automations';
+import Analytics from '../Pages/Analytics';
 const BaseLayouts = () => {
 
     return (
@@ -18,6 +19,7 @@ const BaseLayouts = () => {
                         <Route path='BroadcastBody' element={<BroadcastBody />} />
                         <Route path='contactus' element={<ContactUs/>}/>
                         <Route path='automations' element={<Automations/>}/>
+                        <Route path='Analytics' element={<Analytics/>} />
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>
