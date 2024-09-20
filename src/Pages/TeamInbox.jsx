@@ -66,8 +66,8 @@ const TeamInbox = () => {
                                     </ul>
                                 </Accordion.Body>
                                 <ul>
-                                    <li><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>
-                                    <li><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
+                                    <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>
+                                    <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
                                 </ul>
                             </Accordion.Item>
 

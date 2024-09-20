@@ -372,7 +372,7 @@
 
 .ticketview {
   width: 65%;
-  left: 210px !important;
+  left: 225px !important;
 }
 .ticket-view-dropdown{
   margin-bottom: 0 !important;
@@ -490,7 +490,7 @@
 
 @media only screen and (max-width: 1920px) {
   .bm-menu-wrap{
-    left: 231px;
+    left: 225px;
   }
   .main-content {
     width: 80%;
@@ -542,8 +542,16 @@
 .txt-11{
   font-size: 11px;
 }
+.task-felid{
+  width: 97% !important;
+}
 .task-felid .accordion-header{
   background: #fff !important;
+  border-radius:0 !important;
+  border-top: #b8b7ad solid 1px !important;
+  border-left:none !important;
+  border-right:none !important;
+  border-bottom:none !important;
 }
 .ptb20{
   padding: 19px 10px !important;
@@ -572,4 +580,8 @@
 .close-content i{
   padding: 5px 8px;
   border-radius: 50%;
+}
+.tic-view-chat{
+  margin-left: 15px;
+  margin-bottom: 10px;
 }
