@@ -88,8 +88,7 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
 
     return (
         <>
-       
-                    <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'310px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
+                    <Menu noOverlay styles={styles} isOpen={'true'} customBurgerIcon={<CustomBurgerIcon />} width={'300px'} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
                         {!isClose &&
                         <div className='close-line' onClick={ticketClose}>&nbsp;</div>}
                         <div className="widget mt-0">
@@ -192,6 +191,36 @@ const BurgerSidebar = ({setTicketView, setIsClose, isClose}) => {
                         </div>
                         <div className="slimScrollDiv">
                             <ul className="your-emails">
+                                <li className="email unread">
+                                    <div className='ticket-title'><h3>My Ticket Name</h3><p className='ticket-date'>Aug 31</p></div>
+                                    <input type="checkbox" className="checkall" />
+                                    <h3>Amare Hale</h3>
+                                    <a title="" className="inbox-msg"><span className="blue-bg">To Do</span></a><span className='hum-clock'><i className="fa fa-clock-o"></i></span> <span className='hub-alert'><i className="fa fa-exclamation-circle"></i></span> <span className='hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span> <span className='alert-count red-bg'>5</span>
+                                </li>
+                                <li className="email unread">
+                                    <div className='ticket-title'><h3>My Ticket Name</h3><p className='ticket-date'>Aug 31</p></div>
+                                    <input type="checkbox" className="checkall" />
+                                    <h3>Amare Hale</h3>
+                                    <a title="" className="inbox-msg"><span className="blue-bg">To Do</span></a><span className='hum-clock'><i className="fa fa-clock-o"></i></span> <span className='hub-alert'><i className="fa fa-exclamation-circle"></i></span> <span className='hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span> <span className='alert-count red-bg'>5</span>
+                                </li>
+                                <li className="email unread">
+                                    <div className='ticket-title'><h3>My Ticket Name</h3><p className='ticket-date'>Aug 31</p></div>
+                                    <input type="checkbox" className="checkall" />
+                                    <h3>Amare Hale</h3>
+                                    <a title="" className="inbox-msg"><span className="blue-bg">To Do</span></a><span className='hum-clock'><i className="fa fa-clock-o"></i></span> <span className='hub-alert'><i className="fa fa-exclamation-circle"></i></span> <span className='hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span> <span className='alert-count red-bg'>5</span>
+                                </li>
+                                <li className="email unread">
+                                    <div className='ticket-title'><h3>My Ticket Name</h3><p className='ticket-date'>Aug 31</p></div>
+                                    <input type="checkbox" className="checkall" />
+                                    <h3>Amare Hale</h3>
+                                    <a title="" className="inbox-msg"><span className="blue-bg">To Do</span></a><span className='hum-clock'><i className="fa fa-clock-o"></i></span> <span className='hub-alert'><i className="fa fa-exclamation-circle"></i></span> <span className='hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span> <span className='alert-count red-bg'>5</span>
+                                </li>
+                                <li className="email unread">
+                                    <div className='ticket-title'><h3>My Ticket Name</h3><p className='ticket-date'>Aug 31</p></div>
+                                    <input type="checkbox" className="checkall" />
+                                    <h3>Amare Hale</h3>
+                                    <a title="" className="inbox-msg"><span className="blue-bg">To Do</span></a><span className='hum-clock'><i className="fa fa-clock-o"></i></span> <span className='hub-alert'><i className="fa fa-exclamation-circle"></i></span> <span className='hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span> <span className='alert-count red-bg'>5</span>
+                                </li>
                                 <li className="email unread">
                                     <div className='ticket-title'><h3>My Ticket Name</h3><p className='ticket-date'>Aug 31</p></div>
                                     <input type="checkbox" className="checkall" />

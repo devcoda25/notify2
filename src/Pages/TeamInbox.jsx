@@ -53,7 +53,7 @@ const TeamInbox = () => {
             <div id="outer-container" className='main-wrapper'>
                 {ticketView &&
                     <div className='ticket-view-accordin'>
-                        <Accordion defaultActiveKey="0">
+                        <Accordion defaultActiveKey="0" >
                             <Accordion.Item eventKey="0">
                                 <Accordion.Header>Ticket Views</Accordion.Header>
                                 <Accordion.Body>
@@ -66,8 +66,8 @@ const TeamInbox = () => {
                                     </ul>
                                 </Accordion.Body>
                                 <ul>
-                                    <li><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>
-                                    <li><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
+                                    <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>
+                                    <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
                                 </ul>
                             </Accordion.Item>
 
@@ -86,7 +86,7 @@ const TeamInbox = () => {
                                         <div className="widget-title white-bg float-none">
                                             <h3 className='w-100'>Tickets Title</h3>
                                             <div className='mail-create-date'><span><i className="fa fa-bug" aria-hidden="true"></i></span><span>TKT-02 NOFg000000000</span><span className='mail-time'>Created 31/08/24 10:57 PST</span></div>
-                                            <div className="widget-controls inbox-control"> <span className="close-content"><i className="fa fa-envelope-o"></i></span> <span className="expand-content"><i className="fa fa-eye"></i> 5</span> <span className="refresh-content"><i className="fa fa-ellipsis-h"></i></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar2.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/ok.jpg" alt="" /></span></div>
+                                            <div className="widget-controls inbox-control"> <span className="close-content mr-3"><i className="fa fa-envelope-o"></i></span> <span className="expand-content mr-3"><i className="fa fa-eye"></i> 5</span> <span className="refresh-content mr-3"><i className="fa fa-ellipsis-h"></i></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/friend-avatar2.jpg" alt="" /></span><span className='team-hum-avator'><img src="assets/teaminbox/images/resource/ok.jpg" alt="" /></span></div>
                                         </div>
                                         {/* Widget title end */}
 
@@ -109,13 +109,14 @@ const TeamInbox = () => {
                                                                 <li><a title="Audio" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-bold"></i></a></li>
                                                                 <li><a title="Video" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-italic"></i></a></li>
                                                                 <li><a title="Sound Record" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-underline"></i></a></li>
-                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-picture-o"></i></a></li>
-                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-paperclip"></i></a></li>
-                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-file-archive-o"></i></a></li>
-                                                                <li><a title="Picture" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-comment-o"></i></a></li>
+                                                                <li><a className='tooltip-attach' title="Picture" data-toggle="tooltip" data-placement="bottom"><img src="assets/teaminbox/images/resource/img-attach.png" alt="" /></a></li>
+                                                                <li><a className='tooltip-attach' title="Picture" data-toggle="tooltip" data-placement="bottom"><img src="assets/teaminbox/images/resource/img-attach01.png" alt="" /></a></li>
+                                                                <li><a className='tooltip-attach' title="Picture" data-toggle="tooltip" data-placement="bottom"><img src="assets/teaminbox/images/resource/img-file-attach.png" alt="" /></a></li>
+                                                                <li><a className='tooltip-attach' title="Picture" data-toggle="tooltip" data-placement="bottom"><img src="assets/teaminbox/images/resource/img-add-comment.png" alt="" /></a></li>
+                                                                <li><a className='tooltip-attach' title="Picture" data-toggle="tooltip" data-placement="bottom"><img src="assets/teaminbox/images/resource/img-exit-folder.png" alt="" /></a></li>
                                                             </ul>
-                                                            <div className='mail-send-btn'><span><label>Ask to KB <input type='checkbox' /></label></span>
-                                                                <button type="submit" className="green-bg"><i className="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                                                            <div className='mail-send-btn'><span><label>Ask to KB <input className='ask-kb' type='checkbox' /></label></span>
+                                                                <button type="submit" className="light-grey-bg"><i className="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -169,9 +170,9 @@ const TeamInbox = () => {
                                     {/* Left column end */}
                                 </div>
                                 <div className="col-lg-3 col-md-3 col-sm-12 pl-0 pr-0">
-                                    <div className="widget mt-0 btrr-20">
+                                    <div className="widget mt-0 btrr-20 border-left white-bg">
                                         <div className="widget-title ptb20">
-                                            <div className="btn-group">
+                                            <div className="btn-group border-radius-5">
                                                 <Dropdown data-bs-theme="default" size='md'>
                                                     <Dropdown.Toggle>To Do <span className='todo-line'>|</span></Dropdown.Toggle>
                                                     <Dropdown.Menu>
@@ -207,7 +208,7 @@ const TeamInbox = () => {
                                             </div>
                                             <div className="widget-controls"> <span className="close-content"><i className="fa fa-times"></i></span></div>
                                         </div>
-                                        <div className="support-ticket-sec w-90">
+                                        <div className="w-90">
                                             <div id="contact">
                                                 <div className="contact-form">
                                                     <div className="row">
