@@ -284,6 +284,7 @@ const Analytics = () => {
                         <div className="row analytics-subheading">
                             <h2>Operator performance</h2>
                         </div>
+                        <div className='col-md-12'>
                         <div className='tableCont'>
                             <div className="table">
                                 <table>
@@ -386,6 +387,7 @@ const Analytics = () => {
                                     <p className="footerCenter" onClick={handleNextChange}><span className="footerNext">Next</span> <CgArrowLongRight className='leftRightArrow' /></p>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
