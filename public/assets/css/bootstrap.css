@@ -12420,11 +12420,19 @@ margin-bottom: 40px;
 .day-toggle-label{
   font-size:1rem;
 }
+.holidaymode__text{
+  font-style: italic;
+  color: rgb(255, 153, 51);
+  font-size: 0.85rem;
+
+}
 
 .holidaytoggle.active .toggle__control,.day-toggle.active .toggle__control {
   background: rgb(35, 164, 85); 
 }
-
+.day-toggle.active{
+  border:none
+}
 .toggle__control {
   background: rgb(161, 161, 161); 
   border: none;

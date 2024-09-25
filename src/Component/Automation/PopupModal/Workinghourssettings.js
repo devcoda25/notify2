@@ -15,7 +15,12 @@ const CustomTimePicker = ({ value, onChange, onClose }) => {
     };
 
     return (
-        <div style={{ position: 'relative', padding: '20px' }}>
+        <div style={{position: "absolute",
+            inset: "0px auto auto 0px",
+            margin: "0px",
+            transform: "translate(225px, 152px)",
+            zIndex:'1380',
+         }}>
             <StaticTimePicker
                 ampm={false}
                 displayStaticWrapperAs="desktop"
@@ -96,7 +101,7 @@ const WorkingHoursRow = ({ day, hours, setHours, isOpen, handleToggle, addRow, d
                         }}
                     />
                 )}
-                <span className="lowercase">To</span>
+                <span className="lowercase">to</span>
                 <TextField
                     value={hours[0].toTime.format('HH:mm')}
                     onClick={() => {
@@ -189,7 +194,7 @@ const WorkingHoursRow = ({ day, hours, setHours, isOpen, handleToggle, addRow, d
                             }}
                         />
                     )}
-                    <span className="lowercase">To</span>
+                    <span className="lowercase">to</span>
                     <TextField
                         value={row.toTime.format('HH:mm')}
                         onClick={() => {
@@ -243,270 +248,101 @@ const WorkingHoursRow = ({ day, hours, setHours, isOpen, handleToggle, addRow, d
     );
 };
 
+
+
 const WorkingHoursSettings = ({ show, handleClose }) => {
     const [isHolidayMode, setIsHolidayMode] = useState(false);
+    const [openStates, setOpenStates] = useState({
+        Monday: true,
+        Tuesday: true,
+        Wednesday: true,
+        Thursday: true,
+        Friday: true,
+        Saturday: true,
+    });
 
-    const [isMondayOpen, setIsMondayOpen] = useState(true);
-    const [isTuesdayOpen, setIsTuesdayOpen] = useState(true);
-    const [isWednesdayOpen,setIsWednesdayOpen]=useState(true);
-    const [isThursdayOpen,setIsThursdayOpen]=useState(true);
-    const [isFridayOpen,setIsFridayOpen]=useState(true);
-    const [isSaturdayOpen,setIsSaturdayOpen]=useState(true);
-
-    const [mondayHours, setMondayHours] = useState([{
-        fromTime: dayjs().set('hour', 6).set('minute', 0),
-        toTime: dayjs().set('hour', 17).set('minute', 59),
-        showFromPicker: false,
-        showToPicker: false,
-    }]);
-
-    const [tuesdayHours, setTuesdayHours] = useState([{
-        fromTime: dayjs().set('hour', 6).set('minute', 0),
-        toTime: dayjs().set('hour', 17).set('minute', 59),
-        showFromPicker: false,
-        showToPicker: false,
-    }]);
-    const [wednesdayHours, setWednesdayHours] = useState([{
-        fromTime: dayjs().set('hour', 6).set('minute', 0),
-        toTime: dayjs().set('hour', 17).set('minute', 59),
-        showFromPicker: false,
-        showToPicker: false,
-    }]);
-    const [thursdayHours, setThursdayHours] = useState([{
-        fromTime: dayjs().set('hour', 6).set('minute', 0),
-        toTime: dayjs().set('hour', 17).set('minute', 59),
-        showFromPicker: false,
-        showToPicker: false,
-    }]);
-    const [fridayHours, setFridayHours] = useState([{
-        fromTime: dayjs().set('hour', 6).set('minute', 0),
-        toTime: dayjs().set('hour', 17).set('minute', 59),
-        showFromPicker: false,
-        showToPicker: false,
-    }]);
-    const [saturdayHours, setSaturdayHours] = useState([{
-        fromTime: dayjs().set('hour', 6).set('minute', 0),
-        toTime: dayjs().set('hour', 17).set('minute', 59),
-        showFromPicker: false,
-        showToPicker: false,
-    }]);
+    const [hours, setHours] = useState({
+        Monday: [{ fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false }],
+        Tuesday: [{ fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false }],
+       Wednesday:[{ fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false }],
+       Thursday:[{ fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false }],
+       Friday:[{ fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false }],
+       Saturday:[{ fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false }],
+    });
 
     const handleToggle = () => {
         setIsHolidayMode(!isHolidayMode);
     };
 
-    const handleToggleMonday = () => {
-        setIsMondayOpen(!isMondayOpen);
-    };
-    const handleToggleTuesday = () => {
-        setIsTuesdayOpen(!isTuesdayOpen);
-    };
-    const handleToggleWednesday=()=>{
-        setIsWednesdayOpen(!isWednesdayOpen);
-    }
-    const handleToggleThursday=()=>{
-        setIsThursdayOpen(!isThursdayOpen);
-    }
-    const handleToggleFriday=()=>{
-        setIsFridayOpen(!isFridayOpen);
-    }
-    const handleToggleSaturday=()=>{
-        setIsSaturdayOpen(!isSaturdayOpen)
-    }
-
-    const addMondayHoursRow = () => {
-        setMondayHours([
-            ...mondayHours,
-            {
-                fromTime: dayjs().set('hour', 6).set('minute', 0),
-                toTime: dayjs().set('hour', 17).set('minute', 59),
-                showFromPicker: false,
-                showToPicker: false,
-            },
-        ]);
+    const toggleDayOpen = (day) => {
+        setOpenStates(prev => ({ ...prev, [day]: !prev[day] }));
     };
 
-    const deleteMondayHoursRow = (index) => {
-        setMondayHours(mondayHours.filter((_, i) => i !== index));
+    const addHoursRow = (day) => {
+        const updatedHours = { fromTime: dayjs().set('hour', 6).set('minute', 0), toTime: dayjs().set('hour', 17).set('minute', 59), showFromPicker: false, showToPicker: false };
+        setHours(prev => ({ ...prev, [day]: [...prev[day], updatedHours] }));
     };
 
-    const addTuesdayHoursRow = () => {
-        setTuesdayHours([
-            ...tuesdayHours,
-            {
-                fromTime: dayjs().set('hour', 6).set('minute', 0),
-                toTime: dayjs().set('hour', 17).set('minute', 59),
-                showFromPicker: false,
-                showToPicker: false,
-            },
-        ]);
+    const deleteHoursRow = (day, index) => {
+        setHours(prev => ({
+            ...prev,
+            [day]: prev[day].filter((_, i) => i !== index),
+        }));
     };
 
-    const deleteTuesdayHoursRow = (index) => {
-        setTuesdayHours(tuesdayHours.filter((_, i) => i !== index));
+    const handleSave = () => {
+      
+        handleClose(); 
     };
-    
-    const addWednesdayHoursRow = () => {
-        setWednesdayHours([
-            ...wednesdayHours,
-            {
-                fromTime: dayjs().set('hour', 6).set('minute', 0),
-                toTime: dayjs().set('hour', 17).set('minute', 59),
-                showFromPicker: false,
-                showToPicker: false,
-            },
-        ]);
-    };
-
-    const deleteWednesdayHoursRow = (index) => {
-        setWednesdayHours(wednesdayHours.filter((_, i) => i !== index));
-    };
-
-    const addThursdayHoursRow = () => {
-        setThursdayHours([
-            ...thursdayHours,
-            {
-                fromTime: dayjs().set('hour', 6).set('minute', 0),
-                toTime: dayjs().set('hour', 17).set('minute', 59),
-                showFromPicker: false,
-                showToPicker: false,
-            },
-        ]);
-    };
-
-    const deleteThursdayHoursRow = (index) => {
-        setThursdayHours(thursdayHours.filter((_, i) => i !== index));
-    };
-
-    const addFridayHoursRow = () => {
-        setFridayHours([
-            ...fridayHours,
-            {
-                fromTime: dayjs().set('hour', 6).set('minute', 0),
-                toTime: dayjs().set('hour', 17).set('minute', 59),
-                showFromPicker: false,
-                showToPicker: false,
-            },
-        ]);
-    };
-
-    const deleteFridayHoursRow = (index) => {
-        setFridayHours(fridayHours.filter((_, i) => i !== index));
-    };
-
-    const addSaturdayHoursRow = () => {
-        setSaturdayHours([
-            ...saturdayHours,
-            {
-                fromTime: dayjs().set('hour', 6).set('minute', 0),
-                toTime: dayjs().set('hour', 17).set('minute', 59),
-                showFromPicker: false,
-                showToPicker: false,
-            },
-        ]);
-    };
-
-    const deleteSaturdayHoursRow = (index) => {
-        setSaturdayHours(saturdayHours.filter((_, i) => i !== index));
-    };
-
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Modal show={show} onHide={handleClose} dialogClassName="modal-custom">
-                <Modal.Header className="modal-header" closeButton>
-                    <Modal.Title className="modal-title">Working Hours Setting</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="modal-body-content">
-                    <div className="body-sub-content">
-                        <div className="holiday-mode-text">Holiday Mode</div>
-                        <div className={`holidaytoggle ${isHolidayMode ? 'active' : ''}`} style={{ width: '100px' }}>
-                            <label className="toggle-label">Off</label>
-                            <button
-                                type="button"
-                                className="toggle__control"
-                                onClick={handleToggle}
-                                aria-label="Toggle"
-                            >
-                                <div className={`toggle-indicator ${isHolidayMode ? 'active' : ''}`}></div>
-                            </button>
-                            <label className="toggle-label">On</label>
-                        </div>
-                    </div>
-                    <div className="body-sub-text">Working hours in Customer time zone (GMT +3)</div>
-
-
-                    <WorkingHoursRow
-                        day="Monday"
-                        hours={mondayHours}
-                        setHours={setMondayHours}
-                        isOpen={isMondayOpen}
-                        handleToggle={handleToggleMonday}
-                        addRow={addMondayHoursRow}
-                        deleteRow={deleteMondayHoursRow}
-                       
-                    />
-                    <WorkingHoursRow
-                        day="Tuesday"
-                        hours={tuesdayHours}
-                        setHours={setTuesdayHours}
-                        isOpen={isTuesdayOpen}
-                        handleToggle={handleToggleTuesday}
-                        addRow={addTuesdayHoursRow}
-                        deleteRow={deleteTuesdayHoursRow}
-                       
-                    />
-                     <WorkingHoursRow
-                        day="Wednesday"
-                        hours={wednesdayHours}
-                        setHours={setWednesdayHours}
-                        isOpen={isWednesdayOpen}
-                        handleToggle={handleToggleWednesday}
-                        addRow={addWednesdayHoursRow}
-                        deleteRow={deleteWednesdayHoursRow}
-                        
-                    />
-                     <WorkingHoursRow
-                        day="Thursday"
-                        hours={thursdayHours}
-                        setHours={setThursdayHours}
-                        isOpen={isThursdayOpen}
-                        handleToggle={handleToggleThursday}
-                        addRow={addThursdayHoursRow}
-                        deleteRow={deleteThursdayHoursRow}
-                      
-                    />
-                     <WorkingHoursRow
-                        day="Friday"
-                        hours={fridayHours}
-                        setHours={setFridayHours}
-                        isOpen={isFridayOpen}
-                        handleToggle={handleToggleFriday}
-                        addRow={addFridayHoursRow}
-                        deleteRow={deleteFridayHoursRow}
-                       
-                    />
-                     <WorkingHoursRow
-                        day="Saturday"
-                        hours={saturdayHours}
-                        setHours={setSaturdayHours}
-                        isOpen={isSaturdayOpen}
-                        handleToggle={handleToggleSaturday}
-                        addRow={addSaturdayHoursRow}
-                        deleteRow={deleteSaturdayHoursRow}
-                        
-                    />
-
+                    <Modal show={show} onHide={handleClose} dialogClassName="modal-custom">
+                         <Modal.Header className="modal-header" closeButton>
+                          <Modal.Title className="modal-title">Working Hours Setting</Modal.Title>
+                       </Modal.Header>
+                       <Modal.Body className="modal-body-content">
+                           <div className="body-sub-content">
+                               <div className="holiday-mode-text">Holiday Mode</div>
+                               <div className={`holidaytoggle ${isHolidayMode ? 'active' : ''}`} style={{ width: '100px',border: isHolidayMode ? 'none':'none' }}>
+                                <label className="toggle-label">Off</label>
+                                    <button
+                                        type="button"
+                                        className="toggle__control"
+                                        onClick={handleToggle}
+                                        aria-label="Toggle"
+                                        style={{border: isHolidayMode? 'none' :'none'}}
+                                    >
+                                        <div className={`toggle-indicator ${isHolidayMode ? 'active' : ''}`}></div>
+                                    </button>
+                                    <label className="toggle-label">On</label>
+                                </div>
+                              {isHolidayMode && (  <div className='holidaymode__text'>  (Holiday mode is on: Users will be replied with out of office hour reply.) </div>)}
+                            </div>
+                            <div className="body-sub-text">Working hours in Customer time zone (GMT +3)</div>
+        
+        
+                    {Object.keys(hours).map(day => (
+                        <WorkingHoursRow
+                            key={day}
+                            day={day}
+                            hours={hours[day]}
+                            setHours={(newHours) => setHours(prev => ({ ...prev, [day]: newHours }))}
+                            isOpen={openStates[day]}
+                            handleToggle={() => toggleDayOpen(day)}
+                            addRow={() => addHoursRow(day)}
+                            deleteRow={(index) => deleteHoursRow(day, index)}
+                            
+                        />
+                    ))}
                 </Modal.Body>
                 <div className='modal-action'>
-             <button className='btn btn-success modal-savebtn' >Save and close</button>
-                 </div>
-            </Modal>
+           <button className='btn btn-success modal-savebtn' onClick={handleSave} >Save and close</button>
+                </div>
+           </Modal>
         </LocalizationProvider>
     );
 };
-
-
 
 export default WorkingHoursSettings;
 
