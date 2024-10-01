@@ -13663,22 +13663,23 @@ display: flex;
     position: relative;
     gap: 30px;
 }
-.materials__search{
+
+.nextstep_right_container .materials__search{
   min-width: 15%;
 }
-.material__inputbox{
+.nextstep_right_container .material__inputbox{
 margin: 0px;
 padding: 0px;
 }
-.material__searchcontainer{
+.nextstep_right_container .material__searchcontainer{
   width: 100%;
   height: auto;
 }
-.material__input__wrap{
+.nextstep_right_container .material__input__wrap{
 display: flex;
     position: relative;
 }
-.search__input{
+.nextstep_right_container .search__input{
   height: 40px;
     width: 100%;
     max-width: 230px;
@@ -13690,12 +13691,12 @@ display: flex;
     padding-left:1rem;
     box-shadow: none !important;
 }
-.search__input:focus, .search__input:hover{
+.nextstep_right_container .search__input:focus, .search__input:hover{
   border: 1px solid rgb(35, 164, 85) !important;
   outline:none
 
 }
-.material_search_icon{
+.nextstep_right_container .material_search_icon{
   position: absolute;
     display: flex;
     align-items: center;
