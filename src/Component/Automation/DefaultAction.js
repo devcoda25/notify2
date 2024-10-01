@@ -672,7 +672,7 @@ const DefaultAction = () => {
             </Modal>
                 )
             }
-            <div>
+            <div className='defaultaction__right__content'>
 
 
                 <div className="default-heading-profile">Default Actions</div>

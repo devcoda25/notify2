@@ -1,5 +1,7 @@
 import React from 'react'
 const Whatsappflows=()=>{
-<h1>Whatsappflows</h1>
+return(
+    <h1>Sequence</h1>
+)
 }
 export default Whatsappflows;
