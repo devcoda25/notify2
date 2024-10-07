@@ -13165,7 +13165,7 @@ display: inline-block;
     padding-right: 0px !important
 
 }
-.cell__edit ,.cell__delete{
+.cell__edit ,.cell__delete,.cell__download{
 display: inline-flex;
     width: 32px;
     height: 32px;
@@ -13175,7 +13175,7 @@ display: inline-flex;
     border-radius: 5px;
     
 }
-.cell__edit .editsvg, .cell__delete .deletesvg{
+.cell__edit .editsvg, .cell__delete .deletesvg, .cell__download .downloadsvg{
   width: 20px;
     height: 20px;
     margin: auto;
@@ -13953,7 +13953,7 @@ font-size: 1rem;
 .contact_attr_table .contact_attr_cell{
   border-bottom: none !important;
 }
-.contact_attr_table .firstchild{
+.contact_attr_table .firstchild,.notification_selected_label{
   padding-left:0px !important;
   font-weight: bold;
     font-size: 13px;
@@ -13975,4 +13975,9 @@ font-size: 1rem;
 .contact_attr_table .attr_textfield:focus {
   border-bottom: 1px solid #ff9100; 
   box-shadow: 0 1px 0 0 #ff9100
+}
+/* sendnotificationModal */
+.notification_selected_user{
+  margin-top:25px;
+
 }
