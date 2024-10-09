@@ -106,13 +106,14 @@ const buttonData = [
       value: 'Catalog'
     }
   ]
+  const InitialLoadingData='Text'
 const Replymaterial=()=>{
  
     return(
         <>
         <div className='keyword_action_container'>
             <div className='keyword_editor'>
-<Nextstep buttonData={buttonData}  showCheckboxes={false} />
+<Nextstep buttonData={buttonData}  showCheckboxes={false} InitialLoadingData={InitialLoadingData} />
 </div>
 </div>
 </>

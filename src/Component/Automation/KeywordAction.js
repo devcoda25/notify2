@@ -326,7 +326,7 @@ const buttonData = [
     value: 'Catalog'
   }
 ]
-
+const InitialLoadingData='Text'
 const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
   return (
     <>
@@ -783,6 +783,7 @@ const KeywordAction = () => {
              
                   <Nextstep  
                   buttonData={buttonData}
+                  InitialLoadingData={InitialLoadingData}
                    isOpenEditPage={isOpenEditPage}
                    selectedEditRow={selectedEditRow}
                    isMaterialCheckedEdit={isMaterialCheckedEdit}
