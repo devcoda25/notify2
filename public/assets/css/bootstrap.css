@@ -12940,7 +12940,7 @@ display: flex;
     gap: 5px;
     margin-top: 40px;
 }
-.footer__cancel__btn, .footer__upgrade__btn,.material__cancel__btn,.material__save__btn,.contact_attr_add{
+.footer__cancel__btn, .footer__upgrade__btn,.material__cancel__btn,.material__save__btn,.contact_attr_add,.chatbot_header_btn{
 font-size: 13px;
     transition: box-shadow 0.3s;
     min-width: 100px;
@@ -12954,7 +12954,7 @@ font-size: 13px;
     padding: 0.5rem 1.5rem;
     
 }
-.footer__cancel__btn,.material__cancel__btn,.contact_attr_add{
+.footer__cancel__btn,.material__cancel__btn,.contact_attr_add,.chatbot_header_btn{
   --color: #23a455;
     background: rgba(35, 164, 85, 0.05);
     color: var(--color);
@@ -13059,7 +13059,7 @@ font-size: 13px;
 .header__search__icon:hover svg {
   color: rgb(35, 164, 85);
 }
-.keyword__body__content{
+.keyword__body__content,.chatbots__body__content{
   background-color: rgb(255, 255, 255);
     border-top: 1px solid rgb(232, 234, 242);
     border-bottom: 1px solid rgb(232, 234, 242);
@@ -13067,20 +13067,20 @@ font-size: 13px;
     display: flex;
     flex-direction: column;
 }
-.keyword__list__table{
+.keyword__list__table,.chatbots__list__table{
   margin: 0px;
     padding: 0px 2rem;
     height: 100%;
     position: relative;
 }
-.keyword__table{
+.keyword__table,.chatbots__table{
   display:table;
   width:100%;
   border-collapse: separate;
   border-spacing: 0rem 1rem;
   
 }
-.keywordtable__head .keywordtable__row{
+.keywordtable__head .keywordtable__row,.chatbotstable__head .chatbotstable__row{
   border-bottom: rgb(206, 208, 206);
  
 }
@@ -13088,10 +13088,10 @@ font-size: 13px;
 .firstcell{
   padding-left: 0px !important;
 }
-.keywordtable__head .alignleft {
+.keywordtable__head .alignleft ,.chatbotstable__head .alignleft{
   text-align: left !important;
 }
-.keywordtable__head .keywordtable__cell {
+.keywordtable__head .keywordtable__cell, .chatbotstable__head .chatbotstable__cell{
   color: rgb(51, 51, 51) !important;
   padding: 35px 20px;
   font-size: 1.3rem !important;
@@ -13104,13 +13104,13 @@ font-size: 13px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter !important;
 }
 
-.keywordtable__head .lastcell{
+.keywordtable__head .lastcell, .chatbotstable__head .lastcell{
   padding-right: 0px !important;
     padding-left: 0px !important;
     margin-left: auto;
 }
 
-.keyword__table__body .keyword__body__cell{
+.keyword__table__body .keyword__body__cell, .chatbots__table__body .chatbots__body__cell{
   padding: 20px;
   color: rgb(51, 51, 51) !important;
     font-size: 1.2rem !important;
@@ -13138,7 +13138,7 @@ display: inline-block;
     color: rgb(102, 102, 102);
     font-size: 0.85rem
 }
-.keyword__table__body .trigger_text{
+.keyword__table__body .trigger_text, .chatbots__table__body .trigger_text{
   text-align: center !important;
 }
 .keyword__table__body .keyword__replymaterial_field {
@@ -13155,17 +13155,22 @@ display: inline-block;
     border: 1px solid rgb(255, 153, 51);
     font-size: 0.85rem;
 }
-.keyword__table__body .keywordactions{
+.keyword__table__body .keywordactions, .chatbots__table__body .chatbotactions{
   
     display: flex;
     gap: 1rem;
     justify-content: space-between;
     max-width: 80px;
-    padding-left:0px !important;
     padding-right: 0px !important
 
 }
-.cell__edit ,.cell__delete,.cell__download{
+.keyword__table__body .keywordactions
+{
+  padding-left:0px !important;
+}
+
+
+.cell__edit ,.cell__delete,.cell__download,.cell__copy{
 display: inline-flex;
     width: 32px;
     height: 32px;
@@ -13175,14 +13180,14 @@ display: inline-flex;
     border-radius: 5px;
     
 }
-.cell__edit .editsvg, .cell__delete .deletesvg, .cell__download .downloadsvg{
+.cell__edit .editsvg, .cell__delete .deletesvg, .cell__download .downloadsvg, .cell__copy .copysvg{
   width: 20px;
     height: 20px;
     margin: auto;
 }
 
 /* keyword delete Modal */
-.keyword__delete__modal, .keyword__add__modal{
+.keyword__delete__modal, .keyword__add__modal,.chatbot__notification__modal{
    position: fixed !important;
      top: 50%;
      left: 50%;
@@ -13192,29 +13197,29 @@ display: inline-flex;
      border-radius: 10px;
  
 }
-.keyword__delete__content,.keyword__add__content{
+.keyword__delete__content,.keyword__add__content,.chatbot__notification__content{
   margin: 1rem auto;
   font-size: 1rem;
   text-align: left;
   width:360px;
 }
-.keyword__delete__header,.keyword__add__header{
+.keyword__delete__header,.keyword__add__header,.chatbot__notification__header{
   font-size: 1.3rem;
   margin:0px 2rem;
   padding:1.5rem 0px;
   font-weight: 600;
   line-height: 22px;
 }
-.keyword__body__deletecontent,.keyword__body__addcontent{
+.keyword__body__deletecontent,.keyword__body__addcontent,.chatbot__body__notificationcontent{
   padding: 2rem !important;
 
 }
-.delete__confirm__msg{
+.delete__confirm__msg,.notification__msg{
   font-weight: 500;
     font-size: 1rem;
     line-height: 19px;
 }
-.keywordfooter__delete{
+.keywordfooter__delete,.chatbotfoooter__delete{
   display: flex;
     justify-content: flex-end;
     margin-top: 50px;
@@ -13239,7 +13244,7 @@ display: inline-flex;
     width: auto;
     height: 40px;
 }
-.keyword__pagination{
+.keyword__pagination, .chatbots__pagination{
 position: absolute;
 height: 143px;
 bottom: -143px;
@@ -13643,7 +13648,7 @@ margin-right: auto;
     padding: 4px 18px;
     min-width: 223px;
     width: 10%;
-    min-height: 300px;
+    min-height: 360px;
     height: auto;
 }
 .nextstep__btn__container{
@@ -14016,4 +14021,308 @@ font-size: 1rem;
     font-style: italic;
     margin-bottom: 24px;
     text-align: center;
+}
+/* chatbots */
+.chatbots_container{
+  display: flex;
+  flex-direction: column;
+  flex:1 1 auto;
+}
+.chatbots_container .chatbots_header,.template__header{
+  padding: 25px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(245, 246, 250);
+
+}
+.chatbots_container .header__title{
+display: flex;
+align-items: center;
+margin-bottom: 0px;
+font-weight: 600;
+font-size: 20px;
+line-height: 30px;
+margin-right: 85px;
+}
+.chatbots_container .header__title_count{
+  font-weight: normal;
+    font-size: 1rem;
+    line-height: 21px;
+    margin: 0px 0px 0px 10px;
+    color: rgb(102, 102, 102);
+}
+.chatbots_container .header__search{
+  margin-right: auto;
+    width: 287px;
+    max-width: 100%;
+}
+.chatbots_container .chatbot_header_btn{
+  height: 50px;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0.7rem 1.5rem;
+  margin-left:15px;
+}
+.header_import_btn{
+  margin-left:15px;
+  display: inline-flex;
+    width: 50px;
+    height: 50px;
+    background: rgb(245, 246, 250);
+    border: 1px solid rgb(102, 102, 102);
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 0px;
+}
+.importicon{
+  width:24px;
+  height:24px;
+  margin:auto
+}
+.chatbotstable__head .chatbotstable__cell{
+  font-weight: 600 !important;
+}
+.chatbots__table__body .chatbots_name_fieldcontainer{
+  display: flex;
+    position: relative;
+    color: rgb(27, 116, 227);
+    cursor: pointer;
+    text-align: left;
+    align-items: center;
+    font-weight: bold;
+    gap: 10px;
+    padding-right: 16px;
+
+}
+.chatbots__table__body .chatbots_name_field{
+white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 330px;
+}
+.chatbots__table__body .modified__text{
+font-size: 0.9rem;
+line-height: 1.5;
+color: rgb(102, 102, 102);
+}
+.chatbotactions{
+  text-align: center;
+  padding-left:20px !important;
+}
+.chatbots__pagination{
+  position: relative;
+  left:0;
+  bottom: 0;
+}
+.chatbots_template_container{
+  margin-bottom: 143px;
+  display: flex;
+  flex-direction: column;
+}
+.template__header{
+  justify-content: left;
+  background-color: rgb(255, 255, 255)
+}
+.template_notice{
+  font-weight: 600;
+    font-size: 15px;
+    margin-bottom:0;
+    line-height: 22px;
+    color: rgb(0, 0, 0);
+    margin-right: 100px;
+}
+.template__header_category{
+  width:210px;
+}
+.grid__template__main__container{
+  background-color: rgb(245, 246, 250);
+  grid-template-columns: repeat(3, minmax(30%, 33%));
+  border-top: 1px solid rgb(232, 234, 242);
+  border-bottom: 1px solid rgb(232, 234, 242);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  gap: 25px;
+  grid-template-rows: auto 1fr;
+  padding: 30px;
+}
+.grid__template__container{
+  background: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    max-height: 420px;
+}
+.grid_template_card{
+background: rgba(35, 164, 85, 0.05);
+    border: 1px dashed rgb(35, 164, 85);
+    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: rgb(35, 164, 85);
+}
+.grid__main_flowtemplate{
+  font-size: 15px;
+    line-height: 22px;
+    color: rgb(102, 102, 102);
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    max-height: 420px;
+}
+.template_image{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.template_cardimg{
+  max-width: 100%;
+  object-fit: cover;
+}
+.template__title{
+  font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 15px 0px;
+    color: rgb(35, 164, 85);
+}
+.template__button{
+  margin-top: auto;
+  display:flex;
+  justify-content: space-between;
+}
+.template_usebtn{
+  margin-top:15px
+}
+/* fallback message modal and chatbot timer */
+.fallback_checkbox__container,.chatbot_checkbox__container{
+margin-bottom: 15px;
+
+}
+.checkboxlabel{
+  font-weight: 500;
+    font-size: 13px;
+   color: black;
+    padding-left: 5px;
+}
+.fallbackmsg_checkbox,.chatbotmsg_checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid rgb(232, 234, 242);
+  border-radius: 2px;
+  color: rgb(245, 246, 250);
+  background: rgb(245, 246, 250);
+  cursor: pointer;
+ -webkit-appearance: none; 
+  outline: none; 
+}
+
+.fallbackmsg_checkbox:checked,.chatbotmsg_checkbox:checked {
+  border: 1px solid rgb(35, 164, 85);
+  color: rgb(35, 164, 85);
+}
+.fallbackmsg_checkbox:checked::after,.chatbotmsg_checkbox:checked::after{
+  content: ''; 
+  position: absolute;
+  left: 5px; 
+  width: 5px; 
+  height: 10px; 
+  border: solid rgb(35, 164, 85);
+  border-width: 0 2px 2px 0; 
+  transform: rotate(45deg); 
+
+}
+.fallback_msg_container,.chatbot_msg_container{
+  display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 25px;
+}
+.fallback_message,.chatbot_message{
+  margin-bottom: 10px;
+    display: block;
+    font-weight: 500;
+    font-size: 13px;
+   
+}
+.text_field__counter{
+  margin-bottom: 2px;
+  font-size: 8px;
+}
+.fallbackmsg__textarea,.chatbotmsg__textarea{
+  resize: none;
+  min-height: 100px;
+}
+.fallback_time_container,.chatbot_time_container{
+  display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom:15px;
+}
+.fallback_timemsg,.chatbot_timemsg{
+  font-weight: 500;
+  font-size: 13px;
+}
+.fallback__dropdown{
+  margin: 0px 10px;
+    width: 60px;
+    display: inline-block;
+}
+.Timer__input{
+  margin: 0px 10px;
+    width: 40px;
+    height: 30px;
+  color: rgb(51, 51, 51);
+    appearance: none;
+    display: inline-block;
+    border: 1px solid rgb(227, 227, 227);
+    border-radius: 5px;
+    text-align: center;
+}
+.Timer__input:focus{
+  box-shadow: 0 1px 0 0 #ff9100;
+  border-bottom: 1px solid #ff9100;
+  outline: none;
+}
+.copymodal_content{
+  width:450px;
+}
+.copymodal_text_input{
+  margin-top:20px;
+}
+.copy_disabled{
+  color: #9ca19d !important;
+   background: rgb(206, 208, 206) !important;
+   border-color: rgb(206, 208, 206) !important;
+}
+.copy_btn{
+  padding: 0.7rem 1.5rem;
+    width: auto;
+    height: 40px;
+    font-size: 13px;
+    min-width: 100px;
 }
