@@ -14339,6 +14339,7 @@ margin-bottom: 15px;
     width: 260px;
     flex: 0 0 auto;
     margin-left:0px;
+    transition: margin-left 0.3s ease; 
 }
 .editchatbot_left_content{
   overflow-y: auto;
@@ -14432,6 +14433,7 @@ margin-bottom: 15px;
   display: flex;
     flex-direction: column;
     width: 100%;
+    flex: 1;
 }
 .editchatbot_right_container .header_content{
   display: flex;
@@ -14908,7 +14910,8 @@ text-transform: capitalize
   
 }
 
-.fails_count_textbox:focus,.validation_number_textbox:focus,.section_text_box:focus,.new_row_create_box:focus{
+.fails_count_textbox:focus,.validation_number_textbox:focus,.section_text_box:focus,.new_row_create_box:focus,
+.time_delay_inputbox:focus,.url_input_box:focus{
   box-shadow: none !important;
 }
 .media_header_text{
@@ -14960,4 +14963,156 @@ text-transform: capitalize
     margin-top:3px;
     right: 12px;
     background: rgb(255, 231, 231);
+}
+.update_attributes_container{
+  margin-top:15px;
+}
+.time_delay_container{
+  display: grid;
+    grid-template-columns: repeat(4, auto);
+    column-gap: 10px;
+    align-items: center;
+}
+.message_templates_body{
+  margin: 10px 0px;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 12px;
+    resize: vertical;
+    background: rgb(245, 246, 250);
+    border: none;
+    min-height: 65px;
+}
+.fallback_subtext{
+  font-size: 12px;
+}
+.url_set_container{
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.url_set_left{
+  position: relative;
+  width: 100%;
+}
+.url_set_method{
+  position: absolute;
+    top: 6px;
+    left: 5px;
+    height: 30px;
+    width: 70px;
+   
+}
+.url_input_box{
+  padding-left:90px;
+  height:42px;
+}
+.url_set_variable{
+  display: inline-flex;
+    position: relative;
+    margin-left: 15px;
+    margin-bottom:18px;
+}
+.webhook_customize_text.customize_sub_text,.header_value_label{
+  margin-top: 10px;
+    color: rgb(102, 102, 102);
+    font-weight: normal;
+    font-size: 12px;
+   
+}
+.customize_sub_text{
+color:rgb(255, 153, 51) !important;
+margin:10px 0px 0px !important
+}
+.set_header_and_value{
+  display: flex;
+    margin-bottom: 10px;
+}
+.set_header_value_field{
+  margin-right: 10px;
+  width:50%
+}
+.header_value_label{
+  margin-top:0 !important
+}
+.customize_header_delete{
+  border: none;
+    background: none;
+    box-shadow: none;
+    margin-top: 28px;
+    padding: 0px;
+    align-self: flex-start;
+}
+.test_variables_add{
+  margin-top:10px
+}
+.chatbotcard_menu_container{
+  overflow: hidden;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    min-width: 190px;
+    box-shadow: rgba(130, 130, 130, 0.15) 12px 10px 45px -12px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    bottom: 100%;
+    right: 0px;
+    margin-bottom: 5px;
+    padding: 0px 15px;
+    cursor: default;
+    transition: height 0.3s;
+}
+.chatbot_card_menu_itemconainer{
+  display: flex;
+    align-items: center;
+    padding: 10px 0px;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 22px;
+    white-space: nowrap;
+    cursor: pointer;
+    border-bottom: 1px solid rgb(232, 234, 242);
+}
+.chatbotmenu_item_icon{
+  margin-right:10px
+}
+.chatbot_zoom_container{
+  margin: 0px 0px 35px 30px;
+    display: flex;
+    align-items: center;
+    padding: 9px 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 10px 15px 25px;
+    border-radius: 5px;
+    background: rgb(255, 255, 255);
+    bottom: 0;
+   position: absolute;
+    z-index: 5;
+    left: 0;
+}
+.chatbot_zoom_button{
+  width: 46px;
+    height: 28px;
+    border: none;
+    background: rgb(255, 255, 255);
+    display: flex;
+    padding: 0px;
+    border-right: 1px solid rgb(232, 234, 242);
+}
+.chatbot_zoom_svg,.chatbot_toggle_svg{
+  width:23px;
+  height:23px;
+  margin:auto
+}
+.chatbot_sidebartoggle_button{
+  box-shadow: rgba(0, 0, 0, 0.1) 10px 15px 25px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    position: absolute;
+    top: 15px;
+    margin-left: 30px;
+    width: 46px;
+    height: 46px;
+    z-index: 20;
+    cursor: pointer;
 }

@@ -142,6 +142,10 @@ const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
   const handleInputChange = (event) => {
     setChatbotName(event.target.value);
   };
+  const handleSave=()=>{
+    onSave(chatbotName);
+    setChatbotName('')
+  }
   const isDisabled = !chatbotName;
     return (
       <>
@@ -155,14 +159,14 @@ const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
               <input type="text" placeholder="Chatbot Name" className='edit__text__input copymodal_text_input'
               value={chatbotName}
               onChange={handleInputChange} />
-              <div class="keywordfooter__delete"><button target="_self" className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`} disabled={isDisabled} onClick={onSave} >Add</button></div>
+              <div class="keywordfooter__delete"><button target="_self" className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`} disabled={isDisabled} onClick={handleSave} >Add</button></div>
             </ModalBody>
           </div>
         </Modal>
       </>
     )
   }
-const FlowTemplates = ({ handleNotificationModal,handleEditChatbotbutton }) => {
+const FlowTemplates = ({ handleNotificationModal,handleEditChatbotbutton,onSave }) => {
     const options = ['All', 'Catalog', 'Restaurant', 'Real Estate', 'Hospital & Doctor', 'General', 'Finance', 'Education', 'Ecommerce']
     const [content, setContent] = useState('All');
     const [showAddChatbotModal,setShowAddChatbotModal]=useState(false);
@@ -183,10 +187,12 @@ const FlowTemplates = ({ handleNotificationModal,handleEditChatbotbutton }) => {
    const handleCloseChatbotModal=()=>{
     setShowAddChatbotModal(false);
    }
-   const handleSave=()=>{
-    handleCloseChatbotModal();
-    handleEditChatbotbutton();
-   }
+
+const handleSave = (chatbotName) => {
+    handleCloseChatbotModal(); 
+    handleEditChatbotbutton(); 
+    onSave(chatbotName); 
+  };
     return (
         <>
             <div className='chatbots_template_container'>
@@ -407,7 +413,7 @@ const ChatbotTimerModal = ({ show, onClose, onSave }) => {
 
    )
 }
-const Chatbots = ({handleEditChatbotbutton}) => {
+const Chatbots = ({handleEditChatbotbutton,onSave}) => {
     //flow builder --> initial chatbots loading
     const [chatbotData, setChatbotData] = useState(initialTableData);
     const [searchChatbots, setSearchChatbots] = useState('');
@@ -499,6 +505,11 @@ const Chatbots = ({handleEditChatbotbutton}) => {
         setIsOpenCopyModal(false);
         setIsOpenNotificationModal(true);
     }
+    const handleSave = (chatbotName) => {
+        
+        onSave(chatbotName);
+       
+      };
     return (
         <>
            {
@@ -523,7 +534,7 @@ const Chatbots = ({handleEditChatbotbutton}) => {
             }
             {
                 isOpenTemplatePage ?
-                    <FlowTemplates handleNotificationModal={handleNotificationModal} handleEditChatbotbutton={handleEditChatbotbutton} /> :
+                    <FlowTemplates handleNotificationModal={handleNotificationModal} handleEditChatbotbutton={handleEditChatbotbutton} onSave={handleSave} /> :
 
                     <div className='chatbots_container'>
                         <div className='chatbots_header'>
