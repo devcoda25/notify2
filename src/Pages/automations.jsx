@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import DefaultAction from '../../src/Component/Automation/DefaultAction';
 import KeywordAction from '../Component/Automation/KeywordAction';
 import Replymaterial from '../../src/Component/Automation/Replymaterial';
@@ -15,6 +15,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { Autocomplete, TextField, Switch, Chip } from '@mui/material';
 import { Button, Modal, ModalBody } from 'react-bootstrap';
 
+import ReactFlow, { useNodesState, Position, ConnectionMode, ConnectionLineType, Handle, useEdgesState, addEdge, Background, MiniMap, Controls } from 'react-flow-renderer';
 const emojis = [
     "😀", "😁", "😂", "😃", "😉", "😋", "😎", "😍", "😗", "🤗",
     "🤔", "😣", "😫", "😴", "😌", "🤓", "😛", "😜", "😠", "😇",
@@ -59,10 +60,14 @@ const OperationItemContent = ({ img, text, onClick }) => {
         </>
     )
 }
-const Card = ({ title, onTitleClick, children, headerBackgroundColor, titleColor, width, height, borderColor, position, onDragStart, onCardClick, onDelete, onCopy }) => {
+
+
+const Card = ({ title, onTitleClick, content, width, height, headerBackgroundColor, titleColor, borderColor, onDelete, onCopy, showEditButton }) => {
     const [isMenuVisible, setMenuVisible] = useState(false);
+    const [isShowStartNode, setIsShowStartNode] = useState(false);
     const menuRef = useRef(null);
-    const toggleMenu = () => {
+    const toggleMenu = (e) => {
+        e.stopPropagation();
         setMenuVisible((prev) => !prev);
     };
     const handleClickOutside = (event) => {
@@ -77,44 +82,77 @@ const Card = ({ title, onTitleClick, children, headerBackgroundColor, titleColor
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+    const handleCopyClick = (e) => {
+        e.stopPropagation();
+        onCopy();
+        setMenuVisible(false);
+    };
+    const handleEditClick = () => {
+        onTitleClick();
+        setMenuVisible(false)
+    }
+    const handleStartNodeClick = (e) => {
+        e.stopPropagation();
+        setMenuVisible(false);
+        setIsShowStartNode(!isShowStartNode);
+    }
     return (
-
-        <div className="chatbot_card" style={{
-            width: width, height: height, border: borderColor, position: 'absolute',
-            left: position.x,
-            top: position.y,
-            cursor: 'grab',
-            zIndex: 10
-        }}
-            onMouseDown={onDragStart}
-            onClick={onCardClick}>
-            <div className='chatbot_card_header' style={{ backgroundColor: headerBackgroundColor }}>
-                <span className='chatbot_card_title' style={{ color: titleColor }} onClick={onTitleClick}>{title}</span>
-                <button className='chatbot_menu_button' onClick={toggleMenu}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 19C10 20.1 10.9 21 12 21C13.1 21 14 20.1 14 19C14 17.9 13.1 17 12 17C10.9 17 10 17.9 10 19Z" fill={titleColor}></path><path d="M10 5C10 6.1 10.9 7 12 7C13.1 7 14 6.1 14 5C14 3.9 13.1 3 12 3C10.9 3 10 3.9 10 5Z" fill={titleColor}></path><path d="M10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10C10.9 10 10 10.9 10 12Z" fill={titleColor}></path></svg>
-                </button>
-            </div>
-            <div className='message_list'>
-                {children}
-            </div>
-            {isMenuVisible && (
-                <div ref={menuRef} className='chatbotcard_menu_container'>
-                    <div className='chatbot_card_menu_itemconainer' onClick={onCopy}>
-                        <svg className='chatbotmenu_item_icon' width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.80745 11.2459C6.47571 9.8316 6.47571 8.35976 6.80745 6.9455C7.2668 4.98721 8.79585 3.45816 10.7541 2.9988C12.1684 2.66707 13.6402 2.66707 15.0545 2.9988C17.0128 3.45816 18.5418 4.98721 19.0012 6.94551C19.3329 8.35976 19.3329 9.8316 19.0012 11.2459C18.5418 13.2041 17.0128 14.7332 15.0545 15.1926C13.6402 15.5243 12.1684 15.5243 10.7541 15.1926M6.80745 11.2459C7.2668 13.2041 8.79586 14.7332 10.7541 15.1926M6.80745 11.2459C6.59857 10.3554 6.52121 9.44208 6.57537 8.53469C6.49878 8.55032 6.42237 8.56708 6.34615 8.58496C4.66761 8.97869 3.35699 10.2893 2.96326 11.9678C2.67891 13.1801 2.67891 14.4416 2.96326 15.6539C3.35699 17.3324 4.66761 18.643 6.34615 19.0367C7.55837 19.3211 8.81994 19.3211 10.0322 19.0367C11.7107 18.643 13.0213 17.3324 13.415 15.6539C13.4329 15.5776 13.4497 15.5012 13.4653 15.4246C12.5579 15.4788 11.6446 15.4014 10.7541 15.1926" stroke="#666666" stroke-width="1.5"></path></svg>
-                        Copy </div>
-                    <div className='chatbot_card_menu_itemconainer' onClick={onDelete}>
-                        <svg className='chatbotmenu_item_icon' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
-                        Delete
-                    </div>
-                    <div className='chatbot_card_menu_itemconainer'>
-                        <svg className='chatbotmenu_item_icon' width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 13.2565H14.8417C16.1394 13.2565 16.9326 11.7088 16.2489 10.5108L15.8001 9.72448C15.3584 8.95063 15.3584 7.97186 15.8001 7.19801L16.2489 6.41165C16.9326 5.21373 16.1394 3.66602 14.8417 3.66602L5.5 3.66602L5.5 13.2565ZM5.5 13.2565L5.5 18.3327" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                        Unset start node</div>
-                </div>
+        <>
+            {isShowStartNode && (
+                <div className='nodestart'>Starting Step</div>
             )}
-        </div>
+            <div className="chatbot_card" style={{
+                border: borderColor,
+                minHeight: height,
+                width: width
+            }}
 
+                onClick={() => {
+
+                    if (typeof onTitleClick === 'function') {
+                        onTitleClick();
+                    }
+                }}>
+
+                <div className='chatbot_card_header' style={{ backgroundColor: headerBackgroundColor }}>
+                    <span className='chatbot_card_title' style={{ color: titleColor }} >{title}</span>
+                    <button className='chatbot_menu_button' onClick={toggleMenu}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 19C10 20.1 10.9 21 12 21C13.1 21 14 20.1 14 19C14 17.9 13.1 17 12 17C10.9 17 10 17.9 10 19Z" fill={titleColor}></path><path d="M10 5C10 6.1 10.9 7 12 7C13.1 7 14 6.1 14 5C14 3.9 13.1 3 12 3C10.9 3 10 3.9 10 5Z" fill={titleColor}></path><path d="M10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10C10.9 10 10 10.9 10 12Z" fill={titleColor}></path></svg>
+                    </button>
+                </div>
+                <div className='message_list' >
+                    {content}
+                </div>
+                {isMenuVisible && (
+                    <div ref={menuRef} className='chatbotcard_menu_container'>
+                        {showEditButton &&
+                            <div className='chatbot_card_menu_itemconainer' onClick={handleEditClick} >
+                                <svg className='chatbotmenu_item_icon' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg>
+                                Edit
+                            </div>
+                        }
+                        <div className='chatbot_card_menu_itemconainer' onClick={handleCopyClick}>
+                            <svg className='chatbotmenu_item_icon' width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.80745 11.2459C6.47571 9.8316 6.47571 8.35976 6.80745 6.9455C7.2668 4.98721 8.79585 3.45816 10.7541 2.9988C12.1684 2.66707 13.6402 2.66707 15.0545 2.9988C17.0128 3.45816 18.5418 4.98721 19.0012 6.94551C19.3329 8.35976 19.3329 9.8316 19.0012 11.2459C18.5418 13.2041 17.0128 14.7332 15.0545 15.1926C13.6402 15.5243 12.1684 15.5243 10.7541 15.1926M6.80745 11.2459C7.2668 13.2041 8.79586 14.7332 10.7541 15.1926M6.80745 11.2459C6.59857 10.3554 6.52121 9.44208 6.57537 8.53469C6.49878 8.55032 6.42237 8.56708 6.34615 8.58496C4.66761 8.97869 3.35699 10.2893 2.96326 11.9678C2.67891 13.1801 2.67891 14.4416 2.96326 15.6539C3.35699 17.3324 4.66761 18.643 6.34615 19.0367C7.55837 19.3211 8.81994 19.3211 10.0322 19.0367C11.7107 18.643 13.0213 17.3324 13.415 15.6539C13.4329 15.5776 13.4497 15.5012 13.4653 15.4246C12.5579 15.4788 11.6446 15.4014 10.7541 15.1926" stroke="#666666" stroke-width="1.5"></path></svg>
+                            Copy </div>
+                        <div className='chatbot_card_menu_itemconainer' onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete();
+                        }}
+                        >
+                            <svg className='chatbotmenu_item_icon' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
+                            Delete
+                        </div>
+                        <div className='chatbot_card_menu_itemconainer' onClick={handleStartNodeClick}>
+                            <svg className='chatbotmenu_item_icon' width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 13.2565H14.8417C16.1394 13.2565 16.9326 11.7088 16.2489 10.5108L15.8001 9.72448C15.3584 8.95063 15.3584 7.97186 15.8001 7.19801L16.2489 6.41165C16.9326 5.21373 16.1394 3.66602 14.8417 3.66602L5.5 3.66602L5.5 13.2565ZM5.5 13.2565L5.5 18.3327" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                            {isShowStartNode ? 'Unset Start Node' : 'Set Start Node'} </div>
+                    </div>
+                )}
+
+            </div>
+        </>
     );
 };
+
 const EditChatNameModal = ({ show, onClose, onSave, initialName }) => {
     const [chatbotName, setChatbotName] = useState('');
 
@@ -161,223 +199,591 @@ const EditChatNameModal = ({ show, onClose, onSave, initialName }) => {
         </Modal>
     );
 };
-const Connector = ({ start, end }) => {
-    const x1 = start.x + 50; // Adjust for card width
-    const y1 = start.y + 25; // Adjust for card height
-    const x2 = end.x + 50;   // Adjust for card width
-    const y2 = end.y + 25;   // Adjust for card height
-
-    console.log("Drawing line from:", { x1, y1 }, "to:", { x2, y2 });
-
-    return (
-        <line
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="#b1b1b1"
-            strokeDasharray="5, 5"
-            strokeWidth="2"
-        />
-    );
-};
 
 const MessageOption = () => {
+    const variables = [
+        { title: "first_incoming_message", value: "@first_incoming_message" },
+
+    ];
+    const contactAttributes = [
+        { title: "actual_fare", value: '{{actual_fare}}' },
+        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+        { title: 'additional_items', value: '{{additional_items}}' }
+    ]
+    const [textBoxVisibility, setTextBoxVisibility] = useState([]);
     const [showTextbox, setShowTextbox] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const [imageInputValue, setImageInputValue] = useState('');
+    const [isQuestionVisible, setIsQuestionVisible] = useState(false);
+    const [isImageBoxVisible, setImageBoxVisible] = useState(false);
+    const [showImageInput, setShowImageInput] = useState(true);
     const [showImageContainer, setShowImageContainer] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [showVideoContainer, setShowVideoContainer] = useState(false);
-    const [selectedVideo, setSelectedVideo] = useState(null);
-    const [showAudioContainer, setShowAudioContainer] = useState(false);
-    const [selectedAudio, setSelectedAudio] = useState(null);
-    const [showDocumentContainer, setShowDocumentContainer] = useState(false);
-    const [selectedDocument, setSelectedDocument] = useState(null);
-    const [documentName, setDocumentName] = useState('');
+    const [imageContainers, setImageContainers] = useState([]);
+    const [videoContainers, setVideoContainers] = useState([]);
+    const [audioContainers, setAudioContainers] = useState([]);
+    const [documentContainers, setDocumentContainers] = useState([]);
+    const [isVisible, setIsVisible] = useState(false);
+    const [isVariablesVisible, setIsVariablesVisible] = useState(false);
+    const [isImageEmojiVisible, setIsImageEmojiVisible] = useState(false);
+    const [isImageVariablesVisible, setIsImageVariablesVisible] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const questionRef = useRef(null);
+    const [currentIndex, setCurrentIndex] = useState(null);
+
+    const handleInteraction = (e) => {
+        e.stopPropagation();
+
+    };
+
+
+    const formatText = (command) => {
+        document.execCommand(command, false, null);
+    };
+    const applyCurlyFormatting = () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString();
+            if (selectedText) {
+                const curlyText = `{${selectedText}}`;
+                const textNode = document.createTextNode(curlyText);
+                range.deleteContents();
+                range.insertNode(textNode);
+                selection.removeAllRanges();
+            }
+        }
+    };
+
+
     const handleMessageClick = () => {
-        setShowTextbox(true);
+        // setShowTextbox(true);
+        setTextBoxVisibility((prev) => [...prev, { showTextContainer: true, isQuestionVisible: false }]);
     };
-    const handleMessageDelete = () => {
-        setShowTextbox(false);
-    }
-    const handleImageClick = () => {
-        setShowImageContainer(true);
-    };
-    const handleImageDelete = () => {
-        setShowImageContainer(false);
-    }
-    const handleVideoClick = () => {
-        setShowVideoContainer(true);
-    }
-    const handleVideoDelete = () => {
-        setShowVideoContainer(false)
-    }
-    const handleAudioClick = () => {
-        setShowAudioContainer(true);
-    }
-    const handleAudioDelete = () => {
-        setShowAudioContainer(false);
-    }
-    const handleDocumentClick = () => {
-        setShowDocumentContainer(true);
-    }
-    const handleDocumentDelete = () => {
-        setShowDocumentContainer(false)
-    }
+    const handleInputClick = (index) => {
+        setTextBoxVisibility((prev) => {
+            const newVisibility = [...prev];
 
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    const handleVideoUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedVideo(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    const handleAudioUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedAudio(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    const handleDocumentUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setSelectedDocument(reader.result);
-                setDocumentName(file.name)
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-    return (
-        <>
-            {
 
-                showTextbox &&
-                <>
-                    <div>
-                        <input type="text" className='edit__text__input message_input_box' />
-                        <button className='message_delete_icon' onClick={handleMessageDelete}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                    </div>
+            if (currentIndex === index) {
+                newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
+                newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible; // Toggle showTextContainer
+            } else {
+                // Hide the previously opened question and show the text container
+                if (currentIndex !== null) {
+                    newVisibility[currentIndex].isQuestionVisible = false; // Hide previous question
+                    newVisibility[currentIndex].showTextContainer = true; // Show previous text container
+                }
 
-                </>
+                newVisibility[index].isQuestionVisible = true;
+                newVisibility[index].showTextContainer = false;
+                setCurrentIndex(index); // Update currentIndex to the new index
             }
 
-            {showImageContainer && (
-                <div className='image_container'>
+            return newVisibility;
+        });
+        // setShowTextbox(false);
+        // setIsQuestionVisible(true);
+        setImageBoxVisible(false);
+        setShowImageInput(true);
+    };
+    const handleImageInputClick = () => {
+        setImageBoxVisible(true);
+        setShowImageInput(false);
+        setShowTextbox(true);
+        setIsQuestionVisible(false);
+    }
+    const toggleVariablesDropdown = () => {
+        setIsVariablesVisible((prev) => !prev);
+    };
+    const toggleImageVariableDropdown = () => {
+        setIsImageVariablesVisible((prev) => !prev);
+    }
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    const filteredVariables = variables.filter(variable =>
+        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const filterContactAttributes = contactAttributes.filter(contact =>
+        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    const toggleEmojiPicker = () => {
+        setIsVisible((prev) => !prev);
+    };
+    const toggleImageEmojiPicker = () => {
+        setIsImageEmojiVisible((prev) => !prev);
+    }
+    const handleEmojiClick = (emoji) => {
+        setInputValue(prev => prev + emoji);
+        setIsVisible(false);
+    };
+    const handleImageEmojiClick = (emoji) => {
+        setImageInputValue(prev => prev + emoji);
+        setIsImageEmojiVisible(false);
+    }
+    const handleVariableClick = (variable) => {
+        setInputValue(prev => prev + variable.value);
+        setIsVariablesVisible(false);
+    };
+    const handleImageVariableClick = (variable) => {
+        setImageInputValue(prev => prev + variable.value);
+        setIsImageVariablesVisible(false);
+    }
+    const handleMessageDelete = (index) => {
+        //setShowTextbox(false);
+        setTextBoxVisibility((prev) => prev.filter((_, i) => i !== index));
+
+        if (currentIndex === index) {
+            setCurrentIndex(null);
+        }
+
+    }
+
+    const handleImageDelete = (index) => {
+        // setShowImageContainer(false);
+        setImageContainers(prev => prev.filter((_, i) => i !== index));
+    }
+
+    const handleImageUpload = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageContainers(prev => {
+                    const newContainers = [...prev];
+                    newContainers[index] = reader.result;
+                    return newContainers;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    //video
+    const handleImageClick = () => {
+        setImageContainers(prev => [...prev, null]);
+    }
+    const handleVideoClick = () => {
+        setVideoContainers(prev => [...prev, null]);
+    };
+
+    const handleVideoUpload = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setVideoContainers(prev => {
+                    const newContainers = [...prev];
+                    newContainers[index] = reader.result; // Update specific container
+                    return newContainers;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleVideoDelete = (index) => {
+        setVideoContainers(prev => prev.filter((_, i) => i !== index));
+    };
+
+    //Audio
+    const handleAudioClick = () => {
+        setAudioContainers(prev => [...prev, null]);
+    };
+    const handleAudioUpload = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAudioContainers(prev => {
+                    const newContainers = [...prev];
+                    newContainers[index] = reader.result;
+                    return newContainers;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+    const handleAudioDelete = (index) => {
+        setAudioContainers(prev => prev.filter((_, i) => i !== index));
+    };
+
+    //Document
+    const handleDocumentClick = () => {
+        setDocumentContainers(prev => [...prev, { file: null, name: '' }]);
+    };
+    const handleDocumentUpload = (event, index) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setDocumentContainers(prev => {
+                    const newContainers = [...prev];
+                    newContainers[index] = { file: reader.result, name: file.name };
+                    return newContainers;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleDocumentDelete = (index) => {
+        setDocumentContainers(prev => prev.filter((_, i) => i !== index));
+    };
+
+    // prevent the drag and drop functionality inside the inputbox
+    useEffect(() => {
+        // Function to prevent any movement inside the container
+        const preventDrag = (e) => {
+            if (questionRef.current && questionRef.current.contains(e.target)) {
+                e.stopPropagation();
+            }
+        };
+        const handleClickOutside = (event) => {
+            if (questionRef.current && !questionRef.current.contains(event.target)) {
+                setIsQuestionVisible(false);
+                setShowTextbox(true);
+            }
+        };
+
+        // Attach listeners
+        document.addEventListener('mousemove', preventDrag, true);
+        document.addEventListener('mousedown', preventDrag, true);
+        document.addEventListener('mouseup', preventDrag, true);
+        document.addEventListener('mousedown', handleClickOutside);
+        // Cleanup function to remove listeners on component unmount
+        return () => {
+            document.removeEventListener('mousemove', preventDrag, true);
+            document.removeEventListener('mousedown', preventDrag, true);
+            document.removeEventListener('mouseup', preventDrag, true);
+            document.addEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    return (
+        <>
+            {textBoxVisibility.map((item, index) => (
+                <>
+                    {item.showTextContainer && (
+                        <>
+                            <div style={{ position: 'relative' }}>
+
+                                <div className='edit__text__input message_input_box'
+                                    contentEditable
+                                    suppressContentEditableWarning={true}
+                                    onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+                                    dangerouslySetInnerHTML={{ __html: inputValue }} onClick={() => handleInputClick(index)}></div>
+
+                                <button className='message_delete_icon' style={{ top: '0%' }} onClick={() => handleMessageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                            </div>
+
+                        </>
+                    )}
+                    {item.isQuestionVisible && (
+                        <div className='question_text_content' ref={questionRef}>
+
+                            <div className='question_editor_container' >
+
+                                <div
+                                    className='message_edit__text__input question_editor_text'
+                                    contentEditable={true}
+                                    suppressContentEditableWarning={true}
+                                    onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+                                    onFocus={() => setShowTextbox(false)}
+                                    dangerouslySetInnerHTML={{ __html: inputValue }}
+
+                                >
+
+                                </div>
+                                <div className='question_editor_toolbar'>
+                                    <div className='inline_toolbar'>
+                                        <div className='option_toolbar' onClick={() => formatText('bold')}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={() => formatText('italic')}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={applyCurlyFormatting}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={toggleEmojiPicker}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+                                        </div>
+
+                                    </div>
+                                    <div className='question_variable_btn'>
+                                        <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {isVisible && (
+                                <div className="emoji_dropdown">
+                                    {emojis.map((emoji, index) => (
+                                        <span
+                                            key={index}
+                                            className="emoji_icon"
+                                            onClick={() => handleEmojiClick(emoji)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            {emoji}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                            {isVariablesVisible && (
+                                <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+                                    <div className="variables_search_bar">
+                                        <div>
+                                            <input
+                                                className=" variables_search_input"
+                                                type="text"
+                                                placeholder="Search variables"
+                                                value={searchTerm}
+                                                onChange={handleSearchChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='varibles_drop_content'>
+                                        <div className="varibles_drop_list">
+                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+                                            {filteredVariables.map((variable, index) => (
+                                                <>
+                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
+                                                        <span className="variable_list_item_title">{variable.title}</span>
+                                                        <span className="variable_list_item_value">{variable.value}</span>
+                                                    </div>
+
+                                                </>
+                                            ))}
+                                        </div>
+                                        <div className="varibles_drop_list">
+                                            <div className="varibles_drop_list_header">Contact Attributes</div>
+                                            {filterContactAttributes.map((contact, index) => (
+                                                <>
+                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
+                                                        <span className="variable_list_item_title">{contact.title}</span>
+                                                        <span className="variable_list_item_value">{contact.value}</span>
+                                                    </div>
+
+                                                </>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </>
+            ))}
+            {imageContainers.map((image, index) => (
+                <div key={index} className='image_container'>
                     <div className='message_image_content'>
-                        {selectedImage ? (
-                            <img src={selectedImage} alt="Uploaded" style={{ width: '100px', height: '100px' }} />
+                        {image ? (
+                            <img src={image} alt="Uploaded" style={{ width: '100%', height: '100%' }} />
                         ) : (
                             <ImageIcon />
                         )}
                     </div>
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById('image-input').click()}>
+                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`image-input-${index}`).click()}>
                         Upload image
                     </button>
-                    <button className='message_delete_icon' onClick={handleImageDelete}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                    <button className='message_delete_icon' onClick={() => handleImageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                    {
+                        showImageInput && (
+                            <div className='edit__text__input message_input_box image_text_input_field'
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onInput={(e) => setImageInputValue(e.currentTarget.innerHTML)}
+                                dangerouslySetInnerHTML={{ __html: imageInputValue }} onClick={handleImageInputClick}></div>
+                        )
+                    }
+
+                    {isImageBoxVisible && (
+                        <div className='question_text_content image_text_input_field' ref={questionRef} >
+
+                            <div className='question_editor_container' onMouseDown={handleInteraction} onTouchStart={handleInteraction}>
+
+                                <div
+                                    className='message_edit__text__input question_editor_text'
+                                    contentEditable
+                                    suppressContentEditableWarning={true}
+                                    onInput={(e) => setImageInputValue(e.currentTarget.innerHTML)}
+                                    onFocus={() => setShowImageInput(false)}
+                                    dangerouslySetInnerHTML={{ __html: imageInputValue }}
+                                >
+
+                                </div>
+                                <div className='question_editor_toolbar'>
+                                    <div className='inline_toolbar'>
+                                        <div className='option_toolbar' onClick={() => formatText('bold')}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={() => formatText('italic')}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={applyCurlyFormatting}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+                                        </div>
+                                        <div className='option_toolbar' onClick={toggleImageEmojiPicker}>
+                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+                                        </div>
+
+                                    </div>
+                                    <div className='question_variable_btn'>
+                                        <button className='btn btn-success variable_btn' onClick={toggleImageVariableDropdown} >Variables  </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {isImageEmojiVisible && (
+                                <div className="emoji_dropdown">
+                                    {emojis.map((emoji, index) => (
+                                        <span
+                                            key={index}
+                                            className="emoji_icon"
+                                            onClick={() => handleImageEmojiClick(emoji)}
+                                            style={{ cursor: 'pointer' }}
+                                        >
+                                            {emoji}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                            {isImageVariablesVisible && (
+                                <div className="varibles_drop_container" aria-hidden={!isImageVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+                                    <div className="variables_search_bar">
+                                        <div>
+                                            <input
+                                                className=" variables_search_input"
+                                                type="text"
+                                                placeholder="Search variables"
+                                                value={searchTerm}
+                                                onChange={handleSearchChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='varibles_drop_content'>
+                                        <div className="varibles_drop_list">
+                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+                                            {filteredVariables.map((variable, index) => (
+                                                <>
+                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleImageVariableClick(variable)}>
+                                                        <span className="variable_list_item_title">{variable.title}</span>
+                                                        <span className="variable_list_item_value">{variable.value}</span>
+                                                    </div>
+
+                                                </>
+                                            ))}
+                                        </div>
+                                        <div className="varibles_drop_list">
+                                            <div className="varibles_drop_list_header">Contact Attributes</div>
+                                            {filterContactAttributes.map((contact, index) => (
+                                                <>
+                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleImageVariableClick(contact)}>
+                                                        <span className="variable_list_item_title">{contact.title}</span>
+                                                        <span className="variable_list_item_value">{contact.value}</span>
+                                                    </div>
+
+                                                </>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
                     <input
                         type='file'
-                        id='image-input'
+                        id={`image-input-${index}`}
                         className='edt__text__input image_input_box'
                         style={{ display: "none" }}
-                        onChange={handleImageUpload}
+                        onChange={(event) => handleImageUpload(event, index)}
                     />
 
                 </div>
-            )}
-            {showVideoContainer && (
-                <div className='image_container'>
-                    <div className='message_image_content'>
-                        {selectedVideo ? (
-                            <video controls style={{ width: '100%', height: '100%' }} >
-                                <source src={selectedVideo} type="video/mp4" />
-                            </video>
+            ))}
 
+            {videoContainers.map((video, index) => (
+                <div key={index} className='image_container'>
+                    <div className='message_image_content'>
+                        {video ? (
+                            <video controls style={{ width: '100%', height: '100%' }}>
+                                <source src={video} type="video/mp4" />
+                            </video>
                         ) : (
                             <MovieIcon />
                         )}
                     </div>
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById('video-input').click()}>
+                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`video-input-${index}`).click()}>
                         Upload video
                     </button>
-                    <button className='message_delete_icon' onClick={handleVideoDelete}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                    <button className='message_delete_icon' onClick={() => handleVideoDelete(index)}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
                     <input
                         type='file'
-                        id='video-input'
+                        id={`video-input-${index}`}
                         className='edt__text__input image_input_box'
                         style={{ display: "none" }}
-                        onChange={handleVideoUpload}
+                        onChange={(event) => handleVideoUpload(event, index)}
                     />
-
                 </div>
-            )}
-            {showAudioContainer && (
-                <div className='image_container'>
-                    <div className='message_image_content'>
-                        {selectedAudio ? (
-                            <audio controls style={{ width: '100%' }} >
-                                <source src={selectedAudio} />
-                            </audio>
+            ))}
 
+            {audioContainers.map((audio, index) => (
+                <div key={index} className='image_container'>
+                    <div className='message_image_content'>
+                        {audio ? (
+                            <audio controls style={{ width: '100%' }}>
+                                <source src={audio} />
+                            </audio>
                         ) : (
                             <AudiotrackIcon />
                         )}
                     </div>
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById('audio-input').click()}>
+                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`audio-input-${index}`).click()}>
                         Upload audio
                     </button>
-                    <button className='message_delete_icon' onClick={handleAudioDelete}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                    <button className='message_delete_icon' onClick={() => handleAudioDelete(index)}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
                     <input
                         type='file'
-                        id='audio-input'
+                        id={`audio-input-${index}`}
                         className='edt__text__input image_input_box'
                         style={{ display: "none" }}
-                        onChange={handleAudioUpload}
+                        onChange={(event) => handleAudioUpload(event, index)}
                     />
-
                 </div>
-            )}
-            {showDocumentContainer && (
-                <div className='image_container'>
+            ))}
+
+            {documentContainers.map((doc, index) => (
+                <div key={index} className='image_container'>
                     <div className='message_image_content'>
                         <DescriptionOutlinedIcon />
                     </div>
-                    {selectedDocument && (
-                        <a href={selectedDocument} className='selecteddoc_link'>{documentName}</a>
-
+                    {doc.file && (
+                        <a href={doc.file} className='selecteddoc_link'>{doc.name}</a>
                     )}
-
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById('document-input').click()}>
+                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`document-input-${index}`).click()}>
                         Upload document
                     </button>
-                    <button className='message_delete_icon' onClick={handleDocumentDelete}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                    <button className='message_delete_icon' onClick={() => handleDocumentDelete(index)}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
                     <input
                         type='file'
-                        id='document-input'
+                        id={`document-input-${index}`}
                         className='edt__text__input image_input_box'
                         style={{ display: "none" }}
-                        onChange={handleDocumentUpload}
+                        onChange={(event) => handleDocumentUpload(event, index)}
                     />
-
                 </div>
-            )}
+            ))}
             <div className='choose_msg_list'>
                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleMessageClick}>Message</button>
                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleImageClick}>Image</button>
@@ -630,7 +1036,23 @@ const QuestionModal = ({ show, onClose, onSave }) => {
         setInputValue(prev => prev + variable.value);
         setIsVariablesVisible(false);
     };
-
+    const formatText = (command) => {
+        document.execCommand(command, false, null);
+    };
+    const applyCurlyFormatting = () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString();
+            if (selectedText) {
+                const curlyText = `{${selectedText}}`;
+                const textNode = document.createTextNode(curlyText);
+                range.deleteContents();
+                range.insertNode(textNode);
+                selection.removeAllRanges();
+            }
+        }
+    };
     return (
         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
             <div className='chatbot_question_content'>
@@ -641,21 +1063,30 @@ const QuestionModal = ({ show, onClose, onSave }) => {
                     <div className='question_text_content'>
                         <div className='edit__text__label'>Question Text</div>
                         <div className='question_editor_container'>
-                            <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} />
+                            {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)} /> */}
+                            <div
+                                className='message_edit__text__input question_editor_text'
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+                                dangerouslySetInnerHTML={{ __html: inputValue }}
+                            >
+
+                            </div>
 
                             <div className='question_editor_toolbar'>
                                 <div className='inline_toolbar'>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={applyCurlyFormatting}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
                                     </div>
                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
@@ -911,7 +1342,23 @@ const ButtonsModal = ({ show, onClose, onSave }) => {
         setHeaderValue(prev => prev + variable.value);
         setIsHeaderVariables(false);
     };
-
+    const formatText = (command) => {
+        document.execCommand(command, false, null);
+    };
+    const applyCurlyFormatting = () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString();
+            if (selectedText) {
+                const curlyText = `{${selectedText}}`;
+                const textNode = document.createTextNode(curlyText);
+                range.deleteContents();
+                range.insertNode(textNode);
+                selection.removeAllRanges();
+            }
+        }
+    };
     return (
         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
             <div className='chatbot_question_content'>
@@ -996,21 +1443,30 @@ const ButtonsModal = ({ show, onClose, onSave }) => {
                     <div className='question_text_container'>
                         <div className='edit__text__label'>Body Text</div>
                         <div className='question_editor_container'>
-                            <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} />
+                            {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)} /> */}
+                            <div
+                                className='message_edit__text__input question_editor_text'
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+                                dangerouslySetInnerHTML={{ __html: inputValue }}
+                            >
+
+                            </div>
 
                             <div className='question_editor_toolbar'>
                                 <div className='inline_toolbar'>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={applyCurlyFormatting} >
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
                                     </div>
                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
@@ -1197,6 +1653,23 @@ const ListModal = ({ show, onClose, onSave }) => {
         setIsHeaderVariables(false);
     };
 
+    const formatText = (command) => {
+        document.execCommand(command, false, null);
+    };
+    const applyCurlyFormatting = () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString();
+            if (selectedText) {
+                const curlyText = `{${selectedText}}`;
+                const textNode = document.createTextNode(curlyText);
+                range.deleteContents();
+                range.insertNode(textNode);
+                selection.removeAllRanges();
+            }
+        }
+    };
     return (
         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
             <div className='chatbot_question_content'>
@@ -1260,21 +1733,30 @@ const ListModal = ({ show, onClose, onSave }) => {
                     <div className='question_text_container'>
                         <div className='edit__text__label'>Body Text</div>
                         <div className='question_editor_container'>
-                            <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} />
+                            {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)} /> */}
+                            <div
+                                className='message_edit__text__input question_editor_text'
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+                                dangerouslySetInnerHTML={{ __html: inputValue }}
+                            >
+
+                            </div>
 
                             <div className='question_editor_toolbar'>
                                 <div className='inline_toolbar'>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={applyCurlyFormatting}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
                                     </div>
                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
@@ -2124,7 +2606,23 @@ const WhatsappFlowModal = ({ show, onClose, onSave }) => {
         setHeaderValue(prev => prev + variable.value);
         setIsHeaderVariables(false);
     };
-
+    const formatText = (command) => {
+        document.execCommand(command, false, null);
+    };
+    const applyCurlyFormatting = () => {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString();
+            if (selectedText) {
+                const curlyText = `{${selectedText}}`;
+                const textNode = document.createTextNode(curlyText);
+                range.deleteContents();
+                range.insertNode(textNode);
+                selection.removeAllRanges();
+            }
+        }
+    };
     return (
         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
             <div className='chatbot_question_content'>
@@ -2188,21 +2686,26 @@ const WhatsappFlowModal = ({ show, onClose, onSave }) => {
                     <div className='question_text_container'>
                         <div className='edit__text__label'>Body Text</div>
                         <div className='question_editor_container'>
-                            <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} />
 
+                            <div
+                                className='message_edit__text__input question_editor_text'
+                                contentEditable
+                                suppressContentEditableWarning={true}
+                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+                                dangerouslySetInnerHTML={{ __html: inputValue }}
+                            ></div>
                             <div className='question_editor_toolbar'>
                                 <div className='inline_toolbar'>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
                                     </div>
-                                    <div className='option_toolbar'>
+                                    <div className='option_toolbar' onClick={applyCurlyFormatting}>
                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
                                     </div>
                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
@@ -3014,8 +3517,11 @@ const GridBackground = ({ scale }) => (
     </svg>
 );
 
-const EditChatbotPage = ({chatbotName}) => {
-    const [isLeftContainerVisible,setIsLeftContainerVisible]=useState(true);
+const EditChatbotPage = ({ chatbotName }) => {
+
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [isLeftContainerVisible, setIsLeftContainerVisible] = useState(true);
     const [showAskQuestioncontent, setAskQuestionContent] = useState(false);
     const [cardContent, setCardContent] = useState([]);
     const [selectedCardIndex, setSelectedCardIndex] = React.useState(null);
@@ -3038,131 +3544,62 @@ const EditChatbotPage = ({chatbotName}) => {
     const [webhookModal, setWebhookModal] = useState(false);
     const [EditChatbotModal, setEditChatbotModal] = useState(false);
     const [currentChatbotName, setCurrentChatbotName] = useState(chatbotName);
-    const [scale, setScale] = useState(1);
-    const zoomIn = () => setScale(prevScale => Math.min(prevScale + 0.1, 2));
-    const zoomOut = () => setScale(prevScale => Math.max(prevScale - 0.1, 0.5));
-    const fitView = () => setScale(1);
-    useEffect(() => {
-        const handleWheel = (event) => {
-            event.preventDefault();
-            const delta = event.deltaY;
 
+    const onConnect = useCallback(
+        (params) =>
+            setEdges((els) =>
+                addEdge(
+                    {
+                        ...params,
+                        style: { stroke: 'rgb(181, 181, 181)', strokeDasharray: '5 5' },
+                        markerEnd: { type: 'arrowclosed', color: 'gray', fill: 'none', },
+                        strokeWidth: 2
+                    },
+                    els
+                )
+            ),
+        []
+    );
 
-            if (delta > 0) {
-                setScale(prevScale => Math.min(prevScale * 1.1, 2)); // Zoom in
-            } else {
-                setScale(prevScale => Math.max(prevScale * 0.9, 0.5)); // Zoom out
+    const handleComponentClick = (nodeId) => {
+        const nodeToAdd = initialNodesData[nodeId];
+
+        // Generate a unique ID 
+        const newId = `${nodeId}-${nodes.filter(node => node.id.startsWith(nodeId)).length + 1}`;
+        console.log('New ID being created:', newId);
+
+        // Update position for the new node
+        const newPosition = {
+            x: nodeToAdd.position.x,
+            y: nodes.length * 100,
+        };
+
+        const newNode = {
+            ...nodeToAdd,
+            id: newId,
+            position: newPosition,
+            data: {
+                label: React.cloneElement(nodeToAdd.data.label, {
+                    onDelete: () => handleDeleteNode(newId),
+                    onCopy: () => handleCopyNode(newId),
+                }),
+
             }
+
+
         };
 
-        // Attach the event listener
-        window.addEventListener('wheel', handleWheel);
-
-        // Cleanup on unmount
-        return () => {
-            window.removeEventListener('wheel', handleWheel);
-        };
-    }, []);
+        // Update the nodes state
+        setNodes((prevNodes) => {
+            const updatedNodes = [...prevNodes, newNode];
+            console.log('Current nodes after adding:', updatedNodes);
+            return updatedNodes;
+        });
+    };
 
     const toggleLeftContainer = () => {
         setIsLeftContainerVisible(prevState => !prevState);
     };
-    const handleCardClick = (index) => {
-        console.log("Clicked card index:", index);
-        if (selectedCardIndex === null) {
-            console.log("Selecting start card:", index);
-            setSelectedCardIndex(index);
-        } else {
-            console.log("Connecting:", selectedCardIndex, "to", index);
-            const newConnection = { from: selectedCardIndex, to: index };
-            setConnections(prevConnections => {
-                const updatedConnections = [...prevConnections, newConnection];
-                console.log("Updated connections:", updatedConnections);
-                return updatedConnections;
-            });
-            setSelectedCardIndex(null); // Reset selection after connecting
-        }
-    };
-    const deleteCard = (index) => {
-
-        setCardContent((prev) => prev.filter((_, i) => i !== index));
-
-
-        setConnections((prevConnections) =>
-            prevConnections.filter(
-                (connection) => connection.from !== index && connection.to !== index
-            )
-        );
-    };
-    const copyCard = (index) => {
-        const cardToCopy = cardContent[index];
-        if (cardToCopy) {
-            const newCard = {
-                ...cardToCopy,
-                id: Date.now(), // Generate a new unique ID
-                position: { // Adjust the position if needed
-                    x: cardToCopy.position.x + 10,
-                    y: cardToCopy.position.y + 10
-                }
-            };
-            setCardContent((prev) => [...prev, newCard]);
-        }
-    };
-    const handleClick = (title, onTitleClick, content, color, titleColor, width, height, borderColor) => {
-        if (content) {
-            const newCard = {
-                id: Date.now().toString(),
-                title,
-                onTitleClick,
-                content,
-                color,
-                titleColor,
-                width,
-                height,
-                borderColor,
-                position: { x: 50, y: 50 },
-            };
-            setCardContent(prevCards => [...prevCards, newCard]);
-
-        }
-    };
-    const onDragStart = (index, e) => {
-        setDraggingCard(index);
-        const card = e.currentTarget.getBoundingClientRect();
-        setOffset({
-            x: e.clientX - card.left,
-            y: e.clientY - card.top,
-        });
-        document.body.style.cursor = 'grabbing';
-    };
-
-    const onMouseMove = (e) => {
-        if (draggingCard !== null) {
-            const newCards = [...cardContent];
-            newCards[draggingCard].position = {
-                x: e.clientX - offset.x,
-                y: e.clientY - offset.y,
-            };
-            setCardContent(newCards);
-        }
-    };
-
-
-    const onMouseUp = () => {
-        setDraggingCard(null);
-        document.body.style.cursor = 'default';
-    };
-    React.useEffect(() => {
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-
-        return () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        };
-    }, [draggingCard]);
-
-
 
 
     const handleAskQuestionContent = () => {
@@ -3261,7 +3698,7 @@ const EditChatbotPage = ({chatbotName}) => {
     const handleSaveUpdateChat = () => {
         setUpdateChatModal(false);
     }
-    const handlTimeDelay = () => {
+    const handleTimeDelay = () => {
         setTimeDelayModal(true);
     }
     const handleCloseTimeDelay = () => {
@@ -3307,8 +3744,112 @@ const EditChatbotPage = ({chatbotName}) => {
         setEditChatbotModal(false)
         setCurrentChatbotName(updatedName);
     }
+
+    const handleDeleteNode = (nodeId) => {
+        setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+    };
+
+    const handleCopyNode = (nodeId) => {
+        setNodes((prevNodes) => {
+            // Locate the original node to copy
+            const nodeToCopy = prevNodes.find((node) => node.id === nodeId);
+
+            if (nodeToCopy) {
+                // Generate a unique id
+                const newNodeId = `copy-${Date.now()}`;
+
+                // Create a copy of the node
+                const newNode = {
+                    id: newNodeId,
+                    type: nodeToCopy.type,
+                    position: {
+                        x: nodeToCopy.position.x + 150,
+                        y: nodeToCopy.position.y + 150,
+                    },
+                    sourcePosition: nodeToCopy.sourcePosition, targetPosition: nodeToCopy.targetPosition,
+                    style: { ...nodeToCopy.style },
+                    data: {
+                        ...nodeToCopy.data,
+                        label: React.cloneElement(nodeToCopy.data.label, {
+                            onCopy: () => handleCopyNode(newNodeId),
+                            onDelete: () => handleDeleteNode(newNodeId)
+                        }),
+                    },
+                };
+
+
+
+                return [...prevNodes, newNode];
+            } else {
+                console.error('Node not found:', nodeId);
+                return prevNodes;
+            }
+        });
+    };
+
+    const NodeWithHandles = ({ title, color, onTitleClick, headerBackgroundColor, titleColor, content, onCopy, onDelete, height, width, showEditButton }) => (
+        <div >
+            <Card title={title} onTitleClick={onTitleClick} headerBackgroundColor={headerBackgroundColor} titleColor={titleColor} content={content} onCopy={onCopy} onDelete={onDelete} height={height} width={width} showEditButton={showEditButton} />
+
+            <Handle
+                type="target"
+                position="left"
+                style={{ backgroundColor: 'white', width: 3, height: 3, zIndex: 10, }}
+            />
+
+            <Handle
+                type="source"
+                position="right"
+                style={{ backgroundColor: color, width: 10, height: 10, borderRadius: '50%', zIndex: 10, }}
+            />
+        </div>
+    );
+
+    const initialNodesData = {
+        1: { id: '1', data: { label: <NodeWithHandles title="Send a message" onTitleClick={() => { }} headerBackgroundColor='#e95b69' titleColor='white' content={<MessageOption />} color='#e95b69' showEditButton={false} /> }, position: { x: 100, y: -100 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '300px', border: 'none', fill: '#3ccfa0', outline: 'none' } },
+        2: { id: '2', data: { label: <NodeWithHandles title='Question' onTitleClick={handleQuestion} headerBackgroundColor="#ff9933" titleColor="white" content={<div className='condition_text'></div>} color='#ff9933' showEditButton={true} /> }, position: { x: 300, y: -50 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '300px', border: 'none', fill: '#6080e6' } },
+        3: {
+            id: '3', data: {
+                label: <NodeWithHandles title='Buttons' onTitleClick={handleButtons} headerBackgroundColor='#ff9933' titleColor='white' content={<div >
+                    <div className='condition_text'>Ask a question here</div>
+                    <div className='buttons_card'><div className='button_node_answer'>Answer 1</div><div className='button_node_answer default_box'>Default</div></div></div>} color='white' showEditButton={true} />
+            }, position: { x: 150, y: 0 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '300px', border: 'none', fill: '#ffcc00' }
+        },
+        4: {
+            id: '4', data: {
+                label: <NodeWithHandles title='List' onTitleClick={handleList} headerBackgroundColor='#ff9933' titleColor='white' content={<div >
+                    <div className='condition_text'>default body</div>
+                    <div className='buttons_card'>
+                        <div className='button_node_answer menu_box'>Menu Here</div>
+                        <div className='button_node_answer'>default row</div>
+                        <div className='button_node_answer default_box'>Default</div>
+                    </div>
+                </div>} color='white' showEditButton={true} />
+            }, position: { x: 250, y: 200 }, sourcePosition: Position.Right, targetPosition: Position.Left, style: { padding: 0, width: '300px', border: 'none', fill: '#ffcc00' }
+        },
+        5: { id: '5', data: { label: <NodeWithHandles title='Set a condition' onTitleClick={handleConditionComponent} headerBackgroundColor="#6c7ed6" titleColor="white" content={<div className='condition_text'>This is condition content</div>} color='#e95b69' showEditButton={true} /> }, position: { x: 300, y: 250 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '300px', border: 'none', fill: '#45cf72' } },
+        6: { id: '6', data: { label: <NodeWithHandles title='Subscribe' onTitleClick={() => { }} titleColor="black" height='55px' width='215px' color='#ff9933' showEditButton={false} /> }, position: { x: 300, y: 300 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #f2aa4c', fill: '#ffcf06' } },
+        7: { id: '7', data: { label: <NodeWithHandles title='Unsubscribe' onTitleClick={() => { }} titleColor="black" height='55px' width='215px' color='#ff9933' showEditButton={false} /> }, position: { x: 300, y: 350 }, style: { padding: 0, width: '220px', border: '2px solid #f2aa4c', fill: '#ffcf06' } },
+        8: { id: '8', data: { label: <NodeWithHandles title='Update Attribute' onTitleClick={handleUpdateAttributes} titleColor="black" height='55px' width='215px' color='rgb(227, 119, 76)' showEditButton={true} /> }, position: { x: 300, y: 400 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #e3774c', fill: '#f48f62' } },
+        9: { id: '9', data: { label: <NodeWithHandles title='Set tags' onTitleClick={handleTags} titleColor="black" height='55px' width='215px' color='#e60044' showEditButton={true} /> }, position: { x: 300, y: 450 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #ecda40', fill: '#e60044' } },
+        10: { id: '10', data: { label: <NodeWithHandles title='Assign to Team' onTitleClick={handleAssignToTeam} titleColor="black" height='55px' width='215px' color='#545ee2' showEditButton={true} /> }, position: { x: 300, y: 500 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #545ee2', fill: '#f4929a' } },
+        11: { id: '11', data: { label: <NodeWithHandles title='Assign to User' onTitleClick={handleAssignToUser} titleColor="black" height='55px' width='215px' color='white' showEditButton={true} /> }, position: { x: 300, y: 550 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #75c595', fill: '#68a8cf' } },
+        12: { id: '12', data: { label: <NodeWithHandles title='Trigger Chatbot' onTitleClick={handleTriggerChatbot} titleColor="black" height='55px' width='215px' color='white' showEditButton={true} /> }, position: { x: 300, y: 600 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #4aa1ea', fill: '#fa1f11' } },
+        13: { id: '13', data: { label: <NodeWithHandles title='Update Chat Status' onTitleClick={handleUpdateChat} titleColor="black" height='55px' width='215px' color='white' showEditButton={true} /> }, position: { x: 300, y: 650 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #ec8f99', fill: '#fa9f98' } },
+        14: { id: '14', data: { label: <NodeWithHandles title='Template' onTitleClick={handleTemplates} titleColor="black" height='55px' width='215px' color='#e0affd' showEditButton={true} /> }, position: { x: 300, y: 700 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #e0affd', fill: '#ffcc00' } },
+        15: { id: '15', data: { label: <NodeWithHandles title='Time Delay' onTitleClick={handleTimeDelay} titleColor="black" height='55px' width='215px' color='#a4e1e1' showEditButton={true} /> }, position: { x: 300, y: 750 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #a4e1e1', fill: '#31e30e' } },
+        16: { id: '16', data: { label: <NodeWithHandles title='Whatsapp Flows' onTitleClick={handleWhatsappFlow} titleColor="black" height='55px' width='215px' color='#37c96e' showEditButton={true} /> }, position: { x: 300, y: 800 }, style: { padding: 0, width: '220px', border: '2px solid #37c96e', fill: '#ffcc00' } },
+        17: { id: '17', data: { label: <NodeWithHandles title='Webhook' onTitleClick={handleWebhook} titleColor="black" height='55px' width='215px' color='ff9100' showEditButton={true} /> }, position: { x: 300, y: 850 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #ff9100', fill: '#e02e80' } },
+        18: { id: '18', data: { label: <NodeWithHandles title='Google Spreadsheet' onTitleClick={() => { }} titleColor="black" height='55px' width='215px' color='rgb(35, 164, 85)' showEditButton={true} /> }, position: { x: 300, y: 900 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #51b177', fill: '#ffcc00' } },
+        19: { id: '19', data: { label: <NodeWithHandles title='Sets' onTitleClick={() => { }} titleColor="black" height='55px' width='215px' color='rgb(35, 164, 85)' showEditButton={true} /> }, position: { x: 300, y: 950 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #87ceff', fill: '#ffcc00' } },
+        20: { id: '20', data: { label: <NodeWithHandles title='Product' onTitleClick={() => { }} titleColor="black" height='55px' width='215px' color='rgb(35, 164, 85)' showEditButton={true} /> }, position: { x: 300, y: 1000 }, sourcePosition: 'right', targetPosition: 'left', style: { padding: 0, width: '220px', border: '2px solid #c69af2', fill: '#ffcc00' } },
+    };
+
+
+
     return (
         <>
+
             {
                 EditChatbotModal &&
                 <EditChatNameModal initialName={currentChatbotName} show={EditChatbotModal} onClose={handleCloseEditchatbotModal} onSave={handleSaveEditchatbot} />
@@ -3370,7 +3911,7 @@ const EditChatbotPage = ({chatbotName}) => {
                 <WebhookModal show={webhookModal} onClose={handleCloseWebhook} onSave={handleSaveWebhook} />
             }
             <div className='editchatbot_container'>
-           
+
                 <div className='editchatbot_left_container' style={{ marginLeft: isLeftContainerVisible ? '0' : '-260px' }}
                 >
                     <div className='editchatbot_left_content'>
@@ -3394,14 +3935,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                             subtitle='Ask anything to the user'
                                             backgroundColor='#ff9933'
                                             background='#ffb062'
-                                            onClick={() => handleClick(
-                                                "Question",
-                                                handleQuestion,
-                                                <div className='condition_text' style={{ color: 'white' }}>question</div>,
-                                                '#ff9933',
-                                                'white'
 
-                                            )} />
+                                            onClick={() => handleComponentClick(2)}
+                                        />
                                         <EditNavContent svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 26 26" height="26" width="26">
                                             <path fill="white" d="M13.0003 2.16602C7.02033 2.16602 2.16699 7.01935 2.16699 12.9993C2.16699 18.9793 7.02033 23.8327 13.0003 23.8327C18.9803 23.8327 23.8337 18.9793 23.8337 12.9993C23.8337 7.01935 18.9803 2.16602 13.0003 2.16602ZM13.0003 21.666C8.21199 21.666 4.33366 17.7877 4.33366 12.9993C4.33366 8.21102 8.21199 4.33268 13.0003 4.33268C17.7887 4.33268 21.667 8.21102 21.667 12.9993C21.667 17.7877 17.7887 21.666 13.0003 21.666Z"></path>
                                             <path fill="white" d="M12.9997 18.4173C15.9912 18.4173 18.4163 15.9922 18.4163 13.0007C18.4163 10.0091 15.9912 7.58398 12.9997 7.58398C10.0081 7.58398 7.58301 10.0091 7.58301 13.0007C7.58301 15.9922 10.0081 18.4173 12.9997 18.4173Z"></path>
@@ -3410,22 +3946,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                             subtitle='Choices based on buttons (Maximum of 3 choices)'
                                             backgroundColor='#ff9933'
                                             background='#ffb062'
-                                            onClick={() => handleClick(
-                                                "Buttons",
-                                                handleButtons,
-                                                <div >
-                                                    <div className='condition_text' >
-                                                        Ask a question here </div>
-                                                    <div className='buttons_card' >
-                                                        <div className='button_node_answer'> Answer 1</div>
-                                                        <div className='button_node_answer default_box'>Default</div>
-                                                    </div>
 
-                                                </div>,
-                                                '#ff9933',
-                                                'white'
-
-                                            )} />
+                                            onClick={() => handleComponentClick(3)}
+                                        />
                                         <EditNavContent svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 26 26" height="26" width="26">
                                             <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.16667" stroke="white" d="M3.79199 5.95833L5.41699 7.58333L8.12533 4.875"></path>
                                             <path stroke-linejoin="round" stroke-linecap="round" stroke-width="2.16667" stroke="white" d="M3.79199 12.4583L5.41699 14.0833L8.12533 11.375"></path>
@@ -3438,23 +3961,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                             subtitle='Choices based on buttons (Maximum of 10 choices)'
                                             backgroundColor='#ff9933'
                                             background='#ffb062'
-                                            onClick={() => handleClick(
-                                                "List",
-                                                handleList,
-                                                <div >
-                                                    <div className='condition_text'>
-                                                        default body </div>
-                                                    <div className='buttons_card'>
-                                                        <div className='button_node_answer menu_box'>Menu Here</div>
-                                                        <div className='button_node_answer'> default row</div>
-                                                        <div className='button_node_answer default_box'>Default</div>
-                                                    </div>
 
-                                                </div>,
-                                                '#ff9933',
-                                                'white'
-
-                                            )} />
+                                            onClick={() => handleComponentClick(4)}
+                                        />
                                     </>
                                 )
                                 :
@@ -3467,17 +3976,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                             subtitle='With no response required from visitor'
                                             backgroundColor='#e95b69'
                                             background='#ee7d88'
-                                            onClick={() => handleClick(
-                                                "Send a message", '',
-                                                <div>
-                                                    <MessageOption />
 
-                                                  
-
-                                                </div>,
-                                                '#e95b69',
-                                                'white'
-                                            )} />
+                                            onClick={() => handleComponentClick(1)}
+                                        />
                                         <EditNavContent onClick={handleAskQuestionContent} svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 26 26" height="26" width="26">
                                             <path fill="white" d="M3.62234 9.78223C3.12589 11.8987 3.12589 14.1013 3.62234 16.2178C4.33929 19.2742 6.72578 21.6607 9.78222 22.3777C11.8987 22.8741 14.1013 22.8741 16.2178 22.3777C19.2742 21.6607 21.6607 19.2742 22.3777 16.2178C22.8741 14.1013 22.8741 11.8987 22.3777 9.78223C21.6607 6.72578 19.2742 4.33928 16.2178 3.62234C14.1013 3.12589 11.8987 3.12589 9.78223 3.62234C6.72578 4.33928 4.33928 6.72578 3.62234 9.78223ZM13.8296 16.4742C13.8296 16.9038 13.4814 17.252 13.0518 17.252C12.6222 17.252 12.274 16.9038 12.274 16.4742C12.274 16.0447 12.6222 15.6964 13.0518 15.6964C13.4814 15.6964 13.8296 16.0447 13.8296 16.4742ZM11.5481 10.8222C11.5481 10.0204 12.1981 9.37035 13 9.37035C13.8018 9.37035 14.4519 10.0204 14.4519 10.8222V10.9481C14.4519 11.3665 14.2856 11.7678 13.9898 12.0637L12.56 13.4934C12.317 13.7364 12.317 14.1304 12.56 14.3734C12.803 14.6164 13.197 14.6164 13.44 14.3734L14.8697 12.9436C15.399 12.4144 15.6963 11.6965 15.6963 10.9481V10.8222C15.6963 9.33308 14.4891 8.12588 13 8.12588C11.5108 8.12588 10.3036 9.33308 10.3036 10.8222V11.3408C10.3036 11.6844 10.5822 11.963 10.9259 11.963C11.2695 11.963 11.5481 11.6844 11.5481 11.3408V10.8222Z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                         </svg>}
@@ -3493,16 +3994,8 @@ const EditChatbotPage = ({chatbotName}) => {
                                             subtitle='Send message(s) based on logical condition(s)'
                                             backgroundColor='#6c7ed6'
                                             background='#8796e0'
-                                            onClick={() => handleClick(
-                                                "Set a condition",
-                                                handleConditionComponent,
-                                                <div className='condition_text'>
-                                                    This is condition content
-                                                </div>,
-                                                '#6c7ed6',
-                                                'white'
 
-                                            )} />
+                                            onClick={() => handleComponentClick(5)} />
                                         <div className='operation_text'>Operations</div>
                                         <div className='operation_grid'>
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
@@ -3514,19 +4007,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Subscribe'
-                                                onClick={() => handleClick(
-                                                    "Subscribe", '',
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #f2aa4c'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(6)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear1)" d="M21.125 13.4761V10.5625C21.1241 9.29129 20.8214 8.03846 20.2418 6.90706L24.375 2.77387L23.2261 1.625L1.625 23.2261L2.77387 24.375L7.64887 19.5H8.9375V20.3125C8.9375 21.3899 9.36551 22.4233 10.1274 23.1851C10.8892 23.947 11.9226 24.375 13 24.375C14.0774 24.375 15.1108 23.947 15.8726 23.1851C16.6345 22.4233 17.0625 21.3899 17.0625 20.3125V19.5H22.75C22.9655 19.5 23.1722 19.4144 23.3245 19.262C23.4769 19.1097 23.5625 18.903 23.5625 18.6875V16.25C23.5625 16.0345 23.4768 15.8279 23.3244 15.6756L21.125 13.4761ZM15.4375 20.3125C15.4375 20.959 15.1807 21.579 14.7236 22.0361C14.2665 22.4932 13.6465 22.75 13 22.75C12.3535 22.75 11.7335 22.4932 11.2764 22.0361C10.8193 21.579 10.5625 20.959 10.5625 20.3125V19.5H15.4375V20.3125Z"></path>
                                                 <path fill="url(#paint1_linear1)" d="M17.5581 3.84962C16.444 3.08633 15.1561 2.61502 13.8125 2.47894V0.8125H12.1875V2.47812C10.1843 2.68201 8.32793 3.62141 6.97724 5.11467C5.62654 6.60794 4.87752 8.54899 4.875 10.5625V13.4761L2.67556 15.6756C2.52318 15.8279 2.43755 16.0345 2.4375 16.25V18.6875C2.44138 18.768 2.45755 18.8475 2.48544 18.9231L17.5581 3.84962Z"></path>
@@ -3541,20 +4024,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Unsubscribe'
-                                                onClick={() => handleClick(
-                                                    "Unsubscribe",
-                                                    '',
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #f2aa4c'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(7)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear2)" d="M20.5389 3.05469H14.8386C13.1979 3.05469 11.6203 3.76866 10.5265 5.02351L3.98483 12.5094C2.61759 14.0671 2.6807 16.447 4.13207 17.9182L8.5493 22.4616C9.97964 23.9328 12.2934 23.9978 13.8079 22.6131L21.0858 15.8845C22.3058 14.7594 22.9999 13.1368 22.9999 11.4492V5.56439C22.9789 4.17973 21.8851 3.05469 20.5389 3.05469ZM17.2996 11.2761C16.0165 11.2761 14.9858 10.216 14.9858 8.89625C14.9858 7.57649 16.0165 6.51635 17.2996 6.51635C18.5827 6.51635 19.6134 7.57649 19.6134 8.89625C19.6134 10.216 18.5827 11.2761 17.2996 11.2761Z"></path>
                                                 <defs>
@@ -3564,20 +4036,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Update Attribute'
-                                                onClick={() => handleClick(
-                                                    "Update Attribute",
-                                                    handleUpdateAttributes,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #e3774c'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(8)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear8)" d="M17.875 23.5625C17.875 23.778 17.7894 23.9847 17.6371 24.1371C17.4847 24.2894 17.278 24.375 17.0625 24.375H8.93753C8.72204 24.375 8.51538 24.2894 8.36301 24.1371C8.21064 23.9847 8.12503 23.778 8.12503 23.5625C8.12503 23.3471 8.21064 23.1404 8.36301 22.988C8.51538 22.8356 8.72204 22.75 8.93753 22.75H17.0625C17.278 22.75 17.4847 22.8356 17.6371 22.988C17.7894 23.1404 17.875 23.3471 17.875 23.5625ZM21.9375 10.5625C21.941 11.917 21.6351 13.2544 21.0429 14.4725C20.4508 15.6907 19.5881 16.7575 18.5209 17.5915C18.3216 17.7442 18.1598 17.9404 18.0479 18.1651C17.9359 18.3898 17.8768 18.6372 17.875 18.8882V19.5C17.8745 19.9309 17.7032 20.3439 17.3985 20.6486C17.0939 20.9532 16.6809 21.1246 16.25 21.125H9.75003C9.3192 21.1246 8.90616 20.9532 8.60152 20.6486C8.29688 20.3439 8.12552 19.9309 8.12503 19.5V18.8875C8.12474 18.6391 8.06757 18.3941 7.95791 18.1712C7.84825 17.9483 7.68901 17.7535 7.4924 17.6017C6.42823 16.7731 5.56645 15.7133 4.97225 14.5025C4.37806 13.2916 4.06701 11.9616 4.06263 10.6128C4.03603 5.77215 7.94882 1.74133 12.785 1.62758C13.9765 1.59893 15.1616 1.80885 16.2707 2.24499C17.3798 2.68113 18.3905 3.33469 19.2433 4.16721C20.0961 4.99974 20.7738 5.99441 21.2365 7.09271C21.6992 8.19101 21.9375 9.37076 21.9375 10.5625ZM18.6075 9.60826C18.4102 8.44788 17.8568 7.37762 17.024 6.54584C16.1912 5.71406 15.1202 5.16195 13.9596 4.96605C13.8538 4.94692 13.7452 4.94899 13.6402 4.97214C13.5352 4.99528 13.4359 5.03904 13.3479 5.10086C13.2599 5.16269 13.1851 5.24137 13.1278 5.33233C13.0704 5.42329 13.0317 5.52473 13.0139 5.63076C12.996 5.73679 12.9994 5.84531 13.0238 5.95003C13.0482 6.05475 13.0932 6.15358 13.1561 6.24079C13.2189 6.32801 13.2985 6.40188 13.3902 6.45811C13.4818 6.51435 13.5837 6.55183 13.6899 6.5684C14.5178 6.70816 15.2817 7.10199 15.8758 7.69531C16.4698 8.28862 16.8646 9.05204 17.0054 9.87974C17.0374 10.0688 17.1353 10.2405 17.2818 10.3643C17.4282 10.4882 17.6137 10.5563 17.8055 10.5566C17.8513 10.5565 17.8971 10.5527 17.9423 10.5451C18.1547 10.5091 18.3441 10.3901 18.4689 10.2144C18.5936 10.0387 18.6435 9.82071 18.6075 9.60826Z"></path>
                                                 <defs>
@@ -3587,20 +4048,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Set tags'
-                                                onClick={() => handleClick(
-                                                    "Set tags",
-                                                    handleTags,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #ecda40'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(9)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear3)" d="M5.75 8.54351C5.75 6.21865 7.65279 4.33398 10 4.33398C12.3472 4.33398 14.25 6.21865 14.25 8.54351C14.25 10.8684 12.3472 12.753 10 12.753C7.65279 12.753 5.75 10.8684 5.75 8.54351Z"></path>
                                                 <path fill="url(#paint1_linear3)" d="M7.31383 14.654L7.49193 14.6258C9.15346 14.3632 10.8465 14.3632 12.5081 14.6258L12.6862 14.654C15.0273 15.024 16.75 17.0242 16.75 19.3724C16.75 20.6399 15.7127 21.6673 14.433 21.6673H5.56697C4.28734 21.6673 3.25 20.6399 3.25 19.3724C3.25 17.0242 4.97267 15.024 7.31383 14.654Z"></path>
@@ -3625,20 +4075,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Assign Team'
-                                                onClick={() => handleClick(
-                                                    "Assign Team",
-                                                    handleAssignToTeam,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #545ee2'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(10)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear4)" d="M10.7714 3.25C8.15597 3.25 6.03571 5.37025 6.03571 7.98571C6.03571 10.6012 8.15597 12.7214 10.7714 12.7214C13.3869 12.7214 15.5071 10.6012 15.5071 7.98571C15.5071 5.37025 13.3869 3.25 10.7714 3.25Z"></path>
                                                 <path fill="url(#paint1_linear4)" d="M13.5661 14.8283C11.7147 14.5328 9.82815 14.5328 7.97672 14.8283L7.77827 14.86C5.16955 15.2763 3.25 17.5265 3.25 20.1682C3.25 21.5941 4.4059 22.75 5.83176 22.75H15.7111C17.137 22.75 18.2929 21.5941 18.2929 20.1682C18.2929 17.5265 16.3733 15.2763 13.7646 14.86L13.5661 14.8283Z"></path>
@@ -3658,20 +4097,10 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Assign User'
-                                                onClick={() => handleClick(
-                                                    "Assign User",
-                                                    handleAssignToUser,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #75c595'
+                                                onClick={() => handleComponentClick(11)}
 
-
-                                                )} />
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear7)" d="M9.75 5.6875C9.75 5.04103 10.0068 4.42105 10.4639 3.96393C10.921 3.50681 11.541 3.25 12.1875 3.25H13.8125C14.459 3.25 15.079 3.50681 15.5361 3.96393C15.9932 4.42105 16.25 5.04103 16.25 5.6875V7.3125C16.25 7.95897 15.9932 8.57895 15.5361 9.03607C15.079 9.49319 14.459 9.75 13.8125 9.75V11.375H17.875C18.0905 11.375 18.2972 11.4606 18.4495 11.613C18.6019 11.7653 18.6875 11.972 18.6875 12.1875V13.8125C18.6875 14.028 18.6019 14.2347 18.4495 14.387C18.2972 14.5394 18.0905 14.625 17.875 14.625C17.6595 14.625 17.4528 14.5394 17.3005 14.387C17.1481 14.2347 17.0625 14.028 17.0625 13.8125V13H8.9375V13.8125C8.9375 14.028 8.8519 14.2347 8.69952 14.387C8.54715 14.5394 8.34049 14.625 8.125 14.625C7.90951 14.625 7.70285 14.5394 7.55048 14.387C7.3981 14.2347 7.3125 14.028 7.3125 13.8125V12.1875C7.3125 11.972 7.3981 11.7653 7.55048 11.613C7.70285 11.4606 7.90951 11.375 8.125 11.375H12.1875V9.75C11.541 9.75 10.921 9.49319 10.4639 9.03607C10.0068 8.57895 9.75 7.95897 9.75 7.3125V5.6875ZM4.875 18.6875C4.875 18.041 5.13181 17.421 5.58893 16.9639C6.04605 16.5068 6.66603 16.25 7.3125 16.25H8.9375C9.58397 16.25 10.204 16.5068 10.6611 16.9639C11.1182 17.421 11.375 18.041 11.375 18.6875V20.3125C11.375 20.959 11.1182 21.579 10.6611 22.0361C10.204 22.4932 9.58397 22.75 8.9375 22.75H7.3125C6.66603 22.75 6.04605 22.4932 5.58893 22.0361C5.13181 21.579 4.875 20.959 4.875 20.3125V18.6875ZM14.625 18.6875C14.625 18.041 14.8818 17.421 15.3389 16.9639C15.796 16.5068 16.416 16.25 17.0625 16.25H18.6875C19.334 16.25 19.954 16.5068 20.4111 16.9639C20.8682 17.421 21.125 18.041 21.125 18.6875V20.3125C21.125 20.959 20.8682 21.579 20.4111 22.0361C19.954 22.4932 19.334 22.75 18.6875 22.75H17.0625C16.416 22.75 15.796 22.4932 15.3389 22.0361C14.8818 21.579 14.625 20.959 14.625 20.3125V18.6875Z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                                 <defs>
@@ -3681,20 +4110,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Trigger Chatbot'
-                                                onClick={() => handleClick(
-                                                    "Trigger Chatbot",
-                                                    handleTriggerChatbot,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #4aa1ea'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(12)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear6)" d="M5.07017 9.21146C5.72287 6.42889 7.89553 4.25623 10.6781 3.60353C12.6876 3.13216 14.779 3.13216 16.7885 3.60353C19.5711 4.25623 21.7438 6.42889 22.3965 9.21147C22.8678 11.221 22.8678 13.3124 22.3965 15.3219C21.7438 18.1045 19.5711 20.2771 16.7885 20.9298C14.779 21.4012 12.6876 21.4012 10.6781 20.9298C9.99798 20.7703 9.35429 20.52 8.76033 20.1921C8.65744 21.622 7.46484 22.75 6.00877 22.75C4.48514 22.75 3.25 21.5149 3.25 19.9912C3.25 18.5352 4.37805 17.3426 5.8079 17.2397C5.48004 16.6457 5.2297 16.002 5.07017 15.3219C4.59879 13.3124 4.59879 11.221 5.07017 9.21146ZM9.20894 10.6115C9.20894 10.2458 9.50537 9.94935 9.87104 9.94935H13.1816C13.5472 9.94935 13.8437 10.2458 13.8437 10.6115C13.8437 10.9771 13.5472 11.2736 13.1816 11.2736H9.87104C9.50537 11.2736 9.20894 10.9771 9.20894 10.6115ZM10.9746 13.2599C10.6089 13.2599 10.3124 13.5563 10.3124 13.922C10.3124 14.2876 10.6089 14.5841 10.9746 14.5841H16.4921C16.8578 14.5841 17.1542 14.2876 17.1542 13.922C17.1542 13.5563 16.8578 13.2599 16.4921 13.2599H10.9746Z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                                 <defs>
@@ -3704,20 +4122,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Update Chat Status'
-                                                onClick={() => handleClick(
-                                                    "Update Chat Status",
-                                                    handleUpdateChat,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #ec8f99'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(13)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear5)" d="M9.78223 3.6226C11.8987 3.1258 14.1013 3.1258 16.2178 3.6226C19.1001 4.29918 21.3866 6.46155 22.2391 9.2708H3.76095C4.61338 6.46155 6.89991 4.29918 9.78223 3.6226Z"></path>
                                                 <path fill="url(#paint1_linear5)" d="M3.47157 10.5161C3.13237 12.4075 3.18263 14.351 3.62234 16.2269C4.33929 19.2855 6.72579 21.6737 9.78223 22.3912C10.6371 22.5918 11.5061 22.7114 12.3778 22.75V10.5161H3.47157Z"></path>
@@ -3740,20 +4147,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Template'
-                                                onClick={() => handleClick(
-                                                    "Template",
-                                                    handleTemplates,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #e0affd'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(14)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear9)" d="M13 23.8334C7.02 23.8334 2.16666 18.9909 2.16666 13.0001C2.16666 7.02005 7.02 2.16672 13 2.16672C18.9908 2.16672 23.8333 7.02005 23.8333 13.0001C23.8333 18.9909 18.9908 23.8334 13 23.8334ZM16.4558 17.0191C16.5858 17.095 16.7267 17.1383 16.8783 17.1383C17.1492 17.1383 17.42 16.9975 17.5717 16.7375C17.7992 16.3583 17.68 15.86 17.29 15.6216L13.4333 13.325V8.31998C13.4333 7.86498 13.065 7.50748 12.6208 7.50748C12.1767 7.50748 11.8083 7.86498 11.8083 8.31998V13.7908C11.8083 14.0725 11.96 14.3325 12.2092 14.4841L16.4558 17.0191Z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                                 <defs>
@@ -3763,20 +4159,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Time Delay'
-                                                onClick={() => handleClick(
-                                                    "Time Delay",
-                                                    handlTimeDelay,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #a4e1e1'
-
-
-                                                )} />
+                                                onClick={() => handleComponentClick(15)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 28 28" height="28" width="28">
                                                 <path stroke-width="0.4" stroke="#74EBA2" fill="url(#paint0_linear_1568_38266)" d="M21.0013 18.882V16.7225C21.0013 14.4708 19.1696 12.6392 16.918 12.6392C15.9531 12.6392 15.168 11.854 15.168 10.8892V9.11932C15.8483 8.87933 16.4378 8.43476 16.8555 7.84659C17.2732 7.25841 17.4988 6.55541 17.5013 5.83398C17.5013 3.90432 15.931 2.33398 14.0013 2.33398C12.0716 2.33398 10.5013 3.90432 10.5013 5.83398C10.5013 7.35298 11.4801 8.63515 12.8346 9.11815V10.8892C12.8346 11.854 12.0495 12.6392 11.0846 12.6392C8.83297 12.6392 7.0013 14.4708 7.0013 16.7225V18.882C6.32096 19.122 5.73151 19.5665 5.31377 20.1547C4.89603 20.7429 4.67045 21.4459 4.66797 22.1673C4.66797 24.097 6.2383 25.6673 8.16797 25.6673C10.0976 25.6673 11.668 24.097 11.668 22.1673C11.6655 21.4459 11.4399 20.7429 11.0222 20.1547C10.6044 19.5665 10.015 19.122 9.33464 18.882V16.7225C9.33464 15.7577 10.1198 14.9725 11.0846 14.9725C12.2268 14.9725 13.2593 14.4977 14.0013 13.7382C14.3802 14.1285 14.8336 14.4388 15.3346 14.6508C15.8356 14.8628 16.374 14.9722 16.918 14.9725C17.8828 14.9725 18.668 15.7577 18.668 16.7225V18.882C17.9876 19.122 17.3982 19.5665 16.9804 20.1547C16.5627 20.7429 16.3371 21.4459 16.3346 22.1673C16.3346 24.097 17.905 25.6673 19.8346 25.6673C21.7643 25.6673 23.3346 24.097 23.3346 22.1673C23.3322 21.4459 23.1066 20.7429 22.6888 20.1547C22.2711 19.5665 21.6816 19.122 21.0013 18.882ZM8.16797 23.334C7.86758 23.3205 7.58394 23.1918 7.37612 22.9744C7.16831 22.7571 7.05232 22.468 7.05232 22.1673C7.05232 21.8666 7.16831 21.5775 7.37612 21.3602C7.58394 21.1429 7.86758 21.0141 8.16797 21.0007C8.46836 21.0141 8.752 21.1429 8.95981 21.3602C9.16763 21.5775 9.28361 21.8666 9.28361 22.1673C9.28361 22.468 9.16763 22.7571 8.95981 22.9744C8.752 23.1918 8.46836 23.3205 8.16797 23.334ZM14.0013 4.66732C14.2324 4.66709 14.4583 4.73541 14.6506 4.86365C14.8428 4.99188 14.9926 5.17426 15.0812 5.3877C15.1697 5.60114 15.1929 5.83605 15.1479 6.0627C15.1029 6.28934 14.9916 6.49754 14.8283 6.66093C14.6649 6.82433 14.4567 6.93558 14.23 6.9806C14.0034 7.02563 13.7685 7.0024 13.555 6.91386C13.3416 6.82533 13.1592 6.67546 13.031 6.48324C12.9027 6.29101 12.8344 6.06506 12.8346 5.83398C12.8346 5.19115 13.3573 4.66732 14.0013 4.66732ZM19.8346 23.334C19.5342 23.3205 19.2506 23.1918 19.0428 22.9744C18.835 22.7571 18.719 22.468 18.719 22.1673C18.719 21.8666 18.835 21.5775 19.0428 21.3602C19.2506 21.1429 19.5342 21.0141 19.8346 21.0007C20.135 21.0141 20.4187 21.1429 20.6265 21.3602C20.8343 21.5775 20.9503 21.8666 20.9503 22.1673C20.9503 22.468 20.8343 22.7571 20.6265 22.9744C20.4187 23.1918 20.135 23.3205 19.8346 23.334Z"></path>
                                                 <defs>
@@ -3786,36 +4171,18 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Whatsapp Flows'
-                                                onClick={() => handleClick(
-                                                    "Whatsapp Flows",
-                                                    handleWhatsappFlow,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #37c96e'
-                                                )} />
+                                                onClick={() => handleComponentClick(16)}
+                                            />
                                         </div>
                                         <div className='operation_text'>Integrations</div>
                                         <div className='integration_grid'>
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="#FFB906" d="M11.3317 20.5833C9.75 22.8258 6.6625 23.3892 4.43083 21.8292C2.21 20.2692 1.69 17.16 3.25 14.8958C3.68626 14.2625 4.26365 13.739 4.93666 13.3668C5.60968 12.9946 6.35994 12.7837 7.12833 12.7508L7.1825 14.3C6.19667 14.3758 5.24333 14.885 4.62583 15.7733C3.5425 17.3333 3.87833 19.435 5.3625 20.4858C6.8575 21.5258 8.94833 21.125 10.0317 19.5758C10.3675 19.0883 10.5625 18.5575 10.6383 18.0158V16.9217L16.6833 16.8783L16.7592 16.7592C17.3333 15.7625 18.5792 15.4158 19.5542 15.9792C19.7875 16.1157 19.9917 16.2969 20.155 16.5124C20.3183 16.7278 20.4376 16.9733 20.506 17.2349C20.5744 17.4965 20.5906 17.7689 20.5537 18.0368C20.5168 18.3046 20.4275 18.5625 20.2908 18.7958C19.7167 19.7817 18.46 20.1283 17.485 19.565C17.0408 19.3158 16.7267 18.915 16.5858 18.46L12.1767 18.4817C12.0475 19.2343 11.7595 19.9508 11.3317 20.5833V20.5833ZM19.2183 12.8483C21.9592 13.1842 23.9092 15.6433 23.5733 18.3408C23.2375 21.0492 20.7458 22.9667 18.005 22.6308C17.2439 22.5422 16.5132 22.2803 15.8691 21.8653C15.2249 21.4502 14.6845 20.8931 14.2892 20.2367L15.6325 19.4567C15.9104 19.887 16.2797 20.2508 16.714 20.5223C17.1484 20.7938 17.6373 20.9663 18.1458 21.0275C20.0417 21.255 21.7208 19.9658 21.9483 18.1567C22.1758 16.3475 20.8325 14.69 18.9583 14.4625C18.3733 14.3975 17.81 14.4733 17.3008 14.6575L16.38 15.1342L13.585 9.96667H13.3467C12.8013 9.95079 12.2843 9.71969 11.9088 9.32386C11.5333 8.92802 11.3297 8.39965 11.3425 7.85417C11.375 6.7275 12.35 5.85 13.4875 5.89334C14.625 5.95834 15.5242 6.87917 15.4917 8.00584C15.47 8.4825 15.2858 8.91584 14.9933 9.25167L17.0517 13.0542C17.7233 12.8375 18.46 12.7617 19.2183 12.8483V12.8483ZM8.9375 9.90167C7.85417 7.35584 9.0025 4.44167 11.505 3.38C14.0183 2.31834 16.9217 3.52084 18.005 6.06667C18.6442 7.55084 18.5142 9.17584 17.7883 10.4758L16.445 9.69584C16.9 8.81834 16.9758 7.74584 16.5425 6.73834C15.8058 5.005 13.845 4.17084 12.1658 4.875C10.4758 5.59 9.7175 7.58334 10.4542 9.31667C10.7575 10.0317 11.2667 10.5842 11.8842 10.9525L12.3067 11.18L8.98083 16.5858C9.01333 16.64 9.05667 16.705 9.08917 16.7917C9.62 17.7775 9.25167 19.0233 8.255 19.5542C7.26917 20.085 6.02333 19.695 5.48167 18.6767C4.95083 17.6692 5.31917 16.4233 6.31583 15.8925C6.73833 15.665 7.20417 15.6108 7.64833 15.7083L10.1508 11.6242C9.64167 11.1583 9.20833 10.5733 8.9375 9.90167V9.90167Z"></path>
                                             </svg>} text='Webhook'
-                                                onClick={() => handleClick(
-                                                    "Webhook",
-                                                    handleWebhook,
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #ff9100'
-                                                )} />
+                                                onClick={() => handleComponentClick(17)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 26 26" height="26" width="26">
                                                 <path fill="url(#paint0_linear10)" d="M8.46083 2.16667H17.5403C20.8867 2.16667 22.75 4.095 22.75 7.39917V18.59C22.75 21.9483 20.8867 23.8333 17.5403 23.8333H8.46083C5.1675 23.8333 3.25 21.9483 3.25 18.59V7.39917C3.25 4.095 5.1675 2.16667 8.46083 2.16667ZM8.75333 7.215V7.20417H11.9914C12.4583 7.20417 12.8375 7.58333 12.8375 8.04808C12.8375 8.52583 12.4583 8.905 11.9914 8.905H8.75333C8.28642 8.905 7.90833 8.52583 7.90833 8.06C7.90833 7.59417 8.28642 7.215 8.75333 7.215ZM8.75333 13.8017H17.2467C17.7125 13.8017 18.0917 13.4225 18.0917 12.9567C18.0917 12.4908 17.7125 12.1106 17.2467 12.1106H8.75333C8.28642 12.1106 7.90833 12.4908 7.90833 12.9567C7.90833 13.4225 8.28642 13.8017 8.75333 13.8017ZM8.75333 18.7525H17.2467C17.6789 18.7092 18.005 18.3398 18.005 17.9075C18.005 17.4633 17.6789 17.095 17.2467 17.0517H8.75333C8.42833 17.0192 8.11417 17.1708 7.94083 17.4525C7.7675 17.7233 7.7675 18.0808 7.94083 18.3625C8.11417 18.6333 8.42833 18.7958 8.75333 18.7525Z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                                 <defs>
@@ -3825,18 +4192,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Google Spreadsheet'
-                                                onClick={() => handleClick(
-                                                    "Google Spreadsheet",
-                                                    '',
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #51b177'
-                                                )} />
+                                                onClick={() => handleComponentClick(18)}
+                                            />
                                         </div>
                                         <div className='operation_text'>Catalog</div>
                                         <div className='Catalog_grid'>
@@ -3849,18 +4207,9 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Sets'
-                                                onClick={() => handleClick(
-                                                    "Sets",
-                                                    '',
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #87c6ff'
-                                                )} />
+                                                onClick={() => handleComponentClick(19)}
+                                            />
                                             <OperationItemContent img={<svg xmlns="http://www.w3.org/2000/svg" className='operation_image_svg' fill="none" viewBox="0 0 20 20" height="20" width="20">
                                                 <path fill="url(#paint0_linear_832_26750)" d="M11.8492 9.08687H14.4979C14.8995 9.08687 15.215 8.75483 15.215 8.35444C15.215 7.94428 14.8995 7.62201 14.4979 7.62201H11.8492C11.4476 7.62201 11.1321 7.94428 11.1321 8.35444C11.1321 8.75483 11.4476 9.08687 11.8492 9.08687ZM17.644 4.00839C18.2273 4.00839 18.6097 4.21347 18.9922 4.66269C19.3747 5.11192 19.4416 5.75645 19.3556 6.34142L18.4472 12.7477C18.2751 13.9792 17.2424 14.8864 16.028 14.8864H5.59586C4.32412 14.8864 3.2723 13.8913 3.16712 12.6022L2.28741 1.95662L0.843553 1.70271C0.461073 1.63435 0.193338 1.25349 0.260272 0.862859C0.327206 0.463442 0.700123 0.198791 1.09216 0.258362L3.3727 0.608951C3.69781 0.668522 3.93686 0.940985 3.96554 1.27302L4.14722 3.46054C4.17591 3.77402 4.42452 4.00839 4.7305 4.00839H17.644ZM5.44292 16.4295C4.63972 16.4295 3.9895 17.0935 3.9895 17.9139C3.9895 18.7244 4.63972 19.3885 5.44292 19.3885C6.23657 19.3885 6.88679 18.7244 6.88679 17.9139C6.88679 17.0935 6.23657 16.4295 5.44292 16.4295ZM16.1999 16.4295C15.3967 16.4295 14.7465 17.0935 14.7465 17.9139C14.7465 18.7244 15.3967 19.3885 16.1999 19.3885C16.9936 19.3885 17.6438 18.7244 17.6438 17.9139C17.6438 17.0935 16.9936 16.4295 16.1999 16.4295Z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                                 <defs>
@@ -3870,30 +4219,21 @@ const EditChatbotPage = ({chatbotName}) => {
                                                     </linearGradient>
                                                 </defs>
                                             </svg>} text='Product'
-                                                onClick={() => handleClick(
-                                                    "Product",
-                                                    '',
-                                                    <div className='condition_text'>
 
-                                                    </div>,
-                                                    'white',
-                                                    'black',
-                                                    '180px',
-                                                    '25px',
-                                                    '2px solid #c69af2'
-                                                )} />
+                                                onClick={() => handleComponentClick(20)}
+                                            />
                                         </div>
                                     </>
                                 )
                         }
                     </div>
                 </div>
-          
+
                 <div className='editchatbot_right_container'>
                     <div className='header_content'>
                         <div className='header_name'>
                             <a className='chatbotbackbtn' href='#'><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
-                           {currentChatbotName}
+                            {currentChatbotName}
                             <EditIcon onClick={handleEditClick} />
                         </div>
                         <div className='header_savebtn'>
@@ -3905,85 +4245,46 @@ const EditChatbotPage = ({chatbotName}) => {
                     </div>
                     <div className='flow_container'>
                         <div className='chatbot_main_container'>
-                         
-                            <div className='right-container' style={{ position: 'relative', width: '100%', height: '100%'}}>
-                                <GridBackground scale={scale} />
-                                {cardContent.map((card, index) => (
-                                    <Card
-                                        key={card.id}
-                                        title={card.title}
-                                        onTitleClick={card.onTitleClick}
-                                        headerBackgroundColor={card.color}
-                                        titleColor={card.titleColor}
-                                        width={card.width}
-                                        height={card.height}
-                                        borderColor={card.borderColor}
-                                        position={card.position}
-                                        onDragStart={(e) => onDragStart(index, e)}
-                                        onCardClick={() => handleCardClick(index)}
-                                        onDelete={() => deleteCard(index)}
-                                        onCopy={() => copyCard(index)}
-                                    >
-                                        {card.content}
-                                    </Card>
-                                ))}
-                                <svg style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    pointerEvents: 'none',
-                                    width: '100%',
-                                    height: '100%',
-                                }}>
-                                    {connections.map((connection, idx) => {
-                                        const startCard = cardContent[connection.from];
-                                        const endCard = cardContent[connection.to];
-
-
-                                        if (startCard && endCard) {
-                                            const startPosition = startCard.position;
-                                            const endPosition = endCard.position;
-
-                                            return (
-                                                <Connector
-                                                    key={`connector-${idx}`}
-                                                    start={startPosition}
-                                                    end={endPosition}
-                                                />
-                                            );
-                                        }
-                                        return null;
-                                    })}
-                                </svg>
-                                <div  className='chatbot_sidebartoggle_button'onClick={toggleLeftContainer} style={{ cursor: 'pointer' }}>
-                        <svg className='chatbot_toggle_svg' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.63574 7.36328L1.74665 11.2524C1.55139 11.4476 1.55139 11.7642 1.74665 11.9595L5.63574 15.8486" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
-                            <path d="M2.80724 11.6058H9.87831" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
-                            <path d="M18.3643 15.8496L22.2533 11.9605C22.4486 11.7653 22.4486 11.4487 22.2533 11.2534L18.3643 7.36433" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
-                            <path d="M21.1928 11.607L14.1217 11.607" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
-                        </svg>
-                    </div>
-                                <div className="chatbot_zoom_container" style={{ pointerEvents: 'all' }}>
-                                    <button type="button" className="chatbot_zoom_button" title="zoom in" onClick={zoomIn}>
-                                        <svg className='chatbot_zoom_svg'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                                            <path d="M32 18.133H18.133V32h-4.266V18.133H0v-4.266h13.867V0h4.266v13.867H32z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" className="chatbot_zoom_button" title="zoom out" onClick={zoomOut}>
-                                        <svg className='chatbot_zoom_svg' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 5">
-                                            <path d="M0 0h32v4.2H0z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" className="chatbot_zoom_button" title="fit view" onClick={fitView}>
-                                        <svg className='chatbot_zoom_svg'  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 30">
-                                            <path d="M3.692 4.63c0-.53.4-.938.939-.938h5.215V0H4.708C2.13 0 0 2.054 0 4.63v5.216h3.692V4.631zM27.354 0h-5.2v3.692h5.17c.53 0 .984.4.984.939v5.215H32V4.631A4.624 4.624 0 0027.354 0zm.954 24.83c0 .532-.4.94-.939.94h-5.215v3.768h5.215c2.577 0 4.631-2.13 4.631-4.707v-5.139h-3.692v5.139zm-23.677.94c-.531 0-.939-.4-.939-.94v-5.138H0v5.139c0 2.577 2.13 4.707 4.708 4.707h5.138V25.77H4.631z"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" className="chatbot_zoom_button"  title="toggle interactivity" aria-label="toggle interactivity"><svg xmlns="http://www.w3.org/2000/svg" className='chatbot_zoom_svg' viewBox="0 0 25 32"><path d="M21.333 10.667H19.81V7.619C19.81 3.429 16.38 0 12.19 0c-4.114 1.828-1.37 2.133.305 2.438 1.676.305 4.42 2.59 4.42 5.181v3.048H3.047A3.056 3.056 0 000 13.714v15.238A3.056 3.056 0 003.048 32h18.285a3.056 3.056 0 003.048-3.048V13.714a3.056 3.056 0 00-3.048-3.047zM12.19 24.533a3.056 3.056 0 01-3.047-3.047 3.056 3.056 0 013.047-3.048 3.056 3.056 0 013.048 3.048 3.056 3.056 0 01-3.048 3.047z"></path></svg></button>
-                                    <button type="button" className="chatbot_zoom_button" title="Go to Start Step"><svg viewBox="0 0 24 24" className='chatbot_zoom_svg' xmlns="http://www.w3.org/2000/svg"><path d="M12,3c0,0-6.186,5.34-9.643,8.232C2.154,11.416,2,11.684,2,12c0,0.553,0.447,1,1,1h2v7c0,0.553,0.447,1,1,1h3  c0.553,0,1-0.448,1-1v-4h4v4c0,0.552,0.447,1,1,1h3c0.553,0,1-0.447,1-1v-7h2c0.553,0,1-0.447,1-1c0-0.316-0.154-0.584-0.383-0.768  C18.184,8.34,12,3,12,3z"></path></svg></button>
+                            <div className='right-container' style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                <div className='chatbot_sidebartoggle_button' onClick={toggleLeftContainer} style={{ cursor: 'pointer' }}>
+                                    <svg className='chatbot_toggle_svg' width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.63574 7.36328L1.74665 11.2524C1.55139 11.4476 1.55139 11.7642 1.74665 11.9595L5.63574 15.8486" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
+                                        <path d="M2.80724 11.6058H9.87831" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
+                                        <path d="M18.3643 15.8496L22.2533 11.9605C22.4486 11.7653 22.4486 11.4487 22.2533 11.2534L18.3643 7.36433" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
+                                        <path d="M21.1928 11.607L14.1217 11.607" stroke="#666666" strokeWidth="1.5" strokeLinecap="round"></path>
+                                    </svg>
                                 </div>
+                                <ReactFlow
+                                    nodes={nodes}
+                                    edges={edges}
+                                    onNodesChange={onNodesChange}
+                                    onEdgesChange={onEdgesChange}
+                                    onConnect={onConnect}
+                                    fitView
+                                    fitViewOptions={{ padding: 0.2 }}
+                                    connectionLineType={ConnectionLineType.Bezier}
+                                    connectionLineStyle={{ stroke: '#6080e6' }}
+
+                                >
+                                    {/* Add the Background component here */}
+                                    <Background
+                                        gap={70}
+                                        color="#e8eaf2"
+                                        lineWidth={5}
+                                        variant='lines'
+                                    />
+                                    <MiniMap nodeColor={(node) => {
+
+                                        return node.style?.fill || '#B1C8E2';
+                                    }} />
+                                    <Controls />
+                                </ReactFlow>
+
 
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -4005,10 +4306,10 @@ const Automations = () => {
         e.preventDefault();
         setActiveContent(content);
     };
-const [chatbotName,setChatbotName]=useState('');
-const handleSaveChatbotName = (name) => {
-    setChatbotName(name); 
-  };
+    const [chatbotName, setChatbotName] = useState('');
+    const handleSaveChatbotName = (name) => {
+        setChatbotName(name);
+    };
     const renderContent = () => {
         switch (activeContent) {
             case 'defaultaction':

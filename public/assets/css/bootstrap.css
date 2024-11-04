@@ -13914,7 +13914,7 @@ font-size: 1rem;
     line-height: 19px;
     margin-bottom: 12px;
 }
-.edit__text__input{
+.edit__text__input,.message_edit__text__input{
   background: rgb(245, 246, 250);
     border-radius: 5px;
     padding: 10px;
@@ -13927,7 +13927,7 @@ font-size: 1rem;
     margin-bottom: 20px;
 
 }
-.edit__text__input:focus{
+.edit__text__input:focus,.message_edit__text__input:focus{
   border:none !important;
   outline: none !important;
   box-shadow:  0 1px 0 0 #ff9100;
@@ -14520,10 +14520,12 @@ cursor: pointer;
   border: none;
   position: relative;
   display: flex;
-  min-height: 55px;
+  min-height: 115px;
   min-width: 170px;
   border-radius: 5px;
   background-color: white;
+ box-shadow: rgba(0, 0, 0, 0.07) 30px 60px 65px;
+
 }
 .chatbot_card_header{
 display: flex;
@@ -14733,6 +14735,7 @@ width: 465px !important;
     padding: 2px;
     background: none;
     border: none;
+    cursor:pointer;
 }
 .inline_toolbar{
   display: flex;
@@ -15115,4 +15118,69 @@ margin:10px 0px 0px !important
     height: 46px;
     z-index: 20;
     cursor: pointer;
+}
+.message_edit__text__input{
+  cursor: text;
+    user-select: text; 
+}
+.image_text_input_field{
+  margin-top:10px
+}
+.react-flow__controls{
+  margin: 0px 0px 35px 30px;
+  display: flex;
+  align-items: center;
+  padding: 9px 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) 10px 15px 25px !important;
+  border-radius: 5px;
+  background: rgb(255, 255, 255);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+}
+.react-flow__controls-button {
+  width: 46px !important;
+  height: 28px !important;
+  border: none !important;
+  background: rgb(255, 255, 255) !important;
+  display: flex !important;
+  padding: 0px  !important;
+  border-right: 1px solid rgb(232, 234, 242) !important;
+}
+.react-flow__controls-button svg {
+  width: auto !important;
+  max-width: 23px !important;
+  max-height: 23px !important;
+  margin: auto !important;
+}
+.react-flow__handle{
+  width:3px;
+  height:3px;
+  margin-left:3px;
+background: white ;
+}
+.react-flow__node.react-flow__node-default.selected {
+ 
+   
+   box-shadow: none !important;
+}
+
+
+.react-flow__node.react-flow__node-default.selected:focus {
+ 
+  box-shadow: none !important;
+}
+.nodestart{
+  border-radius: 5px 5px 0px 0px;
+  background-color: rgb(51, 51, 51);
+  color: rgb(255, 255, 255);
+  padding: 8px 16px;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  line-height: 19px;
+  white-space: nowrap;
 }
