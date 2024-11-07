@@ -13059,7 +13059,7 @@ font-size: 13px;
 .header__search__icon:hover svg {
   color: rgb(35, 164, 85);
 }
-.keyword__body__content,.chatbots__body__content{
+.keyword__body__content,.chatbots__body__content,.sequence__body__content{
   background-color: rgb(255, 255, 255);
     border-top: 1px solid rgb(232, 234, 242);
     border-bottom: 1px solid rgb(232, 234, 242);
@@ -13067,20 +13067,20 @@ font-size: 13px;
     display: flex;
     flex-direction: column;
 }
-.keyword__list__table,.chatbots__list__table{
+.keyword__list__table,.chatbots__list__table,.sequence__list__table{
   margin: 0px;
     padding: 0px 2rem;
     height: 100%;
     position: relative;
 }
-.keyword__table,.chatbots__table{
+.keyword__table,.chatbots__table,.sequence__table{
   display:table;
   width:100%;
   border-collapse: separate;
   border-spacing: 0rem 1rem;
   
 }
-.keywordtable__head .keywordtable__row,.chatbotstable__head .chatbotstable__row{
+.keywordtable__head .keywordtable__row,.chatbotstable__head .chatbotstable__row,.sequence__head .sequence__row{
   border-bottom: rgb(206, 208, 206);
  
 }
@@ -13088,10 +13088,10 @@ font-size: 13px;
 .firstcell{
   padding-left: 0px !important;
 }
-.keywordtable__head .alignleft ,.chatbotstable__head .alignleft{
+.keywordtable__head .alignleft ,.chatbotstable__head .alignleft, .sequence__head .alignleft{
   text-align: left !important;
 }
-.keywordtable__head .keywordtable__cell, .chatbotstable__head .chatbotstable__cell{
+.keywordtable__head .keywordtable__cell, .chatbotstable__head .chatbotstable__cell,.sequence__head .sequencetable__cell{
   color: rgb(51, 51, 51) !important;
   padding: 35px 20px;
   font-size: 1.3rem !important;
@@ -13104,13 +13104,13 @@ font-size: 13px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter !important;
 }
 
-.keywordtable__head .lastcell, .chatbotstable__head .lastcell{
+.keywordtable__head .lastcell, .chatbotstable__head .lastcell,.sequence__head .lastcell{
   padding-right: 0px !important;
     padding-left: 0px !important;
     margin-left: auto;
 }
 
-.keyword__table__body .keyword__body__cell, .chatbots__table__body .chatbots__body__cell{
+.keyword__table__body .keyword__body__cell, .chatbots__table__body .chatbots__body__cell,.sequence__table__body .sequence__body__cell{
   padding: 20px;
   color: rgb(51, 51, 51) !important;
     font-size: 1.2rem !important;
@@ -13138,7 +13138,7 @@ display: inline-block;
     color: rgb(102, 102, 102);
     font-size: 0.85rem
 }
-.keyword__table__body .trigger_text, .chatbots__table__body .trigger_text{
+.keyword__table__body .trigger_text, .chatbots__table__body .trigger_text,.sequence__table__body .centred_text{
   text-align: center !important;
 }
 .keyword__table__body .keyword__replymaterial_field {
@@ -13155,7 +13155,7 @@ display: inline-block;
     border: 1px solid rgb(255, 153, 51);
     font-size: 0.85rem;
 }
-.keyword__table__body .keywordactions, .chatbots__table__body .chatbotactions{
+.keyword__table__body .keywordactions, .chatbots__table__body .chatbotactions, .sequence__table__body .sequenceactions{
   
     display: flex;
     gap: 1rem;
@@ -13244,7 +13244,7 @@ display: inline-flex;
     width: auto;
     height: 40px;
 }
-.keyword__pagination, .chatbots__pagination{
+.keyword__pagination, .chatbots__pagination,.sequence__pagination{
 position: absolute;
 height: 143px;
 bottom: -143px;
@@ -14023,12 +14023,12 @@ font-size: 1rem;
     text-align: center;
 }
 /* chatbots */
-.chatbots_container{
+.chatbots_container,.sequence_container{
   display: flex;
   flex-direction: column;
   flex:1 1 auto;
 }
-.chatbots_container .chatbots_header,.template__header{
+.chatbots_container .chatbots_header,.template__header,.sequence_container .sequence_header{
   padding: 25px 30px;
     display: flex;
     flex-wrap: wrap;
@@ -14037,7 +14037,7 @@ font-size: 1rem;
     background-color: rgb(245, 246, 250);
 
 }
-.chatbots_container .header__title{
+.chatbots_container .header__title,.sequence_container .header__title{
 display: flex;
 align-items: center;
 margin-bottom: 0px;
@@ -14053,12 +14053,12 @@ margin-right: 85px;
     margin: 0px 0px 0px 10px;
     color: rgb(102, 102, 102);
 }
-.chatbots_container .header__search{
+.chatbots_container .header__search,.sequence_container .header__search{
   margin-right: auto;
     width: 287px;
     max-width: 100%;
 }
-.chatbots_container .chatbot_header_btn{
+.chatbots_container .chatbot_header_btn,.sequence_container .sequence_header_btn{
   height: 50px;
   font-size: 15px;
   font-weight: 500;
@@ -14111,7 +14111,7 @@ color: rgb(102, 102, 102);
   text-align: center;
   padding-left:20px !important;
 }
-.chatbots__pagination{
+.chatbots__pagination,.sequence__pagination{
   position: relative;
   left:0;
   bottom: 0;
@@ -14443,7 +14443,7 @@ margin-bottom: 15px;
     padding: 25px 30px 25px 35px;
     background-color: rgb(255, 255, 255);
 }
-.editchatbot_right_container .header_name{
+.editchatbot_right_container .header_name,.sequence_container .header_name{
   font-weight: 600;
     line-height: 30px;
     font-size: 22px;
@@ -15183,4 +15183,78 @@ background: white ;
   font-size: 13px;
   line-height: 19px;
   white-space: nowrap;
+}
+/* sequence */
+.sequence__table__body .sequenceactions{
+  padding-left: 70px;
+}
+.time_message_settings_container{
+  padding:20px 0px
+}
+.time_msg_settings{
+  margin-bottom: 0px !important;
+}
+.message_settings_chip{
+ display: flex;
+ flex-wrap: wrap;
+ gap: 10px;
+ margin-top: 10px; 
+ 
+}
+.msgsettings_dropdown_textfield{
+  display: flex;
+  align-items:center;
+  border:1px solid rgb(232, 234, 242);
+  border-radius:4px; 
+}
+.msgsettings_dropdownopen_container{
+border-radius: 4px;
+position:absolute;
+background-color: white;
+box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+z-index :1000;
+width:100%;
+max-height:250px;
+overflow-y: auto;
+}
+
+.msgsettings_dropdown_subdivision{
+  padding:8px;
+ display:flex;
+ align-items:center;
+justify-content:space-between;
+cursor:pointer;
+
+}
+.msgsettings_dropdown_subdivision:hover{
+  background: rgb(232, 234, 242);
+ 
+}
+.msgsettings_dropdown_sectionoption{
+  padding:10px 13px;
+  cursor:pointer;
+  background-color:white;
+  border-top: 1px solid rgb(232, 234, 242);
+}
+
+.msgsettings_dropdown_sectionoption:hover{
+  background: #dcf0e4;
+}
+.msg_sendtime_between{
+  margin-top: 30px;
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 23px;
+}
+.msg_sendtime_container{
+  display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+.msg_sendtime_container_title{
+  font-weight: 600;
+}
+.addmsg_table_schedlue{
+  padding-left: 3px;
 }
