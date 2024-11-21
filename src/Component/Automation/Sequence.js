@@ -34,12 +34,14 @@ const styles = {
         padding: '8px',
     },
 }
+//initial default table data
 const initialTableData = [
     { id: 1, name: 'finish', messages: 1, triggered: 0, completed: '0%' },
     { id: 2, name: 'test', messages: 1, triggered: 0, completed: "0%" },
     { id: 3, name: 'incomplete', messages: 0, triggered: 0, completed: "0%" },
     { id: 4, name: 'normal', messages: 0, triggered: 0, completed: "0%" },
 ]
+//delete table data modal
 const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
     return (
         <>
@@ -57,6 +59,7 @@ const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
         </>
     )
 }
+//add sequence modal
 const AddSequenceModal = ({ show, onClose, onSave, initialName, isEditing }) => {
     const [sequenceName, setSequenceName] = useState(initialName || '');
 
@@ -87,7 +90,8 @@ const AddSequenceModal = ({ show, onClose, onSave, initialName, isEditing }) => 
         </>
     )
 }
-const MessageSettingModal = ({ show, onClose, onSave ,initialData}) => {
+//add message settings modal ( handling add and edit message settings)
+const MessageSettingModal = ({ show, onClose, onSave, initialData }) => {
 
     const sectionOptions = {
         Sticker: ['01_Cuppy_smile.webp', '02_Cuppy_lol.webp', '03_Cuppy_rofl.webp'],
@@ -96,17 +100,17 @@ const MessageSettingModal = ({ show, onClose, onSave ,initialData}) => {
     };
     const allOptions = ['days', 'hours', 'minutes'];
     const timeOptions = ['Any time', 'send between'];
-    const [content, setContent] = useState(initialData?.content ||'');
+    const [content, setContent] = useState(initialData?.content || '');
 
-    const [data, setData] = useState(initialData?.data ||'');
+    const [data, setData] = useState(initialData?.data || '');
     const [optionData, setOptionData] = useState(allOptions);
-    const [timeCount, setTimeCount] = useState(initialData?.timeCount ||'');
-    const [timeData, setTimeData] = useState(initialData?.timeData ||'');
+    const [timeCount, setTimeCount] = useState(initialData?.timeCount || '');
+    const [timeData, setTimeData] = useState(initialData?.timeData || '');
     const [timeOptionData, setTimeOptionData] = useState(timeOptions);
-    const [fromTime, setFromTime] = useState(initialData?.fromTime ||'');
-    const [toTime, setToTime] = useState(initialData?.toTime ||'');
+    const [fromTime, setFromTime] = useState(initialData?.fromTime || '');
+    const [toTime, setToTime] = useState(initialData?.toTime || '');
     const daysOptions = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    const [selectedDays, setSelectedDays] = useState(initialData?.selectedDays ||[]);
+    const [selectedDays, setSelectedDays] = useState(initialData?.selectedDays || []);
     const handleOptionChange = (event, newValue) => {
         setData(newValue);
 
@@ -397,7 +401,9 @@ const MessageSettingModal = ({ show, onClose, onSave ,initialData}) => {
         </>
     )
 }
+//sequence Main Component 
 const Sequence = () => {
+    //sequence screen --> default table
     const [sequenceData, setSequenceData] = useState(initialTableData);
     const [searchSequence, setSearchSequence] = useState('');
     const [page, setPage] = useState(0);
@@ -405,19 +411,25 @@ const Sequence = () => {
     const [isOpenDeleteModal, setOpenDeleteModal] = useState(false);
     const [rowIndexToDelete, setRowIndexToDelete] = useState(null);
     const [addsequenceModal, setAddSequenceModal] = useState(false);
+    // sequence id state 
     const [sequenceId, setSequenceId] = useState(false);
     const [sequenceName, setSequenceName] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    //message settings modal 
     const [messageSettingModal, setMessageSettingModal] = useState(false);
     const [savedMessages, setSavedMessages] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
     const [isOpenDeleteAddmsgModal, setOpenDeleteAddmsgModal] = useState(false);
     const [rowIndexToDeleteAddmsg, setRowIndexToDeleteAddmsg] = useState(null);
     const [isActive, setIsActive] = useState(false); //toggle
-   
+    const [editSequenceIndex, setEditSequenceIndex] = useState(null);
+
+
+
     const handleToggle = () => {
         setIsActive(!isActive);
     };
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     }
@@ -435,11 +447,14 @@ const Sequence = () => {
             setPage(prev => prev + 1)
         }
     }
+    // search 
     const filterSequence = sequenceData.filter(row =>
         row.name.toLowerCase().includes(searchSequence.toLowerCase())
     );
+    //pagination
     const paginatedSequenceData = filterSequence.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+    // default table--> delete 
     const handleDeleteOpenModal = (index) => {
         setRowIndexToDelete(index)
         setOpenDeleteModal(true);
@@ -454,10 +469,12 @@ const Sequence = () => {
         setRowIndexToDelete(null);
         setOpenDeleteModal(false);
     }
+    // add sequence Name
     const handleOpenAddSequenceModal = () => {
         setAddSequenceModal(true);
         setIsEditing(false);
     }
+    //edit sequence Name
     const handleOpenEditSequenceModal = () => {
         setAddSequenceModal(true);
         setIsEditing(true);;
@@ -465,44 +482,37 @@ const Sequence = () => {
     const handleCloseAddSequence = () => {
         setAddSequenceModal(false);
     }
-    // const handleSaveAddSequence = (newName) => {
-    //     setSequenceName(newName)
-    //     setAddSequenceModal(false);
-    //     setSequenceId(true);
-    // }
-
-    const handleEditOpenModal = (row) => {
-        setSequenceName(row.name);
-        setAddSequenceModal(false);
-        setSequenceId(true);
-    };
+    // save add and edit sequence Name
     const handleSaveAddSequence = (newName) => {
         setSequenceName(newName);
-        const newSequence = {
-            id: sequenceData.length + 1,  
-            name: newName,
-            messages: savedMessages.length, // Message count from currentMessages
-            triggered: 0,
-            completed: '0%',
-        };
-
-        setSequenceData([newSequence, ...sequenceData]); 
         setAddSequenceModal(false);
         setSequenceId(true);
     };
- 
+
+    //  edit (sequenceId)
+    const handleEditOpenModal = (index) => {
+        // setSequenceName(row.name);
+        setSequenceName(sequenceData[index].name);
+        setAddSequenceModal(false);
+        setSequenceId(true);
+        setEditSequenceIndex(index);
+    };
+
+
+    // message settings modal
     const handleOpenMessagesettingsModal = (messageIndex = null) => {
         if (messageIndex !== null) {
-            setEditIndex(messageIndex); 
-          }
+            setEditIndex(messageIndex);
+        }
         setMessageSettingModal(true);
     }
     const handleCloseMssagesettingsModal = () => {
         setMessageSettingModal(false);
     }
 
+    // save add and edit message settings modal
     const handleSaveMessagesettingsModal = (savedValues) => {
-      
+
         setMessageSettingModal(false);
         if (editIndex !== null) {
             // Update existing message if editing
@@ -510,35 +520,63 @@ const Sequence = () => {
             updatedMessages[editIndex] = savedValues; // Replace the edited message
             setSavedMessages(updatedMessages);
             setEditIndex(null); // Reset edit index
-          } else {
+        } else {
             // Add new message if creating
             setSavedMessages((prevMessages) => [...prevMessages, savedValues]);
-          }
+        }
     }
 
-  
+    // delete data of  sequence id table
     const handleDeleteRow = (index) => {
         setOpenDeleteAddmsgModal(true)
         setRowIndexToDeleteAddmsg(index)
     }
     const handleDeleteAddmsgCloseModal = () => {
-        setOpenDeleteAddmsgModal(false); 
-        setRowIndexToDeleteAddmsg(null); 
-      };
-      const handleDeleteAddmsgConfirm = () => {
-        if ( rowIndexToDeleteAddmsg!== null) {
-          setSavedMessages((prevMessages) =>
-            prevMessages.filter((_, index) => index !== rowIndexToDeleteAddmsg)
-          );
+        setOpenDeleteAddmsgModal(false);
+        setRowIndexToDeleteAddmsg(null);
+    };
+    const handleDeleteAddmsgConfirm = () => {
+        if (rowIndexToDeleteAddmsg !== null) {
+            setSavedMessages((prevMessages) =>
+                prevMessages.filter((_, index) => index !== rowIndexToDeleteAddmsg)
+            );
         }
         setOpenDeleteAddmsgModal(false);
-        setRowIndexToDeleteAddmsg(null); 
-      };
-      const handleSequenceBackbutton=()=>{
+        setRowIndexToDeleteAddmsg(null);
+    };
+    // back button
+    const handleSequenceBackbutton = () => {
         setSequenceId(false)
-   
-      }
-    
+        if (editSequenceIndex !== null) {
+            // Update the existing sequence if editing
+            const updatedData = sequenceData.map((row, index) =>
+                index === editSequenceIndex
+                    ? {
+                        ...row,
+                        name: sequenceName,
+                        messages: savedMessages.length, // Update message count
+                    }
+                    : row
+            );
+            setSequenceData(updatedData);
+        }
+        else {
+            // Add new sequence if not editing
+            const newSequence = {
+                id: sequenceData.length + 1,
+                name: sequenceName,
+                messages: savedMessages.length,
+                triggered: 0,
+                completed: '0%',
+            };
+            setSequenceData([newSequence, ...sequenceData]);
+        }
+        setSequenceName('');
+        setEditSequenceIndex(null);
+
+
+    }
+
     return (
         <>
             {
@@ -560,73 +598,73 @@ const Sequence = () => {
             {
                 messageSettingModal &&
                 <MessageSettingModal show={messageSettingModal} onClose={handleCloseMssagesettingsModal} onSave={handleSaveMessagesettingsModal}
-                initialData={editIndex !== null ? savedMessages[editIndex] : null} />
+                    initialData={editIndex !== null ? savedMessages[editIndex] : null} />
 
             }
 
             {
                 sequenceId ? (
-                <>
-                    <div className='sequence_container'>
-                        <div className='sequence_header'>
-                            <div className='header_name'>
-                                <a className='chatbotbackbtn' href='#' onClick={handleSequenceBackbutton}><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
-                                {sequenceName}
-                                <EditIcon onClick={handleOpenEditSequenceModal} />
+                    <>
+                        <div className='sequence_container'>
+                            <div className='sequence_header'>
+                                <div className='header_name'>
+                                    <a className='chatbotbackbtn' href='#' onClick={handleSequenceBackbutton}><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+                                    {sequenceName}
+                                    <EditIcon onClick={handleOpenEditSequenceModal} />
+                                </div>
+
+                                <button className='btn btn-success sequence_header_btn' onClick={() => handleOpenMessagesettingsModal()} >Add Message</button>
                             </div>
-
-                            <button className='btn btn-success sequence_header_btn' onClick={() => handleOpenMessagesettingsModal()} >Add Message</button>
-                        </div>
-                        <div className='sequence__body__content'>
-                            <div className='sequence__list__table'>
-                                <Table className='sequence__table'>
-                                    <TableHead className='sequence__head'>
-                                        <TableRow className='sequence__row'>
-                                            <TableCell className='sequencetable__cell alignleft firstcell' style={{ width: '15%' }}></TableCell>
-                                            <TableCell className='sequencetable__cell' style={{ width: '100px' }}>Active</TableCell>
-                                            <TableCell className='sequencetable__cell' style={{ width: '200px' }}>Schedule</TableCell>
-                                            <TableCell className='sequencetable__cell' style={{ width: '200px' }}>Action Name</TableCell>
-                                            <TableCell className='sequencetable__cell' style={{ width: '200px' }}>Sent</TableCell>
-                                            <TableCell className='sequencetable__cell lastcell' style={{ width: '200px' }}>Edit/Delete</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody className='sequence__table__body'>
-                                        {savedMessages.map((message, index) => (
-                                            <TableRow key={index} className='keyword__body__row'>
-                                                <TableCell className='sequence__body__cell body_first_cell'>
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 6L20 10L4 10L4 6L20 6Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M20 14L20 18L4 18L4 14L20 14Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                                </TableCell>
-                                                <TableCell className='sequence__body__cell centred_text'>
-                                                    <button
-                                                        type="button"
-                                                        className={`toggle__control ${isActive ? 'active' : ''}`}
-                                                        onClick={handleToggle}
-                                                        aria-label="Toggle"
-
-                                                    >
-                                                        <div className='toggle-indicator'></div>
-                                                    </button>
-                                                </TableCell>
-                                                <TableCell className='sequence__body__cell centred_text'>{message.timeCount ? `after ${message.timeCount}` : ''}<span className='addmsg_table_schedlue'>{message.data}</span></TableCell>
-                                                <TableCell className='sequence__body__cell centred_text'>{message.content}</TableCell>
-                                                <TableCell className='sequence__body__cell centred_text'>0</TableCell>
-
-                                                <TableCell className='sequence__body__cell sequenceactions'>
-
-                                                    <button aria-label="edit" className='cell__edit' onClick={() => handleOpenMessagesettingsModal(index)}><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
-                                                    <button aria-label="delete" className='cell__delete' onClick={() => handleDeleteRow(index)} ><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                                                </TableCell>
+                            <div className='sequence__body__content'>
+                                <div className='sequence__list__table'>
+                                    <Table className='sequence__table'>
+                                        <TableHead className='sequence__head'>
+                                            <TableRow className='sequence__row'>
+                                                <TableCell className='sequencetable__cell alignleft firstcell' style={{ width: '15%' }}></TableCell>
+                                                <TableCell className='sequencetable__cell' style={{ width: '100px' }}>Active</TableCell>
+                                                <TableCell className='sequencetable__cell' style={{ width: '200px' }}>Schedule</TableCell>
+                                                <TableCell className='sequencetable__cell' style={{ width: '200px' }}>Action Name</TableCell>
+                                                <TableCell className='sequencetable__cell' style={{ width: '200px' }}>Sent</TableCell>
+                                                <TableCell className='sequencetable__cell lastcell' style={{ width: '200px' }}>Edit/Delete</TableCell>
                                             </TableRow>
-                                        ))
-                                        }
-                                    </TableBody>
-                                </Table>
+                                        </TableHead>
+                                        <TableBody className='sequence__table__body'>
+                                            {savedMessages.map((message, index) => (
+                                                <TableRow key={index} className='keyword__body__row'>
+                                                    <TableCell className='sequence__body__cell body_first_cell'>
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 6L20 10L4 10L4 6L20 6Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M20 14L20 18L4 18L4 14L20 14Z" stroke="#666666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                                    </TableCell>
+                                                    <TableCell className='sequence__body__cell centred_text'>
+                                                        <button
+                                                            type="button"
+                                                            className={`toggle__control ${isActive ? 'active' : ''}`}
+                                                            onClick={handleToggle}
+                                                            aria-label="Toggle"
+
+                                                        >
+                                                            <div className='toggle-indicator'></div>
+                                                        </button>
+                                                    </TableCell>
+                                                    <TableCell className='sequence__body__cell centred_text'>{message.timeCount ? `after ${message.timeCount}` : ''}<span className='addmsg_table_schedlue'>{message.data}</span></TableCell>
+                                                    <TableCell className='sequence__body__cell centred_text'>{message.content}</TableCell>
+                                                    <TableCell className='sequence__body__cell centred_text'>0</TableCell>
+
+                                                    <TableCell className='sequence__body__cell sequenceactions'>
+
+                                                        <button aria-label="edit" className='cell__edit' onClick={() => handleOpenMessagesettingsModal(index)}><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
+                                                        <button aria-label="delete" className='cell__delete' onClick={() => handleDeleteRow(index)} ><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                            }
+                                        </TableBody>
+                                    </Table>
+
+                                </div>
 
                             </div>
-
                         </div>
-                    </div>
-                </>)
+                    </>)
                     :
                     (
                         <div className='sequence_container'>
@@ -666,8 +704,8 @@ const Sequence = () => {
                                                         <TableCell className='sequence__body__cell centred_text'>{row.completed}</TableCell>
 
                                                         <TableCell className='sequence__body__cell sequenceactions'>
-                                                            
-                                                            <button aria-label="edit" className='cell__edit' onClick={() => handleEditOpenModal(row)}><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
+
+                                                            <button aria-label="edit" className='cell__edit' onClick={() => handleEditOpenModal(index)}><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
                                                             <button aria-label="delete" className='cell__delete' onClick={() => handleDeleteOpenModal(index)} ><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
                                                         </TableCell>
                                                     </TableRow>

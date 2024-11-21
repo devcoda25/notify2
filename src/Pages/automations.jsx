@@ -230,7 +230,8 @@ const MessageOption = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const questionRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(null);
-
+    const activeInputRef = useRef(null);
+    const containerRef = useRef(null);
     const handleInteraction = (e) => {
         e.stopPropagation();
 
@@ -240,7 +241,7 @@ const MessageOption = () => {
     const formatText = (command) => {
         document.execCommand(command, false, null);
     };
-    const applyCurlyFormatting = () => {
+    const applyCurlyFormatting = (index) => {
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
@@ -251,42 +252,82 @@ const MessageOption = () => {
                 range.deleteContents();
                 range.insertNode(textNode);
                 selection.removeAllRanges();
+    
+                // Save curly-formatted text in state
+                setTextBoxVisibility((prev) => {
+                    const newVisibility = [...prev];
+                    newVisibility[index].text = curlyText; // Save curly-formatted text
+                    return newVisibility;
+                });
             }
         }
     };
 
 
+    // const handleMessageClick = () => {
+    //     // setShowTextbox(true);
+    //     setTextBoxVisibility((prev) => [...prev, { showTextContainer: true, isQuestionVisible: false }]);
+    // };
     const handleMessageClick = () => {
-        // setShowTextbox(true);
-        setTextBoxVisibility((prev) => [...prev, { showTextContainer: true, isQuestionVisible: false }]);
+        setTextBoxVisibility((prev) => [
+            ...prev,
+            { showTextContainer: true, isQuestionVisible: false, text: '' }
+        ]);
     };
+    // const handleInputClick = (index) => {
+    //     setTextBoxVisibility((prev) => {
+    //         const newVisibility = [...prev];
+
+
+    //         if (currentIndex === index) {
+    //             newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
+    //             newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible; // Toggle showTextContainer
+    //         } else {
+    //             // Hide the previously opened question and show the text container
+    //             if (currentIndex !== null) {
+    //                 newVisibility[currentIndex].isQuestionVisible = false; // Hide previous question
+    //                 newVisibility[currentIndex].showTextContainer = true; // Show previous text container
+    //             }
+
+    //             newVisibility[index].isQuestionVisible = true;
+    //             newVisibility[index].showTextContainer = false;
+    //             setCurrentIndex(index); // Update currentIndex to the new index
+    //         }
+
+    //         return newVisibility;
+    //     });
+    //     // setShowTextbox(false);
+    //     // setIsQuestionVisible(true);
+    //     setImageBoxVisible(false);
+    //     setShowImageInput(true);
+    // };
     const handleInputClick = (index) => {
         setTextBoxVisibility((prev) => {
             const newVisibility = [...prev];
-
-
             if (currentIndex === index) {
                 newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
-                newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible; // Toggle showTextContainer
+                newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible;
             } else {
-                // Hide the previously opened question and show the text container
                 if (currentIndex !== null) {
-                    newVisibility[currentIndex].isQuestionVisible = false; // Hide previous question
-                    newVisibility[currentIndex].showTextContainer = true; // Show previous text container
+                    newVisibility[currentIndex].isQuestionVisible = false;
+                    newVisibility[currentIndex].showTextContainer = true;
                 }
-
                 newVisibility[index].isQuestionVisible = true;
                 newVisibility[index].showTextContainer = false;
-                setCurrentIndex(index); // Update currentIndex to the new index
+                setCurrentIndex(index);
             }
-
             return newVisibility;
         });
-        // setShowTextbox(false);
-        // setIsQuestionVisible(true);
-        setImageBoxVisible(false);
-        setShowImageInput(true);
     };
+    const handleBlur = (index, e) => {
+        const newText = e.currentTarget.innerHTML; // Capture formatted HTML
+        setTextBoxVisibility((prev) => {
+            const newVisibility = [...prev];
+            newVisibility[index].text = newText; // Update text with HTML content on blur
+            return newVisibility;
+        });
+    };
+
     const handleImageInputClick = () => {
         setImageBoxVisible(true);
         setShowImageInput(false);
@@ -295,6 +336,7 @@ const MessageOption = () => {
     }
     const toggleVariablesDropdown = () => {
         setIsVariablesVisible((prev) => !prev);
+        setIsVisible(false);
     };
     const toggleImageVariableDropdown = () => {
         setIsImageVariablesVisible((prev) => !prev);
@@ -311,12 +353,21 @@ const MessageOption = () => {
     )
     const toggleEmojiPicker = () => {
         setIsVisible((prev) => !prev);
+        setIsVariablesVisible(false);
     };
     const toggleImageEmojiPicker = () => {
         setIsImageEmojiVisible((prev) => !prev);
     }
+    // const handleEmojiClick = (emoji) => {
+    //     setInputValue(prev => prev + emoji);
+    //     setIsVisible(false);
+    // };
     const handleEmojiClick = (emoji) => {
-        setInputValue(prev => prev + emoji);
+        if (activeInputRef.current) {
+            const currentHTML = activeInputRef.current.innerHTML;
+            activeInputRef.current.innerHTML = currentHTML + emoji;
+            handleBlur(currentIndex, { currentTarget: activeInputRef.current }); // Update state with new HTML content
+        }
         setIsVisible(false);
     };
     const handleImageEmojiClick = (emoji) => {
@@ -324,7 +375,12 @@ const MessageOption = () => {
         setIsImageEmojiVisible(false);
     }
     const handleVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
+        if (activeInputRef.current) {
+            const currentHTML = activeInputRef.current.innerHTML;
+            activeInputRef.current.innerHTML = currentHTML + variable.value;
+            handleBlur(currentIndex, { currentTarget: activeInputRef.current }); // Update state with new HTML content
+        }
+       // setInputValue(prev => prev + variable.value);
         setIsVariablesVisible(false);
     };
     const handleImageVariableClick = (variable) => {
@@ -441,40 +497,68 @@ const MessageOption = () => {
                 e.stopPropagation();
             }
         };
-        const handleClickOutside = (event) => {
-            if (questionRef.current && !questionRef.current.contains(event.target)) {
-                setIsQuestionVisible(false);
-                setShowTextbox(true);
-            }
-        };
+      
 
         // Attach listeners
         document.addEventListener('mousemove', preventDrag, true);
         document.addEventListener('mousedown', preventDrag, true);
         document.addEventListener('mouseup', preventDrag, true);
-        document.addEventListener('mousedown', handleClickOutside);
+     
         // Cleanup function to remove listeners on component unmount
         return () => {
             document.removeEventListener('mousemove', preventDrag, true);
             document.removeEventListener('mousedown', preventDrag, true);
             document.removeEventListener('mouseup', preventDrag, true);
-            document.addEventListener('mousedown', handleClickOutside);
+          
         };
     }, []);
 
+    // Close the question text container if the user clicks outside of it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                // Close question and show text container
+                if (currentIndex !== null) {
+                    setTextBoxVisibility((prev) => {
+                        const newVisibility = [...prev];
+                        newVisibility[currentIndex].isQuestionVisible = false;
+                        newVisibility[currentIndex].showTextContainer = true;
+                        return newVisibility;
+                    });
+                }
+            }
+        };
+
+        // Add event listener to detect clicks outside
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Cleanup event listener on unmount
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [currentIndex]);
     return (
         <>
             {textBoxVisibility.map((item, index) => (
                 <>
                     {item.showTextContainer && (
                         <>
-                            <div style={{ position: 'relative' }}>
+                            <div style={{ position: 'relative' }} >
 
-                                <div className='edit__text__input message_input_box'
+                                {/* <div className='edit__text__input message_input_box'
                                     contentEditable
                                     suppressContentEditableWarning={true}
                                     onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                    dangerouslySetInnerHTML={{ __html: inputValue }} onClick={() => handleInputClick(index)}></div>
+                                    dangerouslySetInnerHTML={{ __html: inputValue }} onClick={() => handleInputClick(index)}>
+
+                                    </div> */}
+                                <div
+                                    className='edit__text__input message_input_box'
+                                    contentEditable={false} // Prevent editing in `showTextContainer`
+                                    dangerouslySetInnerHTML={{ __html: item.text }} // Render stored HTML
+                                    onClick={() => handleInputClick(index)}
+                                    style={{height:'35px'}}
+                                ></div>
 
                                 <button className='message_delete_icon' style={{ top: '0%' }} onClick={() => handleMessageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
                             </div>
@@ -482,21 +566,32 @@ const MessageOption = () => {
                         </>
                     )}
                     {item.isQuestionVisible && (
-                        <div className='question_text_content' ref={questionRef}>
+                        <div className='question_text_content'  ref={(el) => {
+                                questionRef.current = el; // Attach ref for drag and drop
+                                containerRef.current = el; // Attach ref for outside click detection
+                            }}>
 
                             <div className='question_editor_container' >
 
+                                {/* <div
+                                    className='message_edit__text__input question_editor_text'
+                                    contentEditable={true}
+                                    suppressContentEditableWarning={true}
+                                    onInput={(e) => setInputValue(e.currentTarget.innerText)}
+                                    onFocus={() => setShowTextbox(false)}
+                                    onBlur={(e) => setInputValue(e.currentTarget.innerText)}
+                                >
+                                </div> */}
                                 <div
                                     className='message_edit__text__input question_editor_text'
                                     contentEditable={true}
                                     suppressContentEditableWarning={true}
-                                    onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                    onFocus={() => setShowTextbox(false)}
-                                    dangerouslySetInnerHTML={{ __html: inputValue }}
-
-                                >
-
-                                </div>
+                                    dangerouslySetInnerHTML={{ __html: item.text }} // Display stored HTML on edit
+                                    onBlur={(e) => handleBlur(index, e)}
+                                    onClick={(e) => {
+                                        activeInputRef.current = e.currentTarget; // Set the active input ref
+                                    }}
+                                ></div>
                                 <div className='question_editor_toolbar'>
                                     <div className='inline_toolbar'>
                                         <div className='option_toolbar' onClick={() => formatText('bold')}>
@@ -508,7 +603,7 @@ const MessageOption = () => {
                                         <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
                                         </div>
-                                        <div className='option_toolbar' onClick={applyCurlyFormatting}>
+                                        <div className='option_toolbar' onClick={()=>applyCurlyFormatting(index)}>
                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
                                         </div>
                                         <div className='option_toolbar' onClick={toggleEmojiPicker}>
@@ -4232,7 +4327,7 @@ const EditChatbotPage = ({ chatbotName }) => {
                 <div className='editchatbot_right_container'>
                     <div className='header_content'>
                         <div className='header_name'>
-                            <a className='chatbotbackbtn' href='#'><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+                            <a className='chatbotbackbtn' ><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
                             {currentChatbotName}
                             <EditIcon onClick={handleEditClick} />
                         </div>
