@@ -545,13 +545,6 @@ const MessageOption = () => {
                         <>
                             <div style={{ position: 'relative' }} >
 
-                                {/* <div className='edit__text__input message_input_box'
-                                    contentEditable
-                                    suppressContentEditableWarning={true}
-                                    onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                    dangerouslySetInnerHTML={{ __html: inputValue }} onClick={() => handleInputClick(index)}>
-
-                                    </div> */}
                                 <div
                                     className='edit__text__input message_input_box'
                                     contentEditable={false} // Prevent editing in `showTextContainer`
@@ -573,15 +566,7 @@ const MessageOption = () => {
 
                             <div className='question_editor_container' >
 
-                                {/* <div
-                                    className='message_edit__text__input question_editor_text'
-                                    contentEditable={true}
-                                    suppressContentEditableWarning={true}
-                                    onInput={(e) => setInputValue(e.currentTarget.innerText)}
-                                    onFocus={() => setShowTextbox(false)}
-                                    onBlur={(e) => setInputValue(e.currentTarget.innerText)}
-                                >
-                                </div> */}
+                              
                                 <div
                                     className='message_edit__text__input question_editor_text'
                                     contentEditable={true}

@@ -4,6 +4,7 @@ import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { MdOutlineWebhook } from "react-icons/md";
 import { TiLink } from "react-icons/ti";
 import { TbListDetails } from "react-icons/tb";
+
 function MoreDropDown() {
   return (
     <Dropdown>
@@ -12,11 +13,11 @@ function MoreDropDown() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1"><LuUsers2 />  User Management</Dropdown.Item>
+      <li><a href='UserManagement'><LuUsers2 />  User Management</a></li>
         <Dropdown.Item href="#/action-2"><MdOutlineSettingsSuggest /> Integrations</Dropdown.Item>
         <Dropdown.Item href="#/action-3"><MdOutlineWebhook /> Webhooks</Dropdown.Item>
         <Dropdown.Item href="#/action-4"><TiLink /> Commerce</Dropdown.Item>
-        <Dropdown.Item href="#/action-5"><TbListDetails /> Account Details</Dropdown.Item>
+        <Dropdown.Item href="account-details"><TbListDetails /> Account Details</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

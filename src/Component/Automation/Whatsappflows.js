@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import whatsappflow from '../Assets/img/whatsappflow.svg'
 const LeadGenerationModal = ({ onClose }) => {
     return (
         <>
@@ -281,7 +281,7 @@ const Whatsappflows = () => {
                                         </div>
                                         <hr className='line_style' />
                                         <div className='cardimage_content'>
-                                            <img src='https://live-6053.wati.io/static/media/empty_list.f34c300057e0794dd6c0ea72be3c639e.svg' />
+                                            <img src={whatsappflow} />
                                             <p className='card_image_text'>Select a template from above and make it your own by customising it.</p>
                                         </div>
                                     </div>

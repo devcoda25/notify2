@@ -6,6 +6,7 @@ import Navbar from '../Component/Navbar/Navbar';
 import ContactUs from '../Pages/contactus';
 import Automations from '../Pages/automations';
 import Analytics from '../Pages/Analytics';
+import UserManagement from '../Pages/UserManagement';
 const BaseLayouts = () => {
 
     return (
@@ -20,6 +21,7 @@ const BaseLayouts = () => {
                         <Route path='contactus' element={<ContactUs/>}/>
                         <Route path='automations' element={<Automations/>}/>
                         <Route path='Analytics' element={<Analytics/>} />
+                        <Route path='UserManagement' element={<UserManagement/>}/>
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>
