@@ -13333,7 +13333,7 @@ fieldset:disabled .btn {
 .cell__edit,
 .cell__delete,
 .cell__download,
-.cell__copy,.usermanagement_table .cell__arrow,.usermanagement_table .cell__moreicon{
+.cell__copy,.usermanagement_table .cell__arrow,.usermanagement_table .cell__moreicon,.usermanagement_container .user_delete_icon{
   display: inline-flex;
   width: 32px;
   height: 32px;
@@ -13347,7 +13347,7 @@ fieldset:disabled .btn {
 .cell__edit .editsvg,
 .cell__delete .deletesvg,
 .cell__download .downloadsvg,
-.cell__copy .copysvg,.usermanagement_table .arrowsvg,.usermanagement_table .moreiconsvg{
+.cell__copy .copysvg,.usermanagement_table .arrowsvg,.usermanagement_table .moreiconsvg,.usermanagement_container .user_delete_icon svg{
   width: 20px;
   height: 20px;
   margin: auto;
@@ -16614,4 +16614,85 @@ box-shadow: none !important;
 .user__modal .savebtn{
   text-align: right;
   margin-top: 10px;
+}
+.usermanagement_container .operator{
+  padding: 10px 36px 20px;
+  background: rgb(245, 246, 250);
+}
+.usermanagement_container .operator_attributes{
+  display: flex;
+}
+.usermanagement_container .attribute__name{
+font-weight: 600;
+margin-right: 5px;
+}
+.usermanagement_container .moreicon_container{
+  position: absolute;
+    top: 16rem;
+    right: 0px;
+    border-radius: 5px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgb(227, 227, 227) 0px 5px 7px 0px;
+    z-index: 10;
+}
+.usermanagement_container .moreicon_main_content{
+  position: relative;
+  border: 1px solid rgb(232, 234, 242);
+  border-radius: 5px;
+}
+.usermanagement_container .menu__item{
+  padding: 0px 1rem;
+}
+.usermanagement_container .menu__item span{
+  display: block;
+  white-space: nowrap;
+  padding: 0.8rem 0px;
+  border-bottom: 1px solid rgb(232, 234, 242);
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: rgb(51, 51, 51);
+  text-align: left;
+}
+.usercheckbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.usercustom-checkbox {
+  appearance: none; 
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-radius: 4px; 
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  background:rgb(245, 246, 250);
+}
+
+.usercustom-checkbox:checked {
+  border-color: #218838; 
+}
+
+.usercustom-checkbox:checked::before {
+  content: '✓'; 
+  color: #218838; 
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  top: 3px;
+  left: 4px; 
+}
+.usermanagement_container .user_delete_icon {
+  background: rgb(255, 231, 231) !important;
+   margin-left:30px
+}
+.usermanagement_container .user_delete_icon svg [fill]
+ {
+  fill: rgb(255, 14, 14);
+}
+.usermanagement_container .user_delete_icon svg [stroke] {
+  stroke: rgb(255, 14, 14);
 }
