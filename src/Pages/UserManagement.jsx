@@ -3,9 +3,9 @@ import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Chec
 import boy from '../Component/Assets/img/boy.png';
 import { Modal, ModalBody } from 'react-bootstrap';
 const initialTableData = [
-    { id: 1, img: boy, firstName: "Thameem", lastName: "Hameed", status: 'Online', email: 'thameem@heptotechnologies.org', role: 'ADMINISTRATOR', teams: 'All Teams', ip: "61.2.127.142", logindate: "2024-11-27T12:02:58.085Z",statusData:"Email" },
-    { id: 2, img: boy, firstName: "EV", lastName: "ZONE", status: 'Offline', email: 'info@evzoneafrica.com', role: 'ADMINISTRATOR', teams: 'All Teams', ip: "102.222.234.171", logindate: "2024-11-13T04:41:58.316Z",statusData:"Email" },
-    { id: 3, img: boy, firstName: "juliet", lastName: "_1", status: 'Offline', email: 'juliet_1@evzoneafrica.com', role: 'TEMPLATE MANAGER; OPERATOR;', teams: 'Ev_zone_everyone', ip: '102.68.173.170', logindate: "2022-09-02T08:05:52.735Z",statusData:"Email" }
+    { id: 1, img: boy, firstName: "Thameem", lastName: "Hameed", status: 'Online', email: 'thameem@heptotechnologies.org', role: 'ADMINISTRATOR', teams: 'All Teams', ip: "61.2.127.142", logindate: "2024-11-27T12:02:58.085Z", statusData: "Email" },
+    { id: 2, img: boy, firstName: "EV", lastName: "ZONE", status: 'Offline', email: 'info@evzoneafrica.com', role: 'ADMINISTRATOR', teams: 'All Teams', ip: "102.222.234.171", logindate: "2024-11-13T04:41:58.316Z", statusData: "Email" },
+    { id: 3, img: boy, firstName: "juliet", lastName: "_1", status: 'Offline', email: 'juliet_1@evzoneafrica.com', role: 'TEMPLATE MANAGER; OPERATOR;', teams: 'Ev_zone_everyone', ip: '102.68.173.170', logindate: "2022-09-02T08:05:52.735Z", statusData: "Email" }
 ]
 const initialTeamData = [
     { id: 1, teamName: 'EV_Zone_everyone', defaultTeam: 'Yes', teamSize: '3' },
@@ -37,10 +37,11 @@ const AddUserModal = ({ show, onClose }) => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [content, setContent] = useState([]);
+    const [content, setContent] = useState(["Administrator"]);
     const [emailConfirmed, setEmailConfirmed] = useState("No");
     const [phoneConfirmed, setPhoneConfirmed] = useState("No");
-    const options = ["Broadcast manager", "Template manager", "contact manager", "operator", "Developer", "Dashboard viewer", "Billing manager", "Automation manager"];
+    const options = ["Broadcast manager", "Template manager", "contact manager", "operator", "Developer", "Dashboard viewer", "Billing manager", "Automation manager", "Administrator"];
+    const teamOptions = ["EV_Zone_Everyone", "call_center_kampala", "Driver_Liasion_officers"];
     const handleAddUser = (newValue) => {
         if (newValue && !content.includes(newValue)) {
             setContent((prev) => [...prev, newValue]);
@@ -132,6 +133,41 @@ const AddUserModal = ({ show, onClose }) => {
                                     sx={{ marginTop: 2, marginRight: 1 }}
                                 />
                             ))}
+                            {!content.includes("Administrator") && (
+                                <>
+                                    <div className='edit__text__label'>Teams</div>
+                                <Autocomplete
+                                    options={teamOptions}
+                                    disableClearable
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            placeholder="Select Teams"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                disableUnderline: true,
+                                                sx: {
+                                                    border: '1px solid rgb(232, 234, 242)',
+                                                    borderRadius: '4px',
+                                                    height: '3rem',
+                                                    paddingLeft: '10px',
+                                                    backgroundColor: 'rgb(245, 246, 250)',
+                                                    '&:hover': {
+                                                        border: '1px solid green',
+                                                    },
+                                                    '&.Mui-focused': {
+                                                        border: '1px solid green',
+                                                        backgroundColor: 'white',
+                                                        outline: 'none',
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    )}
+                                />
+                                </>
+                            )}
                         </div>
                         <div className='savebtn'>
                             <button className='btn btn-success' onClick={onClose}>Save</button></div>
