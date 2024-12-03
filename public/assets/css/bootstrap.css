@@ -16550,6 +16550,9 @@ visibility: hidden;
 .usermanagement_container .usermanagement__cell{
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter;
   font-weight: 600 !important;
+  text-transform: none !important;
+  font-size: 16px;
+  text-align: center;
 }
 .usermanagement_table .flex_item{
   display: flex;
@@ -16582,7 +16585,8 @@ visibility: hidden;
   margin-left:10px
 }
 .usermanagement_table .body__cell{
-  font-size: 1.1rem !important
+  font-size: 1.1rem !important;
+  text-align: center;
 }
 .usermanagement_table .body_first_cell{
   padding-left: 0px !important;
@@ -16695,4 +16699,18 @@ margin-right: 5px;
 }
 .usermanagement_container .user_delete_icon svg [stroke] {
   stroke: rgb(255, 14, 14);
+}
+.userconfirmedcheckbox{
+  margin-bottom: 10px;
+}
+
+.usermanagement_table .teamswarningicon{
+  width:20px;
+  height:20px;
+  margin-left:10px;
+  margin-bottom:2px;
+}
+.defaultteam_tooltip{
+  color:white;
+  padding:8px 16px;
 }
