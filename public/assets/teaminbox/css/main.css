@@ -9,7 +9,8 @@ body {
   font-family: 'Exo 2', sans-serif;
   position: relative;
   width: 100%;
-  background: #ccc !important;
+  /* background: #ccc !important; */
+  background: rgb(245 246 250) !important;
 }
 
 /** Custom Style **/
