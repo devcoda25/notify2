@@ -12,8 +12,9 @@ const BaseLayouts = () => {
     return (
         <>
             <React.Fragment>
-                <Navbar></Navbar>
+                
                 <BrowserRouter>
+                <Navbar/>
                     <Routes>
                         <Route path='/' element={<TeamInbox />} />
                         <Route path='Teaminbox' element={<TeamInbox />} />

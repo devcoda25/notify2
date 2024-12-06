@@ -143,7 +143,7 @@
 
 .main-wrapper {
     position: relative;
-    top: 60px;
+    top: 65px;
     /* padding:0px 0px 0px 20px; */
     padding: 0px;
     margin: 0 20px;
@@ -285,6 +285,7 @@
         justify-content: space-between;
         padding-bottom: 5px;
         padding-top: 5px;
+        height:60px;
         border-bottom: 1px solid #e0ebeb;
         width: 100%;
     }
@@ -316,6 +317,7 @@
 
     .nav .lnav li {
         list-style-type: none;
+        border:none;
     }
 
     .rnav li {
@@ -324,6 +326,7 @@
 
     .lnav li a {
         text-decoration: none;
+        border:none;
     }
 
     .msgContL svg {
@@ -338,10 +341,14 @@
         align-items: center;
         gap: .5rem;
     }
-
-    .nav .lnav .solo a {
+    .nav .lnav .active a{
         color: #23a455;
+        border:none;
+        
     }
+    /* .nav .lnav .solo a {
+        color: #23a455;
+    } */
 
     .msgCont .msgContL .solo a {
         color: #23a455;
