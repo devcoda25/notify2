@@ -12227,7 +12227,7 @@ fieldset:disabled .btn {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter;
 }
 
-.automation__left__content {
+.automation__left__content, .analytics__left__content {
   width: 233px;
   padding: 30px 20px;
 
@@ -12264,7 +12264,7 @@ fieldset:disabled .btn {
 }
 
 /* analytics page */
-.analtyics-content {
+/* .analtyics-content {
   margin-left: 10px;
   border-bottom: 1px solid rgb(232, 234, 242);
 }
@@ -12372,7 +12372,7 @@ fieldset:disabled .btn {
   float: left;
   width: 100%;
   margin: 20px 0 0 10px;
-}
+} */
 
 /* Workinghourssettings Modal */
 
@@ -12673,7 +12673,7 @@ fieldset:disabled .btn {
 }
 
 /* DefaultAction  */
-.defaultaction__right__content {
+.defaultaction__right__content,.analytics__right__content {
   background: white;
   padding: 24px 24px 40px;
   margin: 0px;
@@ -12817,7 +12817,7 @@ fieldset:disabled .btn {
   background: rgb(245, 246, 250);
 }
 
-.active {
+.defaultbodycontent .active {
   border: 1px solid rgb(232, 234, 242);
   background: rgb(255, 255, 255);
 
@@ -13202,7 +13202,7 @@ fieldset:disabled .btn {
 
 .keyword__list__table,
 .chatbots__list__table,
-.sequence__list__table {
+.sequence__list__table,.operator_list_table {
   margin: 0px;
   padding: 0px 2rem;
   height: 100%;
@@ -13212,7 +13212,7 @@ fieldset:disabled .btn {
 .keyword__table,
 .chatbots__table,
 .sequence__table,
-.rule__table,.usermanagement_table {
+.rule__table,.usermanagement_table,.operator_performance_table {
   display: table;
   width: 100%;
   border-collapse: separate;
@@ -13222,7 +13222,7 @@ fieldset:disabled .btn {
 
 .keywordtable__head .keywordtable__row,
 .chatbotstable__head .chatbotstable__row,
-.sequence__head .sequence__row {
+.sequence__head .sequence__row{
   border-bottom: rgb(206, 208, 206);
 
 }
@@ -13442,6 +13442,7 @@ fieldset:disabled .btn {
   padding-right: 2rem;
   background-color: rgb(245, 246, 250);
 }
+
 
 /* .modal-backdrop.show {
   opacity: 1 !important;
@@ -16657,7 +16658,7 @@ margin-right: 5px;
   color: rgb(51, 51, 51);
   text-align: left;
 }
-.usercheckbox-container {
+.usercheckbox-container,.inboxcheckbox-container {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -16713,4 +16714,328 @@ margin-right: 5px;
 .defaultteam_tooltip{
   color:white;
   padding:8px 16px;
+}
+
+/* Analytics UI */
+.analytics_container .header__section{
+  display: flex;
+  min-height: 105px;
+  background: white;
+  justify-content: space-between;
+}
+.analytics_container .title_content{
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.analytics_container .title__info{
+color: rgb(136, 136, 136);
+font-size: 1.1rem;
+font-weight: 600;
+}
+.analytics_container .datarange_content{
+margin: 0px;
+padding-bottom:1.5rem;
+ 
+} 
+.analytics_container .headerbar__label,.analytics_container .overview_title,.analytics_container .ticket_status_title,.analytics_container .operator_title{
+  color:#212121;
+margin:20px 10px 2px 0px;
+font-size: 1.2rem;
+font-weight: 700;
+}
+.analytics_container .dataheaderbar,.analytics_container .overview_title,.analytics_container .ticket_status_header{
+  height:55px;
+}
+.analytics_container .datepicker_container{
+  display:flex;
+  width:53%;
+  padding: 15px 15px 5px 0px;
+  border: 1px solid rgb(206, 208, 206);
+    border-radius: 5px;
+    background: rgb(255, 255, 255);
+}
+.analytics_container .datepicker_subcontent{
+  width:233px;
+  height:75px;
+  border-right:1px solid rgb(206, 208, 206)
+}
+.analytics_container .datepickerlabel{
+  color: rgb(51, 51, 51);
+  font-size: 1.4rem;
+  font-weight: bold;
+  transform: scale(0.75) !important;
+}
+.analytics_container .lastchild{
+  border-right:none  !important;  
+}
+.analytics_container .main_content{
+  width:100%;
+  margin:0;
+}
+.analytics_container .overview_grid_item{
+  border-bottom: 1px solid #e8eaf2;
+  padding-right:90px;
+}
+.analytics_container .graph_grid_container{
+  border-right: 1px solid #e8eaf2;
+}
+.analytics_container .overview_container,.analytics_container .operatorperformance{
+  margin: 0px;
+  padding:1.5rem 0px 1.5rem;
+}
+.analytics_container .overview_grid_container{
+margin: 0px;
+display:flex;
+gap: 2rem 2%;
+}
+.analytics_container .info__count{
+  font-weight: 500;
+  font-size: 26px;
+  margin:10px 0px 10px;
+}
+.info__label{
+  color: rgb(122, 122, 122);
+  font-size: 13px;
+  font-weight: 500;
+}
+.analytics_container .info__box{
+  display: flex;
+  flex:1 1 0%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  border: none;
+  border-radius: 5px;
+  padding: 1.5rem;
+  width: 157px;
+  height: 79px;
+  background: rgb(249, 249, 249);
+}
+.analytics_container .emptybox{
+background:rgb(245, 246, 250);
+}
+.analytics_container .ticket_status_container{
+  margin: 0px;
+ 
+ }
+ .ticket_status_container .apexcharts-legend{
+  display: -webkit-box;
+  column-gap: 10%;
+  margin-left:25px
+ }
+ .apexcharts-legend-marker{
+  display:none !important
+ }
+
+ .apexcharts-legend-text{
+  padding:4px 6px  !important;
+  border:none;
+  border-radius: 5px;
+ }
+.apexcharts-legend-series:nth-child(1) .apexcharts-legend-text,.sendmessagesbytype .apexcharts-legend-series:nth-child(1) .apexcharts-legend-text,.messagedelivery .apexcharts-legend-series:nth-child(5) .apexcharts-legend-text,
+.ticketconversation .apexcharts-legend-series:nth-child(1) .apexcharts-legend-text {
+  color: rgb(93, 165, 113) !important;
+ background-color:rgb(226 245 212) !important;
+}
+.apexcharts-legend-series:nth-child(2) .apexcharts-legend-text,.sendmessagesbytype .apexcharts-legend-series:nth-child(2) .apexcharts-legend-text,.messagedelivery .apexcharts-legend-series:nth-child(4) .apexcharts-legend-text,
+.ticketconversation .apexcharts-legend-series:nth-child(5) .apexcharts-legend-text{
+  color:rgb(243, 189, 28) !important;
+  background-color:rgb(255 246 218) !important;
+}
+.apexcharts-legend-series:nth-child(3) .apexcharts-legend-text,.sendmessagesbytype .apexcharts-legend-series:nth-child(3) .apexcharts-legend-text,
+.ticketconversation .apexcharts-legend-series:nth-child(2) .apexcharts-legend-text{
+  color: rgb(108, 176, 204) !important;
+  background-color: rgb(228 247 255)  !important;
+}
+.apexcharts-legend-series:nth-child(4) .apexcharts-legend-text,.messagedelivery .apexcharts-legend-series:nth-child(1) .apexcharts-legend-text{
+  color:rgb(88, 144, 144) !important;
+  background-color:rgb(215 233 233) !important;
+ }
+ .apexcharts-legend-series:nth-child(5) .apexcharts-legend-text,.messagedelivery .apexcharts-legend-series:nth-child(2) .apexcharts-legend-text,.ticketconversation .apexcharts-legend-series:nth-child(4) .apexcharts-legend-text{
+  color:rgb(135, 119, 195) !important;
+  background-color:rgb(240 237 251) !important;
+ }
+ .apexcharts-legend-series:nth-child(6) .apexcharts-legend-text,.ticketconversation .apexcharts-legend-series:nth-child(3) .apexcharts-legend-text{
+  color:rgb(237, 120, 57) !important;
+  background-color:rgb(251 241 233) !important;
+ }
+ .apexcharts-legend-series:nth-child(7) .apexcharts-legend-text,.messagedelivery  .apexcharts-legend-series:nth-child(3) .apexcharts-legend-text{
+  color:rgb(241, 116, 161) !important;
+ background-color:rgb(255 235 242) !important;
+ }
+ .apexcharts-tooltip-marker, .apexcharts-tooltip-text{
+  display:none !important
+ }
+.apexcharts-toolbar{
+  top: -4.3rem !important;
+  background: rgb(245, 246, 250);
+  max-width: 220px !important;
+  margin-right: 15px;
+  padding: 0px !important;
+}
+.apexcharts-zoomin-icon,.apexcharts-zoomout-icon,.apexcharts-zoom-icon,.apexcharts-pan-icon,.apexcharts-reset-icon,.apexcharts-menu-icon{
+transform: scale(1) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 1.2rem;
+    border-right: 1px solid rgb(232, 234, 242);
+}
+.graphchart_content{
+  margin-right:25px;
+}
+.ticketduration .apexcharts-legend-series:nth-child(1) .apexcharts-legend-text {
+  color:rgb(135, 119, 195) !important;
+  background-color:rgb(240 237 251) !important;
+}
+.ticketduration .apexcharts-legend-series:nth-child(2) .apexcharts-legend-text {
+  color:rgb(237, 120, 57) !important;
+  background-color:rgb(251 241 233) !important;
+}
+.sendmessages .apexcharts-legend-series:nth-child(1) .apexcharts-legend-text {
+  color:rgb(108, 176, 204) !important;
+  background-color:rgb(228 247 255) !important;
+}
+.sendmessages .apexcharts-legend-series:nth-child(2) .apexcharts-legend-text {
+  color:rgb(241, 116, 161) !important;
+ background-color:rgb(255 235 242) !important;
+}
+.operator_list_table{
+  padding:0px !important;
+  overflow-x: scroll;
+}
+.operator__head .operator__row{
+  border-top: 1px solid rgba(224, 224, 224, 1);
+}
+.operator__head .operator__cell{
+  font-size: 13px !important;
+  font-weight: 600;
+  color:rgb(122, 122, 122) !important;
+padding:10px 12px !important;
+text-align:left;
+min-width: 150px;
+}
+.operator__body__row{
+  height:75px;
+}
+.operator__body__row .first__cell{
+  color: rgb(51, 51, 51);
+  font-weight: 600;
+  padding-left: 20px;
+}
+.operator_performance_table .firstcolumn{
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: white;
+}
+.operatoremail{
+font-weight: 500;
+color: rgb(102, 102, 102);
+font-size: 12px;
+line-height: 18px;
+}
+.operator_body_cell{
+border-bottom: none !important;
+}
+.operator_performance_table .gray_background{
+  background-color:lightgray ;
+}
+.title__sample_data{
+  padding-right:75px;
+}
+.operator_table_header{
+  display: flex ;
+ height: 90px;
+ justify-content: space-between;
+}
+.operatorperformance .operator_header_tooltip{
+  display: flex;
+  width: 390px;
+  height: 90px;
+ gap:10px;
+  padding-bottom: 15px;
+}
+.operatorperformance .operator_updated_btn,.operatorperformance .operator_menuicon{
+  width:40px;
+  height:40px;
+  border-radius:5px;
+}
+.operatorperformance .operator_updated_btn{
+  border:1px solid rgb(35, 164, 85);
+  background: white;
+}
+.operatorperformance .updated_button{
+  stroke: rgb(35, 164, 85);
+}
+.operatorperformance .operator_updated_btn:hover{
+  background: rgb(220, 240, 228);
+}
+.operatorperformance .operator_menuicon{
+  background-color: rgb(245, 246, 250);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* whatsappads */
+.whatsapp_container{
+  display: flex;
+    width: 420px;
+    height: 480px;
+    padding: 4px 32px;
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgb(228, 248, 240);
+    box-shadow: rgba(27, 29, 28, 0.05) 0px 1px 2px 0px;
+    margin-top:10%;
+    margin-bottom: 10%;
+}
+.ctwa_heading{
+  color: rgb(27, 29, 28);
+    font-size: 20px;
+   font-weight: 600;
+    line-height: 25px;
+}
+.ctwa_subheading{
+  color: rgb(53, 55, 53);
+    font-size: 14px;
+}
+.goads_style{
+  background: rgb(0, 120, 243);
+  padding:0.7rem 1.5rem;
+  display: inline-flex;
+    width: auto;
+    height: 40px;
+    min-width: 100px;
+    border-color: transparent;
+    border-style: none;
+    border-radius: 5px;
+    color:white
+}
+.ticket_warning_icon{
+  width:15px;
+  height:15px;
+  margin-left:10px
+}
+.inboxanalytics__pagination{
+  padding-top: 15px;
+  padding-right:100px;
+  height:100px;
+  border-bottom: 1px solid #e8eaf2;
+}
+.sendandreceived_border,.sendmessage_border{
+  border-top: 1px solid #e8eaf2;
+}
+.sendmessage_border{
+  border-bottom: 1px solid #e8eaf2; 
+}
+.inboxcheckbox-container{
+  margin-right:10px;
 }

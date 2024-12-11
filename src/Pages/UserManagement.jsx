@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Checkbox, Autocomplete, TextField, Chip, Tooltip } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow,  Autocomplete, TextField, Chip, Tooltip } from '@mui/material';
 import boy from '../Component/Assets/img/boy.png';
 import { Modal, ModalBody } from 'react-bootstrap';
 const initialTableData = [
@@ -14,6 +14,46 @@ const initialTeamData = [
     { id: 4, teamName: 'Ride_Agents_officers', defaultTeam: 'No', teamSize: '2' },
     { id: 5, teamName: 'Corporate_Liaison_officers', defaultTeam: 'No', teamSize: '2' }
 ]
+const styles={
+    autocompleteStyle:{
+        border: '1px solid rgb(232, 234, 242)',
+        borderRadius: '4px',
+        height: '3rem',
+        paddingLeft: '10px',
+        backgroundColor: 'rgb(245, 246, 250)',
+        '&:hover': {
+            border: '1px solid green',
+        },
+        '&.Mui-focused': {
+            border: '1px solid green',
+            backgroundColor: 'white',
+            outline: 'none',
+        },
+    },
+    tablePaginationStyle:{
+        '.MuiTablePagination-displayedRows': {
+            fontSize: '1.2rem',
+            margin: '0px',
+            color: 'rgb(51, 51, 51)'
+        },
+        '.MuiSelect-nativeInput': {
+            padding: '0px 1rem',
+            height: '3rem',
+            margin: '0 0 8px 0px',
+        },
+        '.MuiInputBase-root': {
+            fontSize: '1.2rem',
+            paddingRight: '0',
+        },
+        '.MuiTablePagination-selectLabel': {
+            fontSize: '1.2rem',
+            margin: '0px',
+            color: 'rgb(51, 51, 51)',
+        },
+    }
+        
+    
+}
 const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
     return (
         <>
@@ -113,19 +153,7 @@ const AddUserModal = ({ show, onClose }) => {
                                             ...params.InputProps,
                                             disableUnderline: true,
                                             sx: {
-                                                border: '1px solid rgb(232, 234, 242)',
-                                                borderRadius: '4px',
-                                                height: '3rem',
-                                                paddingLeft: '10px',
-                                                backgroundColor: 'rgb(245, 246, 250)',
-                                                '&:hover': {
-                                                    border: '1px solid green',
-                                                },
-                                                '&.Mui-focused': {
-                                                    border: '1px solid green',
-                                                    backgroundColor: 'white',
-                                                    outline: 'none',
-                                                },
+                                                ...styles.autocompleteStyle,
                                             },
                                         }}
                                     />
@@ -155,19 +183,7 @@ const AddUserModal = ({ show, onClose }) => {
                                                     ...params.InputProps,
                                                     disableUnderline: true,
                                                     sx: {
-                                                        border: '1px solid rgb(232, 234, 242)',
-                                                        borderRadius: '4px',
-                                                        height: '3rem',
-                                                        paddingLeft: '10px',
-                                                        backgroundColor: 'rgb(245, 246, 250)',
-                                                        '&:hover': {
-                                                            border: '1px solid green',
-                                                        },
-                                                        '&.Mui-focused': {
-                                                            border: '1px solid green',
-                                                            backgroundColor: 'white',
-                                                            outline: 'none',
-                                                        },
+                                                        ...styles.autocompleteStyle,
                                                     },
                                                 }}
                                             />
@@ -368,10 +384,8 @@ const UserManagement = () => {
         setIsModalTeamOpen(true);
     };
 
-
-
     //delete modal (teams table)
-    const handleOpenDeleteModal = () => {
+     const handleOpenDeleteModal = () => {
         setIsOpenDeleteModal(true);
     }
     const handleCloseDeleteModal = () => {
@@ -629,6 +643,7 @@ const UserManagement = () => {
                                 page={page}
                                 onPageChange={handleChangePage}
                                 onRowsPerPageChange={handleChangeRowPerPage}
+                             
                                 ActionsComponent={() => (
                                     <div className='tablepagination__action'>
 
@@ -652,27 +667,9 @@ const UserManagement = () => {
                                         </div>
                                     </div>
                                 )}
-                                sx={{
-                                    '.MuiTablePagination-displayedRows': {
-                                        fontSize: '1.2rem',
-                                        margin: '0px',
-                                        color: 'rgb(51, 51, 51)'
-                                    },
-                                    '.MuiSelect-nativeInput': {
-                                        padding: '0px 1rem',
-                                        height: '3rem',
-                                        margin: '0 0 8px 0px',
-                                    },
-                                    '.MuiInputBase-root': {
-                                        fontSize: '1.2rem',
-                                        paddingRight: '0',
-                                    },
-                                    '.MuiTablePagination-selectLabel': {
-                                        fontSize: '1.2rem',
-                                        margin: '0px',
-                                        color: 'rgb(51, 51, 51)',
-                                    },
-                                }}
+                              
+                                sx={styles.tablePaginationStyle}
+
                             />
                         </div>
                     </div>
