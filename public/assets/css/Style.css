@@ -350,9 +350,9 @@
         color: #23a455;
     } */
 
-    .msgCont .msgContL .solo a {
+    /* .msgCont .msgContL .solo a {
         color: #23a455;
-    }
+    } */
 
     .nav .lnav a:hover {
         color: #23a455;
@@ -466,8 +466,9 @@
 
     .msgCont {
         width: 100%;
+        /* height: calc(100vh); */
         display: flex;
-        /* font-family: "roboto-regular";  */
+        /* font-family: "roboto-regular"; */
     }
 
     .msgContL {
@@ -492,9 +493,24 @@
         cursor: pointer;
         font-size: .9rem;
     }
-
-    .msgContL .solo {
+    .msgContL .active svg {
         color: #23a455;
+    }
+    .msgContL .active svg path {
+        fill: #23a455; 
+        stroke: none; 
+    }
+    .solo{
+        color: rgb(102, 102, 102);
+    }
+    .msgContL .active svg path:not([fill]) {
+        stroke: #23a455; 
+        fill: none; 
+    }
+    .msgContL  .active {
+        color: #23a455;
+        border: none;
+    }
     }
 
     .msgContR {

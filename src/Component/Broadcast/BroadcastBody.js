@@ -10,6 +10,11 @@ import { CgArrowLongLeft } from "react-icons/cg";
 import { CgArrowLongRight } from "react-icons/cg";
 import Button from 'react-bootstrap/Button';
 import NewPopup from '../newpopup';
+import dayjs from "dayjs"; // Import dayjs for date handling
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TextField, Box, Divider, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 
 const BroadcastBody = () => {
@@ -52,33 +57,95 @@ const BroadcastBody = () => {
       setCheckedValues(checkedValues.filter(item => item !== value));
     }
   };
-  const [activeTab, setActiveTab] = useState("templateLibrary"); // Default to Template Library
+  const [activeTab, setActiveTab] = useState("Broadcast Analytics"); 
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+  const templates = [
+    {
+      id: 1,
+      title: 'Christmas Wishes',
+      category: 'Festival',
+      content: `Hi {{name}}! 🎄🎅\n\nWishing you a joyful and magical Christmas season!\n\nMay this festive season bring you and your loved ones endless happiness and countless blessings. Thank you for being our beloved customer!\n\nMerry Christmas and a Happy New Year! 🎉✨\n\nWarmest wishes,\n{{shop_name}}`
+    },
+    {
+      id: 2,
+      title: 'New Year Wishes',
+      category: 'Festival',
+      content: `Hey {{name}}! 🎉🎆\n\nAs we bid farewell to the old year and welcome the new one, we wanted to take a moment to thank you for your support and trust.\n\nWishing you a joyful and prosperous New Year filled with laughter, love, and exciting adventures!🥳✨\n\nBest wishes,\n{{shop_name}}`,
+      img: 'https://img.freepik.com/free-photo/new-year-background_24972-1409.jpg?t=st=1730998908~exp=1731002508~hmac=9f484971e6d37d12e5b179a0d5eaefd9898b90b9a33d36ce724be43a69a5a4dd&amp;w=1800" alt="https://img.freepik.com/free-photo/new-year-background_24972-1409.jpg?t=st=1730998908~exp=1731002508~hmac=9f484971e6d37d12e5b179a0d5eaefd9898b90b9a33d36ce724be43a69a5a4dd&amp;w=1800'
+    },
+    {
+      id: 3,
+      title: 'New Course Announcement',
+      category: 'Education',
+      content: `🎓 *New Course Available: {{Course_Name}}*\n\nDear {{name}},\n\nWe’re excited to announce that we are offering a new course: *{{Course_Name}}*! Here are the details:\n\n- 🗓️ Start Date: {{Date}}\n- ⏰ Duration: {{Time}}\n- 💻 Mode: {{online}}\n- 📚 Key Topics: Topic 1, Topic 2, Topic 3\n- 📝 How to Enroll: {{url}}\n\nSeats are limited, so make sure to enroll as soon as possible. If you have any questions, feel free to reply to this message.\n\nBest regards,\n{{Company_Name}}`
+    },
+    {
+      id: 4,
+      title: 'Daily Schedule',
+      category: 'Education',
+      content: `📚 *Good morning, {{name}}!*\n\nHere’s your schedule for today:\n- Subject 1: {{Time}} - {{Topic}}\n- Subject 2: {{Time}} - {{Topic}}\n- Additional subjects if needed\n\nMaterials required:\n- Material 1\n- Material 2\n\nMake sure you’re prepared! If you have any questions, feel free to ask.\n\nBest of luck! 👍`
+    },
+    {
+      id: 5,
+      title: 'E-Commerce Tips',
+      category: 'E-Commerce',
+      content: 'Boost your sales with these strategies.'
+    },
+    {
+      id: 6,
+      title: 'Summer Sale',
+      category: 'Others',
+      content: 'Check out our amazing summer sale!'
+    },
+  ];
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  };
+
+
+  const filteredTemplates =
+    selectedCategory === "All"
+      ? templates
+      : templates.filter((template) => template.category === selectedCategory);
+
+  const getCategoryCount = (category) => {
+    return templates.filter((template) => template.category === category).length;
+  };
+
+  const [dateFrom, setDateFrom] = useState(dayjs('12/11/2024')); 
+  const [dateTo, setDateTo] =  useState(dayjs('13/11/2024'));
+  const [range, setRange] = useState("custom");
+
+  const handleRangeChange = (event) => {
+    setRange(event.target.value);
+  };
   return (
-    <div className='main-wrapper broadcast_wrapper'>
+    <div className='maincontent broadcast_wrapper'>
       <div className='msgCont'>
-        <div className='msgContL'>
-          <li className='solo'>
-            <a onClick={() => handleTabClick("templateLibrary")}>
+        <div className='msgContL broadcast__left__content'>
+          <li className="solo">
+            <a onClick={() => handleTabClick("yourTemplate")}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.125C0 2.2962 0.32924 1.50134 0.915291 0.915291C1.50134 0.32924 2.2962 0 3.125 0H14.375C15.2038 0 15.9987 0.32924 16.5847 0.915291C17.1708 1.50134 17.5 2.2962 17.5 3.125V7.54375C17.293 7.51438 17.0841 7.49976 16.875 7.5H16.25V3.125C16.25 2.62772 16.0525 2.15081 15.7008 1.79917C15.3492 1.44754 14.8723 1.25 14.375 1.25H3.125C2.62772 1.25 2.15081 1.44754 1.79917 1.79917C1.44754 2.15081 1.25 2.62772 1.25 3.125V14.375C1.25 14.8723 1.44754 15.3492 1.79917 15.7008C2.15081 16.0525 2.62772 16.25 3.125 16.25H5V16.875C5 17.0875 5.015 17.2962 5.04375 17.5H3.125C2.2962 17.5 1.50134 17.1708 0.915291 16.5847C0.32924 15.9987 0 15.2038 0 14.375V3.125ZM13.75 6.875C13.75 7.04076 13.6842 7.19973 13.5669 7.31694C13.4497 7.43415 13.2908 7.5 13.125 7.5H6.875C6.70924 7.5 6.55027 7.43415 6.43306 7.31694C6.31585 7.19973 6.25 7.04076 6.25 6.875C6.25 6.70924 6.31585 6.55027 6.43306 6.43306C6.55027 6.31585 6.70924 6.25 6.875 6.25H13.125C13.2908 6.25 13.4497 6.31585 13.5669 6.43306C13.6842 6.55027 13.75 6.70924 13.75 6.875ZM3.75 4.375C3.75 4.20924 3.81585 4.05027 3.93306 3.93306C4.05027 3.81585 4.20924 3.75 4.375 3.75H13.125C13.2908 3.75 13.4497 3.81585 13.5669 3.93306C13.6842 4.05027 13.75 4.20924 13.75 4.375C13.75 4.54076 13.6842 4.69973 13.5669 4.81694C13.4497 4.93415 13.2908 5 13.125 5H4.375C4.20924 5 4.05027 4.93415 3.93306 4.81694C3.81585 4.69973 3.75 4.54076 3.75 4.375ZM6.25 11.875C6.25 11.0462 6.57924 10.2513 7.16529 9.66529C7.75134 9.07924 8.5462 8.75 9.375 8.75H16.875C17.7038 8.75 18.4987 9.07924 19.0847 9.66529C19.6708 10.2513 20 11.0462 20 11.875V16.875C20 17.7038 19.6708 18.4987 19.0847 19.0847C18.4987 19.6708 17.7038 20 16.875 20H9.375C8.5462 20 7.75134 19.6708 7.16529 19.0847C6.57924 18.4987 6.25 17.7038 6.25 16.875V11.875ZM9.375 10C8.93598 9.99991 8.51084 10.1539 8.17368 10.4351C7.83653 10.7163 7.60873 11.1068 7.53 11.5387L13.125 14.8962L18.72 11.5387C18.6413 11.1068 18.4135 10.7163 18.0763 10.4351C17.7392 10.1539 17.314 9.99991 16.875 10H9.375ZM7.5 16.875C7.5 17.3723 7.69754 17.8492 8.04917 18.2008C8.40081 18.5525 8.87772 18.75 9.375 18.75H16.875C17.3723 18.75 17.8492 18.5525 18.2008 18.2008C18.5525 17.8492 18.75 17.3723 18.75 16.875V12.9788L13.4462 16.1612C13.3492 16.2194 13.2382 16.2501 13.125 16.2501C13.0118 16.2501 12.9008 16.2194 12.8038 16.1612L7.5 12.9788V16.875Z" fill="#666"></path></svg>
               <span className="templateMessagesSvg">Template Messages</span>
             </a>
             <div className="templateContent">
-              <a onClick={() => handleTabClick("templateLibrary")}>
+              <a onClick={() => handleTabClick("templateLibrary")} className={` ${activeTab === "templateLibrary" ? "active" : ""}`}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.125C0 2.2962 0.32924 1.50134 0.915291 0.915291C1.50134 0.32924 2.2962 0 3.125 0H14.375C15.2038 0 15.9987 0.32924 16.5847 0.915291C17.1708 1.50134 17.5 2.2962 17.5 3.125V7.54375C17.293 7.51438 17.0841 7.49976 16.875 7.5H16.25V3.125C16.25 2.62772 16.0525 2.15081 15.7008 1.79917C15.3492 1.44754 14.8723 1.25 14.375 1.25H3.125C2.62772 1.25 2.15081 1.44754 1.79917 1.79917C1.44754 2.15081 1.25 2.62772 1.25 3.125V14.375C1.25 14.8723 1.44754 15.3492 1.79917 15.7008C2.15081 16.0525 2.62772 16.25 3.125 16.25H5V16.875C5 17.0875 5.015 17.2962 5.04375 17.5H3.125C2.2962 17.5 1.50134 17.1708 0.915291 16.5847C0.32924 15.9987 0 15.2038 0 14.375V3.125ZM13.75 6.875C13.75 7.04076 13.6842 7.19973 13.5669 7.31694C13.4497 7.43415 13.2908 7.5 13.125 7.5H6.875C6.70924 7.5 6.55027 7.43415 6.43306 7.31694C6.31585 7.19973 6.25 7.04076 6.25 6.875C6.25 6.70924 6.31585 6.55027 6.43306 6.43306C6.55027 6.31585 6.70924 6.25 6.875 6.25H13.125C13.2908 6.25 13.4497 6.31585 13.5669 6.43306C13.6842 6.55027 13.75 6.70924 13.75 6.875ZM3.75 4.375C3.75 4.20924 3.81585 4.05027 3.93306 3.93306C4.05027 3.81585 4.20924 3.75 4.375 3.75H13.125C13.2908 3.75 13.4497 3.81585 13.5669 3.93306C13.6842 4.05027 13.75 4.20924 13.75 4.375C13.75 4.54076 13.6842 4.69973 13.5669 4.81694C13.4497 4.93415 13.2908 5 13.125 5H4.375C4.20924 5 4.05027 4.93415 3.93306 4.81694C3.81585 4.69973 3.75 4.54076 3.75 4.375ZM6.25 11.875C6.25 11.0462 6.57924 10.2513 7.16529 9.66529C7.75134 9.07924 8.5462 8.75 9.375 8.75H16.875C17.7038 8.75 18.4987 9.07924 19.0847 9.66529C19.6708 10.2513 20 11.0462 20 11.875V16.875C20 17.7038 19.6708 18.4987 19.0847 19.0847C18.4987 19.6708 17.7038 20 16.875 20H9.375C8.5462 20 7.75134 19.6708 7.16529 19.0847C6.57924 18.4987 6.25 17.7038 6.25 16.875V11.875ZM9.375 10C8.93598 9.99991 8.51084 10.1539 8.17368 10.4351C7.83653 10.7163 7.60873 11.1068 7.53 11.5387L13.125 14.8962L18.72 11.5387C18.6413 11.1068 18.4135 10.7163 18.0763 10.4351C17.7392 10.1539 17.314 9.99991 16.875 10H9.375ZM7.5 16.875C7.5 17.3723 7.69754 17.8492 8.04917 18.2008C8.40081 18.5525 8.87772 18.75 9.375 18.75H16.875C17.3723 18.75 17.8492 18.5525 18.2008 18.2008C18.5525 17.8492 18.75 17.3723 18.75 16.875V12.9788L13.4462 16.1612C13.3492 16.2194 13.2382 16.2501 13.125 16.2501C13.0118 16.2501 12.9008 16.2194 12.8038 16.1612L7.5 12.9788V16.875Z" fill="#666"></path></svg>
                 <span className="templateMessagesSvg">Template Library</span>
               </a>
-              <a  onClick={() => handleTabClick("yourTemplate")}>
+              <a  onClick={() => handleTabClick("yourTemplate")} className={` ${activeTab === "yourTemplate" ? "active" : ""}`}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.125C0 2.2962 0.32924 1.50134 0.915291 0.915291C1.50134 0.32924 2.2962 0 3.125 0H14.375C15.2038 0 15.9987 0.32924 16.5847 0.915291C17.1708 1.50134 17.5 2.2962 17.5 3.125V7.54375C17.293 7.51438 17.0841 7.49976 16.875 7.5H16.25V3.125C16.25 2.62772 16.0525 2.15081 15.7008 1.79917C15.3492 1.44754 14.8723 1.25 14.375 1.25H3.125C2.62772 1.25 2.15081 1.44754 1.79917 1.79917C1.44754 2.15081 1.25 2.62772 1.25 3.125V14.375C1.25 14.8723 1.44754 15.3492 1.79917 15.7008C2.15081 16.0525 2.62772 16.25 3.125 16.25H5V16.875C5 17.0875 5.015 17.2962 5.04375 17.5H3.125C2.2962 17.5 1.50134 17.1708 0.915291 16.5847C0.32924 15.9987 0 15.2038 0 14.375V3.125ZM13.75 6.875C13.75 7.04076 13.6842 7.19973 13.5669 7.31694C13.4497 7.43415 13.2908 7.5 13.125 7.5H6.875C6.70924 7.5 6.55027 7.43415 6.43306 7.31694C6.31585 7.19973 6.25 7.04076 6.25 6.875C6.25 6.70924 6.31585 6.55027 6.43306 6.43306C6.55027 6.31585 6.70924 6.25 6.875 6.25H13.125C13.2908 6.25 13.4497 6.31585 13.5669 6.43306C13.6842 6.55027 13.75 6.70924 13.75 6.875ZM3.75 4.375C3.75 4.20924 3.81585 4.05027 3.93306 3.93306C4.05027 3.81585 4.20924 3.75 4.375 3.75H13.125C13.2908 3.75 13.4497 3.81585 13.5669 3.93306C13.6842 4.05027 13.75 4.20924 13.75 4.375C13.75 4.54076 13.6842 4.69973 13.5669 4.81694C13.4497 4.93415 13.2908 5 13.125 5H4.375C4.20924 5 4.05027 4.93415 3.93306 4.81694C3.81585 4.69973 3.75 4.54076 3.75 4.375ZM6.25 11.875C6.25 11.0462 6.57924 10.2513 7.16529 9.66529C7.75134 9.07924 8.5462 8.75 9.375 8.75H16.875C17.7038 8.75 18.4987 9.07924 19.0847 9.66529C19.6708 10.2513 20 11.0462 20 11.875V16.875C20 17.7038 19.6708 18.4987 19.0847 19.0847C18.4987 19.6708 17.7038 20 16.875 20H9.375C8.5462 20 7.75134 19.6708 7.16529 19.0847C6.57924 18.4987 6.25 17.7038 6.25 16.875V11.875ZM9.375 10C8.93598 9.99991 8.51084 10.1539 8.17368 10.4351C7.83653 10.7163 7.60873 11.1068 7.53 11.5387L13.125 14.8962L18.72 11.5387C18.6413 11.1068 18.4135 10.7163 18.0763 10.4351C17.7392 10.1539 17.314 9.99991 16.875 10H9.375ZM7.5 16.875C7.5 17.3723 7.69754 17.8492 8.04917 18.2008C8.40081 18.5525 8.87772 18.75 9.375 18.75H16.875C17.3723 18.75 17.8492 18.5525 18.2008 18.2008C18.5525 17.8492 18.75 17.3723 18.75 16.875V12.9788L13.4462 16.1612C13.3492 16.2194 13.2382 16.2501 13.125 16.2501C13.0118 16.2501 12.9008 16.2194 12.8038 16.1612L7.5 12.9788V16.875Z" fill="#666"></path></svg>
                 <span className="templateMessagesSvg">Your Template</span>
               </a>
             </div>
           </li>
-          <li><a><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.0312 9.67641V9.98707L10.2509 10.2067L13.095 13.0508C13.1073 13.0631 13.1072 13.0828 13.0951 13.095L13.095 13.095C13.0828 13.1072 13.063 13.1072 13.0508 13.095L9.97791 10.0221L9.97784 10.022C9.97207 10.0163 9.96875 10.0083 9.96875 10V5.39062C9.96875 5.37335 9.98273 5.35938 10 5.35938C10.0173 5.35938 10.0312 5.37335 10.0312 5.39062V9.67641ZM1.63473 1.69836V3.34451L2.87688 2.2643C4.02874 1.26261 5.46716 0.75 6.92707 0.75H13.0729C16.4783 0.75 19.25 3.52167 19.25 6.92707V13.0729C19.25 16.4783 16.4783 19.25 13.0729 19.25H6.92707C3.52167 19.25 0.75 16.4783 0.75 13.0729V10C0.75 9.98273 0.763979 9.96875 0.78125 9.96875C0.798521 9.96875 0.8125 9.98273 0.8125 10V13.0729C0.8125 16.4452 3.55481 19.1875 6.92707 19.1875H13.0729C16.4452 19.1875 19.1875 16.4452 19.1875 13.0729V6.92707C19.1875 3.55481 16.4452 0.8125 13.0729 0.8125H6.92707C5.32361 0.8125 3.80341 1.448 2.67801 2.53299L1.57223 3.59907V0.78125C1.57223 0.763979 1.58621 0.75 1.60348 0.75C1.62075 0.75 1.63473 0.763979 1.63473 0.78125V1.69836ZM1.57223 3.85418V3.82293H3.19855H4.67641C4.69368 3.82293 4.70766 3.83691 4.70766 3.85418C4.70766 3.87145 4.69368 3.88543 4.67641 3.88543H1.60348C1.59706 3.88543 1.58965 3.8834 1.5818 3.87558C1.57797 3.87175 1.57553 3.86783 1.57417 3.86465C1.57305 3.86202 1.57223 3.85897 1.57223 3.85418Z" stroke="#666" stroke-width="1.5"></path></svg><span className="svgSpan">Broadcast Analytics</span></a></li>
-          <li><a><svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3035 20.125H4.79167C4.28333 20.125 3.79582 19.923 3.43638 19.5636C3.07693 19.2041 2.875 18.7166 2.875 18.2083V6.70829C2.875 6.19996 3.07693 5.71245 3.43638 5.353C3.79582 4.99356 4.28333 4.79163 4.79167 4.79163H16.2917C16.8 4.79163 17.2875 4.99356 17.647 5.353C18.0064 5.71245 18.2083 6.19996 18.2083 6.70829V10.5416" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.2474 21.0833C19.3645 21.0833 21.0807 19.3671 21.0807 17.25C21.0807 15.1329 19.3645 13.4166 17.2474 13.4166C15.1303 13.4166 13.4141 15.1329 13.4141 17.25C13.4141 19.3671 15.1303 21.0833 17.2474 21.0833Z" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.375 2.875V6.70833" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.71094 2.875V6.70833" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.875 10.5416H18.2083" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.25 15.8087V17.25L18.2083 18.2083" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span className="templateMessagesSvg">Scheduled Broadcasts</span></a></li>
+          <li className="solo"><a  onClick={() => handleTabClick("Broadcast Analytics")} className={` ${activeTab === "Broadcast Analytics" ? "active" : ""}`}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.0312 9.67641V9.98707L10.2509 10.2067L13.095 13.0508C13.1073 13.0631 13.1072 13.0828 13.0951 13.095L13.095 13.095C13.0828 13.1072 13.063 13.1072 13.0508 13.095L9.97791 10.0221L9.97784 10.022C9.97207 10.0163 9.96875 10.0083 9.96875 10V5.39062C9.96875 5.37335 9.98273 5.35938 10 5.35938C10.0173 5.35938 10.0312 5.37335 10.0312 5.39062V9.67641ZM1.63473 1.69836V3.34451L2.87688 2.2643C4.02874 1.26261 5.46716 0.75 6.92707 0.75H13.0729C16.4783 0.75 19.25 3.52167 19.25 6.92707V13.0729C19.25 16.4783 16.4783 19.25 13.0729 19.25H6.92707C3.52167 19.25 0.75 16.4783 0.75 13.0729V10C0.75 9.98273 0.763979 9.96875 0.78125 9.96875C0.798521 9.96875 0.8125 9.98273 0.8125 10V13.0729C0.8125 16.4452 3.55481 19.1875 6.92707 19.1875H13.0729C16.4452 19.1875 19.1875 16.4452 19.1875 13.0729V6.92707C19.1875 3.55481 16.4452 0.8125 13.0729 0.8125H6.92707C5.32361 0.8125 3.80341 1.448 2.67801 2.53299L1.57223 3.59907V0.78125C1.57223 0.763979 1.58621 0.75 1.60348 0.75C1.62075 0.75 1.63473 0.763979 1.63473 0.78125V1.69836ZM1.57223 3.85418V3.82293H3.19855H4.67641C4.69368 3.82293 4.70766 3.83691 4.70766 3.85418C4.70766 3.87145 4.69368 3.88543 4.67641 3.88543H1.60348C1.59706 3.88543 1.58965 3.8834 1.5818 3.87558C1.57797 3.87175 1.57553 3.86783 1.57417 3.86465C1.57305 3.86202 1.57223 3.85897 1.57223 3.85418Z" stroke="#666" stroke-width="1.5"></path></svg><span className="svgSpan">Broadcast Analytics</span></a></li>
+          <li className="solo"><a  onClick={() => handleTabClick("Scheduled Broadcasts")} className={` ${activeTab === "Scheduled Broadcasts" ? "active" : ""}`}><svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3035 20.125H4.79167C4.28333 20.125 3.79582 19.923 3.43638 19.5636C3.07693 19.2041 2.875 18.7166 2.875 18.2083V6.70829C2.875 6.19996 3.07693 5.71245 3.43638 5.353C3.79582 4.99356 4.28333 4.79163 4.79167 4.79163H16.2917C16.8 4.79163 17.2875 4.99356 17.647 5.353C18.0064 5.71245 18.2083 6.19996 18.2083 6.70829V10.5416" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.2474 21.0833C19.3645 21.0833 21.0807 19.3671 21.0807 17.25C21.0807 15.1329 19.3645 13.4166 17.2474 13.4166C15.1303 13.4166 13.4141 15.1329 13.4141 17.25C13.4141 19.3671 15.1303 21.0833 17.2474 21.0833Z" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M14.375 2.875V6.70833" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.71094 2.875V6.70833" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.875 10.5416H18.2083" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.25 15.8087V17.25L18.2083 18.2083" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span className="templateMessagesSvg">Scheduled Broadcasts</span></a></li>
         </div>
        
         {activeTab === "yourTemplate" && (
@@ -337,37 +404,54 @@ const BroadcastBody = () => {
                 </div>
               </div>
             </div>
+            
             <div className="template-navigation-wrapper">
               <div className="template-navigation">
-                <nav
-                  role="navigation"
-                  aria-label="Template Filter"
-                  className="template-nav"
-                >
+                <nav role="navigation" aria-label="Template Filter" className="template-nav">
                   <ul className="template-nav-list">
-                    <li className="template-nav-item active">
+                    <li
+                      className={`template-nav-item ${selectedCategory === "All" ? "activeBroad" : ""}`}
+                      onClick={() => handleCategoryClick("All")}
+                    >
                       <div className="template-tab">
-                        All<span className="template-count selected">12</span>
+                        All
+                        <span className="template-count">{templates.length}</span>
                       </div>
                     </li>
-                    <li className="template-nav-item">
+                    <li
+                      className={`template-nav-item ${selectedCategory === "Festival" ? "activeBroad" : ""}`}
+                      onClick={() => handleCategoryClick("Festival")}
+                    >
                       <div className="template-tab">
-                        Festival<span className="template-count">3</span>
+                        Festival
+                        <span className="template-count">{getCategoryCount("Festival")}</span>
                       </div>
                     </li>
-                    <li className="template-nav-item">
+                    <li
+                      className={`template-nav-item ${selectedCategory === "Education" ? "activeBroad" : ""}`}
+                      onClick={() => handleCategoryClick("Education")}
+                    >
                       <div className="template-tab">
-                        Education<span className="template-count">4</span>
+                        Education
+                        <span className="template-count">{getCategoryCount("Education")}</span>
                       </div>
                     </li>
-                    <li className="template-nav-item">
+                    <li
+                      className={`template-nav-item ${selectedCategory === "E-Commerce" ? "activeBroad" : ""}`}
+                      onClick={() => handleCategoryClick("E-Commerce")}
+                    >
                       <div className="template-tab">
-                        E-Commerce<span className="template-count">1</span>
+                        E-Commerce
+                        <span className="template-count">{getCategoryCount("E-Commerce")}</span>
                       </div>
                     </li>
-                    <li className="template-nav-item">
+                    <li
+                      className={`template-nav-item ${selectedCategory === "Others" ? "activeBroad" : ""}`}
+                      onClick={() => handleCategoryClick("Others")}
+                    >
                       <div className="template-tab">
-                        Others<span className="template-count">5</span>
+                        Others
+                        <span className="template-count">{getCategoryCount("Others")}</span>
                       </div>
                     </li>
                   </ul>
@@ -378,7 +462,7 @@ const BroadcastBody = () => {
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="search-input"
+                    className="search-input template_Search_input"
                     aria-label="Search Templates"
                   />
                   <button className="search-icon">
@@ -400,8 +484,188 @@ const BroadcastBody = () => {
                 </div>
               </div>
             </div>
+            <div className="template-card-container">
+              <div className="template__template">
+                <div className="template-card-section">
+                  {/* Map over filtered templates to display cards */}
+                  {filteredTemplates.map(template => (
+                    <div key={template.id} className="template-cards">
+                      <div className="template_card-wrapper"> 
+                     
+                      {template.img && (
+                         <div class="template_card-top-wrapper">
+                          <img src={template.img} alt={template.title} className="background-image" />
+                        </div>
+                      )}
+                     
+                      <div className="template_card-wrapper-content">
+                        <div className="template_header-content">
+                          <h4>{template.title}</h4>
+                          <span className="template_label">{template.category}</span>
+                        </div>
+                        <p className="template_content">
+                        {template.content
+                          .replace('{{name}}', 'John Doe')
+                          .replace('{{shop_name}}', 'Your Shop')
+                          .split('\n')
+                          .map((line, index) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
+                        </p>
+                        <div className="template_button-container">
+                          <button className="template_use-sample-btn">Use sample</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
           </>
+        )}
+        {activeTab === "Broadcast Analytics" && (
+          <> 
+            <div className='msgContR Broadcast-container'>
+              <div className="date-range-filter">
+                <div className="datepicker-container">
+                  <div className="header-bar">
+                    <div className="header-bar__label">
+                      <h3 className="header-bar__name">Date Range Filter</h3>
+                    </div>
+                    <div class="header-bottom-label"></div>
+                  </div>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} >
+                    <Box className="date-picker-section"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: 2,
+                        border: "1px solid #e0e0e0",
+                        borderRadius: "8px",
+                      }}
+                    >
+                        <DatePicker
+                          className="datecontent datepicker"
+                          label="Date picker from"
+                          value={dateFrom}
+                          onChange={(newValue) => setDateFrom(newValue)} 
+                          
+                        />
+                        <DatePicker
+                         className='datepicker'
+                          label="Date picker to"
+                          value={dateTo}
+                          onChange={(newValue) => setDateTo(newValue)}
+                         
+                        />
+                        <FormControl variant="standard" fullWidth>
+                          <InputLabel id="date-range-label">Period</InputLabel>
+                          <Select
+                            labelId="date-range-label"
+                            value={range}
+                            onChange={handleRangeChange}
+                            fullWidth
+                          >
+                            <MenuItem value="custom">Custom range</MenuItem>
+                            <MenuItem value="last7days">Last 7 Days</MenuItem>
+                            <MenuItem value="last30days">Last 30 Days</MenuItem>
+                          </Select>
+                        </FormControl>
+
+                    </Box>
+                  </LocalizationProvider>
+                  {/* <div className="datepickers-container">
+                    <div className="datepicker">
+                      <label htmlFor="datepicker1" className="datepicker__label">Date Picker From</label>
+                      <div className="datepicker__input-container">
+                        <input
+                          id="datepicker1"
+                          type="text"
+                          placeholder="MM/DD/YYYY"
+                          className="datepicker__input"
+                          value="12/03/2024"
+                        />
+                        <button className="datepicker__icon" aria-label="Choose date, selected date is Dec 3, 2024">
+                          <span className="icon"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="datepicker">
+                      <label htmlFor="datepicker2" className="datepicker__label">Date Picker To</label>
+                      <div className="datepicker__input-container">
+                        <input
+                          id="datepicker2"
+                          type="text"
+                          placeholder="MM/DD/YYYY"
+                          className="datepicker__input"
+                          value="12/10/2024"
+                        />
+                        <button className="datepicker__icon" aria-label="Choose date, selected date is Dec 10, 2024">
+                          <span className="icon"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="date-range-dropdown">
+                      <label className="date-range-dropdown__label">Period</label>
+                      <div className="date-range-dropdown__select">
+                        <div role="combobox" aria-expanded="false" className="dropdown">
+                          Last 7 days
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
+                </div>
+                {/* <div className="buttons-container">
+                  <button className="apply-button" data-testid="apply-now-button">Apply Now</button>
+                  <button className="export-button" data-testid="export-button">Export</button>
+                </div>
+                <div className="new-broadcast">
+                  <a
+                    href="https://www.youtube.com/watch?v=CWCk7iDNG3Y"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="watch-tutorial"
+                  >
+                    <span className="watch-tutorial__text">Watch Tutorial</span>
+                  </a>
+                  <button className="new-broadcast__button" data-testid="new-broadcast-button">
+                    New Broadcast
+                  </button>
+                </div>
+                <div className="messaging-limit">
+                  <span>Messaging Limit: <strong>1000 Unique Contacts/24 Hours</strong></span>
+                  <a
+                    href="https://developers.facebook.com/docs/whatsapp/api/rate-limits#quality-rating-and-messaging-limits"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="messaging-limit__link"
+                  >
+                    Learn More
+                  </a>
+                </div>
+                <div className="overview">
+                  <h3 className="overview__header">Overview</h3>
+                  <div className="overview__info">
+                    {["Sent", "Delivered", "Read", "Replied", "Sending", "Failed", "Processing", "Queued"].map((title, index) => (
+                      <div key={index} className="info-box">
+                        <div className="info-box__left">
+                          <div className="info-box__count">0</div>
+                          <div className="info-box__title">{title}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div> */}
+              </div>
+            </div>
+           </>
         )}
         </div>
       </div>
