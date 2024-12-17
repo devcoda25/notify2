@@ -146,8 +146,7 @@
     top: 65px;
     /* padding:0px 0px 0px 20px; */
     padding: 0px;
-    /* margin: 0 20px; */
-    margin:0px;
+    margin: 0 20px;
     display: block;
     background: #f5f6fa;
     border-top-left-radius: 25px;
@@ -362,7 +361,7 @@
     .msgCont .msgContL a:hover {
         color: #23a455;
     }
-
+   
     .navList {
         display: flex;
     }
@@ -511,6 +510,19 @@
     .msgContL  .active {
         color: #23a455;
         border: none;
+    }
+
+    .msgCont .msgContL a:hover svg path[fill] {
+        fill: #23a455; 
+        /* stroke: #23a455;  */
+    }
+
+    .msgCont .msgContL a:hover svg path[stroke] {
+        stroke: #23a455; 
+    }
+    
+    .msgCont .msgContL a:hover {
+        color: #23a455 !important; 
     }
     }
 
