@@ -5,7 +5,9 @@
     width: 256px !important;
 }
 .main-content {
-    padding: 40px 30px 30px 280px;
+    /* padding: 40px 30px 30px 280px; */
+    padding:0px
+ 
 }
 .weather-infos {
     padding: 0 20px;
@@ -38,7 +40,8 @@
     padding: 35px 20px;
 }
 .support-ticket-sec {
-    padding: 10px 0 14px 20px;
+    /* padding: 10px 0 14px 20px; */
+    padding: 10px 0 14px 0px;
 }
 .support-ticket > li {
     padding: 20px 10px 20px 0;

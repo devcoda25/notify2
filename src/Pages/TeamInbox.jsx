@@ -104,7 +104,8 @@ const TeamInbox = () => {
                                                                 <label className="c-label">CC</label>
                                                                 <input className="input-style" type="text" placeholder="To" />
                                                             </div>
-                                                            <textarea placeholder="What are you doing right now?"></textarea>
+                                                            <textarea className='teaminbox_textarea'
+                                                             placeholder="What are you doing right now?"></textarea>
                                                             <ul>
                                                                 <li><a title="Audio" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-bold"></i></a></li>
                                                                 <li><a title="Video" data-toggle="tooltip" data-placement="bottom"><i className="fa fa-italic"></i></a></li>

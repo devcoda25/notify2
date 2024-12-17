@@ -468,7 +468,8 @@
   left: -20px;
   z-index: 99999; */
   position: absolute;
-  left: -13px;
+  /* left: -13px; */
+  left:1px;
   width: 24px;
   min-height: 100%;
   border-top-left-radius: 10px;
@@ -484,7 +485,9 @@
   }
 
   .ticketview {
-   width: 65% !important;
+   /* width: 65% !important; */
+   width: 61% !important;
+  
   }
 }
 
@@ -493,7 +496,9 @@
     left: 225px;
   }
   .main-content {
-    width: 80%;
+    /* width: 80%; */
+    width:78%;
+   
   }
 
   .ticketview {

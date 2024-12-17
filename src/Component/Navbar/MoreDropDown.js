@@ -17,7 +17,7 @@ function MoreDropDown() {
         <Dropdown.Item href="#/action-2"><MdOutlineSettingsSuggest /> Integrations</Dropdown.Item>
         <Dropdown.Item href="#/action-3"><MdOutlineWebhook /> Webhooks</Dropdown.Item>
         <Dropdown.Item href="#/action-4"><TiLink /> Commerce</Dropdown.Item>
-        <Dropdown.Item href="account-details"><TbListDetails /> Account Details</Dropdown.Item>
+        <Dropdown.Item href="AccountDetails"><TbListDetails /> Account Details</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

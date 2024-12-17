@@ -2445,11 +2445,13 @@ body.modal-open header {
 .support-ticket-sec {
   float: left;
   /* padding: 20px 0 20px 20px; */
-  width: 96%;
+  /* width: 96%; */
+  width: 94%;
   background: #fff;
-  margin:15px;
+  /* margin:15px; */
   border-radius: 15px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+ margin:15px 0px 0px 30px;
 }
 
 .support-ticket {
@@ -3359,6 +3361,10 @@ canvas.website-stats {
 
 .status-upload form button>i {
   margin-right: 7px;
+}
+.status-upload .teaminbox_textarea:focus,.status-upload .input-style:focus{
+border: none !important;
+outline: none !important;
 }
 
 /* Mini Profile Widget */
@@ -4519,8 +4525,10 @@ canvas.website-stats {
 /* Timeline */
 .timeline-sec {
   float: left;
-  width: 96%;
-  margin:0 15px;
+  /* width: 96%;
+  margin:0 15px; */
+  width:94%;
+  margin-left: 30px;
 }
 
 .timeline-sec>ul {
