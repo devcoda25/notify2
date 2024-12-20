@@ -641,7 +641,7 @@ const BroadcastBody = () => {
       setCheckedValues(checkedValues.filter(item => item !== value));
     }
   };
-  const [activeTab, setActiveTab] = useState("Scheduled Broadcasts"); 
+  const [activeTab, setActiveTab] = useState("yourTemplate"); 
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
