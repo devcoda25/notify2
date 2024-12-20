@@ -103,7 +103,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.1rem 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(232, 234, 242);
   border-radius: 4px;
   background-color: #fff;
 }
@@ -158,10 +158,9 @@
 
 
 .custom-search-input-container {
-  border: 1px solid #ccc;
+  border: 1px solid rgb(232, 234, 242);
   border-radius: 4px; 
   background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .custom-input-wrap {
@@ -541,6 +540,7 @@
 }
 .Modal-popup-header .Modal-Popup-title{
   margin: 0;
+  color: #000;
   font-size: 15px !important;
   font-weight: 600 !important;
   line-height: 22px !important;
@@ -820,7 +820,7 @@
   height: 36px;
   min-width: 100px;
   padding: .78571429em 1.5em;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1em;
   font-size:13px;
   border-radius: .28571429rem;
@@ -1063,10 +1063,10 @@
    margin:0; 
 }
 
-.Modal-popup-footer button:hover {
+/* .Modal-popup-footer button:hover {
   background-color: #218838;
   color: #fff;
-}
+} */
 .custom-attributes .error-message{
   color: rgb(255, 14, 14);
   margin-bottom:5px;
@@ -1130,6 +1130,7 @@
   color: #23a455!important;
   padding: 0.5rem 1.5rem!important;
   width: 140px !important;
+  font-size: 12px;
 }
 .add-attribute-btn:hover {
   color: rgb(35, 164, 85);
@@ -1842,6 +1843,7 @@
   display: flex;
   flex-direction: column;
   padding: 0px 16px;
+  height: 100vh;
 }
 .template-library-wrapper {
 
@@ -1864,8 +1866,8 @@
 }
 
 .template-library-guideline {
-  color: #555;
-  font-size: 16px;
+  color: #000;
+  font-size: 17px;
 }
 
 .template-library-link {
@@ -2190,6 +2192,8 @@
   display: flex;
   flex-direction: column;
   background: white !important;
+  overflow-y: scroll;
+    height: 90vh;
 }
 .datepicker-container .header-bar{
   height: 75px;
@@ -2543,11 +2547,38 @@
 .broadcast-modal-container .filter-item {
   height: 32px;
 }
-
+.Template__Sumbit_popup .add-submit-btn {
+  background: rgba(35, 164, 85, 0.05) !important;
+  color: #23a455 !important;
+  padding: 0.5rem 1.5rem !important;
+  width: 100px !important;
+  font-size: 14px;
+  margin-right: 10px !important;
+  height: 40px;
+}
+.Template__Sumbit_popup .warning-message {
+  display: flex;
+  gap: 8px;
+  background-color: rgb(255, 243, 215);
+  border-radius: 3px;
+  padding: 5px 8px;
+  margin-top: 15px;
+  color: rgb(68, 68, 68);
+}
+.Template__Sumbit_popup  .warning-message svg {
+  height: 18px;
+}
+.Template__Sumbit_popup  .warning-message svg path, .Template__Sumbit_popup  .warning-message svg circle {
+  stroke: rgb(255, 185, 6);
+}
 .broadcast-modal-container .broadcast-lable-text{
   margin-left: 10px;
 }
-
+.broadcast-modal-container{
+  height: 280px;
+  overflow: auto;
+  padding-bottom: 20px;
+}
 
 
 .Broadcast-popup-Modal-section .broadcast-pagination{
@@ -2576,6 +2607,31 @@
 }
 .broadcast__table__Head th,.broadcast__table__body td{
   border-bottom: none;
+}
+.broadcast__table__body  .body-cell__name{
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: rgb(27, 116, 227);
+  cursor: pointer;
+}
+.broadcast__table__body  .body-cell__value {
+  display: flex;
+  justify-content: start;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  color: rgb(153, 153, 153);
+}
+.broadcast__table__body  .MuiTableCell-root {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: rgb(51, 51, 51);
+  font-weight: 400;
+  font-size: 1.2rem;
+  text-align: left;
+  border: none;
+  padding: 0px;
 }
 .broadcast__table__Head .MuiTableCell-root:first-child {
   width: 200px;
@@ -2993,4 +3049,250 @@
 .scheduled-row .row-actions .cell__delete:focus svg [stroke], 
 .scheduled-row .row-actions .cell__delete:active svg [stroke] {
   stroke: rgb(255, 14, 14);
+}
+.edit__Broadcast__popup{
+  max-width: 950px;
+}
+.broadcast-Modal-Main .broadcast__input_name_container{
+  margin-bottom: 20px;
+  position: relative;
+  isolation: isolate;
+}
+.broadcast-Modal-Main .broadcast-name__title{
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  margin-bottom: 10px;
+  color: rgb(51, 51, 51);
+  font-size: 14px;
+  font-weight: 600;
+}
+.broadcast-Modal-Main .broadcast-name__input {
+  width: 100%;
+}
+.broadcast-name__input input[type="text"]:not(.browser-default), 
+.broadcast-name__input input[type="password"]:not(.browser-default), 
+.broadcast-name__input input[type="number"]:not(.browser-default) {
+  box-sizing: border-box;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(255, 255, 255);
+  border-radius: 5px;
+}
+.broadcast-name__input input[type="text"]:not(.browser-default):focus:not([readonly]),
+.broadcast-name__input input[type="password"]:not(.browser-default):focus:not([readonly]), 
+.broadcast-name__input input[type="number"]:not(.browser-default):focus:not([readonly]) {
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(35, 164, 85);
+  box-shadow: none;
+}
+.your__template_top_section{
+  /* display: flex;
+  justify-content: space-between;
+  align-items: center; */
+  padding: 12px 16px 28px;
+  flex-wrap: wrap;
+  background-color: rgb(245, 246, 250);
+}
+.your__template_left_section{
+  display: flex;
+  min-width: 750px;
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 15px;
+  margin-top: 20px; 
+}
+.your__template_left_section .custom-export-import{
+  margin-left: auto;
+  margin-right: 0px;
+}
+.template__table-container{
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 0px 2rem;
+  height: 100%;
+}
+.template__table__Head .MuiTableCell-root:first-child {
+  padding-left: 0px;
+  text-align: left;
+}
+.template__table__Head .MuiTableCell-root {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: rgb(51, 51, 51);
+  border-bottom: 1px solid rgb(224, 224, 224);
+  font-weight: 600;
+  font-size: 1.28rem;
+  line-height: 27px;
+  padding: 2rem 10px;
+  text-align: center;
+}
+.template__table__Head .MuiTableCell-root:last-child {
+  width: 210px;
+}
+.template__table__body .list-table__cell_first {
+  margin-left: 7px;
+  color: rgb(27, 116, 227);
+  cursor: pointer;
+}
+.template__table__body .MuiTableCell-root:first-child {
+  padding-left: 0px;
+  text-align: left;
+}
+.template__table__body .list-table__cell_actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 280px;
+  padding: 1.5rem 0px 1.5rem 10px !important;
+}
+.template__table__body .MuiTableCell-root {
+  border-bottom: none;
+  padding: 1.5rem 5px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: rgb(51, 51, 51);
+  font-size: 1.2rem;
+  line-height: 25px;
+  text-align: center;
+}
+.template__table__body .list-table__cell_line{
+  height: 10px;
+  width: 1px;
+  border: 0px;
+  margin: 0px;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.3;
+}
+.template__table__body .save_action_btn{
+  height: 32px;
+  font-size: 12px;
+  line-height: 1;
+  margin: 0px;
+  vertical-align: top;
+}
+.template__table__body  .message-badge_draft {
+  background-color: rgb(255, 247, 228);
+  color: rgb(255, 185, 6);
+}
+.template__table__body .message-badge span {
+  margin-left: 0px;
+}
+.template__table__body  .message-badge_approved {
+  background-color: rgb(233, 246, 238);
+  color: rgb(35, 164, 85);
+}
+.your-template-filter .custom-filter-button{
+  width: 32px;
+  height: 32px;
+  margin: 0px 20px 0px 20px;
+  background-color: rgb(35, 164, 85) !important;
+  border-radius: 8px !important;
+}
+.custom-filter-button .filter-button  .MuiBadge-badge {
+  background-color: rgb(232, 42, 42);
+  color: #fff;
+}
+
+.your-template-filter .custom-filter-button svg{
+  width: 16px;
+  height: 16px;
+}
+.template__table__body  .message-badge {
+  margin: 0px auto;
+  width: calc(12.5rem);
+  max-width: 100%;
+  height: calc(3rem);
+  display: block;
+  border-radius: 100px;
+  font-size: calc(1.21429rem);
+  line-height: calc(3rem);
+  padding: 0px 12px;
+  text-transform: lowercase;
+  text-align: center;
+}
+.Template-Left-container{
+  flex: 1 1 auto; 
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+}
+.template__table__body .add_action_btn {
+  height: 30px;
+  background: rgba(35, 164, 85, 0.05) !important;
+  color: #23a455 !important;
+  padding: 0rem 1rem !important;
+  width: 140px !important;
+  font-size: 12px;
+}
+.cell__edit:hover, .cell__edit:focus, .cell__edit:active {
+  border: 1px solid rgb(35, 164, 85);
+  background: rgb(245, 246, 250);
+}
+.cell__edit:hover svg [stroke], .cell__edit:focus svg [stroke], .cell__edit:active svg [stroke] {
+  stroke: rgb(35, 164, 85);
+}
+.cell__copy:hover:not([disabled]), .cell__copy:focus:not([disabled]), .cell__copy:active:not([disabled]) {
+  border: 1px solid rgb(35, 164, 85);
+  background: rgb(245, 246, 250);
+}
+.cell__copy:hover:not([disabled]) svg [stroke], 
+.cell__copy:focus:not([disabled]) svg [stroke],
+.cell__copy:active:not([disabled]) svg [stroke] {
+  stroke: rgb(35, 164, 85);
+}
+.cell__delete:hover, .cell__delete:focus, .cell__delete:active {
+  transition: background 0.15s;
+  background: rgb(245, 246, 250);
+  border: 1px solid rgb(255, 14, 14);
+}
+.cell__delete:hover svg [fill], .cell__delete:focus svg [fill], .cell__delete:active svg [fill] {
+  fill: rgb(255, 14, 14);
+}
+.cell__delete:hover svg [stroke], .cell__delete:focus svg [stroke], .cell__delete:active svg [stroke] {
+  stroke: rgb(255, 14, 14);
+}
+.Template__Delete_popup {
+  max-width: 360px;
+}
+.Template__Delete_popup .add-cancel-btn{
+  width: 100px;
+  margin-right: 10px;
+  padding: 0.5rem 1rem;
+}
+.Template__Delete_popup  .confirm-msg{
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 19px;
+  word-break: break-word;
+}
+
+
+.broadcast-date-container  .datepicker {
+    width: 195px;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-right: 30px;
+    background-color: rgb(255, 255, 255);
+}
+.broadcast-date-container label {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: rgb(51, 51, 51);
+  font-size: calc(1.21429em);
+  font-weight: bold;
+  transform: translate(0px, -30px) scale(0.75) !important;
+}
+.broadcast-date-container .datepicker input {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: rgb(51, 51, 51);
+  margin: 0px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-bottom: none !important;
+}
+.broadcast-date-container fieldset {
+  border: none;
+}
+.broadcast-date-container  button {
+  margin: 0px;
+  padding: 12px;
+  bottom: -5px;
 }
