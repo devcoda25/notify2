@@ -84,7 +84,7 @@ const data = [
     recipients: 2,
     successful: 100,
     read: 100,
-    replied: 0,
+    replied: 100,
     failedContacts: 1,
     failed: 0,
   },
@@ -853,7 +853,7 @@ const BroadcastBody = () => {
               </div>
               <div className='your__template_left_section'>
                 <div className="custom-action-bar-search">
-                  <div className="custom-search-input-container"   data-testid="custom-search-bar-input">
+                  <div className="custom-search-input-container"   >
                       <div className="custom-input-wrap">
                       <input
                           type="text"
@@ -861,7 +861,7 @@ const BroadcastBody = () => {
                           placeholder="Search..."
                           value={searchValue} 
                           onChange={handleInputChange}
-                          data-testid="custom-search-input"
+                          
                       />
                       <div tabIndex="0" className="custom-search-icon">
                       <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -871,7 +871,7 @@ const BroadcastBody = () => {
                 </div>
                 <div className="your-template-filter">
                   <span aria-label="Filter contacts..." onClick={OpenFilterModal}>
-                      <div className="custom-filter-button" role="button" tabIndex="0" aria-label="Open Filter" data-testid="custom-filter-button" >
+                      <div className="custom-filter-button" role="button" tabIndex="0" aria-label="Open Filter"  >
                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M10.1169 17.9867H2.88281" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                           <path fillRule="evenodd" clipRule="evenodd" d="M21.1174 17.9864C21.1174 19.577 19.828 20.8664 18.2374 20.8664C16.6468 20.8664 15.3574 19.577 15.3574 17.9864C15.3574 16.3947 16.6468 15.1064 18.2374 15.1064C19.828 15.1064 21.1174 16.3947 21.1174 17.9864Z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -948,7 +948,7 @@ const BroadcastBody = () => {
                   <div className="buttons">
                   <div className="button-left">
                     <Tooltip title="Export Template Message" >
-                      <button type="button" className="custom-button export-button" aria-label="Export to CSV" data-testid="contacts-actionBar-contactBar-export-button" >
+                      <button type="button" className="custom-button export-button" aria-label="Export to CSV"  >
                           <div className="button-child">
                               <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M9.10189 0.825209L9.10189 10.8594" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -962,7 +962,7 @@ const BroadcastBody = () => {
                   </div>
                   <div className="button-right">
                     <Tooltip title="Import Template Message" >
-                      <button type="button" className="custom-button import-button" aria-label="Import from CSV" data-testid="contacts-actionBar-contactBar-import-button" >
+                      <button type="button" className="custom-button import-button" aria-label="Import from CSV"  >
                       <input id="template-upload" type="file" accept=".csv" style={{ display: "none" }} />
                       <div className="button-child">
                           <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1341,13 +1341,12 @@ const BroadcastBody = () => {
                   </LocalizationProvider>
                   
                 </div>
-                  <button className="add-attribute-btn add-green-btn apply-button" data-testid="apply-now-button">Apply Now</button>
+                  <button className="add-attribute-btn add-green-btn apply-button" >Apply Now</button>
                   <div class="export-import-container">
                     <div class="export-import-buttons">
                       <div class="export-button">
                         <button
                           type="button"
-                          data-testid="Export-broadcast-analytics-export-button"
                           aria-label="Export to CSV"
                           class="export-button-element"
                           onClick={handleDownload}
@@ -1474,7 +1473,7 @@ const BroadcastBody = () => {
                   <div className="custom-action-bar-search">
                     <div className="custom-search-input-container " >
                       <div className="custom-input-wrap">
-                        <input type="text" className="custom-search-input broadcast-actionBar-search-input" placeholder="Search..." value={searchValue} onChange={handleSearchChange} data-testid="custom-search-input" />
+                        <input type="text" className="custom-search-input broadcast-actionBar-search-input" placeholder="Search..." value={searchValue} onChange={handleSearchChange}  />
                         <div tabIndex="0" className="custom-search-icon">
                           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -1535,7 +1534,7 @@ const BroadcastBody = () => {
                       {data.map((item, index) => (
                         <TableRow key={index} className="broadcast__table__body">
                           <TableCell >
-                            <div data-testid="broadcast-name-insights" className="body-cell__name" role="button" tabIndex="0">
+                            <div  className="body-cell__name" role="button" tabIndex="0">
                               {item.broadcastName}
                             </div>
                             <div className="body-cell__value">{item.date}</div>
@@ -1564,12 +1563,64 @@ const BroadcastBody = () => {
                           <TableCell className="broadcast__table__body-cell">
                             <div className="RCP body-cell__progress-bar">
                               <svg width="94" height="94" viewBox="0 0 94 94" style={{ transform: 'rotate(-90deg)' }}>
+                                <circle
+                                  cx="47"
+                                  cy="47"
+                                  r="27"
+                                  fill="none"
+                                  stroke="#DFEBFA"
+                                  strokeWidth="7"
+                                  strokeDasharray="169.64600329384882, 169.64600329384882"
+                                  strokeLinecap="round"
+                                  className="RCP__track"
+                                  style={{ transition: '0.3s' }}
+                                ></circle>
+                                <circle
+                                  cx="47"
+                                  cy="47"
+                                  r="27"
+                                  fill="none"
+                                  stroke={item.replied === 100 ? "#23a455" : "#ff0e0e"}
+                                  strokeWidth="7"
+                                  strokeDasharray="169.64600329384882, 169.64600329384882"
+                                  strokeDashoffset={item.replied === 100 ? "0" : "169.64600329384882"}
+                                  strokeLinecap="square"
+                                  className="RCP__progress"
+                                  style={{ transition: '0.3s' }}
+                                ></circle>
+                              </svg>
+                              <div className="body-cell__progress-count">{item.replied}%</div>
+                            </div>
+                            
+                            {item.replied === 100 && (
+                              <div className="body-cell__button-wrapper">
+                              <button class="add-attribute-btn  send-broadcast-btn">Send Broadcast</button>
+                                <span width="226px">
+                                  <svg
+                                    width="13"
+                                    height="13"
+                                    viewBox="0 0 13 13"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M6.1 4.54873V4.94873H6.9V4.54873H6.1ZM6.9 4.54073V4.14073H6.1V4.54073H6.9ZM6.9 9.74873V6.54873H6.1V9.74873H6.9ZM6.9 4.54873V4.54073H6.1V4.54873H6.9ZM5.3 7.34873H6.5V6.54873H5.3V7.34873ZM5.3 9.74873H7.7V8.94873H5.3V9.74873ZM6.5 1.74873C7.18287 1.74873 7.85906 1.88323 8.48995 2.14456C9.12085 2.40588 9.69409 2.78891 10.177 3.27178C10.6598 3.75464 11.0428 4.32788 11.3042 4.95878C11.5655 5.58967 11.7 6.26586 11.7 6.94873H12.5C12.5 5.35743 11.8679 3.83131 10.7426 2.70609C9.61742 1.58087 8.0913 0.94873 6.5 0.94873V1.74873ZM1.3 6.94873C1.3 5.5696 1.84786 4.24696 2.82304 3.27178C3.79823 2.29659 5.12087 1.74873 6.5 1.74873V0.94873C4.9087 0.94873 3.38258 1.58087 2.25736 2.70609C1.13214 3.83131 0.5 5.35743 0.5 6.94873H1.3ZM6.5 12.1487C5.12087 12.1487 3.79823 11.6009 2.82304 10.6257C1.84786 9.6505 1.3 8.32786 1.3 6.94873H0.5C0.5 8.54003 1.13214 10.0662 2.25736 11.1914C3.38258 12.3166 4.9087 12.9487 6.5 12.9487V12.1487ZM6.5 12.9487C8.0913 12.9487 9.61742 12.3166 10.7426 11.1914C11.8679 10.0662 12.5 8.54003 12.5 6.94873H11.7C11.7 7.6316 11.5655 8.30779 11.3042 8.93868C11.0428 9.56958 10.6598 10.1428 10.177 10.6257C9.69409 11.1086 9.12085 11.4916 8.48995 11.7529C7.85906 12.0142 7.18287 12.1487 6.5 12.1487V12.9487Z"
+                                      fill="#848A86"
+                                    ></path>
+                                  </svg>
+                                </span>
+                              </div>
+                            )}
+                          </TableCell>
+                          {/* <TableCell className="broadcast__table__body-cell">
+                            <div className="RCP body-cell__progress-bar">
+                              <svg width="94" height="94" viewBox="0 0 94 94" style={{ transform: 'rotate(-90deg)' }}>
                                 <circle cx="47" cy="47" r="27" fill="none" stroke="#DFEBFA" strokeWidth="7" strokeDasharray="169.64600329384882, 169.64600329384882" strokeLinecap="round" className="RCP__track" style={{ transition: '0.3s' }}></circle>
                                 <circle cx="47" cy="47" r="27" fill="none" stroke="#ff0e0e" strokeWidth="7" strokeDasharray="169.64600329384882, 169.64600329384882" stroke-dashoffset="169.64600329384882" strokeLinecap="square" className="RCP__progress" style={{ transition: '0.3s' }}></circle>
                               </svg>
                               <div className="body-cell__progress-count">{item.replied}%</div>
                             </div>
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell className="broadcast__table__body-cell">
                             <div>{item.failedContacts} <span className="body-cell__text">Contacts</span></div>
                           </TableCell>
@@ -1594,7 +1645,7 @@ const BroadcastBody = () => {
                           </TableCell>
                           <TableCell className="broadcast__table__body-cell">
                             <div className="action-cell__wrapper" >
-                              <button color="ghost" className="view-report__button" data-testid="view-report-bc-analytics" target="_self" onClick={OpenBroadcastModal}>
+                              <button color="ghost" className="view-report__button"  target="_self" onClick={OpenBroadcastModal}>
                                 View report
                               </button>
                             </div>
@@ -1665,7 +1716,7 @@ const BroadcastBody = () => {
                 <div className="action-bar__left-side">
                   <h3 className="action-bar__header">Scheduled Broadcast</h3>
                     <div className="custom-action-bar-search">
-                        <div className="custom-search-input-container"   data-testid="custom-search-bar-input">
+                        <div className="custom-search-input-container"   >
                             <div className="custom-input-wrap">
                             <input
                                 type="text"
@@ -1673,7 +1724,7 @@ const BroadcastBody = () => {
                                 placeholder="Search..."
                                 value="Search"
                                
-                                data-testid="custom-search-input"
+                 
                             />
                             <div tabIndex="0" className="custom-search-icon">
                             <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -1755,13 +1806,13 @@ const BroadcastBody = () => {
                 </div>
                 <div className="schedule__broadcast-row">
                   <div className="scheduled-row">
-                    <div className="row-name" data-testid="scheduled-row-name">
+                    <div className="row-name" >
                       payment_success_1_171220241423
                     </div>
-                    <div className="row-scheduled" data-testid="scheduled-row-start-in">
+                    <div className="row-scheduled" >
                       Start In: 2/21/2025 10:00:01 AM
                     </div>
-                    <div className="row-actions" data-testid="scheduled-row-actions">
+                    <div className="row-actions" >
                     <Tooltip title="edit" >
                     <button aria-label="edit" className='cell__edit'onClick={OpenEditBroadcastModal} ><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
                     </Tooltip>
