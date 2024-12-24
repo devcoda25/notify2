@@ -143,13 +143,10 @@
 
 .main-wrapper {
     position: relative;
-    /* top: 65px; */
-    top:58px;
+    top: 65px;
     /* padding:0px 0px 0px 20px; */
     padding: 0px;
- /* margin: 0 20px;  */
- margin:0;
-   margin-right:0px;
+    margin: 0 20px;
     display: block;
     background: #f5f6fa;
     border-top-left-radius: 25px;
