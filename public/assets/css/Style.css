@@ -361,7 +361,7 @@
     .msgCont .msgContL a:hover {
         color: #23a455;
     }
-
+   
     .navList {
         display: flex;
     }
@@ -510,6 +510,19 @@
     .msgContL  .active {
         color: #23a455;
         border: none;
+    }
+
+    .msgCont .msgContL a:hover svg path[fill] {
+        fill: #23a455; 
+        /* stroke: #23a455;  */
+    }
+
+    .msgCont .msgContL a:hover svg path[stroke] {
+        stroke: #23a455; 
+    }
+    
+    .msgCont .msgContL a:hover {
+        color: #23a455 !important; 
     }
     }
 
@@ -3450,7 +3463,7 @@
         font-size: .9rem;
     }
 
-}
+
 
 @media only screen and (max-height: 1280px) {
 
@@ -3590,6 +3603,7 @@
 
     .msgContL {
         width: 233px;
+        /* height:100vh */
     }
 
     .msgContL a {

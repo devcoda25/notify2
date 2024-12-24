@@ -7,7 +7,7 @@ import { RiWhatsappFill } from "react-icons/ri";
 import { MdClose  } from "react-icons/md";
 import countrycode from '../Component/Assets/img/Contact/country_code.svg'
 import Paper from '@mui/material/Paper';
-import { TableContainer ,Table, TableBody, TableCell, TableHead, TablePagination, TableRow, IconButton, Tooltip ,Checkbox } from '@mui/material';
+import {  Table, TableBody, TableCell, TableHead, TablePagination, TableRow, IconButton, Tooltip  } from '@mui/material';
 import { FormControl, RadioGroup, FormControlLabel, Typography, Radio,Box } from "@mui/material";
 import { Modal, ModalBody, ModalFooter } from 'react-bootstrap';
 import ContactFilter from '../Component/Contactus/ContactFilter';
@@ -100,7 +100,7 @@ const AddContactModal = ({ show, onClose, onSave }) => {
       const handleValueChange = (index, value) => {
         const updatedAttributes = [...contact.attributes];
         updatedAttributes[index].value = value;
-        updatedAttributes[index].error = false; // Reset error
+        updatedAttributes[index].error = false; 
         setContact((prevContact) => ({
           ...prevContact,
           attributes: updatedAttributes,
@@ -140,11 +140,11 @@ const AddContactModal = ({ show, onClose, onSave }) => {
     if (!show) return null;
     const attributes = Array.isArray(contact.attributes) ? contact.attributes : [contact.attributes];
     return (
-        <Modal show={show} onHide={onClose} dialogClassName="contact-modal add__contact-popup"> 
+        <Modal show={show} onHide={onClose} dialogClassName="Modal_container add__contact-popup"> 
         <div className="contact-modal-content"> 
-            <Modal.Header className='contact-popup-header'> 
+            <Modal.Header className='Modal-popup-header'> 
                 <Modal.Title >Add Contact</Modal.Title>
-                <button className="contact-close-btn" onClick={onClose} aria-label="Close">
+                <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
                     <MdClose />
                 </button>
             </Modal.Header>
@@ -321,15 +321,15 @@ const FilterContactModal=({show, onClose}) => {
     }
     };
     return(
-        <Modal show={show} onHide={onClose} dialogClassName="contact-modal filter__popup">  
+        <Modal show={show} onHide={onClose} dialogClassName="Modal_container filter__popup">  
             <div className="contact-filter-content">
-                <Modal.Header className='contact-popup-header'> 
-                    <Modal.Title className='contact-Filter-title' >Filter Contacts</Modal.Title>
-                    <button className="contact-close-btn" onClick={onClose} aria-label="Close">
+                <Modal.Header className='Modal-popup-header'> 
+                    <Modal.Title className='Modal-Popup-title' >Filter Contacts</Modal.Title>
+                    <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
                         <MdClose />
                     </button>
                 </Modal.Header>
-                <ModalBody className='contact-popup-main'>
+                <ModalBody className='Modal-popup-main'>
                     <ContactFilter
                         rows={rows}
                         fields={fields}
@@ -474,7 +474,7 @@ const FilterContactModal=({show, onClose}) => {
                     </button> 
                     {error && <div className="error-message">Please fill out all fields</div>}
                 </ModalBody>
-                <ModalFooter className="contact-popup-footer"> 
+                <ModalFooter className="Modal-popup-footer"> 
                 <button className='btn btn-success' onClick={handleApply}>
                     Apply
                 </button>
@@ -518,14 +518,14 @@ const ExportContactModal=({show,onClose}) => {
 
 
     return(
-        <Modal show={show} onHide={onClose} dialogClassName="contact-modal export__popup">
-            <Modal.Header className='contact-popup-header'>
-            <Modal.Title className='contact-Filter-title' >Export Contacts</Modal.Title>
-                <button className="contact-close-btn" onClick={onClose} aria-label="Close">
+        <Modal show={show} onHide={onClose} dialogClassName="Modal_container export__popup">
+            <Modal.Header className='Modal-popup-header'>
+            <Modal.Title className='Modal-Popup-title' >Export Contacts</Modal.Title>
+                <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
                     <MdClose />
                 </button>
             </Modal.Header>
-            <ModalBody className='contact-popup-main'>
+            <ModalBody className='Modal-popup-main'>
                 <Typography className="export-modal-title" gutterBottom>
                 Choose the contacts you want to export
                 </Typography>
@@ -627,7 +627,7 @@ const ExportContactModal=({show,onClose}) => {
                     </RadioGroup>
                 </FormControl>
             </ModalBody>
-            <ModalFooter className="contact-popup-footer"> 
+            <ModalFooter className="Modal-popup-footer"> 
                 <button className='btn btn-success' onClick={onClose}>
                     Apply
                 </button>
@@ -769,15 +769,15 @@ const ImportContactModal=({show,onClose}) => {
             link.click();
           };
     return(
-        <Modal show={show} onHide={onClose} dialogClassName="contact-modal import__Modal">
+        <Modal show={show} onHide={onClose} dialogClassName="Modal_container import__Modal main-modal-wrapper">
             <div className="contact__import-modal_content"> 
-            <Modal.Header className='contact-popup-header'>
-            <Modal.Title className='contact-Filter-title' >Import Contacts via CSV</Modal.Title>
-                <button className="contact-close-btn" onClick={onClose} aria-label="Close">
+            <Modal.Header className='Modal-popup-header'>
+            <Modal.Title className='Modal-Popup-title' >Import Contacts via CSV</Modal.Title>
+                <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
                     <MdClose />
                 </button>
             </Modal.Header>
-            <ModalBody className='contact-popup-main contact-import-Modal'>
+            <ModalBody className='Modal-popup-main contact-import-Modal'>
                 <div class="import-contacts__main-stepper">
                     <div  className={`step-wrapper ${step === 1 ? 'active-stepper' : step > 1 ? 'completed-step' : ''}`}>
                         <div class="step__content">
@@ -849,7 +849,7 @@ const ImportContactModal=({show,onClose}) => {
                                         <div className="progress-upload__actions">
                                             <div className="progress-upload__success">
                                             <CheckCircleIcon className="success-icon" style={{ width: '42px', height: '42px' }} />
-                                            <button className="contact-close-btn" onClick={handleClose} aria-label="Close">
+                                            <button className="Modal-close-btn" onClick={handleClose} aria-label="Close">
                                                 <MdClose />
                                             </button>
                                             </div>
@@ -1394,14 +1394,14 @@ const EditContactModal =({show,onClose}) => {
       
     const attributes = Array.isArray(contact.attributes) ? contact.attributes : [contact.attributes];
     return(
-    <Modal show={show} onHide={onClose} dialogClassName="contact-modal contact__detail_Modal">
+    <Modal show={show} onHide={onClose} dialogClassName="Modal_container contact__detail_Modal">
         <div className="contact__detail_content"> 
-        <Modal.Header className='contact-popup-header '>
-            <button className="contact-close-btn" onClick={onClose} aria-label="Close">
+        <Modal.Header className='Modal-popup-header '>
+            <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
                 <MdClose />
             </button>
         </Modal.Header>
-        <ModalBody className='contact-popup-main Contact-detail-body'>
+        <ModalBody className='Modal-popup-main Contact-detail-body'>
             <div className="contact-name-section">
             <div className="contact-detail-Name">
                 Muthu
@@ -1522,17 +1522,17 @@ const DeleteContactModal = ({ show, onClose ,isChecked }) => {
         <Modal
             show={show}
             onHide={onClose}
-            dialogClassName="contact-modal contact__Delete_Modal"
+            dialogClassName="Modal_container contact__Delete_Modal"
         >
             <div className="contact__detail_content"></div>
             {isChecked ? (
                 <>
-                    <Modal.Header className="contact-popup-header">
-                        <Modal.Title className="contact-Filter-title">
+                    <Modal.Header className="Modal-popup-header">
+                        <Modal.Title className="Modal-Popup-title">
                         Confirm
                         </Modal.Title>
                     </Modal.Header>
-                    <ModalBody className="contact-popup-main contact-Delete-Body">
+                    <ModalBody className="Modal-popup-main contact-Delete-Body">
                         <div className="label">Do you want to remove selected contacts?</div>
                         <div className="Contact-Delete-btn">
                             <button
@@ -1553,19 +1553,19 @@ const DeleteContactModal = ({ show, onClose ,isChecked }) => {
                 </>
                 ) : (
                     <> 
-                    <Modal.Header className="contact-popup-header">
-                        <Modal.Title className="contact-Filter-title">
+                    <Modal.Header className="Modal-popup-header">
+                        <Modal.Title className="Modal-Popup-title">
                             Notification
                         </Modal.Title>
                         <button
-                            className="contact-close-btn"
+                            className="Modal-close-btn"
                             onClick={onClose}
                             aria-label="Close"
                         >
                             <MdClose />
                         </button>
                     </Modal.Header>
-                    <ModalBody className="contact-popup-main contact-Delete-Body">
+                    <ModalBody className="Modal-popup-main contact-Delete-Body">
                         <div class="label">You have not selected contacts</div>
                         <div className="Contact-Delete-btn">
                         <button className="btn btn-success contact-Delete-cancel-btn" onClick={onClose}>Cancel</button>
@@ -1574,19 +1574,19 @@ const DeleteContactModal = ({ show, onClose ,isChecked }) => {
                     </ModalBody>
                     </>
                 )}
-            {/* <Modal.Header className="contact-popup-header">
-                <Modal.Title className="contact-Filter-title">
+            {/* <Modal.Header className="Modal-popup-header">
+                <Modal.Title className="Modal-Popup-title">
                     Notification
                 </Modal.Title>
                 <button
-                    className="contact-close-btn"
+                    className="Modal-close-btn"
                     onClick={onClose}
                     aria-label="Close"
                 >
                     <MdClose />
                 </button>
             </Modal.Header>
-            <ModalBody className="contact-popup-main contact-Delete-Body">
+            <ModalBody className="Modal-popup-main contact-Delete-Body">
                 <div class="label">You have not selected contacts</div>
                 <div className="Contact-Delete-btn">
                 <button className="btn btn-success contact-Delete-cancel-btn" onClick={onClose}>Cancel</button>
@@ -1720,7 +1720,7 @@ const ContactUs = () => {
     
     return (
         <>
-            <section className="main-contact-wrapper">
+            <section className="main-contact-wrapper main-modal-wrapper">
                 <div className="main-top-container">
                     <div className="contact-heading-profile">
                         <h1>Contacts</h1>
@@ -1947,45 +1947,41 @@ const ContactUs = () => {
                                     </div>
                                 </TableCell>
                                 <TableCell> {row.source}</TableCell>
-                                <TableCell> 
-                                    
-                                <div className="contact__source">
-                                        
-                                            {Array.isArray(row.attributes) && row.attributes.length > 0 ? (
-                                                row.attributes.map((attr, index) => (
-                                                    <>
-                                                    <span className="contact_source_value">
-                                                        <div className='chip__value' key={index}>{attr.key}: {attr.value}</div>
-                                                            <span
-                                                            
-                                                            className="chip__delete-icon"
-                                                            tabIndex="0"
-                                                            role="button"
-                                                            aria-label="delete tag"
+                                <TableCell>   
+                                    <div className="contact__source">
+                                        {Array.isArray(row.attributes) && row.attributes.length > 0 ? (
+                                            row.attributes.map((attr, index) => (
+                                                <>
+                                                <span className="contact_source_value">
+                                                    <div className='chip__value' key={index}>{attr.key}: {attr.value}</div>
+                                                        <span
                                                         
+                                                        className="chip__delete-icon"
+                                                        tabIndex="0"
+                                                        role="button"
+                                                        aria-label="delete tag"
+                                                    
+                                                    >
+                                                        <svg
+                                                            stroke="currentColor"
+                                                            fill="currentColor"
+                                                            strokeWidth="0"
+                                                            viewBox="0 0 512 512"
+                                                            height="1em"
+                                                            width="1em"
+                                                            xmlns="http://www.w3.org/2000/svg"
                                                         >
-                                                            <svg
-                                                                stroke="currentColor"
-                                                                fill="currentColor"
-                                                                strokeWidth="0"
-                                                                viewBox="0 0 512 512"
-                                                                height="1em"
-                                                                width="1em"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                                <path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm75.31 260.69a16 16 0 11-22.62 22.62L256 278.63l-52.69 52.68a16 16 0 01-22.62-22.62L233.37 256l-52.68-52.69a16 16 0 0122.62-22.62L256 233.37l52.69-52.68a16 16 0 0122.62 22.62L278.63 256z"></path>
-                                                            </svg>
-                                                        </span>
+                                                            <path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm75.31 260.69a16 16 0 11-22.62 22.62L256 278.63l-52.69 52.68a16 16 0 01-22.62-22.62L233.37 256l-52.68-52.69a16 16 0 0122.62-22.62L256 233.37l52.69-52.68a16 16 0 0122.62 22.62L278.63 256z"></path>
+                                                        </svg>
                                                     </span>
-                                                </>
-                                                ))
-                                            ) : (
-                                                ""
-                                            )}
-                                       
-                                        
+                                                </span>
+                                            </>
+                                            ))
+                                        ) : (
+                                            ""
+                                        )}  
                                     </div>
-                                    </TableCell>
+                                </TableCell>
                                 <TableCell>
                                     <div class="contact__actions"> 
                                         <Tooltip title="Edit">
@@ -2003,8 +1999,7 @@ const ContactUs = () => {
                             </TableRow>
                             ))}
                         </TableBody>
-                    </Table>
-                    
+                    </Table>   
                 </div>
                 <div className="pagination-wrapper">
                     <div className='sequence__pagination'>
