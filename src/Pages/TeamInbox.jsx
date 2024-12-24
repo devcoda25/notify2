@@ -171,7 +171,7 @@ const TeamInbox = () => {
     return (
         <>
 
-            <div id="outer-container" className='main-wrapper'>
+            <div id="outer-container" className='team_inbox_main-wrapper'>
                 <div className='teaminbox_container'>
                     <div
                         className="teaminbox_left_container"

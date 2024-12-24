@@ -11408,6 +11408,16 @@ a.text-dark:hover {
 }
 
 /* teaminbox */
+.team_inbox_main-wrapper{
+  position: relative;
+  top: 58px;
+  padding: 0px;
+  margin: 0px;
+  display: block;
+  background: #f5f6fa;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
 .teaminbox_container {
   display: flex;
 }
@@ -11447,13 +11457,15 @@ a.text-dark:hover {
 .vertical-line:hover {
   background-color:#0b5ed7;; 
   width:3px;
+  cursor: pointer;
 }
 .teaminbox_container .teaminboxmain_content {
   width:100%;
 }
 
 .teaminbox_container .ticket-popupbtn {
-  float: right
+  float: right;
+  cursor: pointer;
 }
 
 .teaminbox_container .ticketsgridbox,
@@ -11867,15 +11879,16 @@ font-size: 12px;
 }
 .teaminbox_container .filter_modal{
   border: 1px solid rgb(232, 234, 242);
-  margin:-17px 7px 0px 7px;
-  background: white;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  position: fixed;
-  z-index: 1000; 
-  width:25%;
-  left:34%;
-  top:18%;
-  padding:15px;
+    margin: -17px 7px 0px 7px;
+    background: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    z-index: 1000;
+   left: 80%;
+    top: 7%;
+    padding: 15px;
+    border-radius: 10px;
+    width: 338px;
+    position: absolute;
   border-radius:10px
 }
 .teaminbox_container .filter_header{
