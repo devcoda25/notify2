@@ -25,7 +25,7 @@ const style = {
         },
     },
 }
-const AutocompleteComponent = ({ options, value, onChange, placeholder }) => {
+const AutocompleteComponent = ({ options, value, onChange, placeholder,customStyles }) => {
     return (
         <>
             <Autocomplete
@@ -41,7 +41,7 @@ const AutocompleteComponent = ({ options, value, onChange, placeholder }) => {
                         InputProps={{
                             ...params.InputProps,
                             disableUnderline: true,
-                            sx: style.autocompleteStyle
+                            sx: {...style.autocompleteStyle,...customStyles}
                         }}
 
                     />

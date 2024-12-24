@@ -2445,13 +2445,12 @@ body.modal-open header {
 .support-ticket-sec {
   float: left;
   /* padding: 20px 0 20px 20px; */
-  /* width: 96%; */
-  width: 94%;
-  background: #fff;
-  /* margin:15px; */
+  width: 96%;
+ background: #fff;
+  margin:15px;
   border-radius: 15px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
- margin:15px 0px 0px 30px;
+
 }
 
 .support-ticket {
@@ -4527,8 +4526,8 @@ outline: none !important;
   float: left;
   /* width: 96%;
   margin:0 15px; */
-  width:94%;
-  margin-left: 30px;
+  width:96%;
+  margin-left: 20px;
 }
 
 .timeline-sec>ul {
@@ -5219,7 +5218,7 @@ outline: none !important;
   font-size: 12px;
   line-height: 21px;
   overflow: hidden;
-  padding: 9px 0;
+  /* padding: 9px 0; */
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -5227,15 +5226,17 @@ outline: none !important;
 }
 
 .inbox-msg>span {
-  border-radius: 2px;
+  border-radius: 9px;
   color: #ffffff;
   float: left;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 11px;
-  margin-right: 10px;
+  margin-right: 2px;
   margin-top: 3px;
   padding: 3px 5px;
+  background: #BEE4F4;
+color:#0062cc
 }
 
 .email>span {

@@ -42,9 +42,9 @@
   color: #f00 !important;
   font-size: 24px !important;
 }
-.hum-avator{
+/* .hum-avator{
   margin-top: 2px;
-}
+} */
 .hum-avator img {
   width: 22px;
   height: 22px;
@@ -388,9 +388,10 @@
 }
 
 .ticket-view-dropdown li:hover {
-  background: #23a455;
+  background: #0069d9;
   border-radius: 10px;
   color: #fff;
+  box-shadow: #0069d9 0px 1px 2px 0px
 }
 
 .ticket-view-dropdown li span {
@@ -413,10 +414,9 @@
 }
 
 .accordion-header {
-  background: #e9f6ee;
+  background: #dfe0df;
   border-radius: 10px;
-  border: #23a455 solid 1px;
-}
+ }
 /* .accordion-header .accordion-button:not(.collapsed)::after{
   transform: rotate(-360deg) !important;
 } */
@@ -469,7 +469,7 @@
   z-index: 99999; */
   position: absolute;
   /* left: -13px; */
-  left:1px;
+  left:-19px;
   width: 24px;
   min-height: 100%;
   border-top-left-radius: 10px;
@@ -507,6 +507,7 @@
 }
 .ticket-view-accordin .accordion-item:first-of-type .accordion-button{
   border: None !important;
+  box-shadow: none !important;
 }
 /* .accordion-button {
   position: relative;
