@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const menuItems = [
     { path: '/teaminbox', label: 'Team Inbox', icon: <FiInbox /> },
-    { path: '/BroadcastBody', label: 'Broadcast', icon: <PiBroadcastDuotone /> },
+    { path: '/Broadcast', label: 'Broadcast', icon: <PiBroadcastDuotone /> },
     { path: '/contactus', label: 'Contacts', icon: <RiContactsBook2Line /> },
     { path: '/automations', label: 'Automations', icon: <FiSettings /> },
     { path: '/analytics', label: 'Analytics', icon: <BiGridAlt /> },
