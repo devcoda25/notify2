@@ -524,7 +524,7 @@ const NewTemplateModal = () => {
                                                 <p><strong>Uploaded from PC:</strong>{previewImage.name}</p>
                                                 <img
                                                     src={previewImage.url}
-                                                    style={{ maxWidth: '100%', maxHeight: '100%' }} alt="Preview"
+                                                    style={{height:'200px'}} alt="Preview image"
 
                                                 />
                                             </>
@@ -811,7 +811,7 @@ const NewTemplateModal = () => {
                                             {previewImage && (
                                                 <img
                                                     src={previewImage.url}
-                                                    style={{ maxWidth: '100%', maxHeight: '100%' }} alt="Preview"
+                                                    style={{ maxWidth: '100%', minHeight: '124px' }} alt="Preview"
 
                                                 />
                                             )}
