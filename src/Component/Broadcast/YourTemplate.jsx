@@ -1,7 +1,42 @@
-import React, { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, IconButton, Tooltip, Badge } from '@mui/material';
+import React, { useState, useEffect, useRef } from "react";
+import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, IconButton, Tooltip, Badge, Autocomplete, FormControlLabel, Radio, RadioGroup, Chip } from '@mui/material';
 import { Modal, ModalBody, ModalFooter } from 'react-bootstrap';
-import { MdClose  } from "react-icons/md";
+import { MdClose } from "react-icons/md";
+import ButtonComponent from "../ButtonComponent";
+import TextfieldComponent from "../TextfieldComponent";
+import AutocompleteComponent from "../AutocompleteComponent";
+import { Background } from "react-flow-renderer";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import TagFacesIcon from '@mui/icons-material/TagFaces';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
+import EmojiPicker from "emoji-picker-react";
+import HelpIcon from '@mui/icons-material/Help';
+const styles = {
+    autocompleteStyle: {
+        backgroundColor: 'rgb(245, 246, 250) !important',
+    },
+    radiobtn: {
+        color: 'rgb(231 231 232)',
+        '&.Mui-checked': {
+            borderColor: 'rgb(231 231 232)',
+            color: 'green',
+        },
+
+    },
+    chipAttributes: {
+        height: "34px",
+        margin: " 0px 20px 20px 0px",
+        padding: "0px 13px",
+        border: "1px solid rgb(35, 164, 85)",
+        borderRadius: " 100px",
+        color: " rgb(35, 164, 85)",
+        fontSize: "13px",
+        fontWeight: " 500",
+    }
+
+}
 const templateData = [
 
     {
@@ -62,87 +97,800 @@ const TemplateDeleteModal = ({ show, onClose }) => {
         </Modal>
     )
 }
-const FilterTemplateModal=({show, onClose}) => {
+const FilterTemplateModal = ({ show, onClose }) => {
     const [filters, setFilters] = useState({
-      DRAFT: true,
-      PENDING: true,
-      APPROVED: true,
-      REJECTED: true,
-      DELETED: false,
-      PAUSED:false,
-      DISABLED:false,
+        DRAFT: true,
+        PENDING: true,
+        APPROVED: true,
+        REJECTED: true,
+        DELETED: false,
+        PAUSED: false,
+        DISABLED: false,
     });
-  
+
     const handleCheckboxChange = (filter) => {
-      setFilters((prev) => ({
-        ...prev,
-        [filter]: !prev[filter],
-      }));
+        setFilters((prev) => ({
+            ...prev,
+            [filter]: !prev[filter],
+        }));
     };
-    return(
-      <Modal show={show} onHide={onClose} dialogClassName="Modal_container  main-modal-wrapper"> 
-      <Modal.Header className='Modal-popup-header'> 
-            <Modal.Title className='Modal-Popup-title' >Attributes</Modal.Title>
-            <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
-                <MdClose />
-            </button>
-        </Modal.Header>
-        <ModalBody className='Modal-popup-main  broadcast-Modal-Main'>
-          <div className="template__Filter-body-Main"> 
-            <div className="broadcast-modal-container">
-              <div className="modal-description">Choose attributes to filter</div>
-              <div className="filter-items">
-                {Object.keys(filters).map((filter) => (
-                  <div className="broadcast-checkbox-container" key={filter}>
-                    <div className="broadcast-checkbox-wrapper">
-                      <div className="broadcast-checkbox-ui">
-                        <input
-                          type="checkbox"
-                          className="hidden-checkbox"
-                          checked={filters[filter]}
-                          onChange={() => handleCheckboxChange(filter)}
-                        />
-                        <label
-                          className={`broadcast-checkbox-label ${
-                            filters[filter] ? "checked" : ""
-                          }`}
-                          onClick={() => handleCheckboxChange(filter)}
-                        ></label>
-                        <span className='broadcast-lable-text'>{filter}</span>
-                      </div>
+    return (
+        <Modal show={show} onHide={onClose} dialogClassName="Modal_container  main-modal-wrapper">
+            <Modal.Header className='Modal-popup-header'>
+                <Modal.Title className='Modal-Popup-title' >Attributes</Modal.Title>
+                <button className="Modal-close-btn" onClick={onClose} aria-label="Close">
+                    <MdClose />
+                </button>
+            </Modal.Header>
+            <ModalBody className='Modal-popup-main  broadcast-Modal-Main'>
+                <div className="template__Filter-body-Main">
+                    <div className="broadcast-modal-container">
+                        <div className="modal-description">Choose attributes to filter</div>
+                        <div className="filter-items">
+                            {Object.keys(filters).map((filter) => (
+                                <div className="broadcast-checkbox-container" key={filter}>
+                                    <div className="broadcast-checkbox-wrapper">
+                                        <div className="broadcast-checkbox-ui">
+                                            <input
+                                                type="checkbox"
+                                                className="hidden-checkbox"
+                                                checked={filters[filter]}
+                                                onChange={() => handleCheckboxChange(filter)}
+                                            />
+                                            <label
+                                                className={`broadcast-checkbox-label ${filters[filter] ? "checked" : ""
+                                                    }`}
+                                                onClick={() => handleCheckboxChange(filter)}
+                                            ></label>
+                                            <span className='broadcast-lable-text'>{filter}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                        </div>
                     </div>
-                  </div>
-                ))}
-            
-              </div>
+                </div>
+            </ModalBody>
+            <ModalFooter className="Modal-popup-footer broadcast-Modal-buttons">
+                <button class="btn btn-success save-btn"> Save </button>
+            </ModalFooter>
+        </Modal>
+    )
+}
+const TemplateSubmitModal = ({ show, onClose }) => {
+
+    return (
+        <Modal show={show} onHide={onClose} dialogClassName="Modal_container Template__Sumbit_popup  main-modal-wrapper">
+            <Modal.Header className='Modal-popup-header'>
+                <Modal.Title className='Modal-Popup-title' >submit</Modal.Title>
+            </Modal.Header>
+            <ModalBody className='Modal-popup-main  broadcast-Modal-Main'>
+                <div>Do you want to submit this message for validation?</div>
+                <div class="warning-message">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.9987 1.20856C17.9592 1.20856 22.7904 6.04089 22.7904 12.0002C22.7904 17.9596 17.9592 22.7919 11.9987 22.7919C6.03937 22.7919 1.20703 17.9596 1.20703 12.0002C1.20703 6.04089 6.03937 1.20856 11.9987 1.20856Z" stroke="#637E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9935 7.57166V12.7272" stroke="#637E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9916 16.4288H12.0032" stroke="#637E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    Make sure you have chosen a category that matches the content in the template to avoid rejection of template
+                </div>
+            </ModalBody>
+            <ModalFooter className="Modal-popup-footer broadcast-Modal-buttons">
+                <button class="add-attribute-btn add-submit-btn" onClick={onClose}> cancel </button>
+                <button class="btn btn-success save-btn"> Yes </button>
+            </ModalFooter>
+        </Modal>
+    )
+}
+const SelectAttributeModal = ({ show, onClose, onSelectAttribute }) => {
+    const contactAttribute = ['Source', 'Channel', 'actual_fare', 'actuall_estimate', 'additional_items', 'address_count', 'agent', 'agent_name', 'airport', 'airport_name', 'allowbroadcast', 'allowsms', 'amount']
+    const handleChipClick = (attribute) => {
+        onSelectAttribute(`{{${attribute}}}`);
+        onClose();
+    };
+    return (
+        <>
+            <Modal show={show} onHide={onClose} dialogClassName="select_attribute_modal">
+                <div className='select_attribute_content'>
+                    <Modal.Header className='select_attribute_header' closeButton >
+                        <Modal.Title className='select_attribute_text_style' >Select attribute</Modal.Title>
+                    </Modal.Header>
+                    <ModalBody className='edittext__body__content'>
+                        <h4 className="attribute_title">Contact</h4>
+                        {contactAttribute.map((attribute, index) => (
+                            <Chip
+                                key={index}
+                                label={attribute}
+                                variant="outlined"
+                                sx={styles.chipAttributes}
+                                onClick={() => handleChipClick(attribute)}
+                            />
+                        ))}
+                    </ModalBody>
+                </div>
+            </Modal>
+        </>
+    )
+}
+const ImageSelectAttribute = ({ show, onClose }) => {
+
+    return (
+        <>
+            <Modal show={show} onHide={onClose} dialogClassName="image_select_attribute_modal">
+                <div className='image_attribute_main_content'>
+                    <Modal.Header className='select_attribute_header' closeButton>
+                        <Modal.Title >Select attribute</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='select_attribute_body_content'>
+                        <h4 className="attribute_title">Shopify
+                            <Tooltip title="This attribute is to be used to include product image for Shopify abandoned cart, Cash On Delivery & Order Confirmation automated message" placement="right-start">
+                                <IconButton>
+                                    <HelpIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </h4>
+                        <Chip
+
+                            label="product_image_url"
+                            variant="outlined"
+                            sx={styles.chipAttributes}
+
+                        />
+                        <h4 className="attribute_title">Woocommerce
+                            <Tooltip title="This attribute is to be used to include product image for Shopify abandoned cart, Cash On Delivery & Order Confirmation automated message" placement="right-start">
+                                <IconButton>
+                                    <HelpIcon />
+                                </IconButton>
+                            </Tooltip></h4>
+                        <Chip
+
+                            label="product_image_url"
+                            variant="outlined"
+                            sx={styles.chipAttributes}
+
+                        />
+                    </Modal.Body>
+
+                </div>
+            </Modal>
+        </>
+    )
+}
+const NewTemplateModal = () => {
+    const categoryOptions = ['Authentication', 'Utility', 'Marketing'];
+    const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
+    const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Call phone']
+    const secondbuttonOptions = ['Quick replies'];
+    const [categoryData, setCategoryData] = useState('Utility');
+    const [languageData, setLanguageData] = useState('English (US)');
+    const [buttonData, setButtonData] = useState('Visit website');
+    const [secondButtonData, setSecondButtonData] = useState('Quick replies');
+    const [selectedValue, setSelectedValue] = useState("none");
+    const [addReplyButton, setAddReplyButton] = useState(false);
+    const [showContent, setShowContent] = useState(true);
+    const [addButtonContent, setAddButtonContent] = useState([1]);
+    const [secondAddButtonContent, setSecondAddButtonContent] = useState([]);
+    const [text, setText] = useState("");//text
+    const [previewImage, setPreviewImage] = useState(null); //preview image
+    const [videoPreview, setVideoPreview] = useState(null); //preview video
+    const [documentPreview, setDocumentPreview] = useState(null); //preview document
+    const [textareaContent, setTextareaContent] = useState(`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`)
+    const [footerText, setFooterText] = useState("");
+    const [isActive, setIsActive] = useState(true); //toggle
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [isShowAddvariableModal, setIsShowAddVariableModal] = useState(false); //add variable popup modal
+    const [isShowImageSelectAttribute, setIsShowImageSelectAttribute] = useState(false); //image Add variable popup modal 
+    const timeRef = useRef();//preview time
+    //select broadcast title
+    const handleRadioChange = (event) => {
+        setSelectedValue(event.target.value);
+    };
+    //text
+    const handleInputChange = (event) => {
+        setText(event.target.value);
+    };
+    //second add and delete reply button
+    const handleSecondAddContent = () => {
+        if (secondAddButtonContent.length < 3) {
+            setSecondAddButtonContent(prev => [...prev, {}]);
+        }
+    }
+    const handleDeletesecondAdd = (index) => {
+        setSecondAddButtonContent(prev => prev.filter((_, i) => i !== index));
+    }
+    //first add and delete reply button
+    const handleAddReplybtn = () => {
+        setShowContent(false);
+        setAddReplyButton(true);
+    }
+    const handleAddButtonContent = () => {
+        if (addButtonContent.length < 2) {
+            setAddButtonContent([...addButtonContent, addButtonContent.length + 1]);
+
+        }
+
+    };
+    const handleDeleteRow = (index) => {
+        const updatedRows = addButtonContent.filter((_, i) => i !== index);
+        setAddButtonContent(updatedRows);
+        if (updatedRows.length === 0) {
+            setShowContent(true);
+        }
+    };
+
+    //preview image
+
+    const handleImageFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const filePreviewUrl = URL.createObjectURL(file);
+            setPreviewImage({ url: filePreviewUrl, name: file.name });
+
+        }
+    };
+    const handleImageButtonClick = () => {
+        document.getElementById('image-button-file').click();
+    };
+    //preview video
+    const handleVideoFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+
+            if (file.type.startsWith('video')) {
+                const videoPreviewUrl = URL.createObjectURL(file);
+                setVideoPreview({ url: videoPreviewUrl, name: file.name });
+            }
+        }
+    }
+    const handleVideoButtonClick = () => {
+        document.getElementById('video-button-file').click();
+    };
+    //preview document
+
+    const handleDocumentFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+
+            if (file.type === 'application/pdf') {
+                const documentPreviewUrl = URL.createObjectURL(file);
+                setDocumentPreview({ url: documentPreviewUrl, name: file.name });
+            }
+        }
+    };
+
+    const handleDocumentButtonClick = () => {
+        document.getElementById('document-button-file').click();
+    };
+    // body content textarea
+    const handleTextareaTextChange = (event) => {
+        setTextareaContent(event.target.value);
+    };
+    const [isFocused, setIsFocused] = useState(false);
+    const handleTextareaFocus = () => {
+        setIsFocused(true);
+        setShowEmojiPicker(false);
+    };
+    //footer text
+    const handleFooterInputChange = (event) => {
+        setFooterText(event.target.value);
+    };
+    //toggle
+    const handleToggle = () => {
+        setIsActive(!isActive);
+    };
+
+    const handleEmojiClick = (emojiObject) => {
+
+        setTextareaContent((prevContent) => prevContent + emojiObject.emoji);
+    };
+    const toggleEmojiPicker = () => {
+        setShowEmojiPicker((prevState) => !prevState);
+    };
+    //bold,italic,strike-through
+    const formatText = (startTag, endTag) => {
+        const textarea = document.querySelector(".body_textarea_content");
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+
+        if (start !== end) {
+            const selectedText = textareaContent.substring(start, end);
+            const formattedText = `${startTag}${selectedText}${endTag}`;
+            const updatedContent =
+                textareaContent.substring(0, start) +
+                formattedText +
+                textareaContent.substring(end);
+
+            setTextareaContent(updatedContent);
+        }
+    };
+
+    const handleBoldIconClick = () => formatText("*", "*");
+    const handleItalicIconClick = () => formatText("_", "_");
+    const handleStrikeIconClick = () => formatText("~", "~");
+
+    //Add variable popup modal
+    const handleAddVariableButton = () => {
+        setIsShowAddVariableModal(true);
+    }
+    const handleCloseAddVariable = () => {
+        setIsShowAddVariableModal(false);
+    }
+    const handleSelectAttribute = (attribute) => {
+        setTextareaContent((prevContent) => prevContent + attribute);
+    };
+
+    //image Add variable popup modal 
+    const handleImageSelectAttribute = () => {
+        setIsShowImageSelectAttribute(true);
+    }
+    const handleCloseSelectAttribute = () => {
+        setIsShowImageSelectAttribute(false);
+    }
+    //preview time
+    useEffect(() => {
+        // get the current time
+        const getCurrentTime = () => {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        };
+
+
+        if (timeRef.current) {
+            timeRef.current.textContent = getCurrentTime();
+            console.log('Time:', timeRef.current.textContent);
+        }
+    }, []);
+
+
+    return (
+        <>
+            {
+                isShowAddvariableModal && (
+                    <SelectAttributeModal show={isShowAddvariableModal} onClose={handleCloseAddVariable}
+                        onSelectAttribute={handleSelectAttribute} />
+                )
+            }
+            {
+                isShowImageSelectAttribute && (
+                    <ImageSelectAttribute show={isShowImageSelectAttribute} onClose={handleCloseSelectAttribute} />
+                )
+            }
+            <div className="new_template_container">
+                <div className="new_template_header">
+                    <div className="new_template_left">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.22287 12L3.33398 8M3.33398 8L7.22287 4M3.33398 8H12.6673" stroke="#353735" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        <span className="new_template_title">New Templates</span>
+                    </div>
+                    <div className="new_template_right">
+                        <ButtonComponent label='Save as draft' customBtn='new_template_draftbtn' />
+                        <ButtonComponent label='Save and submit' />
+                    </div>
+                </div>
+                <div className="new_template_content">
+                    <div className="new_template_content_left">
+                        <div className="left_header">
+                            <div className="name_block_field">
+                                <div className="name_block_title">Template Name</div>
+                                <TextfieldComponent placeholder='Template Name' customStyle='template_input' />
+                            </div>
+                            <div className="name_block_field">
+                                <div className="name_block_title">Category</div>
+                                <AutocompleteComponent
+                                    options={categoryOptions}
+                                    value={categoryData}
+                                    onChange={(event, newValue) => setCategoryData(newValue)}
+                                    customStyles={styles.autocompleteStyle}
+                                />
+                            </div>
+                            <div className="name_block_field language_dropdown">
+                                <div className="name_block_title">Language</div>
+                                <AutocompleteComponent
+                                    options={languageOptions}
+                                    value={languageData}
+                                    onChange={(event, newValue) => setLanguageData(newValue)}
+                                    customStyles={styles.autocompleteStyle}
+                                />
+                            </div>
+                        </div>
+                        <div className="broadcast_content">
+                            <div className="platform_division">
+                                <div className="name_block_title">Broadcast title<span className="block_title_optional">(Optional)</span></div>
+                                <div className="block_comments">Highlight your brand here, use images or videos, to stand out</div>
+                                <div className="radios_container">
+                                    <RadioGroup
+                                        value={selectedValue}
+                                        onChange={handleRadioChange}>
+                                        <div className="checkbox_container">
+                                            <FormControlLabel value="none" control={<Radio sx={styles.radiobtn} />} label="None" />
+                                            <FormControlLabel value="text" control={<Radio sx={styles.radiobtn} />} label="Text" className="radio_style" />
+                                            <FormControlLabel value="image" control={<Radio sx={styles.radiobtn} />} label="Image" className="radio_style" />
+                                            <FormControlLabel value="video" control={<Radio sx={styles.radiobtn} />} label="Video" className="radio_style" />
+                                            <FormControlLabel value="document" control={<Radio sx={styles.radiobtn} />} label="Document" className="radio_style" />
+                                        </div>
+                                    </RadioGroup>
+
+                                </div>
+                                <div>
+                                    {
+                                        selectedValue === "text" && <div className="footer_container">
+                                            <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={text} onChange={handleInputChange} />
+                                            <div className="footer_text_count">{text.length}/60</div>
+                                        </div>
+                                    }
+                                    {selectedValue === "image" && <div>
+                                        <p className="utility_header_media_type">(Image: .jpeg, .png)</p>
+
+                                        {previewImage && (
+                                            <>
+                                                <p><strong>Uploaded from PC:</strong>{previewImage.name}</p>
+                                                <img
+                                                    src={previewImage.url}
+                                                    style={{ maxWidth: '100%', maxHeight: '100%' }} alt="Preview"
+
+                                                />
+                                            </>
+                                        )}
+                                        <div className="header_media">
+                                            <div className="header_media_from_url">
+                                                <div className="footer_container">
+                                                    <TextfieldComponent placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png' customStyle='template_input' />
+                                                    <div className="footer_text_count">0/2000</div>
+                                                </div>
+                                            </div>
+                                            <div className="header_media_or">or</div>
+                                            <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleImageButtonClick} />
+                                            <input accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf" id="image-button-file"
+                                                type="file"
+                                                style={{ display: 'none' }}
+                                                onChange={handleImageFileChange}
+                                            />
+
+                                        </div>
+                                        <div className="none_add_variables_btn" onClick={handleImageSelectAttribute}><AddCircleOutlineIcon />Add Variable</div>
+                                    </div>}
+                                    {selectedValue === "video" && <div>
+                                        <p className="utility_header_media_type">(video:.mp4)</p>
+                                        {
+
+                                            videoPreview && (
+                                                <>
+                                                    <p><strong>Uploaded from PC:</strong>{videoPreview.name}</p>
+                                                    <video
+                                                        src={videoPreview.url}
+                                                        controls
+                                                        style={{ maxHeight: '200px' }}
+                                                        alt="Preview Video"
+                                                    />
+                                                </>
+                                            )
+                                        }
+                                        <div className="header_media">
+                                            <div className="header_media_from_url">
+                                                <div className="footer_container">
+                                                    <TextfieldComponent placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4' customStyle='template_input' />
+                                                    <div className="footer_text_count">0/2000</div>
+                                                </div>
+                                            </div>
+                                            <div className="header_media_or">or</div>
+                                            <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleVideoButtonClick} />
+                                            <input
+                                                accept="video/mp4, video/avi, video/mkv, video/webm"
+                                                id="video-button-file"
+                                                type="file"
+                                                style={{ display: 'none' }}
+                                                onChange={handleVideoFileChange}
+                                            />
+
+
+                                        </div>
+                                    </div>}
+                                    {selectedValue === "document" && <div>
+                                        <p className="utility_header_media_type">(Document:.pdf)</p>
+                                        {
+                                            documentPreview && (
+                                                <>
+                                                    <p><strong>Uploaded from PC:</strong>{documentPreview.name}</p>
+
+                                                    <object
+                                                        data={documentPreview.url}
+                                                        title="Document Preview"
+                                                    ></object>
+                                                </>
+                                            )
+
+                                        }
+                                        <div className="header_media">
+                                            <div className="header_media_from_url">
+                                                <div className="footer_container">
+                                                    <TextfieldComponent placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf' customStyle='template_input' />
+                                                    <div className="footer_text_count">0/2000</div>
+                                                </div>
+                                            </div>
+                                            <div className="header_media_or">or</div>
+                                            <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleDocumentButtonClick} />
+                                            <input
+                                                accept=".pdf"
+                                                id="document-button-file"
+                                                type="file"
+                                                aria-label="Upload"
+                                                style={{ display: 'none' }}
+                                                onChange={handleDocumentFileChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="none_body_content">
+                                <div className="name_block_title">Body</div>
+                                <div className="block__comments">Make your messages personal using variables like
+                                    <span>name</span> and get more replies!
+                                </div>
+                                <div className="none_add_variables_btn none_body_add_var_btn" onClick={handleAddVariableButton}><AddCircleOutlineIcon />Add Variable</div>
+                                <div className="none_block_template_content">
+                                    <div>
+                                        <div className="none_body_template_icons">
+                                            <TagFacesIcon onClick={toggleEmojiPicker} />
+                                            {showEmojiPicker && (
+                                                <div className="emoji_picker_container">
+                                                    <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                                </div>
+                                            )}
+                                            <FormatBoldIcon className="none_bold_icon" onClick={handleBoldIconClick} />
+                                            <FormatItalicIcon onClick={handleItalicIconClick} />
+                                            <StrikethroughSIcon onClick={handleStrikeIconClick} />
+                                            <div className="url_icon"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
+                                            <div className="toolbar_counter">{textareaContent.length}/1024</div>
+                                        </div>
+                                    </div>
+                                    <div className="none_template_body_editor">
+
+                                        <textarea
+                                            value={textareaContent}
+                                            onChange={handleTextareaTextChange}
+                                            onFocus={handleTextareaFocus}
+                                            rows="6"
+                                            cols="50"
+                                            className="body_textarea_content"
+
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="none_footer_content">
+                                <div className="name_block_title">Footer<span className="block_title_optional">(Optional)</span></div>
+                                <div className="none_footer_comments">Footers are great to add any disclaimers or to add a thoughtful PS</div>
+                                <div className="footer_container">
+                                    <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={footerText} onChange={handleFooterInputChange} />
+                                    <div className="footer_text_count">{footerText.length}/60</div>
+                                </div>
+                            </div>
+                            <div className="none_button_content">
+                                <div className="name_block_title">Buttons<span className="block_title_optional">(Recommended)</span></div>
+                                <div className="none_button_comments">Insert buttons so your customers can take action and engage with your message! </div>
+                                <div className="button_toggle">
+                                    <button
+                                        type="button"
+                                        className={`toggle__control ${isActive ? 'active' : ''}`}
+                                        onClick={handleToggle}
+                                        aria-label="Toggle"
+
+                                    >
+                                        <div className='toggle-indicator'></div>
+                                    </button>
+                                </div>
+                                <div>
+                                    {
+                                        isActive && (
+                                            <>
+                                                {
+                                                    showContent && (
+                                                        <div className="none_button_group">
+                                                            <div className="buttondata_dropdown">
+                                                                <AutocompleteComponent
+                                                                    options={buttonOptions}
+                                                                    value={buttonData}
+                                                                    onChange={(event, newValue) => setButtonData(newValue)}
+                                                                    customStyles={styles.autocompleteStyle}
+                                                                />
+                                                            </div>
+
+                                                            <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleAddReplybtn} />
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                    addReplyButton &&
+                                                    <div>
+                                                        {
+                                                            addButtonContent.map((row, index) => (
+                                                                <div className="button_block_container" key={index}>
+                                                                    <div className="call_action_row">
+                                                                        <div className="call_action_row_btn_container">
+                                                                            <div className="buttondata_dropdown">
+                                                                                <AutocompleteComponent
+                                                                                    options={buttonOptions}
+                                                                                    value={buttonData}
+                                                                                    onChange={(event, newValue) => setButtonData(newValue)}
+                                                                                    customStyles={styles.autocompleteStyle}
+                                                                                /></div>
+                                                                            <div className="footer_container second_add_button_textbox">
+                                                                                <TextfieldComponent placeholder='Button Text' customStyle='template_input' />
+                                                                                <div className="footer_text_count">0/25</div>
+                                                                            </div>
+                                                                            <button aria-label="delete" className="cell__delete remove_add_button_text" onClick={() => handleDeleteRow(index)} >
+                                                                                <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
+                                                                            </button>
+                                                                            {addButtonContent.length < 2 && (
+                                                                                <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleAddButtonContent} />
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="call_action_row">
+                                                                        <div className="call_action_row_btn_container">
+                                                                            <div className="buttondata_dropdown">
+                                                                                <AutocompleteComponent
+                                                                                    options={buttonOptions}
+                                                                                    value={buttonData}
+                                                                                    onChange={(event, newValue) => setButtonData(newValue)}
+                                                                                    customStyles={styles.autocompleteStyle}
+                                                                                />
+                                                                            </div>
+                                                                            <div className="footer_container call_action_row_btn_textbox">
+                                                                                <TextfieldComponent placeholder="https://www.wati.io" customStyle='template_input' />
+                                                                                <div className="footer_text_count">19/2000</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                    </div>
+                                                }
+
+                                                <div className="none_button_group">
+                                                    <div className="buttondata_dropdown">
+                                                        <AutocompleteComponent
+                                                            options={secondbuttonOptions}
+                                                            value={secondButtonData}
+                                                            onChange={(event, newValue) => setSecondButtonData(newValue)}
+                                                            customStyles={styles.autocompleteStyle}
+                                                        />
+                                                    </div>
+                                                    {
+                                                        secondAddButtonContent.map((_, index) => (
+                                                            <div className="none_second_add_container" key={index}>
+                                                                <div className="footer_container second_add_button_textbox">
+                                                                    <TextfieldComponent placeholder='Button Text' customStyle='template_input' />
+                                                                    <div className="footer_text_count">0/25</div>
+                                                                </div>
+                                                                <button aria-label="delete" className="cell__delete remove_add_button_text" onClick={() => handleDeletesecondAdd(index)} >
+                                                                    <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
+                                                                </button>
+                                                            </div>
+                                                        ))
+
+                                                    }
+
+                                                    {secondAddButtonContent.length < 3 && (
+                                                        <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleSecondAddContent} />)}
+                                                </div>
+
+                                            </>
+                                        )
+                                    }
+                                </div>
+                            </div>
+
+                            {
+                                isFocused && (
+                                    <div className="none_sample_content">
+                                        <div className="name_block_title">Sample Content</div>
+                                        <div className="none_sample_comments">Just enter sample content here (it doesn’t need to be exact!)</div>
+                                        <div className="none_sample_content_textbox">
+                                            <TextfieldComponent placeholder='Enter content for {{name}}' customStyle='template_input' />
+                                            <div className="none_sample_text_count">0/200</div>
+                                        </div>
+                                        <div className="none_sample_comments">Make sure not to include any actual user or customer information, and provide only sample content in your examples.</div>
+                                    </div>
+                                )
+                            }
+
+                        </div>
+                    </div>
+                    <div className="new_template_content_right">
+                        <h3 className="preview_text">Preview</h3>
+                        <div className="template_preview_svg">
+                            <div className="preview_message">
+                                <div className="preview_message_container">
+                                    {
+                                        selectedValue === "text" &&
+                                        <div className="preview_message__header_text">{text}</div>
+                                    }
+                                    {
+                                        selectedValue === "image" &&
+                                        <div className="preview_header_image">
+                                            {previewImage && (
+                                                <img
+                                                    src={previewImage.url}
+                                                    style={{ maxWidth: '100%', maxHeight: '100%' }} alt="Preview"
+
+                                                />
+                                            )}
+                                        </div>
+                                    }
+                                    {
+                                        selectedValue === "video" &&
+                                        <div className="preview_header_video">
+                                            {
+                                                videoPreview && (
+                                                    <video
+                                                        src={videoPreview.url}
+                                                        controls
+                                                        style={{ width: '100%', maxHeight: '100%' }}
+                                                        alt="Preview Video"
+                                                    />
+                                                )
+                                            }
+                                        </div>
+                                    }
+                                    {
+                                        selectedValue === "document" &&
+                                        <div className="preview_header_doc">
+                                            {
+                                                documentPreview && (
+                                                    <object
+                                                        data={documentPreview.url}
+                                                        title="Document Preview"
+                                                    ></object>
+                                                )
+                                            }
+                                        </div>
+                                    }
+                                    {/* {isFocused && (
+                                    <div>{textareaContent}</div>
+                                )} */}
+                                    {isFocused && (
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: textareaContent
+                                                    .replace(/\*(.*?)\*/g, "<b>$1</b>")
+                                                    .replace(/\_(.*?)\_/g, "<i>$1</i>")
+                                                    .replace(/~(.*?)~/g, "<s>$1</s>"),
+                                            }}
+                                        />
+                                    )}
+                                    {
+                                        addReplyButton && (
+                                            <div>
+                                                {
+                                                    addButtonContent.map((row, index) => (
+                                                        <div key={index} className="preview_message_button_reply">
+
+                                                        </div>
+                                                    ))}
+                                            </div>)
+                                    }
+
+                                    <div>
+                                        {secondAddButtonContent.map((_, index) => (
+                                            <div key={index} className="preview_message_secondbtn_reply"></div>
+                                        ))}
+                                    </div>
+                                    {/* footertext */}
+                                    <div>{footerText}</div>
+
+
+                                    <div className="preview_message_footer">
+                                        <time ref={timeRef} className="preview_message_time"></time>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
-        </ModalBody>
-        <ModalFooter className="Modal-popup-footer broadcast-Modal-buttons"> 
-          <button class="btn btn-success save-btn"> Save </button>
-        </ModalFooter>    
-      </Modal>
-  )}
-  const TemplateSubmitModal=({show, onClose}) => {
-  
-    return(
-      <Modal show={show} onHide={onClose} dialogClassName="Modal_container Template__Sumbit_popup  main-modal-wrapper"> 
-      <Modal.Header className='Modal-popup-header'> 
-            <Modal.Title className='Modal-Popup-title' >submit</Modal.Title>
-        </Modal.Header>
-        <ModalBody className='Modal-popup-main  broadcast-Modal-Main'>
-          <div>Do you want to submit this message for validation?</div>
-          <div class="warning-message">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.9987 1.20856C17.9592 1.20856 22.7904 6.04089 22.7904 12.0002C22.7904 17.9596 17.9592 22.7919 11.9987 22.7919C6.03937 22.7919 1.20703 17.9596 1.20703 12.0002C1.20703 6.04089 6.03937 1.20856 11.9987 1.20856Z" stroke="#637E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9935 7.57166V12.7272" stroke="#637E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11.9916 16.4288H12.0032" stroke="#637E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            Make sure you have chosen a category that matches the content in the template to avoid rejection of template
-          </div>
-        </ModalBody>
-        <ModalFooter className="Modal-popup-footer broadcast-Modal-buttons"> 
-        <button class="add-attribute-btn add-submit-btn" onClick={onClose}> cancel </button>
-          <button class="btn btn-success save-btn"> Yes </button>
-        </ModalFooter>    
-      </Modal>
-  )}
+        </>
+    )
+}
 const YourTemplate = () => {
     const allOptions = ["Lastest", "Oldest"];
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -152,6 +900,7 @@ const YourTemplate = () => {
     const filteredOptions = allOptions.filter(option => option !== selectedOption);
     const [isOpenSubmitModal, setIsOpenSubmitModal] = useState(false);
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+    const [isOpenTemplateMessage, setIsOpenTemplateMessage] = useState(false);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const totalRows = 5;
@@ -173,337 +922,354 @@ const YourTemplate = () => {
     };
     const OpenFilterModal = () => {
         setIsOpenFilterModal(true);
-      };
-  
-      const closeFilterModal = () => {
+    };
+
+    const closeFilterModal = () => {
         setIsOpenFilterModal(false);
-      };
-      const OpenSubmitModal = () => {
+    };
+    const OpenSubmitModal = () => {
         setIsOpenSubmitModal(true);
-      };
-  
-      const closeSubmitModal = () => {
+    };
+
+    const closeSubmitModal = () => {
         setIsOpenSubmitModal(false);
-      };
-  
-   const OpenDeleteModal = () => {
+    };
+
+    const OpenDeleteModal = () => {
         setIsOpenDeleteModal(true);
     };
 
     const closeDeleteModal = () => {
         setIsOpenDeleteModal(false);
     };
+    const handleTemplateMessage = () => {
+        setIsOpenTemplateMessage(true);
+    }
     return (
         <>
             {isOpenDeleteModal && (
                 <TemplateDeleteModal show={OpenDeleteModal} onClose={closeDeleteModal} />
             )}
-              {isOpenFilterModal && (
-          <FilterTemplateModal show={OpenFilterModal}  onClose={closeFilterModal} />
-        )}
-         {isOpenSubmitModal &&(
-            <TemplateSubmitModal show={OpenSubmitModal} onClose={closeSubmitModal}/>
-        )}
+            {isOpenFilterModal && (
+                <FilterTemplateModal show={OpenFilterModal} onClose={closeFilterModal} />
+            )}
+            {isOpenSubmitModal && (
+                <TemplateSubmitModal show={OpenSubmitModal} onClose={closeSubmitModal} />
+            )}
             <div className="Template-Left-container">
-                <div className='your__template_top_section'>
-                    <div className="template-library-wrapper">
-                        <div className="template-library-intro">
-                            <div className="template-library-header">
-                                <h2 className="template-library-title">Your Templates</h2>
-                                <p className="template-library-guideline">
-                                    Select or create your template and submit it for WhatsApp approval.
-                                    All templates must adhere to{" "}
-                                    <a
-                                        href="https://support.wati.io/l/en/article/d0ewqzh7gv-how-to-avoid-template-message-rejection"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="template-library-link"
-                                    >
-                                        WhatsApp's guidelines
-                                    </a>
-                                    .
-                                </p>
-                            </div>
-                            <div className="template-library-actions">
-                                <a
-                                    href="https://www.youtube.com/watch?v=Zyk7bby9URE"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="template-library-tutorial"
-                                >
-                                    <div className="tutorial-content">
-                                        <svg
-                                            width="27"
-                                            height="27"
-                                            viewBox="0 0 27 27"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <circle cx="13.5" cy="13.5" r="13.5" fill="#269CFE"></circle>
-                                            <path
-                                                d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z"
-                                                fill="white"
-                                            ></path>
-                                        </svg>
-                                        <span className="tutorial-text">Watch Tutorial</span>
-                                    </div>
-                                </a>
-                                <button className="btn btn-success template-library-new-button" >New Template Message</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='your__template_left_section'>
-                        <div className="custom-action-bar-search">
-                            <div className="custom-search-input-container"   >
-                                <div className="custom-input-wrap">
-                                    <input
-                                        type="text"
-                                        className="custom-search-input"
-                                        placeholder="Search..."
-                                        value={searchValue}
-                                        onChange={handleInputChange}
-
-                                    />
-                                    <div tabIndex="0" className="custom-search-icon">
-                                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="your-template-filter">
-                            <span aria-label="Filter contacts..." onClick={OpenFilterModal}>
-                                <div className="custom-filter-button" role="button" tabIndex="0" aria-label="Open Filter"  >
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.1169 17.9867H2.88281" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                        <path fillRule="evenodd" clipRule="evenodd" d="M21.1174 17.9864C21.1174 19.577 19.828 20.8664 18.2374 20.8664C16.6468 20.8664 15.3574 19.577 15.3574 17.9864C15.3574 16.3947 16.6468 15.1064 18.2374 15.1064C19.828 15.1064 21.1174 16.3947 21.1174 17.9864Z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                        <path d="M13.8828 6.26206H21.1181" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path fillRule="evenodd" clipRule="evenodd" d="M2.88281 6.26208C2.88281 7.85384 4.17222 9.14208 5.76281 9.14208C7.3534 9.14208 8.64281 7.85384 8.64281 6.26208C8.64281 4.67149 7.3534 3.38208 5.76281 3.38208C4.17222 3.38208 2.88281 4.67149 2.88281 6.26208Z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                    </svg>
-                                    <Badge
-                                        badgeContent={4}
-                                        className='filter-button'
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        style={{
-                                            top: '-18px',
-                                            left: '5px',
-                                        }}
-                                    >
-                                    </Badge>
-                                </div>
-                            </span>
-                        </div>
-                        <div className='actionbar-sort'>
-                            <div className="actionbar-sort-container">
-                                <div className="actionbar-sort-title">
-                                    Sorted by:
-                                </div>
-                                <div className={`contact-custom-dropdown ${isDropdownOpen ? "contact-dropdown-active" : ""}`}
-                                    role="menu"
-                                    tabIndex="0"
-                                    onClick={() => setDropdownOpen(!isDropdownOpen)}
-                                >
-                                    <div className="contact-dropdown-header">
-                                        <span>{selectedOption}</span>
-                                        <div className="contact-dropdown-icon">
-                                            <svg
-                                                stroke="currentColor"
-                                                fill="currentColor"
-                                                strokeWidth="0"
-                                                viewBox="0 0 16 16"
-                                                height="1em"
-                                                width="1em"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                                                ></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    {isDropdownOpen && (
-                                        <div className="contact-dropdown-options">
-                                            {filteredOptions.map((option, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="contact-dropdown-option"
-                                                    role="menuitem"
-                                                    tabIndex="0"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleOptionSelect(option);
-                                                    }}
+                {
+                    isOpenTemplateMessage ? (
+                        <>
+                            <NewTemplateModal />
+                        </>
+                    )
+                        : (
+                            <div>
+                                <div className='your__template_top_section'>
+                                    <div className="template-library-wrapper">
+                                        <div className="template-library-intro">
+                                            <div className="template-library-header">
+                                                <h2 className="template-library-title">Your Templates</h2>
+                                                <p className="template-library-guideline">
+                                                    Select or create your template and submit it for WhatsApp approval.
+                                                    All templates must adhere to{" "}
+                                                    <a
+                                                        href="https://support.wati.io/l/en/article/d0ewqzh7gv-how-to-avoid-template-message-rejection"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="template-library-link"
+                                                    >
+                                                        WhatsApp's guidelines
+                                                    </a>
+                                                    .
+                                                </p>
+                                            </div>
+                                            <div className="template-library-actions">
+                                                <a
+                                                    href="https://www.youtube.com/watch?v=Zyk7bby9URE"
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="template-library-tutorial"
                                                 >
-                                                    {option}
+                                                    <div className="tutorial-content">
+                                                        <svg
+                                                            width="27"
+                                                            height="27"
+                                                            viewBox="0 0 27 27"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <circle cx="13.5" cy="13.5" r="13.5" fill="#269CFE"></circle>
+                                                            <path
+                                                                d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z"
+                                                                fill="white"
+                                                            ></path>
+                                                        </svg>
+                                                        <span className="tutorial-text">Watch Tutorial</span>
+                                                    </div>
+                                                </a>
+                                                <button className="btn btn-success template-library-new-button" onClick={handleTemplateMessage} >New Template Message</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='your__template_left_section'>
+                                        <div className="custom-action-bar-search">
+                                            <div className="custom-search-input-container"   >
+                                                <div className="custom-input-wrap">
+                                                    <input
+                                                        type="text"
+                                                        className="custom-search-input"
+                                                        placeholder="Search..."
+                                                        value={searchValue}
+                                                        onChange={handleInputChange}
+
+                                                    />
+                                                    <div tabIndex="0" className="custom-search-icon">
+                                                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                                    </div>
                                                 </div>
-                                            ))}
+                                            </div>
                                         </div>
-                                    )}
-                                </div>
-
-                            </div>
-                        </div>
-                        <div className="custom-export-import">
-                            <div className="buttons">
-                                <div className="button-left">
-                                    <Tooltip title="Export Template Message" >
-                                        <button type="button" className="custom-button export-button" aria-label="Export to CSV"  >
-                                            <div className="button-child">
-                                                <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M9.10189 0.825209L9.10189 10.8594" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                                    <path d="M11.5322 3.27344L9.10223 0.833437L6.67223 3.27344" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                                    <path d="M12.963 5.78125H13.7405C15.4364 5.78125 16.8105 7.15542 16.8105 8.85208V12.9221C16.8105 14.6137 15.4397 15.9846 13.748 15.9846L4.46471 15.9846C2.76888 15.9846 1.39388 14.6096 1.39388 12.9137L1.39388 8.84292C1.39388 7.15208 2.76555 5.78125 4.45638 5.78125L5.24138 5.78125" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                                </svg>
-                                                <div className="button-title">Export</div>
-                                            </div>
-                                        </button>
-                                    </Tooltip>
-                                </div>
-                                <div className="button-right">
-                                    <Tooltip title="Import Template Message" >
-                                        <button type="button" className="custom-button import-button" aria-label="Import from CSV"  >
-                                            <input id="template-upload" type="file" accept=".csv" style={{ display: "none" }} />
-                                            <div className="button-child">
-                                                <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M9.10189 10.8623L9.10189 0.828125" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                                    <path d="M11.5322 8.42188L9.10223 10.8619L6.67223 8.42187" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                                    <path d="M12.963 5.77344H13.7405C15.4364 5.77344 16.8105 7.1476 16.8105 8.84427V12.9143C16.8105 14.6059 15.4397 15.9768 13.748 15.9768L4.46471 15.9768C2.76888 15.9768 1.39388 14.6018 1.39388 12.9059L1.39388 8.8351C1.39388 7.14427 2.76555 5.77344 4.45638 5.77344L5.24138 5.77344" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-                                                </svg>
-                                                <div className="button-title">Import</div>
-                                            </div>
-                                        </button>
-                                    </Tooltip>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div className="template__table-container">
-                    <Table className='template__table'>
-                        <TableHead className='template__table__Head'>
-                            <TableRow>
-                                <TableCell>Template Name</TableCell>
-                                <TableCell>Category</TableCell>
-                                <TableCell >Status</TableCell>
-                                <TableCell >Language</TableCell>
-                                <TableCell >Last Updated</TableCell>
-                                <TableCell >Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody className="template__table__body">
-                            {templateData.map((row) => (
-                                <TableRow key={row.id}>
-                                    <TableCell>
-                                        <Tooltip title={row.templateName} position="top">
-                                            <span
-                                                className="list-table__cell_first"
-                                                role="button"
-                                                tabIndex="0"
-                                            >
-                                                {row.templateName}
+                                        <div className="your-template-filter">
+                                            <span aria-label="Filter contacts..." onClick={OpenFilterModal}>
+                                                <div className="custom-filter-button" role="button" tabIndex="0" aria-label="Open Filter"  >
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M10.1169 17.9867H2.88281" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M21.1174 17.9864C21.1174 19.577 19.828 20.8664 18.2374 20.8664C16.6468 20.8664 15.3574 19.577 15.3574 17.9864C15.3574 16.3947 16.6468 15.1064 18.2374 15.1064C19.828 15.1064 21.1174 16.3947 21.1174 17.9864Z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                        <path d="M13.8828 6.26206H21.1181" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path><path fillRule="evenodd" clipRule="evenodd" d="M2.88281 6.26208C2.88281 7.85384 4.17222 9.14208 5.76281 9.14208C7.3534 9.14208 8.64281 7.85384 8.64281 6.26208C8.64281 4.67149 7.3534 3.38208 5.76281 3.38208C4.17222 3.38208 2.88281 4.67149 2.88281 6.26208Z" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                    </svg>
+                                                    <Badge
+                                                        badgeContent={4}
+                                                        className='filter-button'
+                                                        anchorOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'right',
+                                                        }}
+                                                        style={{
+                                                            top: '-18px',
+                                                            left: '5px',
+                                                        }}
+                                                    >
+                                                    </Badge>
+                                                </div>
                                             </span>
-                                        </Tooltip>
-                                    </TableCell>
-                                    <TableCell>{row.category}</TableCell>
-                                    <TableCell className="list-table__cell">
-                                        <div
-                                            className={`message-badge ${row.status === "APPROVED"
-                                                ? "message-badge_approved"
-                                                : "message-badge_draft"
-                                                }`}
-                                        >
-                                            <span>{row.status}</span>
                                         </div>
-                                    </TableCell>
-                                    <TableCell>{row.language}</TableCell>
-                                    <TableCell>{row.lastUpdated}</TableCell>
-                                    <TableCell className="list-table__cell_actions">
-                                        {row.status === "DRAFT" ? (
-                                            <Tooltip title="Submit Template" onClick={OpenSubmitModal}>
-                                                <button className="btn btn-success save_action_btn">Submit</button>
-                                            </Tooltip>
-                                        ) : (
-                                            <button className="add-attribute-btn add_action_btn">
-                                                Send Broadcast
-                                            </button>
-                                        )}
-                                        <hr className="list-table__cell_line"></hr>
-                                        <Tooltip title="Copy Template">
-                                            <button aria-label="copy" className='cell__copy'>
-                                                <svg className='copysvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.66406 3.33341V13.3334C6.66406 13.7754 6.83966 14.1994 7.15222 14.5119C7.46478 14.8245 7.8887 15.0001 8.33073 15.0001H14.9974C15.4394 15.0001 15.8633 14.8245 16.1759 14.5119C16.4885 14.1994 16.6641 13.7754 16.6641 13.3334V6.03508C16.664 5.81305 16.6196 5.59326 16.5335 5.38862C16.4473 5.18398 16.3212 4.99862 16.1624 4.84341L13.3999 2.14175C13.0885 1.8373 12.6704 1.6668 12.2349 1.66675H8.33073C7.8887 1.66675 7.46478 1.84234 7.15222 2.1549C6.83966 2.46746 6.66406 2.89139 6.66406 3.33341V3.33341Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M13.332 15.0002V16.6668C13.332 17.1089 13.1564 17.5328 12.8439 17.8453C12.5313 18.1579 12.1074 18.3335 11.6654 18.3335H4.9987C4.55667 18.3335 4.13275 18.1579 3.82019 17.8453C3.50763 17.5328 3.33203 17.1089 3.33203 16.6668V7.50016C3.33203 7.05814 3.50763 6.63421 3.82019 6.32165C4.13275 6.00909 4.55667 5.8335 4.9987 5.8335H6.66536" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                                            </button>
-                                        </Tooltip>
-                                        <Tooltip title="Delete Template" onClick={OpenDeleteModal}>
-                                            <button aria-label="delete" className="cell__delete">
-                                                <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
-                                            </button>
-                                        </Tooltip>
-                                        {row.status === "DRAFT" && (
-                                            <Tooltip title="Edit Template">
-                                                <button aria-label="edit" className="cell__edit">
-                                                    <svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg>
-                                                </button>
-                                            </Tooltip>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                                        <div className='actionbar-sort'>
+                                            <div className="actionbar-sort-container">
+                                                <div className="actionbar-sort-title">
+                                                    Sorted by:
+                                                </div>
+                                                <div className={`contact-custom-dropdown ${isDropdownOpen ? "contact-dropdown-active" : ""}`}
+                                                    role="menu"
+                                                    tabIndex="0"
+                                                    onClick={() => setDropdownOpen(!isDropdownOpen)}
+                                                >
+                                                    <div className="contact-dropdown-header">
+                                                        <span>{selectedOption}</span>
+                                                        <div className="contact-dropdown-icon">
+                                                            <svg
+                                                                stroke="currentColor"
+                                                                fill="currentColor"
+                                                                strokeWidth="0"
+                                                                viewBox="0 0 16 16"
+                                                                height="1em"
+                                                                width="1em"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    fillRule="evenodd"
+                                                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                                                                ></path>
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    {isDropdownOpen && (
+                                                        <div className="contact-dropdown-options">
+                                                            {filteredOptions.map((option, index) => (
+                                                                <div
+                                                                    key={index}
+                                                                    className="contact-dropdown-option"
+                                                                    role="menuitem"
+                                                                    tabIndex="0"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleOptionSelect(option);
+                                                                    }}
+                                                                >
+                                                                    {option}
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
 
-                    </Table>
-                </div>
-                <div className="pagination-wrapper">
-                    <div className='sequence__pagination'>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, 100]}
-                            count={totalRows}
-                            page={page}
-                            onPageChange={handlePageChange}
-                            rowsPerPage={rowsPerPage}
-                            onRowsPerPageChange={handleRowsPerPageChange}
-                            ActionsComponent={() => (
-                                <div className='tablepagination__action'>
-                                    <p className="Previouspage Pagintaion__action " aria-label="Go to previous page" title="Go to previous page">
-                                        <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1.02698 11.9929L5.26242 16.2426L6.67902 14.8308L4.85766 13.0033L22.9731 13.0012L22.9728 11.0012L4.85309 11.0033L6.6886 9.17398L5.27677 7.75739L1.02698 11.9929Z" fill="currentColor"></path>
-                                        </svg>
-                                        <span className="pagination_previousnextcont" >Previous</span>
-                                    </p>
-                                    <p className="nextPage Pagintaion__action  " aria-label="Go to next page" title="Go to next page">
-                                        <span className="pagination_previousnextcont" >Next</span>
-                                        <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M23.0677 11.9929L18.818 7.75739L17.4061 9.17398L19.2415 11.0032L0.932469 11.0012L0.932251 13.0012L19.2369 13.0032L17.4155 14.8308L18.8321 16.2426L23.0677 11.9929Z" fill="currentColor"></path>
-                                        </svg>
-                                    </p>
+                                            </div>
+                                        </div>
+                                        <div className="custom-export-import">
+                                            <div className="buttons">
+                                                <div className="button-left">
+                                                    <Tooltip title="Export Template Message" >
+                                                        <button type="button" className="custom-button export-button" aria-label="Export to CSV"  >
+                                                            <div className="button-child">
+                                                                <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9.10189 0.825209L9.10189 10.8594" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                    <path d="M11.5322 3.27344L9.10223 0.833437L6.67223 3.27344" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                    <path d="M12.963 5.78125H13.7405C15.4364 5.78125 16.8105 7.15542 16.8105 8.85208V12.9221C16.8105 14.6137 15.4397 15.9846 13.748 15.9846L4.46471 15.9846C2.76888 15.9846 1.39388 14.6096 1.39388 12.9137L1.39388 8.84292C1.39388 7.15208 2.76555 5.78125 4.45638 5.78125L5.24138 5.78125" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                </svg>
+                                                                <div className="button-title">Export</div>
+                                                            </div>
+                                                        </button>
+                                                    </Tooltip>
+                                                </div>
+                                                <div className="button-right">
+                                                    <Tooltip title="Import Template Message" >
+                                                        <button type="button" className="custom-button import-button" aria-label="Import from CSV"  >
+                                                            <input id="template-upload" type="file" accept=".csv" style={{ display: "none" }} />
+                                                            <div className="button-child">
+                                                                <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9.10189 10.8623L9.10189 0.828125" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                    <path d="M11.5322 8.42188L9.10223 10.8619L6.67223 8.42187" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                    <path d="M12.963 5.77344H13.7405C15.4364 5.77344 16.8105 7.1476 16.8105 8.84427V12.9143C16.8105 14.6059 15.4397 15.9768 13.748 15.9768L4.46471 15.9768C2.76888 15.9768 1.39388 14.6018 1.39388 12.9059L1.39388 8.8351C1.39388 7.14427 2.76555 5.77344 4.45638 5.77344L5.24138 5.77344" stroke="#666666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                                                                </svg>
+                                                                <div className="button-title">Import</div>
+                                                            </div>
+                                                        </button>
+                                                    </Tooltip>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                            )}
-                            sx={{
-                                '.MuiTablePagination-displayedRows': {
-                                    fontSize: '1.2rem',
-                                    margin: '0px',
-                                    color: 'rgb(51, 51, 51)'
-                                },
-                                '.MuiSelect-nativeInput': {
-                                    padding: '0px 1rem',
-                                    height: '3rem',
-                                    margin: '0 0 8px 0px',
-                                },
-                                '.MuiInputBase-root': {
-                                    fontSize: '1.2rem',
-                                    paddingRight: '0',
-                                },
-                                '.MuiTablePagination-selectLabel': {
-                                    fontSize: '1.2rem',
-                                    margin: '0px',
-                                    color: 'rgb(51, 51, 51)',
-                                },
-                            }}
-                        />
-                    </div>
-                </div>
+                                <div className="template__table-container">
+                                    <Table className='template__table'>
+                                        <TableHead className='template__table__Head'>
+                                            <TableRow>
+                                                <TableCell>Template Name</TableCell>
+                                                <TableCell>Category</TableCell>
+                                                <TableCell >Status</TableCell>
+                                                <TableCell >Language</TableCell>
+                                                <TableCell >Last Updated</TableCell>
+                                                <TableCell >Actions</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody className="template__table__body">
+                                            {templateData.map((row) => (
+                                                <TableRow key={row.id}>
+                                                    <TableCell>
+                                                        <Tooltip title={row.templateName} position="top">
+                                                            <span
+                                                                className="list-table__cell_first"
+                                                                role="button"
+                                                                tabIndex="0"
+                                                            >
+                                                                {row.templateName}
+                                                            </span>
+                                                        </Tooltip>
+                                                    </TableCell>
+                                                    <TableCell>{row.category}</TableCell>
+                                                    <TableCell className="list-table__cell">
+                                                        <div
+                                                            className={`message-badge ${row.status === "APPROVED"
+                                                                ? "message-badge_approved"
+                                                                : "message-badge_draft"
+                                                                }`}
+                                                        >
+                                                            <span>{row.status}</span>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>{row.language}</TableCell>
+                                                    <TableCell>{row.lastUpdated}</TableCell>
+                                                    <TableCell className="list-table__cell_actions">
+                                                        {row.status === "DRAFT" ? (
+                                                            <Tooltip title="Submit Template" onClick={OpenSubmitModal}>
+                                                                <button className="btn btn-success save_action_btn">Submit</button>
+                                                            </Tooltip>
+                                                        ) : (
+                                                            <button className="add-attribute-btn add_action_btn">
+                                                                Send Broadcast
+                                                            </button>
+                                                        )}
+                                                        <hr className="list-table__cell_line"></hr>
+                                                        <Tooltip title="Copy Template">
+                                                            <button aria-label="copy" className='cell__copy'>
+                                                                <svg className='copysvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.66406 3.33341V13.3334C6.66406 13.7754 6.83966 14.1994 7.15222 14.5119C7.46478 14.8245 7.8887 15.0001 8.33073 15.0001H14.9974C15.4394 15.0001 15.8633 14.8245 16.1759 14.5119C16.4885 14.1994 16.6641 13.7754 16.6641 13.3334V6.03508C16.664 5.81305 16.6196 5.59326 16.5335 5.38862C16.4473 5.18398 16.3212 4.99862 16.1624 4.84341L13.3999 2.14175C13.0885 1.8373 12.6704 1.6668 12.2349 1.66675H8.33073C7.8887 1.66675 7.46478 1.84234 7.15222 2.1549C6.83966 2.46746 6.66406 2.89139 6.66406 3.33341V3.33341Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M13.332 15.0002V16.6668C13.332 17.1089 13.1564 17.5328 12.8439 17.8453C12.5313 18.1579 12.1074 18.3335 11.6654 18.3335H4.9987C4.55667 18.3335 4.13275 18.1579 3.82019 17.8453C3.50763 17.5328 3.33203 17.1089 3.33203 16.6668V7.50016C3.33203 7.05814 3.50763 6.63421 3.82019 6.32165C4.13275 6.00909 4.55667 5.8335 4.9987 5.8335H6.66536" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                                            </button>
+                                                        </Tooltip>
+                                                        <Tooltip title="Delete Template" onClick={OpenDeleteModal}>
+                                                            <button aria-label="delete" className="cell__delete">
+                                                                <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
+                                                            </button>
+                                                        </Tooltip>
+                                                        {row.status === "DRAFT" && (
+                                                            <Tooltip title="Edit Template">
+                                                                <button aria-label="edit" className="cell__edit">
+                                                                    <svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg>
+                                                                </button>
+                                                            </Tooltip>
+                                                        )}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+
+                                    </Table>
+                                </div>
+                                <div className="pagination-wrapper">
+                                    <div className='sequence__pagination'>
+                                        <TablePagination
+                                            rowsPerPageOptions={[5, 10, 25, 100]}
+                                            count={totalRows}
+                                            page={page}
+                                            onPageChange={handlePageChange}
+                                            rowsPerPage={rowsPerPage}
+                                            onRowsPerPageChange={handleRowsPerPageChange}
+                                            ActionsComponent={() => (
+                                                <div className='tablepagination__action'>
+                                                    <p className="Previouspage Pagintaion__action " aria-label="Go to previous page" title="Go to previous page">
+                                                        <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1.02698 11.9929L5.26242 16.2426L6.67902 14.8308L4.85766 13.0033L22.9731 13.0012L22.9728 11.0012L4.85309 11.0033L6.6886 9.17398L5.27677 7.75739L1.02698 11.9929Z" fill="currentColor"></path>
+                                                        </svg>
+                                                        <span className="pagination_previousnextcont" >Previous</span>
+                                                    </p>
+                                                    <p className="nextPage Pagintaion__action  " aria-label="Go to next page" title="Go to next page">
+                                                        <span className="pagination_previousnextcont" >Next</span>
+                                                        <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M23.0677 11.9929L18.818 7.75739L17.4061 9.17398L19.2415 11.0032L0.932469 11.0012L0.932251 13.0012L19.2369 13.0032L17.4155 14.8308L18.8321 16.2426L23.0677 11.9929Z" fill="currentColor"></path>
+                                                        </svg>
+                                                    </p>
+                                                </div>
+                                            )}
+                                            sx={{
+                                                '.MuiTablePagination-displayedRows': {
+                                                    fontSize: '1.2rem',
+                                                    margin: '0px',
+                                                    color: 'rgb(51, 51, 51)'
+                                                },
+                                                '.MuiSelect-nativeInput': {
+                                                    padding: '0px 1rem',
+                                                    height: '3rem',
+                                                    margin: '0 0 8px 0px',
+                                                },
+                                                '.MuiInputBase-root': {
+                                                    fontSize: '1.2rem',
+                                                    paddingRight: '0',
+                                                },
+                                                '.MuiTablePagination-selectLabel': {
+                                                    fontSize: '1.2rem',
+                                                    margin: '0px',
+                                                    color: 'rgb(51, 51, 51)',
+                                                },
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )
+
+
+                }
+
             </div>
         </>
     )

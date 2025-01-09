@@ -1,9 +1,9 @@
 import React from "react";
 
-const ButtonComponent=({label,onClick})=>{
+const ButtonComponent=({label,onClick,customBtn})=>{
     return(
         <>
-             <button className='btn btn-success' onClick={onClick}>{label}</button>
+             <button className={`btn btn-success ${customBtn}`}  onClick={onClick}>{label}</button>
         </>
     )
 }
