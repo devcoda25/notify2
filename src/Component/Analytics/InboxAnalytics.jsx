@@ -1279,9 +1279,11 @@ const InboxAnalytics = () => {
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           border: 'none',
+                          background: 'white !important', 
+                          width:'80%'
                         },
                         '& .MuiOutlinedInput-notchedOutline': {
-                          border: 'none',
+                          border: 'none !important',
                         },
                       }}
                     />

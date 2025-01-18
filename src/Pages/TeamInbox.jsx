@@ -42,6 +42,7 @@ import AutocompleteComponent from '../Component/AutocompleteComponent';
 import { Position } from 'react-flow-renderer';
 import zIndex from '@mui/material/styles/zIndex';
 
+
 const styles = {
     accordion: {
         marginBottom: '0px',
@@ -643,7 +644,7 @@ const TeamInbox = () => {
                                                     onChange={(event, newValue) => setPriorityContent(newValue)} />
                                             </div>
                                             <div className='todo_dropdown_container'>
-                                                <label className='todo_dropdown_label'>Assigned To <span clas>Assign to me</span></label>
+                                                <label className='todo_dropdown_label'>Assigned To <span className='assignme_span'>Assign to me</span></label>
                                                 <AutocompleteComponent
                                                     options={assignedOptions}
                                                     value={assignedContent}

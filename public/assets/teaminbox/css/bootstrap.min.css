@@ -11784,6 +11784,7 @@ padding-left: 40px;
    margin:7px 12px 0px 0px;
    font-weight: bold;
    box-shadow: rgb(232, 234, 242) 0px 1px 2px 0px;
+   text-align: left;
 
 }
 .teaminbox_container .imagedate{
@@ -11853,6 +11854,10 @@ padding:5px 10px;
   font-size: 12px;
   font-weight: 700;
   width:100%
+}
+.teaminbox_container .assignme_span{
+  float: right;
+  color: blue;
 }
 .teaminbox_container .todo_due_date{
   padding: 0px 5px;

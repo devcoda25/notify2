@@ -14,6 +14,7 @@ import LoopIcon from '@mui/icons-material/Loop';
 import sampleFile from '../Assets/img/Contact/Contacts_Upload_Sample.csv';
 import { Modal, ModalBody, ModalFooter } from 'react-bootstrap';
 import { MdClose  } from "react-icons/md";
+import NewBroadcastTemplate from "./NewBroadcastTemplate";
 const stats = [
     {  count: 1,  title: "Sent",  tooltip: "Messages that were sent",  rightIcon: <DoneIcon style={{ color: '#23A455' }} /> },
     { count: 1, title: "Delivered", tooltip: "Messages that were delivered to the device",  rightIcon:<DoneAllIcon style={{ color: '#23A455' }} />    },
@@ -337,6 +338,7 @@ const BroadcastAnalytics=()=>{
     const [searchValue, setSearchValue] = useState('');
     const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
     const [tooltipText, setTooltipText] = useState("Last updated 33 minutes ago");
+    const [isOpenTemplateMessage, setIsOpenTemplateMessage] = useState(false);
 
     const handleClick = () => {
       setTooltipText("Just now");
@@ -382,6 +384,9 @@ const BroadcastAnalytics=()=>{
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0); 
       };
+      const handleTemplateMessage = () => {
+        setIsOpenTemplateMessage(true);
+    }
     return(
         <>
           {isOpenBroadcastModal &&(
@@ -390,6 +395,17 @@ const BroadcastAnalytics=()=>{
         {isFilterPopupOpen && (
           <FilterBroadcastModal show={isFilterPopupOpen} onClose={toggleFilterPopup} />
         )}
+        
+            {
+              isOpenTemplateMessage ? (
+                  <>
+                 
+                      <NewBroadcastTemplate/>
+                  </>
+              )
+              :
+              (
+        
          <div className='Broadcast-container'>
               <div className="date-range-filter">
                 <div className="datepicker-container">
@@ -480,7 +496,7 @@ const BroadcastAnalytics=()=>{
                           <span class="tutorial-text">Watch Tutorial</span>
                         </div>
                       </a>
-                      <button class="btn btn-success broadcast-New-button">New Broadcast</button>
+                      <button class="btn btn-success broadcast-New-button" onClick={handleTemplateMessage}>New Broadcast</button>
                       
                     </div>
                     <div class="messaging-limit-container">
@@ -813,6 +829,8 @@ const BroadcastAnalytics=()=>{
               </div>
 
             </div>
+    )
+  }
         </>
     )
 }
