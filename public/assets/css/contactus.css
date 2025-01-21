@@ -3808,6 +3808,16 @@ margin:0px !important;
   display: flex;
  
 }
+.new_broadcast_template .invalid_contacts_delete_container{
+  padding: 8px 17px;
+  margin-top: 20px;
+  border-radius: 7px;
+  display: flex;
+  background-color: rgba(255, 185, 6, 0.05);
+  border: 1px solid rgb(255, 185, 6);
+  align-items: center;
+  justify-content: space-between;
+}
 .new_broadcast_template .checkbox_container{
   display: flex;
   align-items: center;
@@ -3867,5 +3877,49 @@ padding: 0px;
 .valid_contacts_table .allowbroadcast_style{
 color:green;
 font-weight: 600;
+}
+.new_broadcast_template .dateandtime_content{
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start
+}
+.new_broadcast_template .dateandtime_container{
+ display: flex;
+ align-items:center;
+  gap:20px
+}
+.new_broadcast_template .dateandtime_text{
+  color: rgb(51, 51, 51);
+  font-size: 15px;
+  font-weight: bold;
+}
+.new_broadcast_template .filterbtn_container{
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 40px;
+  gap: 10px;
+}
+.new_broadcast_template .filter_delete_btn{
+  width: 40px;
+  height: 40px;
+  background: rgb(255, 231, 231);
+  border: 1px solid rgb(255, 14, 14);
+  border-radius: 5px;
+ }
+.new_broadcast_template .add_filter_btn{
+background: rgba(35, 164, 85, 0.05);
+border:1px solid rgb(35, 164, 85);
+color:rgb(35, 164, 85);
+box-shadow: none;
+margin-bottom:10px;
+ }
+.new_broadcast_template .add_filter_btn:focus{
+  border:1px solid rgb(35, 164, 85) !important;
+  box-shadow: none !important;
+  background: rgba(35, 164, 85, 0.05) !important;
+  color:rgb(35, 164, 85) !important;
+}
+.new_broadcast_template .warning_icon{
+  color:rgb(255, 185, 6);
 }
 
