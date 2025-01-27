@@ -12,11 +12,11 @@ function MoreDropDown() {
       More
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-      <li><a href='UserManagement'><LuUsers2 />  User Management</a></li>
-        <Dropdown.Item href="#/action-2"><MdOutlineSettingsSuggest /> Integrations</Dropdown.Item>
-        <Dropdown.Item href="#/action-3"><MdOutlineWebhook /> Webhooks</Dropdown.Item>
-        <Dropdown.Item href="#/action-4"><TiLink /> Commerce</Dropdown.Item>
+      <Dropdown.Menu className='moredropdown_menu'> 
+      <li><a  className='moredropdown_link' href='UserManagement'><LuUsers2 />  User Management</a></li>
+        <Dropdown.Item href="#/action-2" className='moredropdown_link' ><MdOutlineSettingsSuggest /> Integrations</Dropdown.Item>
+        <Dropdown.Item href="#/action-3" className='moredropdown_link'><MdOutlineWebhook /> Webhooks</Dropdown.Item>
+        <Dropdown.Item href="#/action-4" className='moredropdown_link'><TiLink /> Commerce</Dropdown.Item>
         <Dropdown.Item href="AccountDetails"><TbListDetails /> Account Details</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

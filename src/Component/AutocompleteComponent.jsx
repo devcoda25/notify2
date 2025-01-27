@@ -25,12 +25,15 @@ const style = {
         },
     },
 }
-const AutocompleteComponent = ({ options, value, onChange, placeholder,customStyles }) => {
+const AutocompleteComponent = ({ options, value=[], onChange, placeholder,customStyles }) => {
+    
     return (
         <>
             <Autocomplete
+          
                 options={options}
-                value={value}
+                // value={value}
+                value={Array.isArray(value) ? value : [value]}
                 disableClearable
                 onChange={onChange}
                 renderInput={(params) => (

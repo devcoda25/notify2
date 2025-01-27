@@ -11472,12 +11472,58 @@ a.text-dark:hover {
 .teaminbox_container .todogridbox {
   border-right: 1px solid rgb(232, 234, 242);
 }
+.teaminbox_container .teaminbox_add_filter{
+border-color: #c9c9cd;
+color:#131317;
+background: white;
+padding:6px 16px;
+/* margin:10px 0px 0px 11px; */
+margin:0px 0px 0px 11px;
+height:32px;
+font-size: 12px;
+width:127px;
+}
+.teaminbox_container .teaminbox_add_filter:focus{
+color:#131317 !important;
+background: white !important;
+box-shadow: none !important;
 
+}
+.teaminbox_container .mytickets_filter_search_container{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(232, 234, 242);
+  width: 100%;
+}
+.teaminbox_container .AddFilter_container{
+  position: absolute;
+    top: 108px;
+    left: 12px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    border-radius: 3px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    min-width: 168px;
+    max-width: 336px;
+    max-height: 483px;
+    overflow-y: scroll;
+}
+.teaminbox_container .ul_filter{
+padding:8px
+}
+.teaminbox_container .li_filter{
+  padding:12px
+}
+.teaminbox_container .filter_item_text{
+  margin-left:10px;
+}
 .teaminbox_container .search-container {
   position: relative;
-  border-bottom: 1px solid rgb(232, 234, 242);
+  /* border-bottom: 1px solid rgb(232, 234, 242); */
+  width:90%;
 }
-
 .teaminbox_container .search-container i {
   position: absolute;
   left: 20px;
@@ -11623,7 +11669,7 @@ a.text-dark:hover {
   margin-right: 10px;
 }
 
-.teaminbox_container .support_tickets,
+.teaminbox_container .support_tickets,.new_tickets_container .support_tickets,
 .teaminbox_container .tickets_timeline {
   width: 97%;
   background-color: white;
@@ -11664,7 +11710,7 @@ a.text-dark:hover {
 }
 
 .teaminbox_container .tab_input_field,
-.teaminbox_container .tab_reply_content{
+.teaminbox_container .tab_reply_content,.new_tickets_container .tab_reply_content{
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
@@ -11687,31 +11733,47 @@ a.text-dark:hover {
   font-size: 14px;
 }
 
-.teaminbox_container .tab_reply_content {
+.teaminbox_container .tab_reply_content,.new_tickets_container .tab_reply_content {
   padding: 10px;
   width: 100%;
   border: none;
   height: 115px;
   resize: none;
+  border-radius: 7px;
 }
 
-.teaminbox_container .reply_text_container {
+.teaminbox_container .reply_text_container,.teaminbox_container .reply_text_second_container,
+.new_tickets_container .reply_text_container,.new_tickets_container .reply_text_second_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 }
-
-.teaminbox_container .reply_text_style {
+.teaminbox_container .reply_text_container,.new_tickets_container .reply_text_container{
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin: 0px 10px 0px 10px;
+}
+.teaminbox_container .reply_text_container_icons,.new_tickets_container .reply_text_container_icons{
+  width: 18px;
+  height: 18px;
+  color: gray;
+}
+.teaminbox_container .reply_text_style,.new_tickets_container .reply_text_style {
   display: flex;
-  gap: 20px;
+  /* gap: 20px; */
+  gap: 5px;
 }
 
-.teaminbox_container .mail_send_btn {
+.teaminbox_container .mail_send_btn,.new_tickets_container .mail_send_btn {
   display: flex;
   align-items: center;
+  gap:5px
 }
-
+.teaminbox_container .ticket_status_text{
+  margin-bottom:0px;
+  color:black;
+}
 .teaminbox_container .mail_send_btn label {
   margin: 0px 12px 0px 0px;
 }
@@ -11722,6 +11784,14 @@ a.text-dark:hover {
   border-radius: 6px;
   border: none;
   padding: 4px;
+}
+.teaminbox_container .submit_btn,.new_tickets_container .submit_btn{
+  box-shadow: none;
+  background: #d1d1d2;
+  height: 32px;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
 }
 
 .teaminbox_container .userline {
@@ -11888,11 +11958,12 @@ font-size: 12px;
     background: white;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     z-index: 1000;
-   left: 80%;
+   /* left: 80%; */
     top: 7%;
     padding: 15px;
     border-radius: 10px;
-    width: 338px;
+    /* width: 338px; */
+    width:700px;
     position: absolute;
   border-radius:10px
 }
@@ -11974,4 +12045,90 @@ padding:5px 15px;
 top:2px;
 border:1px solid rgb(232, 234, 242);
 border-radius:4px;
+}
+.new_tickets_container{
+  background: white;
+}
+.new_tickets_container .new_tickets_header{
+  border:1px solid rgb(232, 234, 242);
+  padding: 20px;
+}
+.new_tickets_container .new_tickets_title{
+  padding-left:10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.new_tickets_container .new_tickets_main{
+  display: flex;
+flex: 1 1 0%;
+flex-direction: column;
+margin: auto;
+max-width: 680px;
+width: 100%;
+padding:48px 20px;
+}
+.new_tickets_container .new_tickets_textbox{
+border:1px solid #c9c9cd !important;
+background: white;
+}
+.new_tickets_container .new_tickets_textbox:focus{
+  border:1px solid blue !important;
+  outline :none  !important;
+  box-shadow: none !important;
+}
+.new_tickets_container .requester_name_email{
+  display: flex;
+  flex-direction: row;
+  gap:20px;
+}
+.new_tickets_container .textbox_container{
+  margin-bottom: 20px;
+}
+.new_tickets_container .add_peeple_container{
+  margin-bottom: 20px;
+font-weight: 600;
+color: #0059e1;
+cursor: pointer;
+}
+.new_tickets_container label{
+  width:100%;
+}
+.new_tickets_container .close_btn{
+  float: inline-end;
+  cursor: pointer;
+}
+.new_tickets_container .assgined_text{
+  font-weight: 600;
+  color:blue;
+  float: inline-end;
+}
+.new_tickets_container .tag_container{
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 20px 0px;
+}
+.new_tickets_container .tag_dropdown_container{
+  width:40%;
+}
+.new_tickets_container .chip_container {
+  display: flex;
+ margin-left:7px;
+}
+.new_tickets_container .add_tag_dropdown_close{
+  position: absolute;
+  right:3px;
+  top:-7px;
+}
+.teaminbox_container .new_ticket_button{
+background: #0069d9 !important;
+color: white !important;
+font-size: 12px;
+font-weight: 600;
+box-shadow: #0069d9 0px 1px 2px 0px;
+border-radius: 7px;
+}
+.teaminbox_container .new_ticket_button:focus{
+  box-shadow: #0069d9 0px 1px 2px 0px !important;
+  border:none !important
 }

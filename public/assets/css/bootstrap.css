@@ -17165,3 +17165,26 @@ border: none !important;
 margin-bottom: 20px;
 }
 
+/* more dropodown */
+.moredropdown_menu{
+  z-index: 100 !important;
+  border: 1px solid rgb(232, 234, 242) !important;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 9px 2px !important;
+  border-radius: 10px !important;
+  padding:0px !important
+}
+.moredropdown_link{
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer;
+  height: inherit;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  line-height: calc(1.5rem) !important;
+  color: rgb(102, 102, 102) !important;
+  padding: 16px !important;
+  white-space: nowrap !important;
+  width: 100% I !important;
+  border-bottom: 1px solid rgb(232, 234, 242) !important;
+  }
