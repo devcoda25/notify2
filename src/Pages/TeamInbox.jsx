@@ -103,17 +103,17 @@ const styles = {
         },
 
     },
-    
+
     moreicon: {
         marginRight: '5px',
     },
-    chipStyles:{
-    background: '#ffe9bc',
-    color: '#755b00',
-    borderRadius:'3px',
-    padding:'0px 6px',
-    fontSize:'14px',
-    ml:'9px',
+    chipStyles: {
+        background: '#ffe9bc',
+        color: '#755b00',
+        borderRadius: '3px',
+        padding: '0px 6px',
+        fontSize: '14px',
+        ml: '9px',
     }
 
 }
@@ -316,6 +316,7 @@ const TeamInbox = () => {
     //     bm_menu_wrap.style.left = 0
     //     document.querySelector('#react-burger-cross-btn').click()
     // }
+    //dropdown options
     const priorityOptions = ['High', 'Medium', 'Low'];
     const assignedOptions = ['Allie Harmon', 'Thameem', 'Vinu'];
     const projectOptions = ['Administrative', 'Project1', 'Project2'];
@@ -331,11 +332,13 @@ const TeamInbox = () => {
     const ticketsPriorityOptions = ['Low', 'Medium', 'High', 'Urgent'];
     const newticketsStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed'];
     const tagOptions = ['complaint', 'feedback', 'request', 'sales', 'support'];
+    const channelOptions = ['Email', 'Push', 'Platform', 'SMS', 'WhatsApp']
+
     const [isLeftContainerVisible, setIsLeftContainerVisible] = useState(true);
     const [isMyticketsVisible, setIsMyticketsVisible] = useState(true);
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = useState(false);
-    const [openFilterModal, setOpenFilterModal] = useState(false);
+    const [openNewTicketsModal, setOpenNewTicketsModal] = useState(false);
     const [priorityContent, setPriorityContent] = useState('Medium');
     const [assignedContent, setAssignedContent] = useState('Allie Harmon');
     const [projectContent, setProjectContent] = useState('Administrative');
@@ -357,25 +360,29 @@ const TeamInbox = () => {
     const [newTicketsStatusContent, setNewTicketsStatusContent] = useState('Pending');
     const [tagContent, setTagContent] = useState(null);
     const [selectedTags, setSelectedTags] = useState([]); // Array to hold selected tags
+    const [channelContent, setChannelContent] = useState('Email');
+    const popupRef = useRef(null);
 
-    const handleDeleteTag = (tagToDelete) => {
-        setSelectedTags(selectedTags.filter(tag => tag !== tagToDelete));
-    };
 
+    //new tickets add tags
     const handleTagChange = (event, newValue) => {
-        
+
         if (newValue && !selectedTags.includes(newValue)) {
             setSelectedTags([...selectedTags, newValue]);
         }
         setTagContent(null);
     };
+    const handleDeleteTag = (tagToDelete) => {
+        setSelectedTags(selectedTags.filter(tag => tag !== tagToDelete));
+    };
+
     const handleClickAddpeople = () => {
         setAddpeopleContent(true);
     }
     const handleClickAddtag = () => {
         setAddtagContent(true);
     }
-    const handleCloseAddtag=()=>{
+    const handleCloseAddtag = () => {
         setAddtagContent(false);
     }
     const handleCloseAddpeople = () => {
@@ -384,12 +391,35 @@ const TeamInbox = () => {
     const handleTogglePrivate = () => {
         setIsActive(!isActive)
     }
-    const popupRef = useRef(null);
 
     const handleAddFilterOpen = () => {
         setAddFilterPopup(true);
     };
 
+    const handleTicketClick = (index) => {
+        setSelectedTicket(index);
+    };
+    const handleToggle = () => {
+        setOpen(!open);
+    }
+    const handleNewTicketToggle = () => {
+        setOpenNewTicketsModal(true);
+    }
+    const handleCloseNewTicketsModal = () => {
+        setOpenNewTicketsModal(false);
+    }
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const toggleLeftContainer = () => {
+        console.log('Button')
+        setIsLeftContainerVisible((prevState) => !prevState);
+    };
+    const toggleMyticketsContainer = () => {
+        console.log('My tickets');
+        setIsMyticketsVisible((prevState) => !prevState);
+        setIsLeftContainerVisible(false);
+    }
     const handleClickOutside = (event) => {
         if (popupRef.current && !popupRef.current.contains(event.target)) {
             setAddFilterPopup(false);
@@ -408,41 +438,16 @@ const TeamInbox = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [addFilterPopup]);
-
-    const handleTicketClick = (index) => {
-        setSelectedTicket(index);
-    };
-    const handleToggle = () => {
-        setOpen(!open);
-    }
-    const handleFilterToggle = () => {
-        setOpenFilterModal(true);
-    }
-    const handleCloseFilterModal = () => {
-        setOpenFilterModal(false);
-    }
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-    const toggleLeftContainer = () => {
-        console.log('Button')
-        setIsLeftContainerVisible((prevState) => !prevState);
-    };
-    const toggleMyticketsContainer = () => {
-        console.log('My tickets');
-        setIsMyticketsVisible((prevState) => !prevState);
-        setIsLeftContainerVisible(false);
-    }
     return (
         <>
 
 
             <div id="outer-container" className='team_inbox_main-wrapper'>
                 {
-                    openFilterModal ? (
+                    openNewTicketsModal ? (
                         <div className='new_tickets_container'>
                             <div className='new_tickets_header'>
-                                <svg xmlns="http://www.w3.org/2000/svg" onClick={handleCloseFilterModal} fill="none" viewBox="0 0 24 24" width="20" height="20"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4 4m-4-4 4-4"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" onClick={handleCloseNewTicketsModal} fill="none" viewBox="0 0 24 24" width="20" height="20"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4 4m-4-4 4-4"></path></svg>
                                 <span className='new_tickets_title'>New ticket</span>
                             </div>
                             <div className='new_tickets_main'>
@@ -459,6 +464,10 @@ const TeamInbox = () => {
                                         <label>Requester email</label>
                                         <TextfieldComponent placeholder='Enter requester email' customStyle='new_tickets_textbox' />
                                     </div>
+                                </div>
+                                <div className='textbox_container'>
+                                    <label>User SID</label>
+                                    <TextfieldComponent placeholder='Enter SID' customStyle='new_tickets_textbox' />
                                 </div>
 
                                 {
@@ -510,40 +519,40 @@ const TeamInbox = () => {
                                     />
                                 </div>
                                 <div className="tag_container">
-                                {
-                                    addtagContent ? (
-                                        <>
-                                        <div className='tag_dropdown_container'>
-                                        <AutocompleteComponent
-                                            placeholder='Search tag...'
-                                            options={tagOptions}
-                                            value={tagContent}
-                                            onChange={handleTagChange}
-                                            customStyles={styles.newticketsAutocomplete}
-                                        />
-                                   
-                                       </div>
-                                       <span className='add_tag_dropdown_close'><CloseOutlinedIcon onClick={handleCloseAddtag} /></span>
-                                    </>
-                                    ) : (
-                                        <div className='add_peeple_container' onClick={handleClickAddtag} >
-                                            <AddOutlinedIcon />Add tag
-                                        </div>
-                                    )
+                                    {
+                                        addtagContent ? (
+                                            <>
+                                                <div className='tag_dropdown_container'>
+                                                    <AutocompleteComponent
+                                                        placeholder='Search tag...'
+                                                        options={tagOptions}
+                                                        value={tagContent}
+                                                        onChange={handleTagChange}
+                                                        customStyles={styles.newticketsAutocomplete}
+                                                    />
 
-                                }
-                                 <div className='chip_container'>
+                                                </div>
+                                                <span className='add_tag_dropdown_close'><CloseOutlinedIcon onClick={handleCloseAddtag} /></span>
+                                            </>
+                                        ) : (
+                                            <div className='add_peeple_container' onClick={handleClickAddtag} >
+                                                <AddOutlinedIcon />Add tag
+                                            </div>
+                                        )
+
+                                    }
+                                    <div className='chip_container'>
                                         {selectedTags.map((tag, index) => (
                                             <Chip
                                                 key={index}
                                                 label={tag}
                                                 onDelete={() => handleDeleteTag(tag)}
-                                               sx={styles.chipStyles}
+                                                sx={styles.chipStyles}
                                             />
                                         ))}
                                     </div>
-                                  
-                                    </div>
+
+                                </div>
 
                                 <div className='support_tickets'>
 
@@ -650,7 +659,7 @@ const TeamInbox = () => {
                                     <span className='mytickets_title'>My Tickets</span>
                                     <div className="ticket-filter-btn ticket-popupbtn">
                                         {/* <TuneIcon onClick={handleFilterToggle} /> */}
-                                        <ButtonComponent label='+ New Ticket' customBtn='new_ticket_button' onClick={handleFilterToggle} />
+                                        <ButtonComponent label='+ New Ticket' customBtn='new_ticket_button' onClick={handleNewTicketToggle} />
                                     </div>
                                     {/* {
                                 openFilterModal && (
@@ -708,28 +717,28 @@ const TeamInbox = () => {
 
                                 </div>
                                 <div className='mytickets_filter_search_container'>
-                                <ButtonComponent label='+ Add Filter' customBtn='teaminbox_add_filter' onClick={handleAddFilterOpen} />
-                                {
-                                    addFilterPopup && (
-                                        <div className='AddFilter_container' ref={popupRef}>
-                                            <ul className='ul_filter'>
-                                                {
-                                                    filterData.map((data, index) => (
-                                                        <>
-                                                            <li key={index} className='li_filter'>{data.icon}<span className='filter_item_text'>{data.name}</span></li>
-                                                        </>
-                                                    ))
-                                                }
+                                    <ButtonComponent label='+ Add Filter' customBtn='teaminbox_add_filter' onClick={handleAddFilterOpen} />
+                                    {
+                                        addFilterPopup && (
+                                            <div className='AddFilter_container' ref={popupRef}>
+                                                <ul className='ul_filter'>
+                                                    {
+                                                        filterData.map((data, index) => (
+                                                            <>
+                                                                <li key={index} className='li_filter'>{data.icon}<span className='filter_item_text'>{data.name}</span></li>
+                                                            </>
+                                                        ))
+                                                    }
 
-                                            </ul>
-                                        </div>
-                                    )
-                                }
+                                                </ul>
+                                            </div>
+                                        )
+                                    }
 
-                                <div class="search-container">
-                                    <i class="fa fa-search"></i>
-                                    <input type="text" placeholder="Search Tickets" />
-                                </div>
+                                    <div class="search-container">
+                                        <i class="fa fa-search"></i>
+                                        <input type="text" placeholder="Search Tickets" />
+                                    </div>
                                 </div>
                                 <div className='mytickets_content'>
                                     <ul>
@@ -1158,6 +1167,13 @@ const TeamInbox = () => {
                                                         )
                                                     }
                                                     <div className='todo_main_content'>
+                                                        <div className='todo_dropdown_container'>
+                                                            <label className='todo_dropdown_label'>Channel</label>
+                                                            <AutocompleteComponent
+                                                                options={channelOptions}
+                                                                value={channelContent}
+                                                                onChange={(event, newValue) => setChannelContent(newValue)} />
+                                                        </div>
                                                         <div className='todo_dropdown_container'>
                                                             <label className='todo_dropdown_label'>Priority</label>
                                                             <AutocompleteComponent

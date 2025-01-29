@@ -17184,7 +17184,30 @@ margin-bottom: 20px;
   line-height: calc(1.5rem) !important;
   color: rgb(102, 102, 102) !important;
   padding: 16px !important;
-  white-space: nowrap !important;
-  width: 100% I !important;
-  border-bottom: 1px solid rgb(232, 234, 242) !important;
+  /* border-bottom: 1px solid rgb(232, 234, 242) !important; */
   }
+.header_more_btn{
+  border: none;
+  background: transparent;
+  width: 71px;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: rgb(102, 102, 102);
+  }
+.header_moreoption_menu{
+  position: absolute;
+  z-index: 1200;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(232, 234, 242);
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 9px 2px;
+  border-radius: 10px;
+  top: 50px;
+  width:185px;
+}
+.header_menu_item{
+  border-bottom: 1px solid rgb(232, 234, 242)!important;
+  width:100%
+}
+.moredropdown_link.active{
+color:#23a455 !important;
+}

@@ -100,6 +100,12 @@
     line-height: 24px;
     /* border-bottom: #ccc solid 1px; */
     padding: 10px 5px;
+ 
+}
+.header_nav_link{
+    font-size: 14px !important;
+    width: 122px;
+    font-weight: 600 !important;
 }
 
 .poppupInputLabel label {

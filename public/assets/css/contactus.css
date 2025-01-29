@@ -1907,6 +1907,9 @@
   color: #269cfe;
   font-weight: bold;
 }
+.template-library-new-button{
+  width:207px !important;
+}
 
 
 .template-navigation-wrapper {
