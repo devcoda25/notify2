@@ -8,7 +8,11 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Dropdown from '../Dropdown';
 const styles = {
+    dropdownContainer:{
+        width:'372px'
+    },
     autocompleteStyle: {
         border: '1px solid rgb(232, 234, 242)',
         borderRadius: '4px',
@@ -34,6 +38,31 @@ const styles = {
         padding: '8px',
     },
 }
+const StickerOptions = [
+    { value: "01_Cuppy_smile.webp", label: "01_Cuppy_smile.webp" },
+    { value: "02_Cuppy_lol.webp", label: "02_Cuppy_lol.webp" },
+    { value: "03_Cuppy_rofl.webp", label: "03_Cuppy_rofl.webp" }
+];
+
+const TextOptions = [
+    { value: "Offline_mess", label: "Offline_mess" },
+    { value: "confirmed order", label: "confirmed order" },
+    { value: "Rating", label: "Rating" }
+];
+const TemplateOptions = [
+    { value: "wake_up", label: "wake_up" },
+    { value: "emergency_update", label: "emergency_update" },
+    { value: "welcomenote", label: "welcomenote" }
+];
+const ImageOptions = [
+    { value: "Catalog.jpeg", label: "Catalog.jpeg" },
+];
+const groupedOptions = [
+    { label: "Sticker", options: StickerOptions },
+    { label: "Text", options: TextOptions },
+    { label: "Template", options: TemplateOptions },
+    { label: "Image", options: ImageOptions },
+];
 //initial default table data
 const initialTableData = [
     { id: 1, name: 'finish', messages: 1, triggered: 0, completed: '0%' },
@@ -179,8 +208,10 @@ const MessageSettingModal = ({ show, onClose, onSave, initialData }) => {
                         <Modal.Title className='edit_text_style'>Message Settings</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className='edittext__body__content'>
-
-                        <div className='msgsettings_dropdown_textfield' style={{ backgroundColor: dropdownOpen ? 'white' : 'rgb(245, 246, 250)' }}>
+                        <div style={styles.dropdownContainer}>
+                        <Dropdown  options={groupedOptions} selectLabel='Select Action'/>
+                        </div>
+                        {/* <div className='msgsettings_dropdown_textfield' style={{ backgroundColor: dropdownOpen ? 'white' : 'rgb(245, 246, 250)' }}>
                             <TextField
                                 variant="standard"
                                 value={content}
@@ -226,7 +257,7 @@ const MessageSettingModal = ({ show, onClose, onSave, initialData }) => {
                                     </div>
                                 ))}
                             </div>
-                        )}
+                        )} */}
                         <div className='time_message_settings_container'>
                             <div className='edit__text__label'>This message will be sent atleast</div>
                             <div className='time_delay_container'>

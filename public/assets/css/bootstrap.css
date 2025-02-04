@@ -12647,7 +12647,7 @@ fieldset:disabled .btn {
   border: 1px solid rgb(255, 14, 14);
   box-sizing: border-box;
   border-radius: 5px;
-  margin-left: 22px;
+  margin-left: 6px;
 }
 
 .delete-img {
@@ -17210,4 +17210,53 @@ margin-bottom: 20px;
 }
 .moredropdown_link.active{
 color:#23a455 !important;
+}
+
+/* Template UI Table (keyword Action)*/
+.templates_table{
+  background: white !important;
+}
+.templates_table .template_table_btn{
+  width: 32px;
+  cursor: pointer;
+  background: rgb(245, 246, 250);
+  color:dimgray;
+  border: 1px solid rgb(206, 208, 206);
+  border-radius: 5px;
+  padding: 5px;
+  margin-right:10px;
+}
+.templates_table .table_heading{
+  color: rgb(51, 51, 51) !important;
+  font-weight: 600;
+  font-size: 1.1rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  padding: 37px 10px;
+}
+.templates_table .table_body_cell{
+  border-bottom: none !important;
+  font-size: 1rem;
+  text-align: left;
+  font-weight: 400;
+  color: rgb(51, 51, 51);
+}
+.templates_.table_cell_category{
+  font-size: 0.9rem;
+}
+.templates_table .table_status{
+  font-size: 1rem;
+  background-color: rgb(233, 246, 238);
+  color: rgb(35, 164, 85);
+  text-align: center;
+  margin: auto;
+  min-width: 134px;
+  height: 42px;
+  padding: 12px;
+  border-radius: 20px;
+}
+.templates_table .template_table_submit_btn{
+  min-width: 89px !important;
+}
+.templates_table .template_table_center_heading{
+  text-align: center;
 }
