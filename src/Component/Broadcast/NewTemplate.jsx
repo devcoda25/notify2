@@ -667,6 +667,7 @@ const NewTemplate = () => {
                                     width: PreviewMode === "desktop" ? categoryData === "Whatsapp" ? "214px" : "254px" : "210px",
                                     maxHeight:PreviewMode==='desktop' ? '84px':'',
                                     overflowY:PreviewMode ==='desktop'? 'auto':'hidden',
+                                    fontSize:PreviewMode ==='desktop' ? '11px':'14px',
                                 }}>
                                     {
                                         selectedValue === "text" &&
