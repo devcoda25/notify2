@@ -333,9 +333,9 @@ const NewBroadcastTemplate = () => {
                         </div>
                         <div className="new_template_content_right">
                             <h3 className="preview_text">Preview</h3>
-                            <div className="template_preview_svg">
+                            <div className="broadcast_template_preview_svg">
                                 <div className="preview_message">
-                                    <div className="preview_message_container">
+                                    <div className="broadcast_preview_message_container">
 
                                         <div className="preview_message_footer">
                                             <time ref={timeRef} className="preview_message_time"></time>

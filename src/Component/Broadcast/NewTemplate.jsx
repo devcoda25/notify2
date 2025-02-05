@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup,Switch } from '@mui/material';
 import ButtonComponent from "../ButtonComponent";
 import TextfieldComponent from "../TextfieldComponent";
 import AutocompleteComponent from "../AutocompleteComponent";
@@ -11,6 +11,16 @@ import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
 import EmojiPicker from "emoji-picker-react";
 import SelectAttributeModal from "./SelectAttributeModal";
 import ImageSelectAttribute from "./ImageSelectAttribute";
+import StayCurrentPortraitRoundedIcon from '@mui/icons-material/StayCurrentPortraitRounded';
+import DesktopWindowsRoundedIcon from '@mui/icons-material/DesktopWindowsRounded';
+
+const backgroundImages = {
+    Email: "/assets/images/Email.png",
+    Whatsapp: "/assets/images/whatsapp.png",
+    SMS: "/assets/images/sms.png",
+    Platform: "/assets/images/platform.png",
+    Push: "/assets/images/push.png"
+}
 const styles = {
     autocompleteStyle: {
         backgroundColor: 'rgb(245, 246, 250) !important',
@@ -36,11 +46,11 @@ const styles = {
 
 }
 const NewTemplate = () => {
-    const categoryOptions = ['Authentication', 'Utility', 'Marketing'];
+    const categoryOptions = ['Email', 'SMS', 'Platform', 'Whatsapp', 'Push'];
     const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
     const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Call phone']
     const secondbuttonOptions = ['Quick replies'];
-    const [categoryData, setCategoryData] = useState('Utility');
+    const [categoryData, setCategoryData] = useState('Whatsapp');
     const [languageData, setLanguageData] = useState('English (US)');
     const [buttonData, setButtonData] = useState('Visit website');
     const [secondButtonData, setSecondButtonData] = useState('Quick replies');
@@ -59,6 +69,7 @@ const NewTemplate = () => {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [isShowAddvariableModal, setIsShowAddVariableModal] = useState(false); //add variable popup modal
     const [isShowImageSelectAttribute, setIsShowImageSelectAttribute] = useState(false); //image Add variable popup modal 
+    const [subjectText, setSubjectText] = useState('');//subjectText
     const timeRef = useRef();//preview time
     //select broadcast title
     const handleRadioChange = (event) => {
@@ -153,6 +164,10 @@ const NewTemplate = () => {
     const handleFooterInputChange = (event) => {
         setFooterText(event.target.value);
     };
+    //subject text
+    const handleSubjectChange = (event) => {
+        setSubjectText(event.target.value)
+    }
     //toggle
     const handleToggle = () => {
         setIsActive(!isActive);
@@ -255,7 +270,7 @@ const NewTemplate = () => {
                                 <TextfieldComponent placeholder='Template Name' customStyle='template_input' />
                             </div>
                             <div className="name_block_field">
-                                <div className="name_block_title">Category</div>
+                                <div className="name_block_title">Channel</div>
                                 <AutocompleteComponent
                                     options={categoryOptions}
                                     value={categoryData}
@@ -274,134 +289,147 @@ const NewTemplate = () => {
                             </div>
                         </div>
                         <div className="broadcast_content">
-                            <div className="platform_division">
-                                <div className="name_block_title">Broadcast title<span className="block_title_optional">(Optional)</span></div>
-                                <div className="block_comments">Highlight your brand here, use images or videos, to stand out</div>
-                                <div className="radios_container">
-                                    <RadioGroup
-                                        value={selectedValue}
-                                        onChange={handleRadioChange}>
-                                        <div className="checkbox_container">
-                                            <FormControlLabel value="none" control={<Radio sx={styles.radiobtn} />} label="None" />
-                                            <FormControlLabel value="text" control={<Radio sx={styles.radiobtn} />} label="Text" className="radio_style" />
-                                            <FormControlLabel value="image" control={<Radio sx={styles.radiobtn} />} label="Image" className="radio_style" />
-                                            <FormControlLabel value="video" control={<Radio sx={styles.radiobtn} />} label="Video" className="radio_style" />
-                                            <FormControlLabel value="document" control={<Radio sx={styles.radiobtn} />} label="Document" className="radio_style" />
-                                        </div>
-                                    </RadioGroup>
-
-                                </div>
-                                <div>
-                                    {
-                                        selectedValue === "text" && <div className="footer_container">
-                                            <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={text} onChange={handleInputChange} />
-                                            <div className="footer_text_count">{text.length}/60</div>
-                                        </div>
-                                    }
-                                    {selectedValue === "image" && <div>
-                                        <p className="utility_header_media_type">(Image: .jpeg, .png)</p>
-
-                                        {previewImage && (
-                                            <>
-                                                <p><strong>Uploaded from PC:</strong>{previewImage.name}</p>
-                                                <img
-                                                    src={previewImage.url}
-                                                    style={{height:'200px'}} alt="Preview image"
-
-                                                />
-                                            </>
-                                        )}
-                                        <div className="header_media">
-                                            <div className="header_media_from_url">
-                                                <div className="footer_container">
-                                                    <TextfieldComponent placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png' customStyle='template_input' />
-                                                    <div className="footer_text_count">0/2000</div>
-                                                </div>
-                                            </div>
-                                            <div className="header_media_or">or</div>
-                                            <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleImageButtonClick} />
-                                            <input accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf" id="image-button-file"
-                                                type="file"
-                                                style={{ display: 'none' }}
-                                                onChange={handleImageFileChange}
-                                            />
-
-                                        </div>
-                                        <div className="none_add_variables_btn" onClick={handleImageSelectAttribute}><AddCircleOutlineIcon />Add Variable</div>
-                                    </div>}
-                                    {selectedValue === "video" && <div>
-                                        <p className="utility_header_media_type">(video:.mp4)</p>
-                                        {
-
-                                            videoPreview && (
-                                                <>
-                                                    <p><strong>Uploaded from PC:</strong>{videoPreview.name}</p>
-                                                    <video
-                                                        src={videoPreview.url}
-                                                        controls
-                                                        style={{ maxHeight: '200px' }}
-                                                        alt="Preview Video"
-                                                    />
-                                                </>
-                                            )
-                                        }
-                                        <div className="header_media">
-                                            <div className="header_media_from_url">
-                                                <div className="footer_container">
-                                                    <TextfieldComponent placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4' customStyle='template_input' />
-                                                    <div className="footer_text_count">0/2000</div>
-                                                </div>
-                                            </div>
-                                            <div className="header_media_or">or</div>
-                                            <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleVideoButtonClick} />
-                                            <input
-                                                accept="video/mp4, video/avi, video/mkv, video/webm"
-                                                id="video-button-file"
-                                                type="file"
-                                                style={{ display: 'none' }}
-                                                onChange={handleVideoFileChange}
-                                            />
-
-
-                                        </div>
-                                    </div>}
-                                    {selectedValue === "document" && <div>
-                                        <p className="utility_header_media_type">(Document:.pdf)</p>
-                                        {
-                                            documentPreview && (
-                                                <>
-                                                    <p><strong>Uploaded from PC:</strong>{documentPreview.name}</p>
-
-                                                    <object
-                                                        data={documentPreview.url}
-                                                        title="Document Preview"
-                                                    ></object>
-                                                </>
-                                            )
-
-                                        }
-                                        <div className="header_media">
-                                            <div className="header_media_from_url">
-                                                <div className="footer_container">
-                                                    <TextfieldComponent placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf' customStyle='template_input' />
-                                                    <div className="footer_text_count">0/2000</div>
-                                                </div>
-                                            </div>
-                                            <div className="header_media_or">or</div>
-                                            <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleDocumentButtonClick} />
-                                            <input
-                                                accept=".pdf"
-                                                id="document-button-file"
-                                                type="file"
-                                                aria-label="Upload"
-                                                style={{ display: 'none' }}
-                                                onChange={handleDocumentFileChange}
-                                            />
+                            {
+                                categoryData === 'Email' && (
+                                    <div className="none_footer_content">
+                                        <div className="name_block_title">Subject</div>
+                                        <div className="footer_container">
+                                            <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={subjectText} onChange={handleSubjectChange} />
+                                            <div className="footer_text_count">{subjectText.length}/60</div>
                                         </div>
                                     </div>
-                                    }
+                                )
+                            }
+                            {["Email", "Whatsapp", "Push"].includes(categoryData) && (
+                                <div className="platform_division">
+                                    <div className="name_block_title">Broadcast title<span className="block_title_optional">(Optional)</span></div>
+                                    <div className="block_comments">Highlight your brand here, use images or videos, to stand out</div>
+                                    <div className="radios_container">
+                                        <RadioGroup
+                                            value={selectedValue}
+                                            onChange={handleRadioChange}>
+                                            <div className="checkbox_container">
+                                                <FormControlLabel value="none" control={<Radio sx={styles.radiobtn} />} label="None" />
+                                                <FormControlLabel value="text" control={<Radio sx={styles.radiobtn} />} label="Text" className="radio_style" />
+                                                <FormControlLabel value="image" control={<Radio sx={styles.radiobtn} />} label="Image" className="radio_style" />
+                                                <FormControlLabel value="video" control={<Radio sx={styles.radiobtn} />} label="Video" className="radio_style" />
+                                                <FormControlLabel value="document" control={<Radio sx={styles.radiobtn} />} label="Document" className="radio_style" />
+                                            </div>
+                                        </RadioGroup>
+
+                                    </div>
+                                    <div>
+                                        {
+                                            selectedValue === "text" && <div className="footer_container">
+                                                <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={text} onChange={handleInputChange} />
+                                                <div className="footer_text_count">{text.length}/60</div>
+                                            </div>
+                                        }
+                                        {selectedValue === "image" && <div>
+                                            <p className="utility_header_media_type">(Image: .jpeg, .png)</p>
+
+                                            {previewImage && (
+                                                <>
+                                                    <p><strong>Uploaded from PC:</strong>{previewImage.name}</p>
+                                                    <img
+                                                        src={previewImage.url}
+                                                        style={{ height: '200px' }} alt="Preview image"
+
+                                                    />
+                                                </>
+                                            )}
+                                            <div className="header_media">
+                                                <div className="header_media_from_url">
+                                                    <div className="footer_container">
+                                                        <TextfieldComponent placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png' customStyle='template_input' />
+                                                        <div className="footer_text_count">0/2000</div>
+                                                    </div>
+                                                </div>
+                                                <div className="header_media_or">or</div>
+                                                <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleImageButtonClick} />
+                                                <input accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf" id="image-button-file"
+                                                    type="file"
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleImageFileChange}
+                                                />
+
+                                            </div>
+                                            <div className="none_add_variables_btn" onClick={handleImageSelectAttribute}><AddCircleOutlineIcon />Add Variable</div>
+                                        </div>}
+                                        {selectedValue === "video" && <div>
+                                            <p className="utility_header_media_type">(video:.mp4)</p>
+                                            {
+
+                                                videoPreview && (
+                                                    <>
+                                                        <p><strong>Uploaded from PC:</strong>{videoPreview.name}</p>
+                                                        <video
+                                                            src={videoPreview.url}
+                                                            controls
+                                                            style={{ maxHeight: '200px' }}
+                                                            alt="Preview Video"
+                                                        />
+                                                    </>
+                                                )
+                                            }
+                                            <div className="header_media">
+                                                <div className="header_media_from_url">
+                                                    <div className="footer_container">
+                                                        <TextfieldComponent placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4' customStyle='template_input' />
+                                                        <div className="footer_text_count">0/2000</div>
+                                                    </div>
+                                                </div>
+                                                <div className="header_media_or">or</div>
+                                                <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleVideoButtonClick} />
+                                                <input
+                                                    accept="video/mp4, video/avi, video/mkv, video/webm"
+                                                    id="video-button-file"
+                                                    type="file"
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleVideoFileChange}
+                                                />
+
+
+                                            </div>
+                                        </div>}
+                                        {selectedValue === "document" && <div>
+                                            <p className="utility_header_media_type">(Document:.pdf)</p>
+                                            {
+                                                documentPreview && (
+                                                    <>
+                                                        <p><strong>Uploaded from PC:</strong>{documentPreview.name}</p>
+
+                                                        <object
+                                                            data={documentPreview.url}
+                                                            title="Document Preview"
+                                                        ></object>
+                                                    </>
+                                                )
+
+                                            }
+                                            <div className="header_media">
+                                                <div className="header_media_from_url">
+                                                    <div className="footer_container">
+                                                        <TextfieldComponent placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf' customStyle='template_input' />
+                                                        <div className="footer_text_count">0/2000</div>
+                                                    </div>
+                                                </div>
+                                                <div className="header_media_or">or</div>
+                                                <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleDocumentButtonClick} />
+                                                <input
+                                                    accept=".pdf"
+                                                    id="document-button-file"
+                                                    type="file"
+                                                    aria-label="Upload"
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleDocumentFileChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                             <div className="none_body_content">
                                 <div className="name_block_title">Body</div>
                                 <div className="block__comments">Make your messages personal using variables like
@@ -438,151 +466,177 @@ const NewTemplate = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="none_footer_content">
-                                <div className="name_block_title">Footer<span className="block_title_optional">(Optional)</span></div>
-                                <div className="none_footer_comments">Footers are great to add any disclaimers or to add a thoughtful PS</div>
-                                <div className="footer_container">
-                                    <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={footerText} onChange={handleFooterInputChange} />
-                                    <div className="footer_text_count">{footerText.length}/60</div>
-                                </div>
-                            </div>
-                            <div className="none_button_content">
-                                <div className="name_block_title">Buttons<span className="block_title_optional">(Recommended)</span></div>
-                                <div className="none_button_comments">Insert buttons so your customers can take action and engage with your message! </div>
-                                <div className="button_toggle">
-                                    <button
-                                        type="button"
-                                        className={`toggle__control ${isActive ? 'active' : ''}`}
-                                        onClick={handleToggle}
-                                        aria-label="Toggle"
+                            {
+                                categoryData === 'Whatsapp' && (
+                                    <div className="none_footer_content">
+                                        <div className="name_block_title">Footer<span className="block_title_optional">(Optional)</span></div>
+                                        <div className="none_footer_comments">Footers are great to add any disclaimers or to add a thoughtful PS</div>
+                                        <div className="footer_container">
+                                            <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={footerText} onChange={handleFooterInputChange} />
+                                            <div className="footer_text_count">{footerText.length}/60</div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                ['Whatsapp', 'Platform', 'Push'].includes(categoryData) && (
+                                    <div className="none_button_content">
+                                        <div className="name_block_title">Buttons<span className="block_title_optional">(Recommended)</span></div>
+                                        <div className="none_button_comments">Insert buttons so your customers can take action and engage with your message! </div>
+                                        <div className="button_toggle">
+                                            <button
+                                                type="button"
+                                                className={`toggle__control ${isActive ? 'active' : ''}`}
+                                                onClick={handleToggle}
+                                                aria-label="Toggle"
 
-                                    >
-                                        <div className='toggle-indicator'></div>
-                                    </button>
-                                </div>
-                                <div>
-                                    {
-                                        isActive && (
-                                            <>
-                                                {
-                                                    showContent && (
+                                            >
+                                                <div className='toggle-indicator'></div>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            {
+                                                isActive && (
+                                                    <>
+                                                        {
+                                                            showContent && (
+                                                                <div className="none_button_group">
+                                                                    <div className="buttondata_dropdown">
+                                                                        <AutocompleteComponent
+                                                                            options={buttonOptions}
+                                                                            value={buttonData}
+                                                                            onChange={(event, newValue) => setButtonData(newValue)}
+                                                                            customStyles={styles.autocompleteStyle}
+                                                                        />
+                                                                    </div>
+
+                                                                    <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleAddReplybtn} />
+                                                                </div>
+                                                            )
+                                                        }
+                                                        {
+                                                            addReplyButton &&
+                                                            <div>
+                                                                {
+                                                                    addButtonContent.map((row, index) => (
+                                                                        <div className="button_block_container" key={index}>
+                                                                            <div className="call_action_row">
+                                                                                <div className="call_action_row_btn_container">
+                                                                                    <div className="buttondata_dropdown">
+                                                                                        <AutocompleteComponent
+                                                                                            options={buttonOptions}
+                                                                                            value={buttonData}
+                                                                                            onChange={(event, newValue) => setButtonData(newValue)}
+                                                                                            customStyles={styles.autocompleteStyle}
+                                                                                        /></div>
+                                                                                    <div className="footer_container second_add_button_textbox">
+                                                                                        <TextfieldComponent placeholder='Button Text' customStyle='template_input' />
+                                                                                        <div className="footer_text_count">0/25</div>
+                                                                                    </div>
+                                                                                    <button aria-label="delete" className="cell__delete remove_add_button_text" onClick={() => handleDeleteRow(index)} >
+                                                                                        <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
+                                                                                    </button>
+                                                                                    {addButtonContent.length < 2 && (
+                                                                                        <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleAddButtonContent} />
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="call_action_row">
+                                                                                <div className="call_action_row_btn_container">
+                                                                                    <div className="buttondata_dropdown">
+                                                                                        <AutocompleteComponent
+                                                                                            options={buttonOptions}
+                                                                                            value={buttonData}
+                                                                                            onChange={(event, newValue) => setButtonData(newValue)}
+                                                                                            customStyles={styles.autocompleteStyle}
+                                                                                        />
+                                                                                    </div>
+                                                                                    <div className="footer_container call_action_row_btn_textbox">
+                                                                                        <TextfieldComponent placeholder="https://www.wati.io" customStyle='template_input' />
+                                                                                        <div className="footer_text_count">19/2000</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                            </div>
+                                                        }
+
                                                         <div className="none_button_group">
                                                             <div className="buttondata_dropdown">
                                                                 <AutocompleteComponent
-                                                                    options={buttonOptions}
-                                                                    value={buttonData}
-                                                                    onChange={(event, newValue) => setButtonData(newValue)}
+                                                                    options={secondbuttonOptions}
+                                                                    value={secondButtonData}
+                                                                    onChange={(event, newValue) => setSecondButtonData(newValue)}
                                                                     customStyles={styles.autocompleteStyle}
                                                                 />
                                                             </div>
+                                                            {
+                                                                secondAddButtonContent.map((_, index) => (
+                                                                    <div className="none_second_add_container" key={index}>
+                                                                        <div className="footer_container second_add_button_textbox">
+                                                                            <TextfieldComponent placeholder='Button Text' customStyle='template_input' />
+                                                                            <div className="footer_text_count">0/25</div>
+                                                                        </div>
+                                                                        <button aria-label="delete" className="cell__delete remove_add_button_text" onClick={() => handleDeletesecondAdd(index)} >
+                                                                            <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
+                                                                        </button>
+                                                                    </div>
+                                                                ))
 
-                                                            <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleAddReplybtn} />
+                                                            }
+
+                                                            {secondAddButtonContent.length < 3 && (
+                                                                <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleSecondAddContent} />)}
                                                         </div>
-                                                    )
-                                                }
-                                                {
-                                                    addReplyButton &&
-                                                    <div>
-                                                        {
-                                                            addButtonContent.map((row, index) => (
-                                                                <div className="button_block_container" key={index}>
-                                                                    <div className="call_action_row">
-                                                                        <div className="call_action_row_btn_container">
-                                                                            <div className="buttondata_dropdown">
-                                                                                <AutocompleteComponent
-                                                                                    options={buttonOptions}
-                                                                                    value={buttonData}
-                                                                                    onChange={(event, newValue) => setButtonData(newValue)}
-                                                                                    customStyles={styles.autocompleteStyle}
-                                                                                /></div>
-                                                                            <div className="footer_container second_add_button_textbox">
-                                                                                <TextfieldComponent placeholder='Button Text' customStyle='template_input' />
-                                                                                <div className="footer_text_count">0/25</div>
-                                                                            </div>
-                                                                            <button aria-label="delete" className="cell__delete remove_add_button_text" onClick={() => handleDeleteRow(index)} >
-                                                                                <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
-                                                                            </button>
-                                                                            {addButtonContent.length < 2 && (
-                                                                                <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleAddButtonContent} />
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="call_action_row">
-                                                                        <div className="call_action_row_btn_container">
-                                                                            <div className="buttondata_dropdown">
-                                                                                <AutocompleteComponent
-                                                                                    options={buttonOptions}
-                                                                                    value={buttonData}
-                                                                                    onChange={(event, newValue) => setButtonData(newValue)}
-                                                                                    customStyles={styles.autocompleteStyle}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="footer_container call_action_row_btn_textbox">
-                                                                                <TextfieldComponent placeholder="https://www.wati.io" customStyle='template_input' />
-                                                                                <div className="footer_text_count">19/2000</div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                    </div>
-                                                }
 
-                                                <div className="none_button_group">
-                                                    <div className="buttondata_dropdown">
-                                                        <AutocompleteComponent
-                                                            options={secondbuttonOptions}
-                                                            value={secondButtonData}
-                                                            onChange={(event, newValue) => setSecondButtonData(newValue)}
-                                                            customStyles={styles.autocompleteStyle}
-                                                        />
-                                                    </div>
-                                                    {
-                                                        secondAddButtonContent.map((_, index) => (
-                                                            <div className="none_second_add_container" key={index}>
-                                                                <div className="footer_container second_add_button_textbox">
-                                                                    <TextfieldComponent placeholder='Button Text' customStyle='template_input' />
-                                                                    <div className="footer_text_count">0/25</div>
-                                                                </div>
-                                                                <button aria-label="delete" className="cell__delete remove_add_button_text" onClick={() => handleDeletesecondAdd(index)} >
-                                                                    <svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg>
-                                                                </button>
-                                                            </div>
-                                                        ))
-
-                                                    }
-
-                                                    {secondAddButtonContent.length < 3 && (
-                                                        <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleSecondAddContent} />)}
-                                                </div>
-
-                                            </>
-                                        )
-                                    }
-                                </div>
-                            </div>
-
-                            {
-                                isFocused && (
-                                    <div className="none_sample_content">
-                                        <div className="name_block_title">Sample Content</div>
-                                        <div className="none_sample_comments">Just enter sample content here (it doesn’t need to be exact!)</div>
-                                        <div className="none_sample_content_textbox">
-                                            <TextfieldComponent placeholder='Enter content for {{name}}' customStyle='template_input' />
-                                            <div className="none_sample_text_count">0/200</div>
+                                                    </>
+                                                )
+                                            }
                                         </div>
-                                        <div className="none_sample_comments">Make sure not to include any actual user or customer information, and provide only sample content in your examples.</div>
                                     </div>
                                 )
                             }
 
+                            {
+                                categoryData === 'Whatsapp' && (
+                                    <>
+                                        {
+                                            isFocused && (
+                                                <div className="none_sample_content">
+                                                    <div className="name_block_title">Sample Content</div>
+                                                    <div className="none_sample_comments">Just enter sample content here (it doesn’t need to be exact!)</div>
+                                                    <div className="none_sample_content_textbox">
+                                                        <TextfieldComponent placeholder='Enter content for {{name}}' customStyle='template_input' />
+                                                        <div className="none_sample_text_count">0/200</div>
+                                                    </div>
+                                                    <div className="none_sample_comments">Make sure not to include any actual user or customer information, and provide only sample content in your examples.</div>
+                                                </div>
+                                            )
+
+                                        }
+                                    </>
+                                )
+                            }
+
+
                         </div>
                     </div>
                     <div className="new_template_content_right">
-                        <h3 className="preview_text">Preview</h3>
-                        <div className="template_preview_svg">
+                        <div className="preview_container">
+                        <h3 className="preview_text">Preview </h3> <span><StayCurrentPortraitRoundedIcon/><DesktopWindowsRoundedIcon/></span></div>
+                        <div className="template_preview_svg"
+                            style={{
+                                backgroundImage: `url(${backgroundImages[categoryData]})`
+                            }}>
+                            {
+                                categoryData === 'Email' && (
+                                    <div className="email_subject">{subjectText}</div>
+                                )
+                            }
+
                             <div className="preview_message">
-                                <div className="preview_message_container">
+                                <div className="preview_message_container" style={{marginTop:categoryData==='SMS'?"248px":'75px' }}>
                                     {
                                         selectedValue === "text" &&
                                         <div className="preview_message__header_text">{text}</div>

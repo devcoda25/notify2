@@ -3594,13 +3594,41 @@ align-items: center;
   font-size: 14px;
   font-weight: 700;
 }
-.new_template_container .template_preview_svg{
-  background-image: url(/assets/images/whatsapp.png);
+.new_template_container .template_preview_svg,.new_broadcast_template .broadcast_template_preview_svg{
+  /* background-image: url(/assets/images/whatsapp.png); */
   background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
     width: 306px;
     height: 570px;
+    position: relative;
+}
+.new_broadcast_template .broadcast_template_preview_svg{
+ background-image: url(/assets/images/whatsapp.png); 
+}
+.new_template_container .email_subject{
+  left:45px;
+  background:white;
+  position:absolute;
+  top: 16%;
+  width:209px;
+  height:23px;
+  padding:0px 5px;
+  font-size:13px;
+  font-weight:500;
+}
+.new_template_container .preview_container{
+position: relative;
+}
+.new_template_container .preview_container span{
+  position: absolute;
+  top: 29px;
+  left: 123px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 53px;
+
 }
 .new_template_container .preview_message{
 max-height: 416px;
@@ -3608,7 +3636,7 @@ overflow: auto;
 margin: 87px 20px 0px 18px;
 padding-bottom: 20px;
 }
-.new_template_container .preview_message_container{
+.new_template_container .preview_message_container,.new_broadcast_template .broadcast_preview_message_container{
   display: flex;
       flex-direction: column;
       gap: 8px;
@@ -3618,9 +3646,12 @@ padding-bottom: 20px;
       position: relative;
       overflow-wrap: break-word;
       padding: 10px;
-      margin-top: 75px;
+      /* margin-top: 75px; */
       margin-left: 31px;
       width: 210px;
+}
+.new_broadcast_template .broadcast_preview_message_container{
+  margin-top: 75px;
 }
 .new_template_container .preview_message_footer{
   color: rgb(102, 102, 102);
