@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FormControlLabel, Radio, RadioGroup,Switch } from '@mui/material';
+import { FormControlLabel, Radio, RadioGroup, Switch } from '@mui/material';
 import ButtonComponent from "../ButtonComponent";
 import TextfieldComponent from "../TextfieldComponent";
 import AutocompleteComponent from "../AutocompleteComponent";
@@ -14,12 +14,18 @@ import ImageSelectAttribute from "./ImageSelectAttribute";
 import StayCurrentPortraitRoundedIcon from '@mui/icons-material/StayCurrentPortraitRounded';
 import DesktopWindowsRoundedIcon from '@mui/icons-material/DesktopWindowsRounded';
 
-const backgroundImages = {
+const mobileBackgroundImages = {
     Email: "/assets/images/Email.png",
     Whatsapp: "/assets/images/whatsapp.png",
     SMS: "/assets/images/sms.png",
     Platform: "/assets/images/platform.png",
     Push: "/assets/images/push.png"
+}
+const desktopBackgroundImages = {
+    Email: "/assets/images/gmailDesk.png",
+    Whatsapp: "/assets/images/whatsappDesk.png",
+    Platform: "/assets/images/platformDesk.png",
+    Push: "/assets/images/pushDesk.png"
 }
 const styles = {
     autocompleteStyle: {
@@ -70,6 +76,7 @@ const NewTemplate = () => {
     const [isShowAddvariableModal, setIsShowAddVariableModal] = useState(false); //add variable popup modal
     const [isShowImageSelectAttribute, setIsShowImageSelectAttribute] = useState(false); //image Add variable popup modal 
     const [subjectText, setSubjectText] = useState('');//subjectText
+    const [PreviewMode, setPreviewMode] = useState('mobile')
     const timeRef = useRef();//preview time
     //select broadcast title
     const handleRadioChange = (event) => {
@@ -624,19 +631,43 @@ const NewTemplate = () => {
                     </div>
                     <div className="new_template_content_right">
                         <div className="preview_container">
-                        <h3 className="preview_text">Preview </h3> <span><StayCurrentPortraitRoundedIcon/><DesktopWindowsRoundedIcon/></span></div>
+                            <h3 className="preview_text">Preview </h3>
+                            <span><StayCurrentPortraitRoundedIcon style={{ cursor: 'pointer', color: PreviewMode === 'mobile' ? 'green' : 'black' }} onClick={() => setPreviewMode('mobile')} />
+                                {
+                                    categoryData !== 'SMS' && (
+                                        <DesktopWindowsRoundedIcon style={{ cursor: 'pointer', color: PreviewMode === 'desktop' ? 'green' : 'black' }} onClick={() => setPreviewMode('desktop')} />
+                                    )
+                                }
+                            </span></div>
+
                         <div className="template_preview_svg"
                             style={{
-                                backgroundImage: `url(${backgroundImages[categoryData]})`
+                                backgroundImage: `url(${PreviewMode === 'mobile' ? mobileBackgroundImages[categoryData] : desktopBackgroundImages[categoryData]})`,
+                                width: PreviewMode === 'desktop' ? "112%" : "306px",
+                                height: PreviewMode === 'desktop' ? '43%' : '570px',
+
+
+
                             }}>
                             {
                                 categoryData === 'Email' && (
-                                    <div className="email_subject">{subjectText}</div>
+                                    <div className="email_subject" style={{
+                                        left: PreviewMode === 'desktop' ? "95px" : '45px',
+                                        top: PreviewMode === 'desktop' ? "22%" : '16%',
+                                        height: PreviewMode === 'desktop' ? '13px' : '23px',
+                                        fontSize: PreviewMode === 'desktop' ? '11px' : '13px',
+                                    }}>{subjectText}</div>
                                 )
                             }
 
                             <div className="preview_message">
-                                <div className="preview_message_container" style={{marginTop:categoryData==='SMS'?"248px":'75px' }}>
+                                <div className="preview_message_container" style={{
+                                    marginTop: categoryData === "SMS" ? PreviewMode === "desktop"  ? "12px"  : "248px" : PreviewMode === "desktop" ? "12px"  : "75px",
+                                    marginLeft:  PreviewMode === "desktop" ? categoryData === "Whatsapp" ? "33%" : "67px" : "31px",
+                                    width: PreviewMode === "desktop" ? categoryData === "Whatsapp" ? "214px" : "254px" : "210px",
+                                    maxHeight:PreviewMode==='desktop' ? '84px':'',
+                                    overflowY:PreviewMode ==='desktop'? 'auto':'hidden',
+                                }}>
                                     {
                                         selectedValue === "text" &&
                                         <div className="preview_message__header_text">{text}</div>

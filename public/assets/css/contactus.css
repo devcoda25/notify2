@@ -3577,7 +3577,8 @@ width:385px;
 color:rgb(158, 158, 158)
 }
 .new_template_container .new_template_content_right{
-margin: 0px auto;
+/* margin: 0px auto; */
+margin:0px 25px;
 flex-direction: column;
 display: flex;
 right: 5px;
