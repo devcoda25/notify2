@@ -3404,6 +3404,7 @@ margin-right: 25px;
  font-weight: 600;
  line-height: 18px;
  margin-bottom: 12px;
+ color: black;
  }
 .new_template_container .template_input:hover,.new_template_container .template_input:focus{
   border:1px solid rgb(35, 164, 85) !important;
@@ -3749,6 +3750,7 @@ background-image: url(/assets/images/icon_web.svg);
   font-size: 18px;
   font-weight: 600;
   padding-bottom: 20px;
+  color: black;
 }
 .channel_email_content .email_main_grid{
   display: flex;
@@ -3768,6 +3770,7 @@ background-image: url(/assets/images/icon_web.svg);
   cursor: pointer;
   border-radius: 8px;
   border:1px solid #c9c9cd;
+  color: black;
 }
 .email_visual_builder .history_date{
   text-align: right;

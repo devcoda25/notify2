@@ -141,6 +141,10 @@ const NewTemplate = () => {
     const [code, setCode] = useState("");
     const timeRef = useRef();//preview time
     const previewRef = useRef(null);
+    // email template format text
+    const handleFormat = (command) => {
+        document.execCommand(command, false, null);
+    };
     //select broadcast title
     const handleRadioChange = (event) => {
         setSelectedValue(event.target.value);
@@ -340,8 +344,8 @@ const NewTemplate = () => {
         }
     }, []);
 
-  
-   
+
+
     useEffect(() => {
         if (previewRef.current && editableRef.current) {
             previewRef.current.innerHTML = editableRef.current.innerHTML; // Sync content
@@ -353,7 +357,7 @@ const NewTemplate = () => {
             previewRef.current.innerHTML = editableRef.current.innerHTML; // Live update
         }
     };
- useEffect(() => {
+    useEffect(() => {
         setCode(`
           <!DOCTYPE html >
           <html>
@@ -645,10 +649,10 @@ const NewTemplate = () => {
                                                                     </div>
                                                                     <div className="content_text_container">
                                                                         <div className="content_text">
-                                                                            <FormatBoldIcon />
-                                                                            <FormatItalicIcon />
-                                                                            <FormatUnderlinedRoundedIcon />
-                                                                            <StrikethroughSIcon />
+                                                                            <FormatBoldIcon onClick={() => handleFormat('bold')} />
+                                                                            <FormatItalicIcon onClick={() => handleFormat('italic')} />
+                                                                            <FormatUnderlinedRoundedIcon onClick={() => handleFormat('underline')} />
+                                                                            <StrikethroughSIcon onClick={() => handleFormat('strikeThrough')} />
                                                                             <div className="url_icon"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
                                                                         </div>
                                                                         <div className="add_var_btn" onClick={handleAddvarToggle}>+ Add Variable</div>
@@ -1056,7 +1060,7 @@ const NewTemplate = () => {
                                                                 )}
                                                             </div>
                                                         </div>
-                                                       
+
 
                                                         <div className="none_button_group">
                                                             <div className="buttondata_dropdown">
