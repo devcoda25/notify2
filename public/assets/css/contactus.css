@@ -3741,6 +3741,226 @@ background-image: url(/assets/images/icon_web.svg);
     font-size: 15px;
     font-weight: 500;
 }
+/* newtemplate --> email channel */
+.channel_email_content{
+  padding:15px 0px;
+}
+.channel_email_content .email_text{
+  font-size: 18px;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+.channel_email_content .email_main_grid{
+  display: flex;
+  flex-direction: row;
+   gap:20px;
+  justify-content: space-between;
+}
+.channel_email_content .visual_html_editor{
+  position: relative;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding:10px 20px;
+  /* gap:8px; */
+  cursor: pointer;
+  border-radius: 8px;
+  border:1px solid #c9c9cd;
+}
+.email_visual_builder .history_date{
+  text-align: right;
+  font-size: 12px;
+}
+.channel_email_content .email_grid_heading{
+  font-size: 18px;
+  font-weight: 600;
+  margin:5px 0px;
+}
+.channel_email_content .email_grid_subtext{
+  font-size: 14px;
+  font-weight: 400;
+}
+.channel_email_content .visual_builder_container,.channel_email_content .html_editor{
+  margin-top: 10px;
+}
+.channel_email_content .color_category_container{
+  margin-bottom: 24px;
+    display: flex;
+    gap: 25px;
+    border: 1px solid #c9c9cd;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+.channel_email_content .color_category_content{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #e2e2e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor:pointer;
+  position:relative;
+}
+.channel_email_content .logo_container{
+display: flex;
+gap:20px;
+flex-direction: column;
+}
+.channel_email_content .logo_right_container{
+  float: inline-end;
+}
+.channel_email_content .desktop_logo_container{
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  flex-direction: column;
+}
+.channel_email_content .desktop_logo_container p{ 
+  font-size: 13px;
+  font-weight: 400;
+}
+.channel_email_content .content_container{
+  min-height: 100px;
+  width: 100%;
+  border: 1px solid #e2e2e4;
+  line-height: 20px;
+  padding: 8px 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+.channel_email_content .accordion_content{
+min-height:240px;
+border:none !important
+}
+.channel_email_content .accordion_content:focus{
+  border:none !important;
+  outline: none !important;
+}
+.channel_email_content .content_text_container{
+  display: flex;
+justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  position: relative;
+}
+.channel_email_content .content_text{
+display: flex;
+gap:15px;
+}
+.channel_email_content .add_var_btn{
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+}
+.channel_email_content .previous_msg{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+margin-top: 25px;
+}
+.channel_email_content .addvariable_modal{
+position: absolute;
+top:10px;
+right:0px;
+border-radius:8px;
+z-index: 1000;
+box-shadow:0px 0px 20px rgba(0, 0, 0, 0.1);
+background: white;
+padding:15px 25px;
+max-height: 235px;
+overflow-y: auto;
+}
+.channel_email_content .addvariable_modal li{
+margin-top:10px;
+color: rebeccapurple;
+cursor: pointer;
+}
+.channel_email_content .addvariable_modal li:hover{
+background:#eaedf0;
+}
+.channel_email_content .addvariable_modal span{
+margin-left:10px;
+color:black;
+}
+.email_visual_builder{
+  margin:0px auto auto;
+  border:1px solid #ccc;
+  padding:10px;
+  text-align:center;
+  height:576px;
+  overflow-y:auto;
+}
+.email_visual_builder .ticket_details{
+  padding:35px;
+  text-align:left
+}
+.email_visual_builder .preview_msg_container{
+margin-top: '20px'
+}
+.email_visual_builder .preview_msg_text{
+font-size:14px;
+font-weight:700; 
+color:#666;
+letter-spacing:1px; 
+padding: 10px;
+}
+.email_visual_builder .preview_msg_content{
+  padding:35px 20px;
+  text-align:left;
+  margin:10px 0px;
+}
+.email_visual_builder .preview_msg_content h2{
+font-size: 15px;
+}
+.email_visual_builder .preview_msg_content a{
+text-decoration: underline;
+margin-right: 10px;
+}
+.html_editor .html_editor_header{
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+.html_editor .add_variable_btn{
+  font-size: 13px;
+  padding: 2px 10px;
+  border: 1px solid #ababb1;
+  background: white;
+  border-radius: 8px;
+}
+.html_editor .html_editor_headerleft{
+  border: 1px solid #e2e2e4;
+  background: #fff;
+  border-radius: 8px;
+  padding: 3px;
+  width: 33%;
+}
+.html_editor .html_editor_btn{
+  font-weight: bold;
+  border: none;
+  font-size: 13px;
+  background: white;
+  height: 24px;
+  padding:5px 13px;
+  margin-right: 20px;
+}
+.html_editor .html_editor_btn:hover,.html_editor .html_editor_btn.active{
+background-color: #e2e2e4;
+border-radius: 6px;
+}
+.html_preview_btn{
+  margin-top:2px;
+}
 /* broadcast template */
 .new_broadcast_template .discard_btn{
   border:none;
