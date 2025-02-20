@@ -12067,11 +12067,12 @@ max-width: 680px;
 width: 100%;
 padding:48px 20px;
 }
-.new_tickets_container .new_tickets_textbox,.channel_email_content .new_tickets_textbox{
+.new_tickets_container .new_tickets_textbox,.channel_email_content .new_tickets_textbox,.generate_report .new_tickets_textbox{
 border:1px solid #c9c9cd !important;
 background: white;
 }
-.new_tickets_container .new_tickets_textbox:focus,.channel_email_content .new_tickets_textbox:focus{
+.new_tickets_container .new_tickets_textbox:focus,.channel_email_content .new_tickets_textbox:focus,
+.generate_report .new_tickets_textbox:focus{
   border:1px solid blue !important;
   outline :none  !important;
   box-shadow: none !important;

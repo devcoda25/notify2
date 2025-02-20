@@ -11,10 +11,11 @@ import StraightIcon from '@mui/icons-material/Straight';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import WorkspacesOutlinedIcon from '@mui/icons-material/WorkspacesOutlined';
 import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
+import TicketReports from '../Component/Reports/TicketReports';
 
 
 const Reports = () => {
-    const [activeContent, setActiveContent] = useState('new tickets');
+    const [activeContent, setActiveContent] = useState('ticket reports');
     const handleNavigationClick = (e, content) => {
         e.preventDefault();
         setActiveContent(content);
@@ -22,6 +23,8 @@ const Reports = () => {
 
     const renderContent = () => {
         switch (activeContent) {
+            case 'ticket reports':
+                return <TicketReports/>
             case 'new tickets':
                 return <NewTickets />
             case 'tickets satisfsction':
@@ -39,7 +42,7 @@ const Reports = () => {
             case 'audit log':
                 return <AuditLog />
             default:
-                return <NewTickets />
+                return <TicketReports />
         }
     }
     const [isAddFilter, setIsAddFilter] = useState(false);
@@ -53,7 +56,9 @@ const Reports = () => {
             <div className='msgCont'>
 
                 <div className='msgContL analytics__left__content'>
-                    <li className='solo'><a href='#' onClick={(e) => handleNavigationClick(e, 'new tickets')}><span className='leftbar__item__title' >New Tickets</span></a></li>
+                    <li className='solo'>
+                    <a href='#' onClick={(e) => handleNavigationClick(e, 'ticket reports')}><span className='leftbar__item__title' >Last 7 Days</span></a></li>
+                    <li><a href='#' onClick={(e) => handleNavigationClick(e, 'new tickets')}><span className='leftbar__item__title' >New Tickets</span></a></li>
                     <li ><a href='#' onClick={(e) => handleNavigationClick(e, 'tickets satisfsction')}><span className='leftbar__item__title'>Ticket satisfaction</span></a></li>
                     <li ><a href='#' onClick={(e) => handleNavigationClick(e, 'first response time')}><span className='leftbar__item__title'>First response time</span></a></li>
                     <li ><a href='#' onClick={(e) => handleNavigationClick(e, 'resolution time')}><span className='leftbar__item__title'>Resolution time</span></a></li>
