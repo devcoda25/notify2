@@ -518,12 +518,12 @@ const NewTemplate = () => {
                                         <div className="channel_email_content">
                                             <div className="email_text">How would you like to create your email template?</div>
                                             <div className="email_main_grid">
-                                                <div className="visual_html_editor" onClick={() => setEmailContent("visual builder")}>
+                                                <div className={`visual_html_editor ${emailContent === "visual builder" ? "active" : ""}`} onClick={() => setEmailContent("visual builder")}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="64" height="64"><g stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" clip-path="url(#palette_svg__a)"><path d="M12 21a9 9 0 0 1 0-18c2.387 0 4.676.843 6.364 2.343S21 8.878 21 11c0 1.06-.474 2.078-1.318 2.828S17.694 15 16.5 15H14a2 2 0 0 0-1 3.75A1.3 1.3 0 0 1 12 21"></path><path fill="currentcolor" d="M7.5 11a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M12 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M16.5 11a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"></path></g><defs><clipPath id="palette_svg__a"><path fill="#fff" d="M0 0h24v24H0z"></path></clipPath></defs></svg>
                                                     <h4 className="email_grid_heading">Use visual builder</h4>
                                                     <p className="email_grid_subtext">A visual and code-free builder</p>
                                                 </div>
-                                                <div className="visual_html_editor" onClick={() => setEmailContent("html editor")}>
+                                                <div className={`visual_html_editor ${emailContent === "html editor" ? "active" : ""}`} onClick={() => setEmailContent("html editor")}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="64" height="64"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 4-4 16m7-12 4 4-4 4M7 8l-4 4 4 4"></path></svg>
                                                     <h4 className="email_grid_heading">Use HTML editor</h4>
                                                     <p className="email_grid_subtext">An advanced coding editor</p>
@@ -760,25 +760,38 @@ const NewTemplate = () => {
                                                                     )
 
                                                                 }
-                                                            </div>
-                                                            {activeTab === "html" &&
-                                                                <div>
-                                                                    <CodeMirror
-                                                                        value={code}
-                                                                        options={{
-                                                                            mode: "xml",
-                                                                            theme: "material",
-                                                                            lineNumbers: true,
-                                                                            indentWithTabs: true,
-                                                                            smartIndent: true,
-                                                                            matchBrackets: true,
-                                                                        }}
-                                                                        onBeforeChange={(editor, data, value) => {
-                                                                            setCode(value);
-                                                                        }}
-                                                                    />
+                                                            </div >
+                                                            <div className='htmleditor_code_container' >
+                                                                <div className="htmleditor_code_status">
+                                                                    <div>Template Status:</div><span className='status_checked'><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="16" height="16" color="var(--action-positive-default)"><path stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4M3 12a9 9 0 1 0 18.001 0A9 9 0 0 0 3 12"></path></svg></span>
+                                                                    <span>{activeTab ==='html' ? 'Ok' :'Add “Message” parameter'}</span>
                                                                 </div>
-                                                            }
+                                                                {activeTab === "html" &&
+
+                                                                    <div>
+                                                                        <CodeMirror
+                                                                            value={code}
+                                                                            options={{
+                                                                                mode: "xml",
+                                                                                theme: "material",
+                                                                                lineNumbers: true,
+                                                                                indentWithTabs: true,
+                                                                                smartIndent: true,
+                                                                                matchBrackets: true,
+                                                                            }}
+                                                                            onBeforeChange={(editor, data, value) => {
+                                                                                setCode(value);
+                                                                            }}
+                                                                        />
+                                                                    </div>
+
+                                                                }
+                                                                {
+                                                                    activeTab ==='plain' && (
+                                                                      <div>messages</div>
+                                                                    )
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </>
                                                 )

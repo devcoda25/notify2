@@ -3746,6 +3746,9 @@ background-image: url(/assets/images/icon_web.svg);
 .channel_email_content{
   padding:15px 0px;
 }
+.channel_email_content .visual_html_editor.active{
+border:1px solid green;
+}
 .channel_email_content .email_text{
   font-size: 18px;
   font-weight: 600;
@@ -3934,9 +3937,9 @@ margin-right: 10px;
   margin-bottom: 20px;
   position: relative;
 }
-.html_editor .add_variable_btn{
+.html_editor .add_variable_btn,.reports_style .add_filter_btn{
   font-size: 13px;
-  padding: 2px 10px;
+  padding: 7px 20px;
   border: 1px solid #ababb1;
   background: white;
   border-radius: 8px;
@@ -3963,6 +3966,25 @@ border-radius: 6px;
 }
 .html_preview_btn{
   margin-top:2px;
+}
+.html_editor .htmleditor_code_container{
+border:1px solid #e2e2e4;
+ border-radius:4px
+}
+.html_editor .htmleditor_code_status{
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+  color: black;
+  font-size: 14px;
+  padding-bottom: 10px;
+  background: #f6f6f7;
+  padding: 10px;
+
+}
+.html_editor .htmleditor_code_status .status_checked{
+  color: green;
 }
 /* broadcast template */
 .new_broadcast_template .discard_btn{
