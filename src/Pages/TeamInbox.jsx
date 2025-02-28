@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { Grid, Tabs, Tab } from '@mui/material';
-import TuneIcon from '@mui/icons-material/Tune';
+// import TuneIcon from '@mui/icons-material/Tune';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
@@ -13,25 +13,25 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CloseIcon from '@mui/icons-material/Close';
-import MuiAccordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import FilterListSharpIcon from '@mui/icons-material/FilterListSharp';
-import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+// import MuiAccordion from '@mui/material/Accordion';
+// import AccordionSummary from '@mui/material/AccordionSummary';
+// import AccordionDetails from '@mui/material/AccordionDetails';
+// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+// import FilterListSharpIcon from '@mui/icons-material/FilterListSharp';
+// import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
+// import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
-import BurgerSidebar from '../Component/humburgerdiv';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import TeamBurgerLeftNav from '../Component/teamburgerMenu';
-import PriorityDropDown from '../Component/assigneddrop';
-import AssigneeDropDown from '../Component/AssigneeDrop';
-import TicketType from '../Component/TicketType';
+// import BurgerSidebar from '../Component/humburgerdiv';
+// import Dropdown from 'react-bootstrap/Dropdown';
+// import DropdownButton from 'react-bootstrap/DropdownButton';
+// import Form from 'react-bootstrap/Form';
+// import InputGroup from 'react-bootstrap/InputGroup';
+// import TeamBurgerLeftNav from '../Component/teamburgerMenu';
+//import PriorityDropDown from '../Component/assigneddrop';
+//import AssigneeDropDown from '../Component/AssigneeDrop';
+//import TicketType from '../Component/TicketType';
 import ReporterType from '../Component/Reporter';
-import TeaamInboxAccordion from '../Component/TeamInboxAccordin';
+// import TeaamInboxAccordion from '../Component/TeamInboxAccordin';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
@@ -65,24 +65,24 @@ import { Chip } from '@mui/material';
 // import Tab from 'react-bootstrap/Tab';
 // import Tabs from 'react-bootstrap/Tabs';
 
-import { Navbar } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+// import { Navbar } from 'react-bootstrap';
+// import { Link } from 'react-router-dom';
 import AutocompleteComponent from '../Component/AutocompleteComponent';
-import { Position } from 'react-flow-renderer';
-import zIndex from '@mui/material/styles/zIndex';
+// import { Position } from 'react-flow-renderer';
+// import zIndex from '@mui/material/styles/zIndex';
 import ButtonComponent from '../Component/ButtonComponent';
 import TextfieldComponent from '../Component/TextfieldComponent';
-
+import CustomAccordion from '../Component/TeamInbox/CustomAccordion';
 
 const styles = {
     accordion: {
         marginBottom: '0px',
     },
-    accordionSummary: {
-        fontSize: '12px',
-        fontWeight: 700,
-        color: 'black',
-    },
+    // accordionSummary: {
+    //     fontSize: '12px',
+    //     fontWeight: 700,
+    //     color: 'black',
+    // },
     autocompleteStyle: {
         margin: '7px 0px 5px',
         paddingLeft: '67px',
@@ -252,37 +252,35 @@ const filterData = [
     },
 
 ]
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+//dropdown options
+const channelOptions = ['Email', 'Push', 'Platform', 'SMS', 'WhatsApp']//channel
+const priorityOptions = ['High', 'Medium', 'Low']; //priority
+const assignedOptions = ['Allie Harmon', 'Thameem', 'Vinu']; //assigned to 
+const projectOptions = ['Administrative', 'Project1', 'Project2']; // project
+const ticketTypeOptions = ['Task1', 'Task2', 'Task3']; //ticket type
+const reporterOptions = ['Allie Harmon', 'Reporter1', 'Reporter2']; //reporter
+const ticketStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed']; // ticket status 
+const teamOptions = ['Team1', 'Team2', 'Team3'];//team 
+const agentOptions = ['Assigned', 'Unassigned'];//agent
+const ticketsPriorityOptions = ['Low', 'Medium', 'High', 'Urgent']; //ticket priority
+const newticketsStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed']; //new ticket status
+const tagOptions = ['complaint', 'feedback', 'request', 'sales', 'support'];//tag
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && <div>{children}</div>}
-        </div>
-    );
-}
-const CustomAccordion = ({ label }) => {
-    return (
-        <>
-            <MuiAccordion>
-                <AccordionSummary sx={{ ...styles.accordionSummary }}
-                    expandIcon={<ArrowForwardIosIcon sx={{ fontSize: '13px' }} />}>
-                    {label}
-                </AccordionSummary>
-                <AccordionDetails>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                </AccordionDetails>
-            </MuiAccordion>
-        </>
-    )
-}
+// function CustomTabPanel(props) {
+//     const { children, value, index, ...other } = props;
+
+//     return (
+//         <div
+//             role="tabpanel"
+//             hidden={value !== index}
+//             id={`simple-tabpanel-${index}`}
+//             aria-labelledby={`simple-tab-${index}`}
+//             {...other}
+//         >
+//             {value === index && <div>{children}</div>}
+//         </div>
+//     );
+// }
 
 
 const TeamInbox = () => {
@@ -316,25 +314,14 @@ const TeamInbox = () => {
     //     bm_menu_wrap.style.left = 0
     //     document.querySelector('#react-burger-cross-btn').click()
     // }
-    //dropdown options
-    const priorityOptions = ['High', 'Medium', 'Low'];
-    const assignedOptions = ['Allie Harmon', 'Thameem', 'Vinu'];
-    const projectOptions = ['Administrative', 'Project1', 'Project2'];
-    const ticketTypeOptions = ['Task1', 'Task2', 'Task3'];
-    const reporterOptions = ['Allie Harmon', 'Reporter1', 'Reporter2'];
-    const filterProjectOptions = ['All', 'One', 'Two', 'Three'];
-    const filterTypeOptions = ['All', 'One', 'Two', 'Three'];
-    const filterStatusOptions = ['All', 'One', 'Two', 'Three'];
-    const filterAssigneeOptions = ['All', 'One', 'Two', 'Three'];
-    const ticketStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed'];
-    const teamOptions = ['Team1', 'Team2', 'Team3'];
-    const agentOptions = ['Assigned', 'Unassigned'];
-    const ticketsPriorityOptions = ['Low', 'Medium', 'High', 'Urgent'];
-    const newticketsStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed'];
-    const tagOptions = ['complaint', 'feedback', 'request', 'sales', 'support'];
-    const channelOptions = ['Email', 'Push', 'Platform', 'SMS', 'WhatsApp']
 
-    const [isLeftContainerVisible, setIsLeftContainerVisible] = useState(true);
+    // const filterProjectOptions = ['All', 'One', 'Two', 'Three'];
+    // const filterTypeOptions = ['All', 'One', 'Two', 'Three'];
+    // const filterStatusOptions = ['All', 'One', 'Two', 'Three'];
+    // const filterAssigneeOptions = ['All', 'One', 'Two', 'Three'];
+
+
+    const [isLeftContainerVisible, setIsLeftContainerVisible] = useState(true); 
     const [isMyticketsVisible, setIsMyticketsVisible] = useState(true);
     const [value, setValue] = React.useState(0);
     const [open, setOpen] = useState(false);
@@ -344,10 +331,10 @@ const TeamInbox = () => {
     const [projectContent, setProjectContent] = useState('Administrative');
     const [ticketTypeContent, setTicketTypeContent] = useState('Task1');
     const [reporterContent, setReporterContent] = useState('Allie Harmon');
-    const [filterProjectContent, setFilterProjectContent] = useState('All');
-    const [filterTypeContent, setFilterTypeContent] = useState('All');
-    const [filterStatusContent, setFilterStatusContent] = useState('All');
-    const [filterAssigneeContent, setFilterAssigneeContent] = useState('All');
+    // const [filterProjectContent, setFilterProjectContent] = useState('All');
+    // const [filterTypeContent, setFilterTypeContent] = useState('All');
+    // const [filterStatusContent, setFilterStatusContent] = useState('All');
+    // const [filterAssigneeContent, setFilterAssigneeContent] = useState('All');
     const [ticketStatusContent, setTicketStatusContent] = useState('Closed');
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [addFilterPopup, setAddFilterPopup] = useState(false);
@@ -376,22 +363,26 @@ const TeamInbox = () => {
         setSelectedTags(selectedTags.filter(tag => tag !== tagToDelete));
     };
 
+    //add people
     const handleClickAddpeople = () => {
         setAddpeopleContent(true);
     }
+    const handleCloseAddpeople = () => {
+        setAddpeopleContent(false);
+    }
+
+    //tag
     const handleClickAddtag = () => {
         setAddtagContent(true);
     }
     const handleCloseAddtag = () => {
         setAddtagContent(false);
     }
-    const handleCloseAddpeople = () => {
-        setAddpeopleContent(false);
-    }
+  
     const handleTogglePrivate = () => {
         setIsActive(!isActive)
     }
-
+      // Add filter popup 
     const handleAddFilterOpen = () => {
         setAddFilterPopup(true);
     };

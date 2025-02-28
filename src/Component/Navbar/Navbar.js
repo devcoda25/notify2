@@ -11,6 +11,7 @@ import { LiaWalletSolid } from "react-icons/lia";
 import { GoBellFill } from "react-icons/go";
 import { IoMdPerson } from "react-icons/io";
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import EventIcon from '@mui/icons-material/Event';
 // import '../Style.css'
 import MoreDropDown from './MoreDropDown';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -28,6 +29,7 @@ const Navbar = () => {
 
   const menuItems = [
     { path: '/teaminbox', label: 'Team Inbox', icon: <FiInbox /> },
+    { path: '/meetings', label: 'Meetings', icon: <EventIcon /> },
     { path: '/Broadcast', label: 'Broadcast', icon: <PiBroadcastDuotone /> },
     { path: '/contactus', label: 'Contacts', icon: <RiContactsBook2Line /> },
     { path: '/automations', label: 'Automations', icon: <FiSettings size={20}/> },

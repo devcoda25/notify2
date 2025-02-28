@@ -26,7 +26,7 @@ const Styles = {
 
     }
 }
-const TimePickerComponent = ({ initialValue, disabled }) => {
+const TimePickerComponent = ({ initialValue, disabled,customStyles }) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimePicker
@@ -40,7 +40,7 @@ const TimePickerComponent = ({ initialValue, disabled }) => {
                 }}
                 slotProps={{
                     textField: {
-                        sx: { ...Styles.timePicker },
+                        sx: { ...Styles.timePicker,...customStyles },
                     },
                 }}
             />

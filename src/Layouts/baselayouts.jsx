@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import TeamInbox from '../Pages/TeamInbox';
+import Meetings from '../Pages/Meetings';
 // import BroadcastBody from '../Component/Broadcast/BroadcastBody';
 import Broadcast from '../Pages/Broadcast';
 import Navbar from '../Component/Navbar/Navbar';
@@ -21,6 +22,7 @@ const BaseLayouts = () => {
                     <Routes>
                         <Route path='/' element={<TeamInbox />} />
                         <Route path='Teaminbox' element={<TeamInbox />} />
+                        <Route path='meetings' element={<Meetings />} />
                         <Route path='Broadcast' element={<Broadcast />} />
                         <Route path='contactus' element={<ContactUs/>}/>
                         <Route path='automations' element={<Automations/>}/>
