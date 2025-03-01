@@ -18031,3 +18031,146 @@ margin-top:20px
   align-items: center;
   gap: 10px;
 }
+.event_createbutton{
+border-radius: 40px;
+border:1px solid #004eba;
+color:#004eba;
+padding:8px 16px;
+background: white;
+width: 200px;
+height: 38px;
+margin-bottom:20px;
+}
+.calendar_Eventtype{
+padding:25px 30px;
+background: #fafafa;
+}
+.calendar_Eventtype .mail_account_container{
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
+border-bottom: 1px solid #d4e0ed;
+}
+.calendar_Eventtype .mail_acc,.calendar_Eventtype .new_event_content{
+display: flex;
+gap:16px;
+align-items: center;
+padding:16px 0 8px;
+}
+.calendar_Eventtype .user_logo{
+border-radius: 50%;
+border: 2px solid transparent;
+color:black;
+width:42px;
+height: 42px;
+background:#d4e0ed ;
+}
+.calendar_Eventtype .user_name p{
+margin-bottom: 0px;
+}
+.calendar_Eventtype .new_event_btn{
+  height: 34px;
+  border-radius: 40px;
+  border: 1px solid #476788;
+  background: none;
+  width: 150px;
+  padding: 8px 16px;
+}
+.calendar_Eventtype .new_event_btn:hover{
+  background: #e6f0ff;
+}
+.calendar_Eventtype .event_type_card_list{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min((100% / 2) - 24px, max(280px, calc(100% - 48px) / 3)), 1fr));
+  gap: 24px;
+  padding: 10px 0 25px;
+  margin-top: 60px;
+}
+.meeting_card{
+  position: relative;
+  height: 100%;
+  min-height: 226px;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 15%);
+}
+.meeting_card .event_type_card_cap{
+  height: 6px;
+  margin-top: -1px;
+  margin-right: -1px;
+  margin-left: -1px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: rgb(130, 71, 245);
+}
+.meeting_card .selected_card,.meeting_card .meeting_card_button{
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.meeting_card .selected_meeting_time{
+  padding:30px 20px;
+  border:1px solid #d4e0ed;
+}
+.meeting_card .selected_meeting_time a{
+color: blue;
+}
+.meeting_card .copy_link{
+border: none;
+color: blue;
+background: none;
+}
+.meeting_card .share_button{
+  height: 30px;
+  border-radius: 40px;
+  width: 100px;
+  background: none;
+  border: 1px solid #004eba;
+  color: #004eba;
+}
+.meeting_card .copy_icon{
+margin-right:10px
+}
+.calendar_Eventtype .event_create_meeting_card {
+margin-top:48px;
+width:57%;
+}
+.calendar_Eventtype .event_create_meeting_card .heading{
+color:#476788;
+font-size: 15px;
+font-weight: 600;
+}
+.calendar_Eventtype .event_create_meeting_card .card_content{
+display: flex;
+width:100%;
+column-gap: 24px;
+}
+.event_create_meeting_card .create_meet{
+display: flex;
+flex: 1 1 0px;
+flex-basis: 0;
+flex-direction: column;
+justify-content: space-between;
+margin-top: 24px;
+padding: 12px 16px;
+border:1px solid #CCCCCC;
+text-align: left;
+border-radius: 8px;
+cursor: pointer;
+background: white;
+}
+.event_create_meeting_card .card_title{
+font-size: 15px;
+font-weight: 600;
+color:black
+}
+.event_create_meeting_card .create_button{
+color:blue;
+}
+.calendar_Eventtype .back_button{
+  font-weight: 600;
+  color: rgb(0, 105, 255);
+  font-size: 19px;
+  cursor: pointer;
+}
