@@ -17999,7 +17999,7 @@ margin-top: 30px;
 margin-top:20px
 }
 
-.weekly_hours .day {
+.weekly_hours .day{
   width: 30px;
   height: 30px; 
   margin-right: 16px;
@@ -18013,20 +18013,20 @@ margin-top:20px
   flex-shrink: 0; 
 }
 
-.weekly_hours .setmeeting_hours_container {
+.weekly_hours .setmeeting_hours_container,.calendar_list_container .setmeeting_hours_container  {
   display: flex;
   align-items: flex-start; 
   gap: 10px;
   margin-bottom: 10px;
 }
 
-.weekly_hours .set_time_container {
+.weekly_hours .set_time_container,.calendar_list_container .set_time_container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.weekly_hours .set_time {
+.weekly_hours .set_time,.calendar_list_container .set_time {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -18041,7 +18041,7 @@ width: 200px;
 height: 38px;
 margin-bottom:20px;
 }
-.calendar_Eventtype{
+.calendar_Eventtype,.calendar_meet,.calendar_availability{
 padding:25px 30px;
 background: #fafafa;
 }
@@ -18173,4 +18173,253 @@ color:blue;
   color: rgb(0, 105, 255);
   font-size: 19px;
   cursor: pointer;
+}
+.meetings_textfield{
+  border:none;
+  border-bottom: 1px solid gray !important;
+  background: white;
+}
+.meetings_textfield:hover,.meetings_textfield:focus{
+border-bottom: 1px solid gray !important;
+outline: none !important;
+}
+.meetings_dropdown .popup_container{
+  padding:15px;
+  width:250px
+}
+.meetings_dropdown .popup_text{
+  margin-top: 10px;
+}
+.meetings_dropdown .popup_link{
+color:blue;
+cursor:pointer;
+margin-top: 10px;
+}
+.calendar_meet .meetings_dropdown_container{
+  display: flex;
+  gap: 18px;
+  font-size: 15px;
+}
+.calendar_meet .meeting_table{
+border:1px solid #d4e0ed;
+border-radius: 6px;
+background: white;
+box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 6px 0px;
+margin-top:50px;
+}
+.calendar_meet .tabs_container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+.calendar_meet .buttons{
+  display: flex;
+  gap: 10px;
+  margin-right:13px;
+}
+.calendar_meet .exportbtn,.calendar_meet .filterbtn,.calendar_allteamcontainer .cancel_btn{
+border:1px solid gray;
+color: black;
+border-radius:20px;
+text-transform: capitalize;
+}
+.calendar_meet .content{
+text-align: center;
+padding: 30px;
+}
+.calendar_meet .tab_content img{
+width:120px;
+height:120px;
+}
+.calendar_meet .tab_content h2{
+  margin: 10px 0;
+  font-size: 18px;
+  color:#476788;
+}
+.calendar_meet .tab_content p{
+color:#476788;
+font-size: 16px;
+}
+.calendar_meet .tab_content .view_event_button,.calendar_allteamcontainer .apply_btn{
+  box-shadow: none;
+  margin-top: 10px;
+  border-radius: 20px;
+  text-transform: capitalize;
+}
+.calendar_meet .calendar_popup{
+  z-index: 1;
+  width: 800px;
+  padding: 16px 8px;
+  border:1px solid #d4e0ed;
+  box-shadow: 0 1px 5px rgb(0 74 116 / 15%);
+  border-radius: 6px;
+  background: white;
+}
+.calendar_meet .datarange_button{ 
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.calendar_meet .datarange_button Button{  
+  text-transform:capitalize ;
+}
+.calendar_meet .apply_btn{
+border-radius: 25px;
+box-shadow: none;
+}
+.calendar_meet .days{
+  color: blue;
+  display: flex;
+  gap: 11px;
+  font-size: 15px;
+  padding-left: 22px;
+}
+.calendar_meet .filter_section{
+padding: 10px;
+ border:1px solid #ccc;
+ border-radius: 5px;
+ display: flex;
+ gap:25px
+}
+.calendar_meet .filter_sec_content{
+display: flex;
+gap:5px;
+color:blue;
+font-size: 14px;
+width:122px
+}
+.calendar_meet .filter_section .clear_btn{
+text-transform: capitalize;
+}
+.calendar_allteamcontainer{
+  padding:10px;
+  min-width:335px;
+  height: 250px;
+}
+.calendar_allteamcontainer .selectlink{
+color:blue;
+cursor:pointer;
+}
+.calendar_allteamcontainer .button_container{
+display:flex;
+justify-content:space-between;
+margin-top:10px
+}
+.calendar_allteamcontainer .team_count{
+background-color: rgb(250 250 250);
+margin:15px 0px;
+display: flex;
+flex-direction: column;
+gap:5px;
+padding:10px 0px 0px
+}
+
+.calendar_allteamcontainer .cancel_btn,.calendar_allteamcontainer .apply_btn{
+width:145px;
+margin-top: 0px;
+height:37px
+}
+
+.calendar_availability .workinghrs_btn{
+box-shadow: none;
+border:1px solid rgb(0, 105, 255);
+color:rgb(0, 105, 255);
+background: #F2F8FF;
+font-size: bold;
+border-radius: 3px;
+text-transform: capitalize;
+}
+.calendar_availability .scedule_btn_container{
+display: flex;
+gap:10px;
+}
+.calendar_availability .createscedule_btn{
+text-transform: capitalize;
+color:black
+}
+.calendar_availability .scedule_container{
+margin-top:24px
+}
+.calendar_availability .schedulecalendar_container{
+  background: white;
+  border: 1px solid #d4e0ed;
+  box-shadow: 0 1px 5px rgb(0 74 116 / 15%);
+  margin-top: 25px;
+}
+.calendar_custom_toolbar{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px 20px;
+}
+.calendar_custom_toolbar h2{
+color:black
+}
+.calendar_custom_toolbar .set_weeklyhrs{
+font-size: 13px;
+color:gray
+}
+/* custom-calendar -->availability */
+.rbc-month-row {
+  min-height: 120px !important; 
+}
+.rbc-day-bg {
+  min-height: 120px !important; 
+}
+.rbc-event{
+color: #000 !important;
+background: none !important;
+}
+.rbc-month-view .rbc-row.rbc-month-header {
+  height: 60px !important; 
+  font-size: 16px; 
+  font-weight: bold; 
+  text-transform: uppercase; 
+}
+.rbc-month-row {
+  min-height: 120px !important; 
+}
+.rbc-date-cell {
+  text-align: left !important;
+  font-weight: bold;
+  padding-left: 8px;
+}
+.rbc-day-bg:hover {
+  background-color: #e3f2fd !important; 
+  border: 2px solid #2196F3 !important; 
+  transition: all 0.2s ease-in-out;
+}
+.rbc-calendar{
+box-shadow: none !important;
+}
+.schedulecalendar_container .scedule_calendar_toggle{
+margin:15px
+}
+.calendar_list_container{
+display: flex;
+border-top:1px solid #d4e0ed;
+width:100%
+}
+.calendar_list_container .leftcontainer{
+padding:24px;
+border-right: 1px solid #d4e0ed;
+width:50%
+}
+.calendar_list_container .day{
+font-size: 14px;
+font-weight: bold;
+text-transform: uppercase;
+color:black;
+width: 40px;
+}
+.calendar_list_container .right_container{
+padding: 24px;
+}
+.calendar_list_container  .right_container .add_meet_hours{
+  border: 1px solid #476788;
+  color: black;
+  border-radius: 17px;
+  text-transform: capitalize;
+  padding: 5px 15px;
 }
