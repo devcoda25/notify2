@@ -130,13 +130,13 @@ const styles = {
     }
 };
 const newEventOptions = [
-    { id: 1, title: 'One-on-One', subTitle: 'One host with one invitee', description: "Good for: coffee chats, 1:1 interviews, etc.", icon: "/assets/images/one_on_one.svg", popupType: 'hostSelection' },
+    { id: 1, title: 'One-on-One', subTitle: 'One host with one invitee', description: "Good for: coffee chats, 1:1 interviews, etc.", icon: "", popupType: 'hostSelection' },
     { id: 2, title: 'Group', subTitle: 'One host with group of invitees', description: 'Good for: webinars, online classes, etc.', icon: "assets/images/group.svg", popupType: 'hostSelection' },
     { id: 3, title: 'Collective', subTitle: 'More than one host with one invitee', description: 'Good for: panel interviews, group sales calls, etc.', icon: 'assets/images/collective.svg', popupType: "inviteUsers" },
     { id: 4, title: 'Round Robin', subTitle: 'One rotating host with one invitee', description: 'Good for destributing incoming sales leads', icon: 'assets/images/round_robin.svg', popupType: "inviteUsers" }
 
 ]
-const Event = () => {
+const Event = ({ onCreateClick }) => {
     const hostOptions = ['hepto(me)'];
     const [open, setOpen] = useState(true);
     const [createNewEvent, setCreateNewEvent] = useState(false);
@@ -240,12 +240,12 @@ const Event = () => {
                                     <div className="create_meet">
                                         <p className="card_title">One-off meeting</p>
                                         <p>Invite someone to pick a time with you without creating an Event Type.</p>
-                                        <a className="create_button">Create</a>
+                                        <a className="create_button" onClick={onCreateClick}>Create</a>
                                     </div>
                                     <div className="create_meet">
                                         <p className="card_title">Meeting pool</p>
                                         <p>Let your group of invitees vote on a time that works for everyone.</p>
-                                        <a className="create_button">Create</a>
+                                        <a className="create_button" onClick={onCreateClick}>Create</a>
                                     </div>
                                 </div>
                             </div>
