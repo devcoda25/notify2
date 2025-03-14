@@ -37,6 +37,9 @@ const CreateNewMeetingComponent = () => {
     const durationOptions = ['15 Minutes', '30 Minutes', '45 Minutes', '1 hour', 'Custom'];
     const [durationContent, setDurationContent] = useState(durationOptions[1]);
     const [currentDate, setCurrentDate] = useState(dayjs());
+    const [selectedSlots, setSelectedSlots] = useState([]);
+    const [daySlots, setDaySlots] = useState({});
+    const currentTime = dayjs();
     const handleTimeZoneClick = (event) => {
         setTimeZoneAnchor(event.currentTarget);
     };
@@ -48,10 +51,80 @@ const CreateNewMeetingComponent = () => {
     const getWeekDays = (date) => {
         let startOfWeek = date.startOf("week"); // Start of week (Sunday)
         return Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, "day"));
-      };
-    
-      const weekDays = getWeekDays(currentDate);
+    };
+
+    const weekDays = getWeekDays(currentDate);
+    const timeSlots = Array.from({ length: 24 }, (_, i) =>
+        dayjs().hour(i).minute(0).format("hA")
+    );
+    // const handleSlotClick = (day, hour, isSecondHalf) => {
+    //     const slotTime = isSecondHalf ? hour.clone().add(30, "minute") : hour;
+
+    //     // Prevent selecting past time slots
+    //     if (
+    //         day.isBefore(currentTime, "day") ||
+    //         (day.isSame(currentTime, "day") && slotTime.isBefore(currentTime))
+    //     ) {
+    //         return;
+    //     }
+
+    //     const slot = {
+    //         day: day.format("YYYY-MM-DD"),
+    //         time: `${slotTime.format("h:mm A")} - ${slotTime.clone().add(30, "minute").format("h:mm A")}`,
+    //     };
+
+    //     // Add both halves without removing any previous selections
+    //     setSelectedSlots((prev) => [...prev, slot]);
+    // };
+    const handleSlotClick = (day, hour, isSecondHalf) => {
+        const slotTime = isSecondHalf ? hour.clone().add(30, "minute") : hour;
+
+        if (
+            day.isBefore(currentTime, "day") || 
+            (day.isSame(currentTime, "day") && slotTime.isBefore(currentTime))
+        ) {
+            return;
+        }
+
+        const slot = {
+            day: day.format("YYYY-MM-DD"),
+            time: `${slotTime.format("h:mm A")} - ${slotTime.clone().add(30, "minute").format("h:mm A")}`,
+        };
+
+        setSelectedSlots((prev) => [...prev, slot]);
+        setDaySlots((prev) => ({ ...prev, [day.format("YYYY-MM-DD")]: true }));
+    };
+    const handleAddItem = (day) => {
+        if (day.isBefore(currentTime, "day")) return;
+
+        const slots = [];
+        for (let i = 0; i < 24; i++) {
+            const hour = day.clone().hour(i).minute(0);
+            if (day.isSame(currentTime, "day") && hour.isBefore(currentTime)) {
+                continue;
+            }
+            slots.push({
+                day: day.format("YYYY-MM-DD"),
+                time: `${hour.format("h:mm A")} - ${hour.clone().add(30, "minute").format("h:mm A")}`
+            });
+            slots.push({
+                day: day.format("YYYY-MM-DD"),
+                time: `${hour.clone().add(30, "minute").format("h:mm A")} - ${hour.clone().add(1, "hour").format("h:mm A")}`
+            });
+        }
+
+        setSelectedSlots((prev) => [...prev, ...slots]);
+        setDaySlots((prev) => ({ ...prev, [day.format("YYYY-MM-DD")]: true }));
+    };
+
+    const handleClearItem = (day) => {
+        if (day.isBefore(currentTime, "day")) return;
+        setSelectedSlots((prev) => prev.filter(slot => slot.day !== day.format("YYYY-MM-DD")));
+        setDaySlots((prev) => ({ ...prev, [day.format("YYYY-MM-DD")]: false }));
+    };
+
     return (
+        <>
         <div className="createNewMeeting">
             <div className="leftContainer">
                 <div className="content">
@@ -88,31 +161,135 @@ const CreateNewMeetingComponent = () => {
                 <div>You are the only one in your organization. Add users to include them as hosts.</div>
             </div>
             <div className="rightContainer">
-            
-      {/* Navigation Controls */}
-      <div className="month_name">
-       <NavigateBeforeIcon /><NavigateNextIcon />
-        <span>
-          {currentDate.format("MMMM YYYY")} 
-        </span>
-      
-      </div>
 
-      {/* Week Days Display */}
-      <div  className='week_days'>
-        {weekDays.map((day) => (
-          <div className="days"
-            key={day.format("YYYY-MM-DD")}
-            style={{ backgroundColor: day.isSame(dayjs(), "day") ? "rgb(0 105 255 / 15%)" : "white" }}
-          >
-            {day.format("ddd")} <br /> {day.format("D")}
-          </div>
-        ))}
-      </div>
-  
-  
+                {/* Navigation Controls */}
+                <div className="month_name">
+                    <NavigateBeforeIcon /><NavigateNextIcon />
+                    <span>
+                        {currentDate.format("MMMM YYYY")}
+                    </span>
+
+                </div>
+
+                {/* Week Days Display */}
+                <div className='week_days'>
+                    {weekDays.map((day) => (
+                        <>
+                            <div className="days"
+                                key={day.format("YYYY-MM-DD")}
+                                style={{ backgroundColor: day.isSame(dayjs(), "day") ? "rgb(0 105 255 / 15%)" : "white" }}
+                            >
+                                {day.format("ddd")} <br /> {day.format("D")} <br />
+
+
+                            </div>
+
+                        </>
+                    ))}
+
+                </div>
+                <div style={{ display: 'flex', gap: '72px', margin: '0px 96px 15px' }}>
+                    {weekDays.map(day => (
+                        !day.isBefore(currentTime, "day") && (
+                            <div key={day.format("YYYY-MM-DD")}>
+                                {daySlots[day.format("YYYY-MM-DD")] ? (
+                                    <a style={{ color: 'blue', fontSize: '12px' }} onClick={() => handleClearItem(day)}  >Clear Item</a>
+                                ) : (
+                                    <a style={{ color: 'blue', fontSize: '12px' }} onClick={() => handleAddItem(day)}>Add Item</a>
+                                )}
+                            </div>
+                        )
+                    ))}
+
+
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "100px repeat(7, 1fr)",maxHeight:'400px',overflowY:'auto' }}>
+                    {/* Time Column */}
+                    {timeSlots.map((slot, index) => (
+                        <React.Fragment key={index}>
+                            <div
+                                style={{
+                                    paddingRight: "17px",
+                                    fontSize: "12px",
+                                    borderRight: "1px solid gray",
+                                    textAlign: "end",
+
+                                }}
+                            >
+                                {slot}
+                            </div>
+
+                            {/* Time Slots for Each Day */}
+
+                            {weekDays.map((day, i) => {
+                                const hour = dayjs().hour(index).minute(0);
+
+                                return (
+                                    <div key={i + slot} style={{
+                                        display: "grid", gridTemplateRows: "1fr 1fr", borderTop: "1px solid lightgray",
+                                        borderRight: "1px solid lightgray",
+                                        //  padding: "10px",
+                                        minHeight: "60px",
+                                        cursor: "pointer",
+                                        backgroundColor: "#fff",
+
+                                    }}>
+                                        {/* First Half (12:00 - 12:30) */}
+                                        <div
+                                            onClick={() => handleSlotClick(day, hour, false)}
+                                            style={{
+                                                padding: "5px",
+                                                // borderTop: "1px solid lightgray",
+                                                cursor: (day.isBefore(currentTime, "day") || (day.isSame(currentTime, "day") && hour.isBefore(currentTime))) ? "not-allowed" : "pointer",
+                                                backgroundColor: 'white',
+                                                borderLeftWidth: 'medium',
+                                                fontSize: '10px',
+                                                marginBottom: '5px',
+                                                border: selectedSlots.some(s => s.day === day.format("YYYY-MM-DD") && s.time === `${hour.format("h:mm A")} - ${hour.add(30, "minute").format("h:mm A")}`)
+                                                    ? "1px solid blue" : "none",
+                                            }}
+                                            title={(day.isBefore(currentTime, "day") || (day.isSame(currentTime, "day") && hour.isBefore(currentTime))) ? "Unavailable" : ""}
+                                        >
+                                            {selectedSlots.some(s => s.day === day.format("YYYY-MM-DD") && s.time === `${hour.format("h:mm A")} - ${hour.add(30, "minute").format("h:mm A")}`)
+                                                ? `${hour.format("h:mm A")} - ${hour.add(30, "minute").format("h:mm A")}` : ""}
+                                        </div>
+
+                                        {/* Second Half (12:30 - 1:00) */}
+                                        <div
+                                            onClick={() => handleSlotClick(day, hour, true)}
+                                            style={{
+                                                padding: "5px",
+                                                // borderTop: "1px solid lightgray",
+                                                cursor: (day.isBefore(currentTime, "day") || (day.isSame(currentTime, "day") && hour.clone().add(30, "minute").isBefore(currentTime))) ? "not-allowed" : "pointer",
+                                                backgroundColor: 'white',
+                                                borderLeftWidth: 'medium',
+                                                fontSize: '10px',
+                                                marginBottom: '5px',
+
+                                                border: selectedSlots.some(s => s.day === day.format("YYYY-MM-DD") && s.time === `${hour.add(30, "minute").format("h:mm A")} - ${hour.add(60, "minute").format("h:mm A")}`)
+                                                    ? "1px solid blue" : "none",
+                                            }}
+                                            title={(day.isBefore(currentTime, "day") || (day.isSame(currentTime, "day") && hour.clone().add(30, "minute").isBefore(currentTime))) ? "Unavailable" : ""}
+                                        >
+                                            {selectedSlots.some(s => s.day === day.format("YYYY-MM-DD") && s.time === `${hour.add(30, "minute").format("h:mm A")} - ${hour.add(60, "minute").format("h:mm A")}`)
+                                                ? `${hour.add(30, "minute").format("h:mm A")} - ${hour.add(60, "minute").format("h:mm A")}` : ""}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </React.Fragment>
+                    ))}
+                </div>
+
+
             </div>
+           
         </div>
+         <div className="create_newmeet_footer">
+         <a>Select time to share</a>
+         <Button>Next</Button>
+     </div>
+   </>
     )
 }
 const EventType = () => {

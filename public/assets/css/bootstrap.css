@@ -18799,3 +18799,11 @@ display:flex;
   border-radius:50%;
   color: black;
 }
+.create_newmeet_footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  padding: 14px 22px 14px 30px;
+}
