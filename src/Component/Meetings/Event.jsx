@@ -1,15 +1,31 @@
 import React, { useState } from "react";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { Box, Typography, Button, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Card, CardContent } from "@mui/material";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ChevronLeftOutlinedIcon from '@mui/icons-material/ChevronLeftOutlined';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Select, MenuItem } from "@mui/material";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AutocompleteComponent from "../AutocompleteComponent";
+import TimeZoneMenu from "./TimeZoneMenu";
+import TextfieldComponent from "../TextfieldComponent";
+import TimePickerComponent from '../TimePickerComponent'
+import DataSpecificHoursComponent from "./DataSpecificHoursComponent";
+import dayjs from "dayjs";
+import {
+    Box, Typography, Button, IconButton, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, RadioGroup, FormControlLabel,
+    Radio, TextField, MenuItem, Select, Tabs, Tab, List, ListItem, ListItemButton,
+} from "@mui/material";
+import {
+    SettingsOutlinedIcon,
+    ContentCopyOutlinedIcon,
+    CloseIcon,
+    ArrowForwardIosIcon,
+    ChevronLeftOutlinedIcon,
+    CalendarTodayOutlinedIcon,
+    ExpandMoreIcon,
+    PublicOutlinedIcon,
+    AddCircleOutlineIcon
+} from '../Icon';
+import CustomButton from "./CustomButton";
+
+
 const styles = {
     tooltipStyle: {
         position: "fixed",
@@ -40,14 +56,7 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center"
     },
-    tooltipButton: {
-        mt: 2,
-        textTransform: "none",
-        backgroundColor: "#007bff",
-        boxShadow: 'none',
-        borderRadius: '15px',
-        float: 'right'
-    },
+
     tooltipMessage: {
         fontSize: '15px'
     },
@@ -97,14 +106,7 @@ const styles = {
         fontStyle: "italic",
         fontSize: "14px",
     },
-    nextbutton: {
-        borderRadius: '13px',
-        boxShadow: 'none',
-        textTransform: 'capitalize'
-    },
-    cancelButton: {
-        textTransform: 'capitalize'
-    },
+
     select_host: {
         color: 'black'
     },
@@ -122,13 +124,34 @@ const styles = {
         textTransform: 'capitalize',
         borderRadius: '40px',
     },
-    inviteuserbtn: {
-        boxShadow: 'none',
-        textTransform: 'capitalize',
-        borderRadius: '40px',
-        background: '#006bff'
-    }
+
 };
+const timeSlots = [
+    "9:00 AM",
+    "9:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:00 PM",
+    "12:30 PM",
+    "1:00 PM",
+    "1:30 PM",
+    "2:00 PM",
+    "2:30 PM",
+    "3:00 PM",
+    "3:30 PM",
+    "4:00 PM",
+    "4:30 PM",
+];
+const locationOptions = [
+    { title: "In-person meeting", img: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 10" role="img"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M8 3.5c0 2.5-3 6-3 6S2 6 2 3.5a3 3 0 1 1 6 0v0Z"></path><path stroke="currentColor" d="M5 4a.5.5 0 0 1 0-1M5 4a.5.5 0 0 0 0-1"></path></svg> },
+    { title: "Phone call", img: <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M6.216 9.151a2.215 2.215 0 0 0 2.758-.3l.31-.31a.738.738 0 0 0 0-1.043l-1.3-1.3a.739.739 0 0 0-1.044 0h0a.738.738 0 0 1-1.043 0L3.806 4.107a.738.738 0 0 1 0-1.043h0a.739.739 0 0 0 0-1.044L2.5.716a.738.738 0 0 0-1.043 0l-.31.31a2.214 2.214 0 0 0-.3 2.758 19.976 19.976 0 0 0 5.369 5.367Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg> },
+    { title: "Zoom", img: "/assets/images/Zoom.svg" },
+    { title: "Microsoft Teams", img: "/assets/images/Teams.svg" },
+    { title: "Webex", img: "/assets/images/webex.svg" },
+    { title: "GoTo Meeting", img: "/assets/images/gotomeeting.svg" },
+];
 const newEventOptions = [
     { id: 1, title: 'One-on-One', subTitle: 'One host with one invitee', description: "Good for: coffee chats, 1:1 interviews, etc.", icon: "", popupType: 'hostSelection' },
     { id: 2, title: 'Group', subTitle: 'One host with group of invitees', description: 'Good for: webinars, online classes, etc.', icon: "assets/images/group.svg", popupType: 'hostSelection' },
@@ -138,34 +161,507 @@ const newEventOptions = [
 ]
 const Event = ({ onCreateClick }) => {
     const hostOptions = ['hepto(me)'];
-    const [open, setOpen] = useState(true);
-    const [createNewEvent, setCreateNewEvent] = useState(false);
-    const [openHostModal, setOpenHostModal] = useState(false);
-    const [openInviteModal, setOpenInviteModal] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [selectedHost, setSelectedHost] = useState(hostOptions[0]);
+    const durationOptions = ['15 Minutes', '30 Minutes', '45 Minutes', '1 hour', 'Custom'];
+
+    const [state, setState] = useState({
+        open: true,
+        createNewEvent: false,
+        openHostModal: false,
+        openInviteModal: false,
+        selectedOption: null,
+        selectedHost: hostOptions[0],
+        shareOpen: false,
+        tabIndex: 0,
+        showPreview: false,
+        selectedDate: dayjs(),
+        showTimeSlots: false,
+        selectedTime: [],
+        timeZoneAnchor: null,
+        durationContent: durationOptions[1],
+        showLocationDropdown: false,
+        selectedLocation: "",
+        selectedRadioSchedule: "future",
+        customizeShareModal: false,
+        selectedTimeZone: "Eastern Time - US & Canada",
+    });
+    const [meetingHours, setMeetingHours] = useState({
+        Sunday: [{ from: "09:00", to: "17:00", available: true }],
+        Monday: [{ from: "09:00", to: "17:00", available: true }],
+        Tuesday: [{ from: "09:00", to: "17:00", available: true }],
+        Wednesday: [{ from: "09:00", to: "17:00", available: true }],
+        Thursday: [{ from: "09:00", to: "17:00", available: true }],
+        Friday: [{ from: "09:00", to: "17:00", available: true }],
+        Saturday: [{ from: "09:00", to: "17:00", available: true }],
+    });
+
+    const updateState = (newState) => {
+        setState((prevState) => ({ ...prevState, ...newState }));
+    };
 
     const handleOpen = (option) => {
-        setSelectedOption(option)
-        if (option.popupType === 'hostSelection') {
-            setOpenHostModal(true);
-        }
-        else if (option.popupType === 'inviteUsers') {
-            setOpenInviteModal(true);
-        }
-    }
-    const handleClose = () => {
-        setOpenHostModal(false);
-        setOpenInviteModal(false);
+        updateState({
+            selectedOption: option,
+            openHostModal: option.popupType === "hostSelection",
+            openInviteModal: option.popupType === "inviteUsers",
+        });
     };
+
+    const handleClose = () => {
+        updateState({ openHostModal: false, openInviteModal: false });
+    };
+
+    const handleShareOpen = () => updateState({ shareOpen: true });
+    const handleShareClose = () => updateState({ shareOpen: false });
+
+    const handleTabChange = (event, newValue) => updateState({ tabIndex: newValue });
+
+    const togglePreview = () => updateState({ showPreview: !state.showPreview });
+
+    const handleTimeZoneClick = (event) => {
+        updateState({ timeZoneAnchor: event.currentTarget });
+    };
+
+    const handleTimeZoneSelect = (zone) => {
+        updateState({ selectedTimeZone: zone, timeZoneAnchor: null });
+    };
+
+    const handleDateChange = (newDate) => {
+        updateState({ selectedDate: newDate, showTimeSlots: true, selectedTime: [] });
+    };
+
+    const handleCustomizebtn = () => updateState({ customizeShareModal: true });
+
+    const handleAddLocation = () => updateState({ showLocationDropdown: true });
+
+    const handleLocationChange = (event) => {
+        updateState({ selectedLocation: event.target.value });
+    };
+
+    const disablePastDates = (date) => date.isBefore(dayjs(), "day");
+
+    const handleTimeClick = (Time) => {
+        updateState({
+            selectedTime: state.selectedTime.includes(Time)
+                ? state.selectedTime.filter((t) => t !== Time)
+                : [...state.selectedTime, Time],
+        });
+    };
+
+    const handleRemoveSlot = (day, index) => {
+        setMeetingHours((prev) => {
+            const updateSlots = prev[day].filter((_, i) => i !== index);
+            return { ...prev, [day]: updateSlots }
+        })
+    }
+    const handleAddSlot = (day) => {
+        setMeetingHours((prevHours) => ({
+            ...prevHours,
+            [day]: [...prevHours[day], { from: "09:00", to: "17:00", available: true }],
+        }));
+    };
+    const handleCopyLink = () => {
+        const urlToCopy = `${window.location.origin}/copylink`; 
+        navigator.clipboard.writeText(urlToCopy).catch((err) =>
+          console.error("Failed to copy:", err)
+        );
+      };
+    // const [open, setOpen] = useState(true);
+    // const [createNewEvent, setCreateNewEvent] = useState(false);
+    // const [openHostModal, setOpenHostModal] = useState(false);
+    // const [openInviteModal, setOpenInviteModal] = useState(false);
+    // const [selectedOption, setSelectedOption] = useState(null);
+    // const [selectedHost, setSelectedHost] = useState(hostOptions[0]);
+    // const [shareOpen, setShareOpen] = useState(false);
+    // const [tabIndex, setTabIndex] = useState(0);
+    // const [showPreview, setShowPreview] = useState(false);
+    // const [selectedDate, setSelectedDate] = useState(dayjs());
+    // const [showTimeSlots, setShowTimeSlots] = useState(false);
+    // const [selectedTime, setSelectedTime] = useState([]);
+    // const [timeZoneAnchor, setTimeZoneAnchor] = useState(null);
+    // const [durationContent, setDurationContent] = useState(durationOptions[1]);
+    // const [showLocationDropdown, setLocationDropdown] = useState(false);
+    // const [selectedLocation, setSelectedLocation] = useState("");
+    // const [selectedRadioSchedule, setSelectedRadioSchedule] = useState("future")
+    // const [customizeShareModal, setCustomizeShareModal] = useState(false);
+    // const [selectedTimeZone, setSelectedTimeZone] = useState("Eastern Time - US & Canada");
+
+    // const handleOpen = (option) => {
+    //     setSelectedOption(option)
+    //     if (option.popupType === 'hostSelection') {
+    //         setOpenHostModal(true);
+    //     }
+    //     else if (option.popupType === 'inviteUsers') {
+    //         setOpenInviteModal(true);
+    //     }
+    // }
+    // const handleClose = () => {
+    //     setOpenHostModal(false);
+    //     setOpenInviteModal(false);
+    // };
+
+    // const handleShareOpen = () => setShareOpen(true);
+    // const handleShareClose = () => setShareOpen(false);
+    // const handleTabChange = (event, newValue) => setTabIndex(newValue);
+
+    // const togglePreview = () => setShowPreview(!showPreview);
+
+
+
+    // const handleTimeZoneClick = (event) => {
+    //     setTimeZoneAnchor(event.currentTarget);
+    // };
+
+    // const handleTimeZoneSelect = (zone) => {
+    //     setSelectedTimeZone(zone);
+    //     setTimeZoneAnchor(null);
+    // };
+    // const handleDateChange = (newDate) => {
+    //     setSelectedDate(newDate);
+    //     setShowTimeSlots(true);
+    //     setSelectedTime([]);
+    // };
+
+    // const handleCustomizebtn = () => {
+    //     setCustomizeShareModal(true);
+    // }
+    // const handleAddLocation = () => {
+    //     setLocationDropdown(true);
+    // }
+    // const handleLocationChange = (event) => {
+    //     setSelectedLocation(event.target.value)
+    // }
+    // const disablePastDates = (date) => {
+    //     return date.isBefore(dayjs(), "day");
+    // };
+    // const handleTimeClick = (Time) => {
+    //     setSelectedTime((prevTimes) =>
+    //         prevTimes.includes(Time) ? prevTimes.filter((t) => t !== Time) : [...prevTimes, Time]
+    //     )
+    // }
 
     return (
         <>
             <div className="calendar_Eventtype">
                 {
-                    createNewEvent ? (
+                    state.customizeShareModal ? (
                         <>
-                            <div className="back_button" onClick={() => setCreateNewEvent(false)}><ChevronLeftOutlinedIcon />Back</div>
+                            <Dialog open={state.customizeShareModal} className="customizationShareModal">
+                                <DialogTitle >Customize once and share</DialogTitle>
+                                <DialogContent>
+                                    <p className="content_text">Modify the details or available hours of this event type before sharing it with someone</p>
+                                    <p className="meet_heading">Meeting details</p>
+                                    <div>
+                                        <label>Event name</label>
+                                        <TextfieldComponent placeholder='30 Minute Meeting' customStyle='new_meeting_event_textbox' />
+                                    </div>
+                                    <div>
+                                        <label>Duration</label>
+                                        <AutocompleteComponent
+                                            options={durationOptions}
+                                            value={state.durationContent}
+                                            onChange={(event, newValue) => updateState({ durationContent: newValue })}
+                                            customStyles={styles.newticketsAutocomplete}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label>Location</label>
+                                        <div className="location_Card">
+                                            <img src='/assets/images/Googlemeet.svg' />
+                                            <span>Google Meet</span>
+                                            <a>Edit</a>
+                                            <CloseIcon />
+                                        </div>
+                                        {
+                                            !state.showLocationDropdown ? (
+                                                <div className="add_location_container">
+                                                    <p>Want to offer choices to your invitee? </p>
+                                                    <a onClick={handleAddLocation}>Add a location Option</a>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <Select
+                                                        value={state.selectedLocation}
+                                                        onChange={handleLocationChange}
+                                                        className="select_add_location"
+                                                        renderValue={(selected) => {
+                                                            if (!selected) {
+                                                                return <span style={{ color: "black" }}>Add a location</span>;
+                                                            }
+                                                            const option = locationOptions.find((opt) => opt.title === selected);
+                                                            return (
+                                                                option && (
+                                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                                        {typeof option.img === "string" ? (
+                                                                            <img src={option.img} alt={option.title} width="20" height="20" />
+                                                                        ) : (
+                                                                            React.cloneElement(option.img, { width: 15, height: 15 })
+                                                                        )}
+                                                                        {option.title}
+                                                                    </div>
+                                                                )
+                                                            );
+                                                        }}
+                                                    >
+                                                        {locationOptions.map((option, index) => (
+                                                            <MenuItem key={index} value={option.title}>
+                                                                {typeof option.img === "string" ? (
+                                                                    <img src={option.img} alt={option.title} width="20" height="20" />
+                                                                ) : (
+                                                                    React.cloneElement(option.img, { width: 15, height: 15 })
+                                                                )}
+                                                                {option.title}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+
+                                                </>
+                                            )
+                                        }
+                                        <div className="scedule_data">
+                                            <p className="meet_heading">Availability offered</p>
+                                            <label>Data Range</label>
+                                            <div>
+                                                <FormControl>
+                                                    <Typography >Invitees can schedule...</Typography>
+                                                    <RadioGroup value={state.selectedRadioSchedule} onChange={(e) => updateState({ selectedRadioSchedule: e.target.value })}>
+                                                        <FormControlLabel
+                                                            value="future"
+                                                            control={<Radio />}
+                                                            label={
+                                                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                                    <TextField
+                                                                        type="text"
+                                                                        variant="outlined"
+                                                                        size="small"
+                                                                        style={{ width: "60px" }}
+                                                                    />
+                                                                    <Select size="small">
+                                                                        <MenuItem value="calendar days">calendar days</MenuItem>
+                                                                        <MenuItem value="weekdays">weekdays</MenuItem>
+                                                                    </Select>
+                                                                    <span>into the future</span>
+                                                                </div>
+                                                            }
+                                                        />
+                                                        <FormControlLabel value="dateRange" control={<Radio />} label="Within a date range" />
+                                                        <FormControlLabel value="indefinite" control={<Radio />} label="Indefinitely into the future" />
+                                                    </RadioGroup>
+                                                </FormControl>
+                                                <div>
+                                                    <label>Weekly Hours</label>
+                                                    <div className="select_timezone">
+                                                        <div
+                                                            onClick={handleTimeZoneClick} className="timezone"
+
+                                                        >
+                                                            <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
+                                                        </div>
+                                                        <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
+                                                    </div>
+                                                    <div>
+                                                        {
+                                                            Object.entries(meetingHours).map(([day, slots], dayIndex) => (
+                                                                <div key={dayIndex} className='setmeeting_hours_container'>
+                                                                    <div className="day">
+                                                                        <input type="checkbox" checked={true} />
+                                                                        <div>{day.slice(0, 3)}</div>
+                                                                    </div>
+                                                                    <div className="set_time_container">
+                                                                        {
+                                                                            slots.length > 0 && slots[0].available ? (
+                                                                                slots.map((slot, index) => (
+                                                                                    <div key={index} className='set_time'>
+
+                                                                                        <TimePickerComponent
+                                                                                            initialValue={slot.from}
+                                                                                            disabled={false}
+                                                                                            customStyles={styles.timePickerStyles}
+
+
+                                                                                        />
+                                                                                        <span style={{ margin: "0 5px" }}>—</span>
+                                                                                        <TimePickerComponent
+                                                                                            initialValue={slot.from}
+                                                                                            disabled={false}
+                                                                                            customStyles={styles.timePickerStyles}
+
+                                                                                        />
+                                                                                        <CloseIcon onClick={() => handleRemoveSlot(day, index)} style={styles.iconStyle} />
+
+                                                                                        {index === 0 && (
+                                                                                            <>
+                                                                                                <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={styles.iconStyle} />
+
+                                                                                            </>
+                                                                                        )}
+
+                                                                                    </div>
+                                                                                ))
+                                                                            ) : (
+                                                                                <> <span style={{ color: "gray" }}>Unavailable
+                                                                                    <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={styles.iconStyle} /></span>
+                                                                                </>
+                                                                            )
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <DataSpecificHoursComponent />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                            </Dialog>
+                        </>
+                    ) : (
+                        <Dialog open={state.shareOpen} onClose={handleShareClose} fullWidth className="event_share_btn_container">
+                            <DialogTitle className="title">30 Minute Meeting</DialogTitle>
+
+                            <DialogContent>
+                                <div className="meet_details">
+                                    <p>30 mins</p>
+                                    <p>one-on-one</p>
+                                    <p><img src="/assets/images/Googlemeet.svg" />Google meet</p>
+                                </div>
+                                <Tabs value={state.tabIndex} onChange={handleTabChange} centered>
+                                    <Tab label="Share a Link" />
+                                    <Tab label="Add times to email" />
+                                </Tabs>
+
+                                {/* Tab Content */}
+                                <div>
+                                    {state.tabIndex === 0 && (
+                                        <div className="sharelink">
+                                            {
+                                                state.showPreview ? (
+                                                    <div className="event_preview_btn_container">
+                                                        <div className='event_preview_heading' style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                                            <h4>PREVIEW</h4>
+                                                            <Button onClick={togglePreview} color="primary">Hide Preview</Button>
+                                                        </div>
+                                                        <p>Available event times</p>
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <StaticDatePicker
+                                                                displayStaticWrapperAs="desktop"
+                                                                value={state.selectedDate}
+                                                                onChange={(newDate) => updateState({ selectedDate: newDate })}
+                                                            />
+                                                        </LocalizationProvider>
+                                                        <div className="select_timezone">
+                                                            <div
+                                                                onClick={handleTimeZoneClick} className="timezone"
+
+                                                            >
+                                                                <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
+                                                            </div>
+                                                            <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <p>Copy and paste your scheduling link into a message</p>
+
+                                                        <div className="copy_link_container">
+                                                            <span className="copy_link_text">
+                                                                https://calendly.com/hepto/30min
+                                                            </span>
+                                                            {/* <button className="copy_link_button">Copy Link</button> */}
+                                                            <CustomButton variant="contained">Copy Link</CustomButton>
+                                                        </div>
+                                                        <a className="preview" onClick={togglePreview}><CalendarTodayOutlinedIcon />Preview Availability</a>
+
+                                                        <div className="customization_container">
+                                                            <h4>Customize one and share</h4>
+                                                            <div className="customize_content">
+                                                                <p>Make a one-off change to your available hours before sharing. This won’t affect your primary link.</p>
+                                                                <button className="customizebtn" onClick={handleCustomizebtn}>Customize & share</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
+
+                                        </div>
+                                    )}
+
+                                    {state.tabIndex === 1 && (
+                                        <>
+                                            <p className="sharecontainer_choose_date">Choose dates and times to share</p>
+                                            <div className="add_time_toemail_container" style={{
+                                                width: state.showTimeSlots ? '550px' : '400px'
+                                            }}>
+
+                                                <Grid container spacing={2}>
+
+                                                    <Grid item xs={12} md={state.showTimeSlots ? 6 : 12}>
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <StaticDatePicker
+                                                                displayStaticWrapperAs="desktop"
+                                                                value={state.selectedDate}
+                                                                onChange={handleDateChange}
+                                                                shouldDisableDate={disablePastDates}
+                                                            />
+                                                        </LocalizationProvider>
+                                                    </Grid>
+
+
+                                                    {state.showTimeSlots && (
+                                                        <Grid item xs={12} md={6} className="timeslots_grid">
+                                                            <Typography variant="h6">
+                                                                {state.selectedDate
+                                                                    ? dayjs(state.selectedDate).format("dddd, MMMM D")
+                                                                    : "Select a date"}
+                                                            </Typography>
+                                                            <List className="timeslots_list">
+                                                                {timeSlots.map((time, index) => (
+                                                                    <ListItem key={index} disablePadding className="timeslots_list_item" onClick={() => handleTimeClick(time)}
+                                                                        sx={{
+                                                                            backgroundColor:
+                                                                                state.selectedTime.includes(time) ? "rgb(0, 105, 255)" : "transparent",
+                                                                            color: state.selectedTime.includes(time) ? "#fff" : "rgb(0, 105, 255)",
+                                                                        }}>
+                                                                        <ListItemButton>{time}</ListItemButton>
+                                                                    </ListItem>
+                                                                ))}
+                                                            </List>
+                                                        </Grid>
+                                                    )}
+                                                </Grid>
+
+                                                <div className="select_timezone">
+                                                    <div
+                                                        onClick={handleTimeZoneClick} className="timezone"
+
+                                                    >
+                                                        <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
+                                                    </div>
+                                                    <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
+                                                </div>
+                                                <p>Dates Selected : <b>0/7</b></p>
+                                                <p>Time slot Selected:<b>0</b></p>
+                                            </div>
+                                            <div className="event_share_btn_container">
+                                                <CustomButton variant="text">Close</CustomButton>
+                                                <CustomButton variant='contained'>Continue</CustomButton>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    )
+                }
+
+                {
+                    state.createNewEvent ? (
+                        <>
+                            <div className="back_button" onClick={() => updateState({ createNewEvent: false })}><ChevronLeftOutlinedIcon />Back</div>
                             <h1>Create New Event Type</h1>
                             <Grid container spacing={2} sx={{ ...styles.neweventGrid }}>
                                 {newEventOptions.map((option, index) => (
@@ -187,20 +683,20 @@ const Event = ({ onCreateClick }) => {
                                     </Grid>
                                 ))}
                             </Grid>
-                            <Dialog open={openHostModal} onClose={handleClose} >
+                            <Dialog open={state.openHostModal} onClose={handleClose} >
                                 <DialogTitle sx={{ ...styles.hostheading }}>
-                                    Who will host this {selectedOption?.title.toLowerCase()} event type?
+                                    Who will host this {state.selectedOption?.title.toLowerCase()} event type?
                                 </DialogTitle>
                                 <DialogContent>
                                     <Typography sx={{ mb: 2 }}>
-                                        Create a {selectedOption?.title.toLowerCase()} event type for
+                                        Create a {state.selectedOption?.title.toLowerCase()} event type for
                                         yourself or on behalf of another user.
                                     </Typography>
                                     <Typography className="select_host">Choose a host</Typography>
                                     <AutocompleteComponent
                                         options={hostOptions}
-                                        value={selectedHost}
-                                        onChange={(event, newValue) => setSelectedHost(newValue)}
+                                        value={state.selectedHost}
+                                        onChange={(event, newValue) => updateState({ selectedHost: newValue })}
                                         customStyles={styles.newticketsAutocomplete}
                                     />
                                     <Typography sx={{ ...styles.hostsubtitle }}>
@@ -208,16 +704,13 @@ const Event = ({ onCreateClick }) => {
                                     </Typography>
                                 </DialogContent>
                                 <DialogActions>
-                                    <Button onClick={handleClose} color="inherit" sx={{ ...styles.cancelButton }}>
-                                        Cancel
-                                    </Button>
-                                    <Button onClick={handleClose} variant="contained" sx={{ ...styles.nextbutton }}>
-                                        Next
-                                    </Button>
+                                    <CustomButton variant="text" onClick={handleClose}>Cancel</CustomButton>
+                                    <CustomButton variant="contained" onClick={handleClose}>Next</CustomButton>
+
                                 </DialogActions>
                             </Dialog>
 
-                            <Dialog open={openInviteModal} onClose={handleClose} sx={{ ...styles.inviteUser }}>
+                            <Dialog open={state.openInviteModal} onClose={handleClose} sx={{ ...styles.inviteUser }}>
                                 <DialogTitle sx={{ ...styles.hostheading }}>Invite people to your account</DialogTitle>
                                 <DialogContent>
                                     <Typography>
@@ -226,13 +719,12 @@ const Event = ({ onCreateClick }) => {
                                     </Typography>
                                 </DialogContent>
                                 <DialogActions>
+
                                     <Button onClick={handleClose} variant="outlined" sx={{ ...styles.invitecancelbtn }} >
                                         Cancel
                                     </Button>
-                                    <Button onClick={handleClose} variant="contained" sx={{ ...styles.inviteuserbtn }} >
-                                        Invite users
-                                    </Button>
-                                </DialogActions>
+                                    <CustomButton onClick={handleClose} variant="contained">Invite users</CustomButton>
+                                     </DialogActions>
                             </Dialog>
                             <div className="event_create_meeting_card">
                                 <p className="heading">More ways to meet</p>
@@ -264,7 +756,7 @@ const Event = ({ onCreateClick }) => {
                                         </div>
                                     </div>
                                     <div className="new_event_content">
-                                        <button className="new_event_btn" onClick={() => setCreateNewEvent(true)} >+ New Event Type</button>
+                                        <button className="new_event_btn" onClick={() => updateState({ createNewEvent: true })} >+ New Event Type</button>
                                         <SettingsOutlinedIcon />
                                     </div>
                                 </div>
@@ -281,27 +773,22 @@ const Event = ({ onCreateClick }) => {
                                             <a>View booking page</a>
                                         </div>
                                         <div className="meeting_card_button">
-                                            <button className="copy_link"><ContentCopyOutlinedIcon className="copy_icon" />Copy link</button>
-                                            <button className="share_button">Share</button>
+                                            <CustomButton variant="text" icon={<ContentCopyOutlinedIcon />} sx={{color:'blue'}} onClick={handleCopyLink}>Copy link</CustomButton>
+               
+                                            <button className="share_button" onClick={handleShareOpen}>Share</button>
                                         </div>
                                         <Box sx={{ ...styles.tooltipStyle }}  >
                                             <Box sx={{ ...styles.tooltipContainer }} >
                                                 <Typography fontWeight="bold">Get your first meeting booked!</Typography>
-                                                <IconButton size="small" onClick={() => setOpen(false)}>
+                                                <IconButton size="small" onClick={() => updateState({ open: false })}>
                                                     <CloseIcon fontSize="small" />
                                                 </IconButton>
                                             </Box>
                                             <Typography variant="body2" mt={1} sx={{ ...styles.tooltipMessage }}>
                                                 You've successfully set up your first event. Preview your page, copy your link, or share your availability from here.
                                             </Typography>
-                                            <Button
-                                                variant="contained"
-                                                size="small"
-                                                sx={{ ...styles.tooltipButton }}
-                                                onClick={() => setOpen(false)}
-                                            >
-                                                Got it
-                                            </Button>
+                                            <CustomButton variant="contained" onClick={() => updateState({ open: false })} sx={{ marginLeft: '113px' }}>Got it</CustomButton>
+
                                         </Box>
                                     </div>
 

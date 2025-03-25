@@ -17923,21 +17923,19 @@ fieldset:disabled .btn {
   border: none;
 }
 
-.meetings_container .nextbutton,
-.calendar_edit_modal .updatebutton {
-  color: white;
+
+.calendar_edit_modal .updatebutton
+ {
+    color: white;
   padding: 8px 16px;
   border: #006bff;
   border-radius: 40px;
   background: #006bff;
   width: 150px;
   min-height: 44px;
+  box-shadow: none;
+  text-transform: capitalize;
 }
-
-.meetings_container .nextbutton {
-  margin-left: auto;
-}
-
 .calendar_edit_modal .cancelbutton {
   color: black;
   padding: 8px 16px;
@@ -18101,13 +18099,15 @@ fieldset:disabled .btn {
   margin-bottom: 0px;
 }
 
-.calendar_Eventtype .new_event_btn {
+.calendar_Eventtype .new_event_btn,.meet_upcoming_event_grid_container .reschedule_btn,.meet_upcoming_event_grid_container .cancel_btn,
+.event_share_btn_container .customizebtn {
   height: 34px;
   border-radius: 40px;
   border: 1px solid #476788;
   background: none;
   width: 150px;
   padding: 8px 16px;
+  font-size: 12px;
 }
 
 .calendar_Eventtype .new_event_btn:hover {
@@ -18291,7 +18291,8 @@ fieldset:disabled .btn {
 
 .calendar_meet .content {
   text-align: center;
-  padding: 30px;
+  /* padding: 30px; */
+  padding: 30px 0px;
 }
 
 .calendar_meet .tab_content img {
@@ -18310,8 +18311,8 @@ fieldset:disabled .btn {
   font-size: 16px;
 }
 
-.calendar_meet .tab_content .view_event_button,
-.calendar_allteamcontainer .apply_btn {
+.calendar_meet .tab_content .view_event_button
+{
   box-shadow: none;
   margin-top: 10px;
   border-radius: 20px;
@@ -18397,8 +18398,7 @@ fieldset:disabled .btn {
   padding: 10px 0px 0px
 }
 
-.calendar_allteamcontainer .cancel_btn,
-.calendar_allteamcontainer .apply_btn {
+.calendar_allteamcontainer .cancel_btn {
   width: 145px;
   margin-top: 0px;
   height: 37px
@@ -18520,12 +18520,15 @@ fieldset:disabled .btn {
   padding: 24px;
 }
 
-.calendar_list_container .right_container .add_meet_hours {
-  border: 1px solid #476788;
-  color: black;
-  border-radius: 17px;
-  text-transform: capitalize;
-  padding: 5px 15px;
+.data_specific_hours {
+margin-top:10px
+}
+.data_specific_hours .add_meet_hours{
+  border: 1px solid #476788 !important;
+  color: black !important;
+  border-radius: 17px !important;
+  text-transform: capitalize !important;
+  padding: 5px 15px !important;
 }
 
 /* Holidays */
@@ -18670,106 +18673,126 @@ fieldset:disabled .btn {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.calendar_analytic .left_container p{
-font-size: 24px;
-color: black;
+
+.calendar_analytic .left_container p {
+  font-size: 24px;
+  color: black;
 }
-.calendar_analytic .left_container ul{
+
+.calendar_analytic .left_container ul {
   list-style-position: inside;
   font-size: 16px;
   text-align: left;
-  margin:0;
-  padding:0;
-  color:rgb(26 26 26 / 61%);
+  margin: 0;
+  padding: 0;
+  color: rgb(26 26 26 / 61%);
   list-style: disc;
 }
-.calendar_analytic .left_container a{
-  color:blue;
+
+.calendar_analytic .left_container a {
+  color: blue;
   display: flex;
   flex-direction: row;
-  gap:10px;
+  gap: 10px;
 }
-.calendar_analytic .left_container a svg{
-  width:15px;
-  height:15px
+
+.calendar_analytic .left_container a svg {
+  width: 15px;
+  height: 15px
 }
-.calendar_analytic .left_container .book_first_meet{
+
+.calendar_analytic .left_container .book_first_meet {
   padding: 7px 15px;
   border-radius: 20px;
   box-shadow: none;
   text-transform: capitalize;
   width: 200px;
 }
-.calendar_analytic .main_container{
-padding:10px;
-background-color: #f9f9f9;
-min-height: 100vh;
-}
-.calendar_analytic .card_contents{
+
+.calendar_analytic .main_container {
   padding: 10px;
-  text-align:center;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.calendar_analytic .card_contents {
+  padding: 10px;
+  text-align: center;
   font-size: 15px;
-  color:black;
+  color: black;
   font-weight: bold;
 }
-.calendar_analytic .item_count{
+
+.calendar_analytic .item_count {
   font-size: 30px;
   text-align: left;
   color: black;
   margin-top: 10px;
 }
-.calendar_analytic .events_grid{
-margin-top:15px
+
+.calendar_analytic .events_grid {
+  margin-top: 15px
 }
-.calendar_analytic .events_grid p{
-margin-top:34px;
-text-align: center;
+
+.calendar_analytic .events_grid p {
+  margin-top: 34px;
+  text-align: center;
 }
-.calendar_analytic .events_grid div{
+
+.calendar_analytic .events_grid div {
   text-align: left;
 }
-.calendar_analytic .main_container h1{
-font-size: 15px;
-margin-top:10px
+
+.calendar_analytic .main_container h1 {
+  font-size: 15px;
+  margin-top: 10px
 }
+
 /* events --> create new meeting */
-.createNewMeeting{
-display: flex;
-flex: 1 1 0%;
-flex-direction: row;
-width:100%;
-border:1px solid #CCCCCC;
+.createNewMeeting {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: row;
+  width: 100%;
+  border: 1px solid #CCCCCC;
 }
-.createNewMeeting .leftContainer{
+
+.createNewMeeting .leftContainer {
   width: 375px;
   padding: 24px 16px 30px;
 }
-.createNewMeeting .rightContainer{
-width:100%;
-border-left: 1px solid  #CCCCCC;
-padding:24px
+
+.createNewMeeting .rightContainer {
+  width: 100%;
+  border-left: 1px solid #CCCCCC;
+  padding: 24px
 }
-.createNewMeeting .leftContainer label{
-color: black;
-font-size: 13px;
-font-weight: bold;
+
+.createNewMeeting .leftContainer label {
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
 }
-.createNewMeeting .leftContainer .timezone{
-  color:#007bff;
-  cursor:pointer;
-   display:flex;
-   align-items:center
+
+.createNewMeeting .leftContainer .timezone {
+  color: #007bff;
+  cursor: pointer;
+  display: flex;
+  align-items: center
 }
-.createNewMeeting .leftContainer .content{
-margin-bottom: 20px;
+
+.createNewMeeting .leftContainer .content {
+  margin-bottom: 20px;
 }
+
 .createNewMeeting .leftContainer .host_container {
-display: flex;
-gap:10px;
-border-bottom: 1px solid #CCCCCC;
-padding-bottom: 40px;
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 40px;
 }
-.createNewMeeting .leftContainer .logo{
+
+.createNewMeeting .leftContainer .logo {
   width: 35px;
   height: 46px;
   background-color: #e7edf6;
@@ -18779,31 +18802,563 @@ padding-bottom: 40px;
   padding-top: 13px;
   padding-left: 15px;
 }
-.createNewMeeting .leftContainer .username{
-font-weight: bold;
+
+.createNewMeeting .leftContainer .username {
+  font-weight: bold;
 }
-.createNewMeeting .rightContainer .month_name span{
-  font-size:20px;
-  font-weight:bold 
+
+.createNewMeeting .rightContainer .month_name span {
+  font-size: 20px;
+  font-weight: bold
 }
-.createNewMeeting .rightContainer .week_days{
-display:flex;
- margin:15px 51px;
- gap:65px
+
+.createNewMeeting .rightContainer .week_days {
+  display: flex;
+  margin: 15px 51px;
+  gap: 65px
 }
-.createNewMeeting .rightContainer .days{
-  padding:10px;
-  margin:5px;
-  width:50px;
-  text-align:center;
-  border-radius:50%;
+
+.createNewMeeting .rightContainer .days {
+  padding: 10px;
+  margin: 5px;
+  width: 50px;
+  text-align: center;
+  border-radius: 50%;
   color: black;
 }
-.create_newmeet_footer{
+
+.create_newmeet_footer {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
   padding: 14px 22px 14px 30px;
+  gap: 20px
+}
+
+.newmeeting_container {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.newmeeting_container .selection_container,
+.newmeeting_container .event_details_container,
+.newmeeting_container .optional_container {
+  border: 1px solid #CCCCCC;
+  width: 500px;
+  padding: 24px;
+  margin-bottom: 24px;
+  margin-top: 30px;
+  border-radius: 15px;
+}
+
+.newmeeting_container .heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.newmeeting_container .editbutton {
+  color: blue;
+  text-transform: capitalize;
+}
+
+.newmeeting_container .selection_container .selection_details {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.newmeeting_container .event_container {
+  display: flex;
+  gap: 36px;
+  flex-direction: row;
+}
+
+.newmeeting_container .select_event_content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.newmeeting_container .options_container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px
+}
+
+.newmeeting_container .newmeet_description {
+  color: blue;
+
+}
+
+.newmeeting_container .select_event_location {
+  margin-bottom: 15px;
+}
+
+.newmeeting_container .optional_content {
+  display: flex;
+  justify-content: space-between;
+  background: #fafafa;
+  padding: 15px 15px;
+  margin-bottom: 15px;
+}
+
+.newmeeting_container .button_container {
+  display: flex;
+  gap: 12px;
+  margin-left: 249px;
+  margin-bottom: 25px;
+}
+
+.newmeeting_container .backbtn {
+  text-transform: capitalize;
+  color: black;
+}
+
+.new_meet_event_description .icons_container {
+  position: absolute;
+  margin-top: 9px;
+  margin-left: 5px;
+  display: flex;
+  gap: 15px;
+}
+
+.newmeeting_container .description_box {
+  padding: 10px;
+  min-height: 170px;
+  border-radius: 5px;
+  outline: none;
+  transition: border 0.2s ease-in-out;
+}
+
+.new_meeting_option_menu {
+  width: 250px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 5px;
+  z-index: 1000;
+  top: 48%;
+  left: 58%;
+}
+
+;
+
+.newmeeting_container .event_details_container {
+  position: relative;
+}
+
+.new_meeting_option_menu img {
+  width: 15px
+}
+
+.upcoming_tab_event {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.upcoming_tab_event .event_date {
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+  background: #fafafa;
+  padding: 15px;
+  border-bottom: 1px solid #d4e0ed;
+}
+.upcoming_tab_event .event_box {
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+.upcoming_tab_event .event_details {
+  display: flex;
+  gap: 238px;
+  width: 100%;
+}
+.upcoming_tab_event .event_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.upcoming_tab_event .event_dot {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(130, 71, 245);
+  border-radius: 50%;
+}
+.upcoming_tab_event .event_time {
+  font-size: 14px;
+  color: #555;
+}
+.upcoming_tab_event .event_host {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+}
+.upcoming_tab_event .event_type {
+  font-size: 12px;
+  color: black;
+}
+.upcoming_tab_event .event_participants {
+  font-size: 14px;
+  color: #666;
+}
+.upcoming_tab_event .event_details_btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: rgb(26 26 26 / 61%)
+}
+.upcoming_tab_event .event_end_text {
+  font-size: larger;
+  text-align: center;
+  padding: 16px 0px;
+}
+.meet_upcoming_event_grid_container{
+display: flex;
+padding: 35px 24px 24px 24px;
+}
+.meet_upcoming_event_grid_container .left_container{
+  width: 310px;
+  padding-right: 80px;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.meet_upcoming_event_grid_container .event_control{
+display: flex;
+gap:14px;
+flex-flow: column wrap;
+align-items: flex-start;
+}
+.meet_upcoming_event_grid_container .right_container{
+text-align: left;
+}
+.meet_upcoming_event_grid_container .event_control a,.meet_upcoming_event_grid_container .meeting_note a{
+color:blue;
+}
+.meet_upcoming_event_grid_container .right_content{
+margin-bottom:16px
+}
+.meet_upcoming_event_grid_container .right_content label{
+font-weight: bold;
+text-transform: uppercase;
+}
+.meet_upcoming_event_grid_container .right_content .logo{
+width:26px;
+height:32px;
+display: inline-flex;
+align-items: center;
+overflow: hidden;
+border-radius: 50%;
+background-color: #e7edf6;
+color: black;
+}
+.meet_upcoming_event_grid_container .meeting_note{
+margin-top:70px;
+}
+.event_share_btn_container .title{
+font-size: 15px;
+color: black;
+font-weight: bold;
+}
+.event_share_btn_container .meet_details{
+display: flex;
+gap:20px;
+flex-direction: row;
+border-bottom: 1px solid rgb(26 26 26 / 10%);
+}
+.event_share_btn_container .meet_details p{
+font-size: 14px;
+}
+.event_share_btn_container .meet_details img{
+width:15px;
+height:15px;
+margin-right:6px;
+}
+.event_share_btn_container .sharelink{
+margin:20px 20px 0px 20px;
+} 
+.event_share_btn_container .sharelink p{
+font-size: 14px;
+text-align: left;
+}
+.event_share_btn_container .copy_link_container {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 21px;
+  padding: 0px 0px 0px 8px;
+  width: 100%;
+  height: 43px;
+  margin-bottom: 20px;
+}
+.event_share_btn_container .copy_link_text {
+  font-size: 14px;
+  color: #4b5563;
+  padding: 0 8px;
+}
+.event_share_btn_container .copy_link_button {
+  background-color: #3b82f6;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 10px;
+  margin-left: auto;
+}
+.event_share_btn_container .preview{
+color: blue;
+font-size: 14px;
+}
+.event_share_btn_container .customization_container {
+margin-top:40px;
+}
+.event_share_btn_container .customize_content {
+display: flex;
+gap:10px;
+}
+.event_preview_btn_container{
+  width: 400px;
+  margin: auto;
+  border: 1px solid rgb(26 26 26 / 10%);
+}
+.event_preview_btn_container .event_preview_heading{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #FAFAFA;
+  padding: 10px 10px 0px 10px;
+}
+.event_preview_btn_container p{
+color: black;
+font-size: 14px;
+padding:10px
+}
+.event_preview_btn_container .select_timezone,.add_time_toemail_container .select_timezone,.add_time_copylink_container .select_timezone{
+text-align: center;
+padding:10px 10px 25px 10px;
+}
+.sharecontainer_choose_date{
+font-size: 14px;
+text-align: center;
+padding-top:20px;
+}
+.add_time_toemail_container{
+  border: 1px solid rgb(26 26 26 / 10%);
+    width: 400px;
+    margin: auto;
+    padding: 20px;
+}
+
+.add_time_toemail_container .timeslots_list,.add_time_copylink_container .timeslots_list{
+  max-height: 300px;
+  overflow-y: auto;
+  width:200px
+}
+.add_time_toemail_container .timeslots_list_item{
+width:158px;
+margin-bottom: 8px;
+/* color: rgb(0, 105, 255); */
+border: 1px solid rgb(0, 105, 255);
+border-radius: 6px;
+padding: 12px 24px;
+font-size: 16px;
+height: 40px;
+}
+.add_time_copylink_container .timeslots_list_item{
+font-size: 13px;
+height: 40px;
+}
+.add_time_toemail_container .timeslots_grid,.add_time_copylink_container .timeslots_grid {
+padding-left:78px !important;
+}
+.event_share_btn_container{
+   float: inline-end;
+   padding: 10px 0px 25px 0px;
+}
+.customizationShareModal .content_text{
+  color: black;
+    font-size: 15px;
+}
+.customizationShareModal .meet_heading{
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.customizationShareModal label{
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+.customizationShareModal .location_Card{
+  display: flex;
+  align-items: center;
+  background-color: #f8fbff;
+  padding: 10px;
+  border-radius: 8px;
+}
+.customizationShareModal .location_Card img{
+width:15px
+}
+.customizationShareModal .location_Card span{
+  flex-grow: 1;
+}
+.customizationShareModal .location_Card a{
+  border-right: 1px solid gray;
+  color: blue;
+  padding-right: 5px;
+}
+.customizationShareModal .add_location_container{
+margin-top:15px
+}
+.customizationShareModal .add_location_container a{
+color: blue;
+}
+.customizationShareModal .select_add_location{
+width:100%;
+margin-top:15px;
+}
+.customizationShareModal .scedule_data {
+margin-top: 20px;
+}
+.meeting_copylink_container{
+position: absolute;
+top:57px;
+background: #fbfcfd;
+width:100%;
+}
+.meeting_copylink_container .event_container{
+padding-right: 5%;
+padding-left:5%;
+margin-top: 66px;
+margin-bottom: 30px;
+display: flex;
+justify-content: center;
+}
+.meeting_copylink_container .event_content{
+  display: flex;
+  flex: 1 1 auto;
+  max-width: 800px;
+  min-height: 550px;
+  transition: all 0.22sease-out;
+  border:1px solid rgb(26 26 26 / 10%);
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
+}
+.meeting_copylink_container .left_container,.meeting_copylink_container .right_container{
+  /* width: 50%; */
+  min-width: 300px;
+  border-right: 1px solid rgb(26 26 26 / 10%);
+  padding:25px 15px 15px;
+}
+.meeting_copylink_container .right_container{
+  border-right: none !important;
+}
+.meeting_copylink_container .left_container p{
+color: black;
+font-size: 16px;
+font-weight: bold;
+margin-bottom: 0px;
+color: rgb(26 26 26 / 61%) ;
+}
+.meeting_copylink_container .left_container h1{
+margin-top: 0px;
+margin-bottom: 24px;
+}
+.meeting_copylink_container .left_container .timeconatiner{
+  margin-bottom: 24px;
+}
+.meeting_copylink_container .left_container .timeconatiner div{
+  margin-bottom: 10px;
+}
+.meeting_copylink_container .left_container .timeconatiner span{ 
+ font-size: 15px;
+ color: rgb(26 26 26 / 61%);
+ font-weight: bold;
+}
+.meeting_copylink_container .left_container .button_container {
+position: absolute;
+bottom: 45px;
+display: flex;
+gap:100px
+}
+.addguests_container .guestsemail_textbox {
+min-height: 100px !important;
+}
+.meeting_copylink_container .right_container .addguests_details{
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid #c9c9cd;
+  border-radius: 8px;
+}
+.meeting_copylink_container .right_container .addguests_details:hover,
+.meeting_copylink_container .right_container .addguests_details:focus{
+border:1px solid blue !important;
+outline:none !important;
+}
+.meeting_copylink_container .right_container .eventdetail_content{
+margin:10px 0px
+}
+.meeting_copylink_container .right_container label{
+font-size: 14px;
+font-weight: bold;
+}
+.meeting_copylink_container .right_container p{
+color: black;
+}
+.meeting_copylink_container .right_container p a {
+color: blue;
+}
+.meeting_copylink_container .back_button{
+  margin-bottom: 24px;
+  color: blue;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  border: 1px solid rgb(26 26 26 / 10%);
+  cursor: pointer;
+}
+.meeting_copylink_container .top_content{
+  background: white;
+  position: relative;
+  z-index: 10;
+  padding: 10px 6px;
+  box-shadow: 0 2px 15px 0 rgb(0 0 0 / 10%);
+  display: flex;
+  justify-content: center;
+  min-height: 56px;
+}
+.meeting_copylink_container .menu_content{
+  width: 190px;
+  z-index: 1000;
+  background: white;
+  position: absolute;
+  top: 48px;
+  left: 43%;
+  padding: 10px 15px;
+  box-shadow: 0 1px 5px rgba(0, 74, 16, 0.15);
+  border-radius: 6px;
+  min-height: 125px;
+  border: 1px solid #d4e0ed;
 }

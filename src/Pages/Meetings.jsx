@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
-import { Grid, Button } from "@mui/material";
-import CloseIcon from '@mui/icons-material/Close';
+import { Dialog, DialogTitle, DialogContent, IconButton, Grid, Button } from "@mui/material";
 import AutocompleteComponent from "../Component/AutocompleteComponent";
 import TimePickerComponent from "../Component/TimePickerComponent";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import EventType from "../Component/Meetings/EventType";
+import {
+    ArrowBackIosIcon,
+    CloseIcon,
+    AddCircleOutlineIcon,
+    ContentCopyIcon,
+    FmdGoodOutlinedIcon,
+    LocalPhoneOutlinedIcon
+} from '../../src/Component/Icon';
+import CustomButton from "../Component/Meetings/CustomButton";
 
 
 const styles = {
@@ -91,27 +93,59 @@ const CalendarButton = ({ imageSrc, name, onClick, isConnected }) => {
 };
 const Meetings = () => {
     const mailAccountOptions = ['hepto@gmail.com'];
-    const [selectedCalendar, setSelectedCalendar] = useState(null);
-    const [showConfirmation, setShowConfirmation] = useState(false);
-    const [showCalendarModal, setShowCalendarModal] = useState(false);
-    const [showEditModal, setEditModal] = useState(false);
-    const [mailAccount, setMailAccount] = useState(mailAccountOptions[0]);
-    const [showWeeklyHours, setShowWeeklyHours] = useState(false);
-    const [showLocation, setShowLocation] = useState(false);
-    const [meetingHours, setMeetingHours] = useState({
-        Sunday: [{ from: "09:00", to: "17:00", available: true }],
-        Monday: [{ from: "09:00", to: "17:00", available: true }],
-        Tuesday: [{ from: "09:00", to: "17:00", available: true }],
-        Wednesday: [{ from: "09:00", to: "17:00", available: true }],
-        Thursday: [{ from: "09:00", to: "17:00", available: true }],
-        Friday: [{ from: "09:00", to: "17:00", available: true }],
-        Saturday: [{ from: "09:00", to: "17:00", available: true }],
+    const [state, setState] = useState({
+        selectedCalendar: null,
+        showConfirmation: false,
+        showCalendarModal: false,
+        showEditModal: false,
+        mailAccount: mailAccountOptions[0],
+        showWeeklyHours: false,
+        showLocation: false,
+        selectedLocation: 'googlemeet',
+        showEventType: false,
     });
-    const [selectedLocation, setSelectedLocation] = useState('googlemeet');
-    const [showEventType, setShowEventType] = useState(false);
+    const updateState = (newState) => {
+        setState((prevState) => ({ ...prevState, ...newState }));
+    };
+
+
     const handlerCalendarSelect = (imageSrc, name) => {
-        setSelectedCalendar({ imageSrc, name });
-    }
+        updateState({ selectedCalendar: { imageSrc, name } });
+    };
+    const handleNextClick = () => {
+        if (!state.showConfirmation) {
+            updateState({ showConfirmation: true });
+        } else if (!state.showWeeklyHours) {
+            updateState({ showWeeklyHours: true });
+        } else if (!state.showLocation) {
+            updateState({ showLocation: true });
+        } else if (!state.showEventType) {
+            updateState({ showEventType: true });
+        }
+    };
+
+    const handleBackClick = () => {
+        if (state.showLocation) {
+            updateState({ showLocation: false });
+        } else if (state.showWeeklyHours) {
+            updateState({ showWeeklyHours: false });
+        } else if (state.showConfirmation) {
+            updateState({ showConfirmation: false });
+        }
+    };
+    // const [selectedCalendar, setSelectedCalendar] = useState(null);
+    // const [showConfirmation, setShowConfirmation] = useState(false);
+    // const [showCalendarModal, setShowCalendarModal] = useState(false);
+    // const [showEditModal, setEditModal] = useState(false);
+    // const [mailAccount, setMailAccount] = useState(mailAccountOptions[0]);
+    // const [showWeeklyHours, setShowWeeklyHours] = useState(false);
+    // const [showLocation, setShowLocation] = useState(false);
+
+    // const [selectedLocation, setSelectedLocation] = useState('googlemeet');
+    // const [showEventType, setShowEventType] = useState(false);
+    // const handlerCalendarSelect = (imageSrc, name) => {
+    //     setSelectedCalendar({ imageSrc, name });
+    // }
     // const handleNextClick = () => {
     //     if (!showConfirmation) {
     //         setShowConfirmation(true);
@@ -125,27 +159,36 @@ const Meetings = () => {
     //         setShowEventType(true);
     //     }
     // };
-    const handleNextClick = () => {
-        if (!showConfirmation) {
-            setShowConfirmation(true);
-        } else if (!showWeeklyHours) {
-            setShowWeeklyHours(true);
-        } else if (!showLocation) {
-            setShowLocation(true);
-        } else if (!showEventType) {
-            setShowEventType(true);
-        }
-    };
-    const handleBackClick = () => {
-        if (showLocation) {
-            setShowLocation(false)
-        }
-        else if (showWeeklyHours) {
-            setShowWeeklyHours(false);
-        } else if (showConfirmation) {
-            setShowConfirmation(false);
-        }
-    };
+    // const handleNextClick = () => {
+    //     if (!showConfirmation) {
+    //         setShowConfirmation(true);
+    //     } else if (!showWeeklyHours) {
+    //         setShowWeeklyHours(true);
+    //     } else if (!showLocation) {
+    //         setShowLocation(true);
+    //     } else if (!showEventType) {
+    //         setShowEventType(true);
+    //     }
+    // };
+    // const handleBackClick = () => {
+    //     if (showLocation) {
+    //         setShowLocation(false)
+    //     }
+    //     else if (showWeeklyHours) {
+    //         setShowWeeklyHours(false);
+    //     } else if (showConfirmation) {
+    //         setShowConfirmation(false);
+    //     }
+    // };
+    const [meetingHours, setMeetingHours] = useState({
+        Sunday: [{ from: "09:00", to: "17:00", available: true }],
+        Monday: [{ from: "09:00", to: "17:00", available: true }],
+        Tuesday: [{ from: "09:00", to: "17:00", available: true }],
+        Wednesday: [{ from: "09:00", to: "17:00", available: true }],
+        Thursday: [{ from: "09:00", to: "17:00", available: true }],
+        Friday: [{ from: "09:00", to: "17:00", available: true }],
+        Saturday: [{ from: "09:00", to: "17:00", available: true }],
+    });
     const handleRemoveSlot = (day, index) => {
         setMeetingHours((prev) => {
             const updateSlots = prev[day].filter((_, i) => i !== index);
@@ -162,15 +205,15 @@ const Meetings = () => {
         <>
             <div className='maincontent'>
                 {
-                    showEventType && <EventType />
+                    state.showEventType && <EventType />
                 }
                 {
-                    !showEventType && (
+                    !state.showEventType && (
                         <div className="meetings_container">
                             <div className="left_container">
                                 <div className="left_content">
                                     {
-                                        !showConfirmation && !showWeeklyHours && !showLocation ? (
+                                        !state.showConfirmation && !state.showWeeklyHours && !state.showLocation ? (
                                             <>
                                                 <h1 className="heading">Set up the calendar that will be used to check for existing events</h1>
                                                 <div className="calendar_container">
@@ -189,23 +232,23 @@ const Meetings = () => {
                                                         onClick={() => handlerCalendarSelect("/assets/images/exchange.svg", "Exchange Calendar")} />
                                                 </div>
                                             </>
-                                        ) : showConfirmation && !showWeeklyHours && !showLocation ? (
+                                        ) : state.showConfirmation && !state.showWeeklyHours && !state.showLocation ? (
                                             <>
                                                 <h1 className="heading">Set up how your calendar will be used</h1>
                                                 <div className="calendar_container">
                                                     <h2>Your Calendar</h2>
                                                     <CalendarButton
-                                                        imageSrc={selectedCalendar.imageSrc}
-                                                        name={selectedCalendar.name}
-                                                        isConnected={true}/>
-                                                    <button className="select_different_calendar_btn" onClick={() => setShowCalendarModal(true)}>Use a different calendar</button>
+                                                        imageSrc={state.selectedCalendar.imageSrc}
+                                                        name={state.selectedCalendar.name}
+                                                        isConnected={true} />
+                                                    <button className="select_different_calendar_btn" onClick={() => updateState({ showCalendarModal: true })}>Use a different calendar</button>
                                                     <div className="check_conflicts">
                                                         <h2>Check for conflicts</h2>
                                                         <p>Select calendar(s) to check for conflicts to prevent double bookings.</p>
                                                         <ul>
                                                             <li>hepto@gmail.com</li>
                                                         </ul>
-                                                        <button className="select_different_calendar_btn" onClick={() => setEditModal(true)}>Edit</button>
+                                                        <button className="select_different_calendar_btn" onClick={() => updateState({ showEditModal: true })}>Edit</button>
 
                                                     </div>
                                                     <div className="add_calendar">
@@ -213,8 +256,8 @@ const Meetings = () => {
                                                         <p>Select the calendar you would like to add new events to as they’re scheduled.</p>
                                                         <AutocompleteComponent
                                                             options={mailAccountOptions}
-                                                            value={mailAccount}
-                                                            onChange={(event, newValue) => setMailAccount(newValue)}
+                                                            value={state.mailAccount}
+                                                            onChange={(event, newValue) => updateState({ mailAccount: newValue })}
                                                             customStyles={styles.newticketsAutocomplete}
                                                         />
                                                         <div className="deleting_event_container">
@@ -222,13 +265,13 @@ const Meetings = () => {
                                                         </div>
                                                     </div>
                                                     {
-                                                        showCalendarModal && (
+                                                        state.showCalendarModal && (
                                                             <>
-                                                                <Dialog open={showCalendarModal} onClose={() => setShowCalendarModal(false)} className="select_different_calendar">
+                                                                <Dialog open={state.showCalendarModal} onClose={() => updateState({ showCalendarModal: false })} className="select_different_calendar">
                                                                     <DialogTitle>
                                                                         <h2>Use a different calendar</h2>
                                                                         <IconButton
-                                                                            onClick={() => setShowCalendarModal(false)}
+                                                                            onClick={() => updateState({ showCalendarModal: false })}
                                                                             style={{ position: 'absolute', right: 8, top: 8, color: 'black' }}
                                                                         >
                                                                             <CloseIcon />
@@ -258,9 +301,9 @@ const Meetings = () => {
                                                         )
                                                     }
                                                     {
-                                                        showEditModal && (
+                                                        state.showEditModal && (
                                                             <>
-                                                                <Dialog open={showEditModal} onClose={() => setEditModal(false)} className="calendar_edit_modal">
+                                                                <Dialog open={state.showEditModal} onClose={() => updateState({ showEditModal: false })} className="calendar_edit_modal">
                                                                     <DialogTitle>
                                                                         <h2>Check for conflicts</h2>
                                                                         <p>Select calendar(s) to check for conflicts to prevent double bookings.</p>
@@ -271,8 +314,8 @@ const Meetings = () => {
 
                                                                         </div>
                                                                         <div className="button_container">
-                                                                            <button className="cancelbutton" onClick={() => setEditModal(false)}>Cancel</button>
-                                                                            <button className="updatebutton" onClick={() => setEditModal(false)}>Update</button>
+                                                                            <button className="cancelbutton" onClick={() => updateState({ showEditModal: false })}>Cancel</button>
+                                                                            <button className="updatebutton" onClick={() => updateState({ showEditModal: false })}>Update</button>
                                                                         </div>
                                                                     </DialogContent>
 
@@ -282,7 +325,7 @@ const Meetings = () => {
                                                     }
                                                 </div>
                                             </>
-                                        ) : showWeeklyHours && !showLocation ? (
+                                        ) : state.showWeeklyHours && !state.showLocation ? (
                                             <div className="weekly_hours">
                                                 <h1 className="heading">When are you available to meet with people?</h1>
                                                 <p>You’ll only be booked during these times (you can change these times and add other schedules later)</p>
@@ -349,7 +392,7 @@ const Meetings = () => {
                                                             {
                                                                 locations.map((location) => (
                                                                     <Grid item xs={6} key={location.id}>
-                                                                        <Button sx={styles.buttonStyles(selectedLocation === location.id)} onClick={() => setSelectedLocation(location.id)}>
+                                                                        <Button sx={styles.buttonStyles(state.selectedLocation === location.id)} onClick={() => updateState({ selectedLocation: location.id })}>
                                                                             {typeof location.icon === "string" && location.icon ? (
                                                                                 <img src={location.icon} alt={location.name} width="20" height="20" />
                                                                             ) : location.icon ? (
@@ -368,20 +411,24 @@ const Meetings = () => {
                                     }
 
                                     <div className="footer_button">
-                                        {showConfirmation && <button className="backbutton" onClick={handleBackClick}><ArrowBackIosIcon /> Back</button>}
-                                        <button className="nextbutton" onClick={handleNextClick}>Next</button>
+                                        {state.showConfirmation && 
+      
+                                        <CustomButton variant="text" onClick={handleBackClick} icon={<ArrowBackIosIcon/>}>Back</CustomButton>
+                                        }
+                                        {
+                                        <CustomButton variant="contained" onClick={handleNextClick} >Next</CustomButton>}
                                     </div>
                                 </div>
                             </div>
                             <div className="right_container">
-                                {!showWeeklyHours && !showLocation ? (
+                                {!state.showWeeklyHours && !state.showLocation ? (
                                     <div>
                                         <div className="calendar_connection">
                                             <img src='/assets/images/calendarconnection.svg' alt="Calendar Connection" />
                                         </div>
                                         <img src='/assets/images/calendar.svg' className="right_calendar" alt="Calendar" />
                                     </div>
-                                ) : showWeeklyHours && !showLocation ? (
+                                ) : state.showWeeklyHours && !state.showLocation ? (
                                     <div>
                                         <img src='/assets/images/availability.svg' alt="Availability" className="availability_image" />
                                     </div>
