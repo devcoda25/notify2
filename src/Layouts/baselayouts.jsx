@@ -12,6 +12,7 @@ import UserManagement from '../Pages/UserManagement';
 import AccountDetails from '../Pages/AccountDetails';
 import Reports from '../Pages/Reports';
 import CopyMeetingLink from '../Component/Meetings/CopyMeetingLink';
+import EditEventType from '../Component/Meetings/EditEventType';
 const BaseLayouts = () => {
 
     return (
@@ -32,6 +33,7 @@ const BaseLayouts = () => {
                         <Route path='UserManagement' element={<UserManagement/>}/>
                         <Route path='AccountDetails' element={<AccountDetails/>}/>
                         <Route path='/copylink' element={<CopyMeetingLink/>}/>
+                        <Route path='/edit-event' element={<EditEventType/>}/>
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>

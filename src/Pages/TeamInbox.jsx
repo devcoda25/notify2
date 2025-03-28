@@ -1,78 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Grid, Tabs, Tab } from '@mui/material';
-// import TuneIcon from '@mui/icons-material/Tune';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
-import DoNotDisturbOnOutlinedIcon from '@mui/icons-material/DoNotDisturbOnOutlined';
-import ExpandCircleDownOutlinedIcon from '@mui/icons-material/ExpandCircleDownOutlined';
-import PestControlOutlinedIcon from '@mui/icons-material/PestControlOutlined';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CloseIcon from '@mui/icons-material/Close';
-// import MuiAccordion from '@mui/material/Accordion';
-// import AccordionSummary from '@mui/material/AccordionSummary';
-// import AccordionDetails from '@mui/material/AccordionDetails';
-// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-// import FilterListSharpIcon from '@mui/icons-material/FilterListSharp';
-// import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
-// import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import KeyboardDoubleArrowRightRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowRightRounded';
-// import BurgerSidebar from '../Component/humburgerdiv';
-// import Dropdown from 'react-bootstrap/Dropdown';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import Form from 'react-bootstrap/Form';
-// import InputGroup from 'react-bootstrap/InputGroup';
-// import TeamBurgerLeftNav from '../Component/teamburgerMenu';
-//import PriorityDropDown from '../Component/assigneddrop';
-//import AssigneeDropDown from '../Component/AssigneeDrop';
-//import TicketType from '../Component/TicketType';
-import ReporterType from '../Component/Reporter';
-// import TeaamInboxAccordion from '../Component/TeamInboxAccordin';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
-import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import TranslateSharpIcon from '@mui/icons-material/TranslateSharp';
-import MailOutlineSharpIcon from '@mui/icons-material/MailOutlineSharp';
-import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
-import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
-import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
-import SellOutlinedIcon from '@mui/icons-material/SellOutlined';
-import WorkspacesOutlinedIcon from '@mui/icons-material/WorkspacesOutlined';
-import FormatBoldOutlinedIcon from '@mui/icons-material/FormatBoldOutlined';
-import FormatItalicOutlinedIcon from '@mui/icons-material/FormatItalicOutlined';
-import FormatUnderlinedOutlinedIcon from '@mui/icons-material/FormatUnderlinedOutlined';
-import StrikethroughSOutlinedIcon from '@mui/icons-material/StrikethroughSOutlined';
-import CodeOffOutlinedIcon from '@mui/icons-material/CodeOffOutlined';
-import FormatListNumberedOutlinedIcon from '@mui/icons-material/FormatListNumberedOutlined';
-import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
-import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import TagIcon from '@mui/icons-material/Tag';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import Accordion from 'react-bootstrap/Accordion';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { Chip } from '@mui/material';
-// import Tab from 'react-bootstrap/Tab';
-// import Tabs from 'react-bootstrap/Tabs';
-
-// import { Navbar } from 'react-bootstrap';
-// import { Link } from 'react-router-dom';
-import AutocompleteComponent from '../Component/AutocompleteComponent';
-// import { Position } from 'react-flow-renderer';
-// import zIndex from '@mui/material/styles/zIndex';
+import { Grid,Chip} from '@mui/material';
 import ButtonComponent from '../Component/ButtonComponent';
 import TextfieldComponent from '../Component/TextfieldComponent';
 import CustomAccordion from '../Component/TeamInbox/CustomAccordion';
+import AutocompleteComponent from '../Component/AutocompleteComponent';
+import Accordion from 'react-bootstrap/Accordion';
+import {AccessTimeOutlinedIcon,ErrorOutlineOutlinedIcon,ExpandLessOutlinedIcon,DoNotDisturbOnOutlinedIcon,ExpandCircleDownOutlinedIcon,PestControlOutlinedIcon,
+    EmailOutlinedIcon,RemoveRedEyeOutlinedIcon,MoreHorizOutlinedIcon,KeyboardArrowDownIcon,ArrowForwardIcon,CloseIcon,KeyboardDoubleArrowRightRoundedIcon,TodayOutlinedIcon,
+    AccountCircleOutlinedIcon,AttachFileOutlinedIcon,PeopleAltOutlinedIcon,TranslateSharpIcon,MailOutlineSharpIcon,ArrowUpwardSharpIcon,ThumbUpAltOutlinedIcon,FolderOutlinedIcon,CheckCircleOutlineOutlinedIcon,SellOutlinedIcon,WorkspacesOutlinedIcon,
+    FormatBoldOutlinedIcon,FormatItalicOutlinedIcon,FormatUnderlinedOutlinedIcon,StrikethroughSOutlinedIcon,CodeOffOutlinedIcon,FormatListNumberedOutlinedIcon,FormatListBulletedOutlinedIcon,InsertLinkOutlinedIcon,PhotoSizeSelectActualIcon,TagIcon,AttachFileIcon,
+    RadioButtonCheckedIcon,FormatColorTextIcon,AutoFixHighIcon,AddOutlinedIcon,CloseOutlinedIcon } from '../Component/Icon';
+
+import ReporterType from '../Component/Reporter';
+
+
 
 const styles = {
     accordion: {
@@ -266,61 +207,8 @@ const ticketsPriorityOptions = ['Low', 'Medium', 'High', 'Urgent']; //ticket pri
 const newticketsStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed']; //new ticket status
 const tagOptions = ['complaint', 'feedback', 'request', 'sales', 'support'];//tag
 
-// function CustomTabPanel(props) {
-//     const { children, value, index, ...other } = props;
-
-//     return (
-//         <div
-//             role="tabpanel"
-//             hidden={value !== index}
-//             id={`simple-tabpanel-${index}`}
-//             aria-labelledby={`simple-tab-${index}`}
-//             {...other}
-//         >
-//             {value === index && <div>{children}</div>}
-//         </div>
-//     );
-// }
-
 
 const TeamInbox = () => {
-    // const [isFullWidth, setIsFullWidth] = useState(true);
-
-    // useEffect(() => {
-    //     const outerContainer = document.getElementById('outer-container');
-
-    //     const checkStyle = () => {
-    //         if (outerContainer.style.width === '100%' && outerContainer.style.overflow === 'hidden') {
-    //             setIsFullWidth(false);
-    //         } else {
-    //             setIsFullWidth(true);
-    //         }
-    //     };
-
-    //     checkStyle();
-
-    //     // Observe changes to the outerContainer style
-    //     const observer = new MutationObserver(checkStyle);
-    //     observer.observe(outerContainer, { attributes: true, attributeFilter: ['style'] });
-
-    //     return () => observer.disconnect();
-    // }, []);
-    // const [ticketView, setTicketView] = useState(true)
-    // const [isClose, setIsClose] = useState(false)
-    // function ticketOpen() {
-    //     setTicketView(false);
-    //     setIsClose((prev) => !prev)
-    //     let bm_menu_wrap = document.querySelector(".bm-menu-wrap")
-    //     bm_menu_wrap.style.left = 0
-    //     document.querySelector('#react-burger-cross-btn').click()
-    // }
-
-    // const filterProjectOptions = ['All', 'One', 'Two', 'Three'];
-    // const filterTypeOptions = ['All', 'One', 'Two', 'Three'];
-    // const filterStatusOptions = ['All', 'One', 'Two', 'Three'];
-    // const filterAssigneeOptions = ['All', 'One', 'Two', 'Three'];
-
-
     const [isLeftContainerVisible, setIsLeftContainerVisible] = useState(true); 
     const [isMyticketsVisible, setIsMyticketsVisible] = useState(true);
     const [value, setValue] = React.useState(0);
@@ -331,10 +219,6 @@ const TeamInbox = () => {
     const [projectContent, setProjectContent] = useState('Administrative');
     const [ticketTypeContent, setTicketTypeContent] = useState('Task1');
     const [reporterContent, setReporterContent] = useState('Allie Harmon');
-    // const [filterProjectContent, setFilterProjectContent] = useState('All');
-    // const [filterTypeContent, setFilterTypeContent] = useState('All');
-    // const [filterStatusContent, setFilterStatusContent] = useState('All');
-    // const [filterAssigneeContent, setFilterAssigneeContent] = useState('All');
     const [ticketStatusContent, setTicketStatusContent] = useState('Closed');
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [addFilterPopup, setAddFilterPopup] = useState(false);
@@ -429,6 +313,7 @@ const TeamInbox = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [addFilterPopup]);
+    
     return (
         <>
 

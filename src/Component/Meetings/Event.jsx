@@ -24,6 +24,10 @@ import {
     AddCircleOutlineIcon
 } from '../Icon';
 import CustomButton from "./CustomButton";
+import WeeklyHours from "./WeeklyHours";
+import SelectDateandTimeComponent from "./SelectDateandTimeComponent";
+import style from "../MuiStyles/muiStyle";
+import LocationSelector from "./LocationSelector";
 
 
 const styles = {
@@ -83,20 +87,7 @@ const styles = {
         color: 'black',
         fontWeight: 600,
     },
-    newticketsAutocomplete: {
-        height: '32px',
-        border: '1px solid #c9c9cd',
-        width: '100%',
-        '&:hover': {
-            border: '1px solid blue !important',
-        },
-        '&.Mui-focused': {
-            border: '1px solid blue !important',
-            outline: 'none',
-        },
 
-
-    },
     hostheading: {
         fontWeight: 600,
         color: 'black'
@@ -115,15 +106,17 @@ const styles = {
             width: "388px",
         },
     },
-    invitecancelbtn: {
-        color: 'black',
-        marginRight: 'auto',
-        border: '1px solid #476788',
-        borderRadius: '10px',
-        marginLeft: '15px',
-        textTransform: 'capitalize',
-        borderRadius: '40px',
+    shareBtn: {
+        color: 'blue',
+        border: '1px solid blue',
+        width: '100px'
+
     },
+    customizeBtn: {
+        width: '237px',
+        height: '41px'
+    }
+
 
 };
 const timeSlots = [
@@ -183,6 +176,7 @@ const Event = ({ onCreateClick }) => {
         selectedRadioSchedule: "future",
         customizeShareModal: false,
         selectedTimeZone: "Eastern Time - US & Canada",
+        isLocationCardVisible: true,
     });
     const [meetingHours, setMeetingHours] = useState({
         Sunday: [{ from: "09:00", to: "17:00", available: true }],
@@ -260,11 +254,15 @@ const Event = ({ onCreateClick }) => {
         }));
     };
     const handleCopyLink = () => {
-        const urlToCopy = `${window.location.origin}/copylink`; 
+        const urlToCopy = `${window.location.origin}/copylink`;
         navigator.clipboard.writeText(urlToCopy).catch((err) =>
-          console.error("Failed to copy:", err)
+            console.error("Failed to copy:", err)
         );
+    };
+    const handleEventClose = () => {
+        setState((prev) => ({ ...prev, isLocationCardVisible: false }));
       };
+    
     // const [open, setOpen] = useState(true);
     // const [createNewEvent, setCreateNewEvent] = useState(false);
     // const [openHostModal, setOpenHostModal] = useState(false);
@@ -360,63 +358,20 @@ const Event = ({ onCreateClick }) => {
                                             options={durationOptions}
                                             value={state.durationContent}
                                             onChange={(event, newValue) => updateState({ durationContent: newValue })}
-                                            customStyles={styles.newticketsAutocomplete}
+                                            customStyles={{...style.newticketsAutocomplete,width:'50%'}}
                                         />
                                     </div>
                                     <div>
-                                        <label>Location</label>
-                                        <div className="location_Card">
-                                            <img src='/assets/images/Googlemeet.svg' />
-                                            <span>Google Meet</span>
-                                            <a>Edit</a>
-                                            <CloseIcon />
-                                        </div>
-                                        {
-                                            !state.showLocationDropdown ? (
-                                                <div className="add_location_container">
-                                                    <p>Want to offer choices to your invitee? </p>
-                                                    <a onClick={handleAddLocation}>Add a location Option</a>
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    <Select
-                                                        value={state.selectedLocation}
-                                                        onChange={handleLocationChange}
-                                                        className="select_add_location"
-                                                        renderValue={(selected) => {
-                                                            if (!selected) {
-                                                                return <span style={{ color: "black" }}>Add a location</span>;
-                                                            }
-                                                            const option = locationOptions.find((opt) => opt.title === selected);
-                                                            return (
-                                                                option && (
-                                                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                                                        {typeof option.img === "string" ? (
-                                                                            <img src={option.img} alt={option.title} width="20" height="20" />
-                                                                        ) : (
-                                                                            React.cloneElement(option.img, { width: 15, height: 15 })
-                                                                        )}
-                                                                        {option.title}
-                                                                    </div>
-                                                                )
-                                                            );
-                                                        }}
-                                                    >
-                                                        {locationOptions.map((option, index) => (
-                                                            <MenuItem key={index} value={option.title}>
-                                                                {typeof option.img === "string" ? (
-                                                                    <img src={option.img} alt={option.title} width="20" height="20" />
-                                                                ) : (
-                                                                    React.cloneElement(option.img, { width: 15, height: 15 })
-                                                                )}
-                                                                {option.title}
-                                                            </MenuItem>
-                                                        ))}
-                                                    </Select>
-
-                                                </>
-                                            )
-                                        }
+                                     
+                                        <LocationSelector
+                                            selectedLocation={state.selectedLocation}
+                                            showLocationDropdown={state.showLocationDropdown}
+                                            locationOptions={locationOptions}
+                                            handleLocationChange={handleLocationChange}
+                                            handleAddLocation={handleAddLocation}
+                                            onClose={handleEventClose} 
+                                            isLocationCardVisible={state.isLocationCardVisible}
+                                        />
                                         <div className="scedule_data">
                                             <p className="meet_heading">Availability offered</p>
                                             <label>Data Range</label>
@@ -458,7 +413,7 @@ const Event = ({ onCreateClick }) => {
                                                         </div>
                                                         <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
                                                     </div>
-                                                    <div>
+                                                    {/* <div>
                                                         {
                                                             Object.entries(meetingHours).map(([day, slots], dayIndex) => (
                                                                 <div key={dayIndex} className='setmeeting_hours_container'>
@@ -507,7 +462,9 @@ const Event = ({ onCreateClick }) => {
                                                                 </div>
                                                             ))
                                                         }
-                                                    </div>
+                                                    </div> */}
+                                                    <div>  <WeeklyHours meetingHours={meetingHours} setMeetingHours={setMeetingHours} /></div>
+
                                                     <div>
                                                         <DataSpecificHoursComponent />
 
@@ -543,7 +500,7 @@ const Event = ({ onCreateClick }) => {
                                                     <div className="event_preview_btn_container">
                                                         <div className='event_preview_heading' style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                             <h4>PREVIEW</h4>
-                                                            <Button onClick={togglePreview} color="primary">Hide Preview</Button>
+                                                            <CustomButton variant='text' onClick={togglePreview} sx={{ color: 'blue' }}>Hide Preview</CustomButton>
                                                         </div>
                                                         <p>Available event times</p>
                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -580,7 +537,7 @@ const Event = ({ onCreateClick }) => {
                                                             <h4>Customize one and share</h4>
                                                             <div className="customize_content">
                                                                 <p>Make a one-off change to your available hours before sharing. This won’t affect your primary link.</p>
-                                                                <button className="customizebtn" onClick={handleCustomizebtn}>Customize & share</button>
+                                                                <CustomButton variant="outlined" onClick={handleCustomizebtn} sx={{ ...styles.customizeBtn }}>Customize & share</CustomButton>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -593,11 +550,9 @@ const Event = ({ onCreateClick }) => {
                                     {state.tabIndex === 1 && (
                                         <>
                                             <p className="sharecontainer_choose_date">Choose dates and times to share</p>
-                                            <div className="add_time_toemail_container" style={{
-                                                width: state.showTimeSlots ? '550px' : '400px'
-                                            }}>
+                                            <div className="add_time_toemail_container" style={{ width: state.showTimeSlots ? '550px' : '400px' }}>
 
-                                                <Grid container spacing={2}>
+                                                {/* <Grid container spacing={2}>
 
                                                     <Grid item xs={12} md={state.showTimeSlots ? 6 : 12}>
                                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -632,7 +587,12 @@ const Event = ({ onCreateClick }) => {
                                                             </List>
                                                         </Grid>
                                                     )}
-                                                </Grid>
+                                                </Grid> */}
+                                                <SelectDateandTimeComponent selectedDate={state.selectedDate}
+                                                    showTimeSlots={state.showTimeSlots}
+                                                    selectedTime={state.selectedTime}
+                                                    updateState={updateState}
+                                                />
 
                                                 <div className="select_timezone">
                                                     <div
@@ -697,7 +657,7 @@ const Event = ({ onCreateClick }) => {
                                         options={hostOptions}
                                         value={state.selectedHost}
                                         onChange={(event, newValue) => updateState({ selectedHost: newValue })}
-                                        customStyles={styles.newticketsAutocomplete}
+                                        customStyles={style.newticketsAutocomplete}
                                     />
                                     <Typography sx={{ ...styles.hostsubtitle }}>
                                         You'll be the owner of this event type so you'll be able to edit it.
@@ -720,11 +680,11 @@ const Event = ({ onCreateClick }) => {
                                 </DialogContent>
                                 <DialogActions>
 
-                                    <Button onClick={handleClose} variant="outlined" sx={{ ...styles.invitecancelbtn }} >
+                                    <CustomButton onClick={handleClose} variant="outlined" sx={{ width: '130px' }}>
                                         Cancel
-                                    </Button>
+                                    </CustomButton>
                                     <CustomButton onClick={handleClose} variant="contained">Invite users</CustomButton>
-                                     </DialogActions>
+                                </DialogActions>
                             </Dialog>
                             <div className="event_create_meeting_card">
                                 <p className="heading">More ways to meet</p>
@@ -756,7 +716,7 @@ const Event = ({ onCreateClick }) => {
                                         </div>
                                     </div>
                                     <div className="new_event_content">
-                                        <button className="new_event_btn" onClick={() => updateState({ createNewEvent: true })} >+ New Event Type</button>
+                                        <CustomButton variant='outlined' onClick={() => updateState({ createNewEvent: true })} >+ New Event Type</CustomButton>
                                         <SettingsOutlinedIcon />
                                     </div>
                                 </div>
@@ -773,9 +733,9 @@ const Event = ({ onCreateClick }) => {
                                             <a>View booking page</a>
                                         </div>
                                         <div className="meeting_card_button">
-                                            <CustomButton variant="text" icon={<ContentCopyOutlinedIcon />} sx={{color:'blue'}} onClick={handleCopyLink}>Copy link</CustomButton>
-               
-                                            <button className="share_button" onClick={handleShareOpen}>Share</button>
+                                            <CustomButton variant="text" icon={<ContentCopyOutlinedIcon />} sx={{ color: 'blue' }} onClick={handleCopyLink}>Copy link</CustomButton>
+
+                                            <CustomButton variant="outlined" onClick={handleShareOpen} sx={{ ...styles.shareBtn }}>Share</CustomButton>
                                         </div>
                                         <Box sx={{ ...styles.tooltipStyle }}  >
                                             <Box sx={{ ...styles.tooltipContainer }} >

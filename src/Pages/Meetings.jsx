@@ -12,23 +12,11 @@ import {
     LocalPhoneOutlinedIcon
 } from '../../src/Component/Icon';
 import CustomButton from "../Component/Meetings/CustomButton";
+import style from "../Component/MuiStyles/muiStyle";
 
 
 const styles = {
-    newticketsAutocomplete: {
-        height: '32px',
-        border: '1px solid #c9c9cd',
-        width: '50%',
-        '&:hover': {
-            border: '1px solid blue !important',
-        },
-        '&.Mui-focused': {
-            border: '1px solid blue !important',
-            outline: 'none',
-        },
-
-
-    },
+  
     timePickerStyles: {
         background: 'white',
         border: '1px solid #a6bbd1',
@@ -258,7 +246,7 @@ const Meetings = () => {
                                                             options={mailAccountOptions}
                                                             value={state.mailAccount}
                                                             onChange={(event, newValue) => updateState({ mailAccount: newValue })}
-                                                            customStyles={styles.newticketsAutocomplete}
+                                                            customStyles={{...style.newticketsAutocomplete,width:'50%'}}
                                                         />
                                                         <div className="deleting_event_container">
                                                             <input type='checkbox' /><span className="deleting_event">Deleting or declining an event in your calendar will also cancel it in Calendly.</span>

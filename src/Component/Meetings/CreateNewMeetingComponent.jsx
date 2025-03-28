@@ -4,6 +4,7 @@ import { Button, IconButton } from "@mui/material";
 import TimeZoneMenu from "./TimeZoneMenu";
 import AutocompleteComponent from "../AutocompleteComponent";
 import TextfieldComponent from "../TextfieldComponent";
+import style from "../MuiStyles/muiStyle";
 import {
     ExpandMoreIcon,
     NavigateBeforeIcon,
@@ -27,29 +28,19 @@ import {
 
 } from "../Icon";
 import CustomButton from "./CustomButton";
+import SelectEventLocation from "./SelectEventLocation";
+import TextEditor from "./TextEditor";
 
-//style
-const styles = {
-    newticketsAutocomplete: {
-        height: '32px',
-        border: '1px solid #c9c9cd',
-        width: '70%',
-        '&:hover': {
-            border: '1px solid blue !important',
-        },
-        '&.Mui-focused': {
-            border: '1px solid blue !important',
-            outline: 'none',
-        },
-
-
-    },
-}
+const eventOptions = [
+    { icon: <VideoCameraFrontIcon />, label: "Zoom" },
+    { icon: <PhoneIcon />, label: "Phone" },
+    { icon: <RoomIcon />, label: "In-person" },
+];
 
 const CreateNewMeetingComponent = () => {
     const durationOptions = ['15 Minutes', '30 Minutes', '45 Minutes', '1 hour', 'Custom'];
     const currentTime = dayjs();
-   
+
     const [state, setState] = useState({
         timeZoneAnchor: null,
         selectedTimeZone: "Eastern Time - US & Canada",
@@ -58,8 +49,6 @@ const CreateNewMeetingComponent = () => {
         selectedSlots: [],
         daySlots: {},
         showEditor: false,
-        showOptions: false,
-        isFocused: false,
         newMeetNext: false,
     });
     const editorRef = useRef(null);
@@ -81,9 +70,7 @@ const CreateNewMeetingComponent = () => {
     const weekDays = getWeekDays(state.currentDate);
 
 
-    const applyFormatting = (command) => {
-        document.execCommand(command, false, null);
-    };
+   
     const timeSlots = Array.from({ length: 24 }, (_, i) =>
         dayjs().hour(i).minute(0).format("hA")
     );
@@ -144,7 +131,7 @@ const CreateNewMeetingComponent = () => {
     };
 
 
-    
+
     //     const [timeZoneAnchor, setTimeZoneAnchor] = useState(null);
     //     const [selectedTimeZone, setSelectedTimeZone] = useState("Eastern Time - US & Canada");
     //    const [durationContent, setDurationContent] = useState(durationOptions[1]);
@@ -155,7 +142,7 @@ const CreateNewMeetingComponent = () => {
     //     const [showOptions, setShowOptions] = useState(false);
     //     const [isFocused, setIsFocused] = useState(false);
     //     const [newmeetNext, setNewMeetNext] = useState(false);
-    
+
 
 
     // const handleNextClick = () => {
@@ -252,43 +239,8 @@ const CreateNewMeetingComponent = () => {
                                         <label>Meeting Name</label>
                                         <TextfieldComponent customStyle='new_meeting_event_textbox' />
                                     </div>
-                                    <div className="select_event_location">
-                                        <label>Location</label>
-                                        <div className="event_container">
-                                            <div className="select_event_content">
-                                                <VideoCameraFrontIcon />
-                                                <div>Zoom</div>
-                                            </div>
-                                            <div className="select_event_content">
-                                                <PhoneIcon />
-                                                <div>Phone</div>
-                                            </div>
-                                            <div className="select_event_content">
-                                                <RoomIcon />
-                                                <div>In-person</div>
-                                            </div>
-                                            <div className="options_container" onClick={() => setState(prev => ({ ...prev, showOptions: !prev.showOptions }))}>
-                                                <ExpandMoreIcon />
-                                                All options
-                                            </div>
 
-                                        </div>
-
-
-                                    </div>
-                                    {state.showOptions && (
-                                        <div className="new_meeting_option_menu" >
-                                            <div>🔗 Ask invitee</div>
-                                            <div>⚙️ Custom</div>
-
-                                            <div><b>WEB CONFERENCING</b></div>
-                                            <div><img src='/assets/images/Googlemeet.svg' /> Google Meet</div>
-                                            <div><img src='/assets/images/Teams.svg' /> Microsoft Teams</div>
-                                            <div><img src='/assets/images/webex.svg' />  Webex</div>
-                                            <div><img src='/assets/images/gotomeeting.svg' />GoTo Meeting</div>
-                                        </div>
-                                    )}
-
+                                    <SelectEventLocation options={eventOptions} />
                                     <div>
                                         {!state.showEditor ? (
                                             <a className="newmeet_description" onClick={() => setState(prev => ({ ...prev, showEditor: true }))}>
@@ -296,48 +248,9 @@ const CreateNewMeetingComponent = () => {
                                             </a>
                                         ) : (
                                             <div className="new_meet_event_description">
-                                                <h4>Description/Instructions</h4>
-
-                                                {/* Toolbar with MUI Icons */}
-                                                <div className='icons_container'>
-                                                    <IconButton onClick={() => applyFormatting("bold")}>
-                                                        <FormatBoldIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("italic")}>
-                                                        <FormatItalicIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("underline")}>
-                                                        <FormatUnderlinedIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("insertUnorderedList")}>
-                                                        <FormatListBulletedIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("insertOrderedList")}>
-                                                        <FormatListNumberedIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("createLink", prompt("Enter URL"))}>
-                                                        <InsertLinkIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("undo")}>
-                                                        <UndoIcon />
-                                                    </IconButton>
-                                                    <IconButton onClick={() => applyFormatting("redo")}>
-                                                        <RedoIcon />
-                                                    </IconButton>
-                                                </div>
-
-                                                {/* Editable Text Box */}
-                                                <div
-                                                    ref={editorRef}
-                                                    contentEditable
-                                                    className="description_box"
-                                                    placeholder="Add any information relevant to this event"
-                                                    onFocus={() => setState(prev => ({ ...prev, isFocused: true }))}
-                                                    onBlur={() => setState(prev => ({ ...prev, isFocused: false }))}
-                                                    style={{
-                                                        border: state.isFocused ? "2px solid blue" : "1px solid #ccc",
-                                                    }}
-                                                ></div>
+                                               
+                                                <TextEditor placeholder="Add any information relevant to this event" />
+                                            
                                             </div>
                                         )}
                                     </div>
@@ -359,7 +272,7 @@ const CreateNewMeetingComponent = () => {
                                 </div>
                                 <div className="button_container">
                                     <CustomButton variant="text">Back</CustomButton>
-                                  <CustomButton variant="contained">Share meeting link</CustomButton>
+                                    <CustomButton variant="contained">Share meeting link</CustomButton>
                                 </div>
                             </div>
                         </>
@@ -385,7 +298,7 @@ const CreateNewMeetingComponent = () => {
                                             options={durationOptions}
                                             value={state.durationContent}
                                             onChange={(event, newValue) => setState(prev => ({ ...prev, durationContent: newValue }))}
-                                            customStyles={styles.newticketsAutocomplete}
+                                            customStyles={{...style.newticketsAutocomplete,width:'50%'}}
                                         />
                                     </div>
                                     <div className="content">
@@ -526,8 +439,8 @@ const CreateNewMeetingComponent = () => {
                             </div>
                             <div className="create_newmeet_footer">
                                 <a>Select time to share</a>
-                                <CustomButton variant="contained" onClick={handleNextClick} sx={{marginLeft:'10px'}}>Next</CustomButton>
-                             
+                                <CustomButton variant="contained" onClick={handleNextClick} sx={{ marginLeft: '10px' }}>Next</CustomButton>
+
                             </div>
                         </>
                     )

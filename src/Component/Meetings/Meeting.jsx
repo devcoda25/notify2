@@ -1,10 +1,11 @@
 
 import React, { useState } from "react";
-import { Button, Popover, Tabs, Tab, Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Popover, Tabs, Tab, Checkbox, FormControlLabel, colors } from "@mui/material";
 import TextfieldComponent from "../TextfieldComponent";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import {
     ArrowDropDownIcon,
@@ -206,17 +207,15 @@ const Meeting = () => {
                             <Tab />
                         </Tabs>
                         <div className="buttons">
-                            <Button variant="outlined" size="small" className="exportbtn"><SystemUpdateAltIcon />Export</Button>
-                            <Button
+                            <CustomButton variant="outlined" icon={<SystemUpdateAltIcon />}>Export</CustomButton>
+                            <CustomButton
                                 variant="outlined"
-                                size="small"
-                                className="filterbtn"
                                 onClick={() => updateState({ showFilter: !state.showFilter })}
-                                endIcon={<KeyboardArrowDownIcon />}
-                                startIcon={<FilterListIcon />}
+                                endicon={<KeyboardArrowDownIcon />}
+                                icon={<FilterListIcon />}
                             >
                                 Filter
-                            </Button>
+                            </CustomButton>
 
                         </div>
                     </div>
@@ -231,7 +230,7 @@ const Meeting = () => {
                                 <div>Tracking ID<div className="filter_sec_content" onClick={handleAllIdClick}>All ID's<KeyboardArrowDownIcon /></div></div>
                                 <div>Invitee Emails<div className="filter_sec_content" onClick={handleAllInviteeEvents}>All Invite Email<KeyboardArrowDownIcon /></div></div>
                                 <div className="clear_btn">
-                                    <Button size="small" color="primary">Clear all filters</Button>
+                                    <CustomButton variant="text" sx={{color:'blue'}}>Clear all filters</CustomButton>
                                 </div>
 
                             </div>
@@ -251,9 +250,9 @@ const Meeting = () => {
                                         <div >No items found</div>
                                     </div>
                                     <div className="button_container">
-                                        <Button variant="outlined" size="small" onClick={handleClose} className="cancel_btn">Cancel</Button>
+                                        <CustomButton variant="outlined" onClick={handleClose} sx={{ width: '130px' }}>Cancel</CustomButton>
                                         <CustomButton variant="contained">Apply</CustomButton>
-                                        
+
                                     </div>
                                 </div>
                             </Popover>
@@ -272,9 +271,9 @@ const Meeting = () => {
                                         <FormControlLabel control={<Checkbox />} label="Non-host" />
                                     </div>
                                     <div className="button_container">
-                                        <Button variant="outlined" size="small" onClick={handleClose} className="cancel_btn">Cancel</Button>
+                                        <CustomButton variant="outlined" onClick={handleClose} sx={{ width: '130px' }}>Cancel</CustomButton>
                                         <CustomButton variant="contained">Apply</CustomButton>
-                                      
+
                                     </div>
                                 </div>
                             </Popover>
@@ -294,7 +293,7 @@ const Meeting = () => {
                                         <FormControlLabel control={<Checkbox />} label="30 Minute Meeting" />
                                     </div>
                                     <div className="button_container">
-                                        <Button variant="outlined" size="small" onClick={handleClose} className="cancel_btn">Cancel</Button>
+                                        <CustomButton variant="outlined" onClick={handleClose} sx={{ width: '130px' }}>Cancel</CustomButton>
                                         <CustomButton variant="contained">Apply</CustomButton>
                                     </div>
                                 </div>
@@ -314,7 +313,7 @@ const Meeting = () => {
                                         <FormControlLabel control={<Checkbox />} label="Canceled events" />
                                     </div>
                                     <div className="button_container">
-                                        <Button variant="outlined" size="small" onClick={handleClose} className="cancel_btn">Cancel</Button>
+                                        <CustomButton variant="outlined" onClick={handleClose} sx={{ width: '130px' }}>Cancel</CustomButton>
                                         <CustomButton variant="contained">Apply</CustomButton>
                                     </div>
                                 </div>
@@ -341,7 +340,7 @@ const Meeting = () => {
                                         <div >No items found</div>
                                     </div>
                                     <div className="button_container">
-                                        <Button variant="outlined" size="small" onClick={handleClose} className="cancel_btn">Cancel</Button>
+                                        <CustomButton variant="outlined" onClick={handleClose} sx={{ width: '130px' }}>Cancel</CustomButton>
                                         <CustomButton variant="contained">Apply</CustomButton>
                                     </div>
                                 </div>
@@ -362,7 +361,7 @@ const Meeting = () => {
                                         <div >No items found</div>
                                     </div>
                                     <div className="button_container">
-                                        <Button variant="outlined" size="small" onClick={handleClose} className="cancel_btn">Cancel</Button>
+                                        <CustomButton variant="outlined" onClick={handleClose} sx={{ width: '130px' }}>Cancel</CustomButton>
                                         <CustomButton variant="contained">Apply</CustomButton>
                                     </div>
                                 </div>
@@ -394,11 +393,12 @@ const Meeting = () => {
                                             <div className="meet_upcoming_event_grid_container">
                                                 <div className="left_container">
                                                     <div className="event_control">
-                                                        <button className="reschedule_btn">Reschedule</button>
-                                                        <button className="cancel_btn">Cancel</button>
+                                                        <CustomButton variant="outlined" sx={{ width: '130px' }}>Reschedule</CustomButton>
+                                                        <CustomButton variant="outlined" sx={{ width: '130px' }}>Cancel</CustomButton>
                                                     </div>
                                                     <div className="event_control">
-                                                        <a>Edit Event Type</a>
+                                                        {/* <a>Edit Event Type</a> */}
+                                                        <Link to="/edit-event">Edit Event Type</Link>
                                                         <a><FilterListOutlinedIcon />Filter by Event Type</a>
                                                         <a><AutorenewOutlinedIcon />Schedule invite again</a>
                                                         <a><OutlinedFlagOutlinedIcon />Report this event</a>
@@ -489,7 +489,7 @@ const Meeting = () => {
                                 </div>
                                 <div className="datarange_button">
                                     <CustomButton variant="text">Canel</CustomButton>
-                                    <CustomButton variant="contained" sx={{marginLeft:'10px'}}>Apply</CustomButton>
+                                    <CustomButton variant="contained" sx={{ marginLeft: '10px' }}>Apply</CustomButton>
                                 </div>
                             </div>
 

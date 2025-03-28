@@ -5,8 +5,15 @@ import Meeting from '../Meetings/Meeting';
 import Analytic from '../Meetings/Analytic';
 import { AddOutlinedIcon } from "../Icon";
 import CreateNewMeetingComponent from "./CreateNewMeetingComponent";
+import CustomButton from "./CustomButton";
 
-
+const styles={
+    createBtn:{
+    colo:'blue',
+    border:'1px solid blue',
+    width:'180px'
+    }
+}
 const EventType = () => {
     const [activeContent, setActiveContent] = useState('event types');
     const [showMenu, setShowMenu] = useState(false);
@@ -45,7 +52,7 @@ const EventType = () => {
                     <div className='msgCont'>
 
                         <div className='msgContL analytics__left__content'>
-                            <li><button className="event_createbutton" onClick={handleToggle}><AddOutlinedIcon />Create</button></li>
+                            <li><CustomButton variant="outlined" onClick={handleToggle} icon={<AddOutlinedIcon />} sx={{...styles.createBtn}}>Create</CustomButton></li>
                             <li className='solo'><a href='#' onClick={(e) => handleNavigationClick(e, 'event types')} ><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.707 7.2929C4.09752 7.68343 4.09752 8.31659 3.707 8.70712L3.207 9.20712C2.21681 10.1973 2.21681 11.8027
        3.207 12.7929C4.19718 13.7831 5.8026 13.7831 6.79278 12.7929L7.29278 12.2929C7.68331 11.9024 8.31647 11.9024
        8.707 12.2929C9.09752 12.6834 9.09752 13.3166 8.707 13.7071L8.207 14.2071C6.43576 15.9784 3.56402 15.9784

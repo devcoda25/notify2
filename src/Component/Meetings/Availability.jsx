@@ -12,25 +12,14 @@ import EventTypeMenu from "./EventTypeMenu";
 import { CalendarMonthIcon, AddCircleOutlineIcon, ViewListIcon, ContentCopyIcon, CloseIcon, ExpandMoreIcon } from "../Icon";
 import { Tabs, Tab, Box, Typography, Button, ToggleButton, ToggleButtonGroup, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import CustomButton from "./CustomButton";
+import WeeklyHours from "./WeeklyHours";
+import style from "../MuiStyles/muiStyle";
+
 
 const localizer = momentLocalizer(moment);
 
 const styles = {
-  newticketsAutocomplete: {
-    height: '32px',
-    border: '1px solid #c9c9cd',
-    width: '100',
-    marginBottom: '15px',
-    '&:hover': {
-      border: '1px solid blue !important',
-    },
-    '&.Mui-focused': {
-      border: '1px solid blue !important',
-      outline: 'none',
-    },
-
-
-  },
+ 
   timePickerStyles: {
     background: 'white',
     border: '1px solid #a6bbd1',
@@ -67,22 +56,11 @@ const styles = {
   selectdateTitle: {
     color: "black",
   },
-  // listview_date_apply: {
-  //   boxShadow: "none",
-  //   margin: "0px 0px 0px 12px",
-  //   borderRadius: "20px",
-  //   textTransform: "capitalize",
-  //   width: "145px",
-  //   height: "37px",
-  // },
+  
   listview_date_cancel: {
-    width: "145px",
-    marginTop: "0px",
-    height: "37px",
-    textTransform: "capitalize",
-    color: "black",
-    borderRadius: "20px",
-    border: "1px solid #476788",
+    width: "130px",
+    marginRight:'5px'
+    
   },
   listHolidayText: {
     marginBottom: '30px',
@@ -281,7 +259,7 @@ const Availability = () => {
             Schedule name
           </Typography>
           <TextfieldComponent placeholder='Working Hours,Exclusive Hours,etc...' customStyle='calendar_new_scedule_textbox' />
-          <Button onClick={() => updateState({ newScheduleOpen: false })} variant="outlined" sx={{ ...styles.listview_date_cancel }}>Cancel</Button>
+          <CustomButton onClick={() => updateState({ newScheduleOpen: false })} variant="outlined" sx={{ ...styles.listview_date_cancel }}>Cancel</CustomButton>
           <CustomButton onClick={() => updateState({ newScheduleOpen: false })} variant="contained">Apply</CustomButton>
         </DialogContent>
 
@@ -377,7 +355,7 @@ const Availability = () => {
                     <div className="calendar_list_container">
                       <div className="leftcontainer">
                         <h3>Weekly hours</h3>
-                        <div>
+                        {/* <div>
                           {
                             Object.entries(meetingHours).map(([day, slots], dayIndex) => (
                               <div key={dayIndex} className='setmeeting_hours_container'>
@@ -426,7 +404,8 @@ const Availability = () => {
                               </div>
                             ))
                           }
-                        </div>
+                        </div> */}
+                        <WeeklyHours meetingHours={meetingHours} setMeetingHours={setMeetingHours}/>
                       </div>
                       <div className="right_container">
                         <DataSpecificHoursComponent />
@@ -473,9 +452,9 @@ const Availability = () => {
                   options={holidaySettings}
                   value={state.holidayDropdown}
                   onChange={(event, newValue) => updateState({ holidayDropdown: newValue })}
-                  customStyles={styles.newticketsAutocomplete}
+                  customStyles={style.newticketsAutocomplete}
                 />
-                <Button onClick={() => updateState({ holidayOpen: false })} variant="outlined" sx={{ ...styles.listview_date_cancel }}>Cancel</Button>
+                <CustomButton onClick={() => updateState({ holidayOpen: false })} variant="outlined" sx={{ ...styles.listview_date_cancel }}>Cancel</CustomButton>
                 <CustomButton onClick={() => updateState({ holidayOpen: false })} variant="contained">Apply</CustomButton>
               </DialogContent>
 
