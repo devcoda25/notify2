@@ -7,33 +7,24 @@ import GenerateReport from '../Component/Reports/GenerateReport';
 import HandlingTimebyStatus from '../Component/Reports/HandlingTimebyStatus';
 import ResolutionTime from '../Component/Reports/ResolutionTime';
 import SolvedandClosed from '../Component/Reports/SolvedandClosed';
-import StraightIcon from '@mui/icons-material/Straight';
-import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-import WorkspacesOutlinedIcon from '@mui/icons-material/WorkspacesOutlined';
-import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
 import TicketReports from '../Component/Reports/TicketReports';
 import AutocompleteComponent from "../Component/AutocompleteComponent";
-
-const styles = {
-    newticketsAutocomplete: {
-        height: '32px',
-        border: '1px solid #c9c9cd',
-        width: '135px',
-        '&:hover': {
-            border: '1px solid blue !important',
-        },
-        '&.Mui-focused': {
-            border: '1px solid blue !important',
-            outline: 'none',
-        },
-
-    }
-}
+import ButtonComponent from "../Component/ButtonComponent";
+import style from "../Component/MuiStyles/muiStyle";
+import ToggleSwitch from "../Component/ToggleSwitch";
+import { 
+    StraightIcon, 
+    LocalOfferOutlinedIcon, 
+    WorkspacesOutlinedIcon, 
+    TranslateOutlinedIcon 
+} from '../../src/Component/Icon';
 
 const Reports = () => {
     const dataRangeOptions = ['Today', 'Yesterday', 'Last 7 days', 'Last month', 'Custom data range'];
     const [activeContent, setActiveContent] = useState('ticket reports');
     const [dataContent, setDataContent] = useState('Yesterday');
+    const [isAddFilter, setIsAddFilter] = useState(false);
+    const [isActive, setIsActive] = useState(false); //toggle
     const handleNavigationClick = (e, content) => {
         e.preventDefault();
         setActiveContent(content);
@@ -63,8 +54,7 @@ const Reports = () => {
                 return <TicketReports />
         }
     }
-    const [isAddFilter, setIsAddFilter] = useState(false);
-    const [isActive, setIsActive] = useState(false); //toggle
+
     const handleAddFilter = () => {
         setIsAddFilter(!isAddFilter)
     }
@@ -98,7 +88,7 @@ const Reports = () => {
                                 <div className="header">
                                     <div className="header_left">
                                         <label>Filters:</label>
-                                        <button className="add_filter_btn" onClick={handleAddFilter}>+ Add filter</button>
+                                        <ButtonComponent customBtn="add_filter_btn" onClick={handleAddFilter} label='+ Add Filter' />
                                         {
                                             isAddFilter && (
                                                 <div className="popup_container">
@@ -115,21 +105,14 @@ const Reports = () => {
                                             options={dataRangeOptions}
                                             value={dataContent}
                                             onChange={(event, newValue) => setDataContent(newValue)}
-                                            customStyles={styles.newticketsAutocomplete}
+                                            customStyles={{ ...style.newticketsAutocomplete, width: '135px', mb: 0 }}
                                         />
                                     </div>
-                                    <div className='holidaytoggle' style={{ width: '210px' }}>
-                                        <label className="toggle-label">24-hour distribution:</label>
-                                        <button
-                                            type="button"
-                                            className={`toggle__control ${isActive ? 'active' : ''}`}
-                                            onClick={handleToggle}
-                                            aria-label="Toggle"
-
-                                        >
-                                            <div className='toggle-indicator'></div>
-                                        </button>
-                                    </div>
+                                    <ToggleSwitch
+                                        isActive={isActive}
+                                        onToggle={handleToggle}
+                                        leftLabel="24-hour distribution:"
+                                    />
                                 </div>
                             </div>
                         )
@@ -137,7 +120,7 @@ const Reports = () => {
                     {renderContent()}
                 </div>
             </div>
-        
+
         </div>
     )
 }

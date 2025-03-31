@@ -2,53 +2,57 @@ import React from "react";
 import ChartComponent from "./ChartComponent";
 import AccordionTable from "./AccordionTable";
 
+
+const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
+
+
+const firstResponseTime = [
+    {
+        name: "Data",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "green",
+        borderRadius: 2,
+        pointWidth: 40,
+    },
+];
+const firstResponsetimeperTeam = [
+    {
+        title: "First response time per team",
+        columns: [{ label: 'Name' },
+        { label: 'Time to assign', color: '#3357FF' },
+        { label: 'Time to respond', color: '#33FF57' },
+        { label: 'Average Time' }
+
+        ],
+        rows: [["Average", "0s", "0s", "0s"]],
+    },
+]
+const firstResponsetimeperAgent = [
+    {
+        title: "First response time per agent",
+        columns: [{ label: 'Name' },
+        { label: 'Time to assign', color: '#3357FF' },
+        { label: 'Time to respond', color: '#33FF57' },
+        { label: 'Average Time' }
+
+        ],
+        rows: [["Average", "0s", "0s", "0s"]],
+    },
+]
+const firstResponseBreakdown = [
+    {
+        title: "First response time breakdown",
+        columns: ["Series", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
+        rows: [
+            ["First response time", "-", "-", "-", "-", "-", "-", "-", "-"],
+
+        ],
+    },
+];
+
+
 const FirstResponseTime = () => {
-    const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
-
-
-    const firstResponseTime = [
-        {
-            name: "Data",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "green",
-            borderRadius: 2,
-            pointWidth: 40,
-        },
-    ];
-    const firstResponsetimeperTeam = [
-        {
-            title: "First response time per team",
-            columns: [{ label: 'Name' },
-            { label: 'Time to assign', color: '#3357FF' },
-            { label: 'Time to respond', color: '#33FF57' },
-            { label: 'Average Time' }
-
-            ],
-            rows: [["Average", "0s", "0s", "0s"]],
-        },
-    ]
-    const firstResponsetimeperAgent = [
-        {
-            title: "First response time per agent",
-            columns: [{ label: 'Name' },
-            { label: 'Time to assign', color: '#3357FF' },
-            { label: 'Time to respond', color: '#33FF57' },
-            { label: 'Average Time' }
-
-            ],
-            rows: [["Average", "0s", "0s", "0s"]],
-        },
-    ]
-    const firstResponseBreakdown = [
-        {
-            title: "First response time breakdown",
-            columns: ["Series", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
-            rows: [
-                ["First response time", "-", "-", "-", "-", "-", "-", "-", "-"],
-
-            ],
-        },
-    ];
+ 
     return (
         <div className="reports_newtickets">
 

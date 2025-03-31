@@ -1,28 +1,13 @@
 import React, { useState } from "react";
 import AutocompleteComponent from "../AutocompleteComponent";
 import TextfieldComponent from "../TextfieldComponent";
-import { Button } from "@mui/material";
+import style from "../MuiStyles/muiStyle";
+import CustomButton from "../Meetings/CustomButton";
 
-const styles = {
-    newticketsAutocomplete: {
-        height: '32px',
-        border: '1px solid #c9c9cd',
-        width: '50%',
-        '&:hover': {
-            border: '1px solid blue !important',
-        },
-        '&.Mui-focused': {
-            border: '1px solid blue !important',
-            outline: 'none',
-        },
+const dataRangeOptions = ['Yesterday', 'Last 7 days', 'Last month', 'Custom period'];
 
-    }
-}
 const GenerateReport = () => {
-    const dataRangeOptions = ['Yesterday', 'Last 7 days', 'Last month', 'Custom period'];
-  
-      
-    const [dataContent, setDataContent] = useState('Yesterday');
+ const [dataContent, setDataContent] = useState('Yesterday');
     return (
         <div className="generate_report">
             <h5 className="heading">Export and send report</h5>
@@ -34,18 +19,18 @@ const GenerateReport = () => {
                     options={dataRangeOptions}
                     value={dataContent}
                     onChange={(event, newValue) => setDataContent(newValue)}
-                    customStyles={styles.newticketsAutocomplete}
+                    customStyles={{...style.newticketsAutocomplete,width:'50%'}}
                 />
             </div>
             <div className="datarange_container">
                 <label>Send report to</label>
                 <div>
-                    <TextfieldComponent customStyle='new_tickets_textbox report_textbox' />
+                    <TextfieldComponent customStyle='custom_textfield_box report_textbox' />
                 </div>
 
             </div>
             <p className="subheading">Note: This report contains sensitive data, check if the provided emails are correct.</p>
-            <Button variant="contained">Send report</Button>
+            <CustomButton variant="contained">Send report</CustomButton>
         </div>
     )
 }

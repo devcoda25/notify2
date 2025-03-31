@@ -11473,27 +11473,24 @@ a.text-dark:hover {
   border-right: 1px solid rgb(232, 234, 242);
 }
 .teaminbox_container .teaminbox_add_filter{
-border-color: #c9c9cd;
-color:#131317;
-background: white;
+border: 1px solid #c9c9cd !important;
+color:#131317 !important;
+background: white !important;
 padding:6px 16px;
 /* margin:10px 0px 0px 11px; */
 margin:0px 0px 0px 11px;
 height:32px;
 font-size: 12px;
-width:127px;
-}
-.teaminbox_container .teaminbox_add_filter:focus{
-color:#131317 !important;
-background: white !important;
+width:110px;
+height:44px;
 box-shadow: none !important;
-
 }
 .teaminbox_container .mytickets_filter_search_container{
   display: flex;
-  align-items: center;
+ gap:4px;
   border-bottom: 1px solid rgb(232, 234, 242);
   width: 100%;
+  padding:10px 12px 10px 0px;
 }
 .teaminbox_container .AddFilter_container{
   position: absolute;
@@ -11669,7 +11666,7 @@ padding:8px
   margin-right: 10px;
 }
 
-.teaminbox_container .support_tickets,.new_tickets_container .support_tickets,
+.editorbox_container .support_tickets,
 .teaminbox_container .tickets_timeline {
   width: 97%;
   background-color: white;
@@ -11710,7 +11707,7 @@ padding:8px
 }
 
 .teaminbox_container .tab_input_field,
-.teaminbox_container .tab_reply_content,.new_tickets_container .tab_reply_content{
+.editorbox_container .tab_reply_content{
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
@@ -11742,42 +11739,41 @@ padding:8px
   border-radius: 7px;
 }
 
-.teaminbox_container .reply_text_container,.teaminbox_container .reply_text_second_container,
-.new_tickets_container .reply_text_container,.new_tickets_container .reply_text_second_container {
+.editorbox_container .reply_text_container,.editorbox_container .reply_text_second_container{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
 }
-.teaminbox_container .reply_text_container,.new_tickets_container .reply_text_container{
+.editorbox_container .reply_text_container{
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   margin: 0px 10px 0px 10px;
 }
-.teaminbox_container .reply_text_container_icons,.new_tickets_container .reply_text_container_icons{
+.editorbox_container .reply_text_container_icons{
   width: 18px;
   height: 18px;
   color: gray;
 }
-.teaminbox_container .reply_text_style,.new_tickets_container .reply_text_style {
+.editorbox_container .reply_text_style{
   display: flex;
   /* gap: 20px; */
   gap: 5px;
 }
 
-.teaminbox_container .mail_send_btn,.new_tickets_container .mail_send_btn {
+.editorbox_container .mail_send_btn{
   display: flex;
   align-items: center;
   gap:5px
 }
-.teaminbox_container .ticket_status_text{
+.editorbox_container .ticket_status_text{
   margin-bottom:0px;
   color:black;
 }
-.teaminbox_container .mail_send_btn label {
+.editorbox_container .mail_send_btn label {
   margin: 0px 12px 0px 0px;
 }
-.teaminbox_container .mail_send_btn input{
+.editorbox_container .mail_send_btn input{
   margin-left:5px;
 }
 .teaminbox_container .send_button {
@@ -11785,7 +11781,7 @@ padding:8px
   border: none;
   padding: 4px;
 }
-.teaminbox_container .submit_btn,.new_tickets_container .submit_btn{
+.editorbox_container .submit_btn{
   box-shadow: none;
   background: #d1d1d2;
   height: 32px;
@@ -12067,21 +12063,21 @@ max-width: 680px;
 width: 100%;
 padding:48px 20px;
 }
-.new_tickets_container .new_tickets_textbox,.channel_email_content .new_tickets_textbox,.generate_report .new_tickets_textbox,.calendar_new_scedule_textbox,.new_meeting_event_textbox{
+.custom_textfield_box,.channel_email_content .new_tickets_textbox,.calendar_new_scedule_textbox,.new_meeting_event_textbox{
 border:1px solid #c9c9cd !important;
 background: white;
 }
-.new_tickets_container .new_tickets_textbox:focus,.channel_email_content .new_tickets_textbox:focus,
-.generate_report .new_tickets_textbox:focus,.calendar_new_scedule_textbox:focus,.new_meeting_event_textbox:focus{
+.custom_textfield_box:hover,.custom_textfield_box:focus,.channel_email_content .new_tickets_textbox:focus,
+.calendar_new_scedule_textbox:focus,.new_meeting_event_textbox:focus{
   border:1px solid blue !important;
-  outline :none  !important;
-  box-shadow: none !important;
+
 }
 .new_tickets_container .requester_name_email{
   display: flex;
   flex-direction: row;
   gap:20px;
 }
+
 .new_tickets_container .textbox_container,.channel_email_content .textbox_container{
   margin-bottom: 20px;
   font-size: 13px;

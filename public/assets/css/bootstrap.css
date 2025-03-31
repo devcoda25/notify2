@@ -17511,6 +17511,10 @@ fieldset:disabled .btn {
   border: none !important;
   margin-bottom: 20px;
 }
+.textfield_style:hover,.textfield_style:focus{
+border: none !important;
+outline:none !important;
+}
 
 /* more dropodown */
 .moredropdown_menu {
@@ -17654,7 +17658,12 @@ fieldset:disabled .btn {
   padding: 5px;
   cursor: pointer;
 }
-
+.reports_style .add_filter_btn{
+background: white !important;
+color:black !important;
+border: 1px solid #c9c9cd !important;
+box-shadow: none !important;
+}
 .reports_style .popup_container li:hover {
   background: #e2e2e4;
 }
@@ -18075,7 +18084,7 @@ fieldset:disabled .btn {
   padding: 16px 0 8px;
 }
 
-.calendar_Eventtype .user_logo,.host_invitees .userlogo{
+.calendar_Eventtype .user_logo,.details_main_content .user_logo{
   border-radius: 50%;
   border: 2px solid transparent;
   color: black;
@@ -18890,6 +18899,7 @@ margin-top:10px
   color: black;
 }
 .meet_editor_textbox{
+  position: relative;
   margin-top:10px;
 }
 .meet_editor_textbox .icons_container {
@@ -19443,14 +19453,16 @@ padding:24px 15px;
 }
 /* edit event type --> event details */
 .edit_event_details{
-padding:15px 20px
+padding:15px 20px;
+position: relative;
 }
 .edit_event_details .event_header{
 padding-bottom: 10px;
 border-bottom: 1px solid #CCCCCC;
 }
 .edit_event_details .details_main_content{
-padding: 15px 0px
+padding: 15px 0px;
+height: 990px;
 }
 .edit_event_details .details_event_name{
 display: flex;
@@ -19475,10 +19487,185 @@ align-items: center
   font-weight: bold;
 }
 .edit_event_details .edit_event_details_footer{
-  border-top: 1px solid #cccc;
-padding: 15px 0px 15px 156px;
+ border-top: 1px solid #cccc;
+ padding: 15px 0px 15px 156px;
+ position: absolute;
+ bottom: -51px;
 }
 .details_main_content .host_invitees{
 display: flex;
 gap:10px;
+margin-bottom: 15px;
+}
+.details_main_content .host_invitees div{
+margin-top:10px;
+font-size: 15px;
+}
+.event_notification_table{
+width:100%;
+border:1px solid #cccc;
+margin-bottom:15px;
+}
+.event_notification_table tr{
+border-bottom: 1px solid #cccc;
+}
+.event_notification_table .text{
+text-align: left;
+}
+.event_notification_table .switch{
+background: #e7edf6;
+color:black;
+font-weight: bold;
+font-size: 14px;
+width:37px;
+height:23px
+}
+.details_main_content .workflows_container{
+  border: 1px solid #e7edf6;
+  padding: 16px;
+  background: #e7edf6;
+  border-radius: 8px;
+}
+.details_main_content .none_container{
+border:1px dashed #B2B2B2;
+padding:16px;
+color:#476788;
+margin-top:20px;
+text-align: center;
+}
+.basicnotification_edit{
+  padding:10px; 
+  min-width:150px;
+}
+.basicnotification_edit div{
+display:flex;
+ align-items:center;
+ cursor:pointer
+}
+.basicnotification_switch{
+  display:flex;
+  align-items:center;
+  margin-top:10px
+}
+.basicnotification_switch div{
+   margin-right: 8px
+}
+.datarange_scheduleoptions .radio_container{
+  display:flex;
+   align-items:center;
+   gap: 8px
+}
+.datarange_scheduleoptions .textfield{
+width:60px
+}
+.edit_event_details .scheduling_settings .calendar_setting{
+display: flex;
+gap:61px;
+}
+.scheduling_settings .set_time{
+  font-size: 15px;
+  margin-top: 14px;
+  color: #476788;
+  margin-bottom: 16px;
+}
+.searchbox_component {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  gap: 10px;
+  width:100%
+}
+.searchbox_component input {
+  border: none;
+  outline: none;
+  width:100%;
+  font-size:14px;
+}
+.searchbox_component .search_icon {
+  font-size: 18px;
+  color: #888;
+}
+.scheduling_settings .scheduling_card{
+  position: absolute;
+  z-index: 1000;
+  width: 350px;
+  padding: 20px;
+  margin: 20px 0px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  height:225px;
+}
+.scheduling_settings .no_result{
+  color: #666;
+  font-size: 15px;
+  margin-top: 20px;
+}
+.scheduling_settings .user_container{
+display: flex;
+gap:35px;
+padding: 27px 0px;
+border-top: 1px solid #cccc;
+border-bottom: 1px solid #cccc;
+margin-bottom: 15px;
+}
+.scheduling_settings .user_container p{
+  font-size: 16px;
+} 
+.scheduling_settings .buffer_time_container {
+  width: 375px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #fafafa;
+ 
+}
+.scheduling_settings .buffer_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.scheduling_settings .buffer_label {
+  font-weight: bold;
+  color: #000;
+}
+.scheduling_settings .buffer_value {
+  color: #007bff;
+  cursor: pointer;
+}
+.scheduling_settings .buffer_dropdown {
+  margin-top: 10px;
+}
+.scheduling_settings .buffer_option {
+  display: flex;
+  margin-bottom: 8px;
+  width: 100%;
+}
+.scheduling_settings .buffer_option label {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.scheduling_settings .buffer_dropdown .dropdown_content{
+width:50%;
+margin-left:8px;
+}
+.scheduling_settings .minimum_notice_container{
+display: flex;
+flex-direction: row;
+gap:10px
+}
+.scheduling_settings .minimum_notice_textfield{
+width:35%;
+height:33px;
+}
+.scheduling_settings .daily_limit_container{
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+.scheduling_settings .timezonedisplay_container{
+margin-top:15px;
 }

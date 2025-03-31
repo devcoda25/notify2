@@ -1,66 +1,69 @@
 import React from "react";
 import ChartComponent from "./ChartComponent";
 import AccordionTable from "./AccordionTable";
+
+const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
+const ticketSatisfaction = [
+    {
+        name: "Rated great",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "green",
+        borderRadius: 2,
+        pointWidth: 15,
+    },
+    {
+        name: "Rated okay",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "blue",
+        borderRadius: 2,
+        pointWidth: 15,
+    },
+    {
+        name: "Rated bad",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "red",
+        borderRadius: 2,
+        pointWidth: 15,
+    },
+];
+const satisfactionTableperTeam = [
+    {
+        title: "Ticket satisfaction per team",
+        columns: [{ label: 'Name' },
+        { label: 'Rated okay', color: '#3357FF' },
+        { label: 'Rated bad', color: '#FF5733' },
+        { label: 'Rated great', color: '#33FF57' }
+
+        ],
+        rows: [["Rating", "0%", "0%", "0%"]],
+    },
+]
+const satisfactionTableperAgent = [
+    {
+        title: "Ticket satisfaction per agent",
+        columns: [{ label: 'Name' },
+        { label: 'Rated okay', color: '#3357FF' },
+        { label: 'Rated bad', color: '#FF5733' },
+        { label: 'Rated great', color: '#33FF57' }
+
+        ],
+        rows: [["Rating", "0%", "0%", "0%"]],
+    },
+]
+const ticketSatisfactionBreakdown = [
+    {
+        title: "Ticket satisfaction breakdown",
+        columns: ["Series", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
+        rows: [
+            ["Rated great", "0", "0", "0", "0", "0", "0", "0", "0"],
+            ["Rated okay", "0", "0", "0", "0", "0", "0", "0", "0"],
+            ["Rated bad", "0", "0", "0", "0", "0", "0", "0", "0"],
+        ],
+    },
+];
+
 const TicketSatisfaction = () => {
-    const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
-    const ticketSatisfaction = [
-        {
-            name: "Rated great",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "green",
-            borderRadius: 2,
-            pointWidth: 15,
-        },
-        {
-            name: "Rated okay",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "blue",
-            borderRadius: 2,
-            pointWidth: 15,
-        },
-        {
-            name: "Rated bad",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "red",
-            borderRadius: 2,
-            pointWidth: 15,
-        },
-    ];
-    const satisfactionTableperTeam = [
-        {
-            title: "Ticket satisfaction per team",
-            columns: [{ label: 'Name' },
-            { label: 'Rated okay', color: '#3357FF' },
-            { label: 'Rated bad', color: '#FF5733' },
-            { label: 'Rated great', color: '#33FF57' }
 
-            ],
-            rows: [["Rating", "0%", "0%", "0%"]],
-        },
-    ]
-    const satisfactionTableperAgent = [
-        {
-            title: "Ticket satisfaction per agent",
-            columns: [{ label: 'Name' },
-            { label: 'Rated okay', color: '#3357FF' },
-            { label: 'Rated bad', color: '#FF5733' },
-            { label: 'Rated great', color: '#33FF57' }
-
-            ],
-            rows: [["Rating", "0%", "0%", "0%"]],
-        },
-    ]
-    const ticketSatisfactionBreakdown = [
-        {
-            title: "Ticket satisfaction breakdown",
-            columns: ["Series", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
-            rows: [
-                ["Rated great", "0", "0", "0", "0", "0", "0", "0", "0"],
-                ["Rated okay", "0", "0", "0", "0", "0", "0", "0", "0"],
-                ["Rated bad", "0", "0", "0", "0", "0", "0", "0", "0"],
-            ],
-        },
-    ];
     return (
         <div className="reports_newtickets">
 

@@ -9,8 +9,8 @@ import TimePickerComponent from '../TimePickerComponent'
 import DataSpecificHoursComponent from "./DataSpecificHoursComponent";
 import dayjs from "dayjs";
 import {
-    Box, Typography, Button, IconButton, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, RadioGroup, FormControlLabel,
-    Radio, TextField, MenuItem, Select, Tabs, Tab, List, ListItem, ListItemButton,
+    Box, Typography,IconButton, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions,
+ Tabs, Tab
 } from "@mui/material";
 import {
     SettingsOutlinedIcon,
@@ -28,6 +28,7 @@ import WeeklyHours from "./WeeklyHours";
 import SelectDateandTimeComponent from "./SelectDateandTimeComponent";
 import style from "../MuiStyles/muiStyle";
 import LocationSelector from "./LocationSelector";
+import ScheduleOptions from "./ScheduleOptions";
 
 
 const styles = {
@@ -375,33 +376,10 @@ const Event = ({ onCreateClick }) => {
                                         <div className="scedule_data">
                                             <p className="meet_heading">Availability offered</p>
                                             <label>Data Range</label>
+                                            <ScheduleOptions selectedValue={state.selectedRadioSchedule} onChange={(e) => updateState({ selectedRadioSchedule: e.target.value })} />
+                                          
                                             <div>
-                                                <FormControl>
-                                                    <Typography >Invitees can schedule...</Typography>
-                                                    <RadioGroup value={state.selectedRadioSchedule} onChange={(e) => updateState({ selectedRadioSchedule: e.target.value })}>
-                                                        <FormControlLabel
-                                                            value="future"
-                                                            control={<Radio />}
-                                                            label={
-                                                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                                                    <TextField
-                                                                        type="text"
-                                                                        variant="outlined"
-                                                                        size="small"
-                                                                        style={{ width: "60px" }}
-                                                                    />
-                                                                    <Select size="small">
-                                                                        <MenuItem value="calendar days">calendar days</MenuItem>
-                                                                        <MenuItem value="weekdays">weekdays</MenuItem>
-                                                                    </Select>
-                                                                    <span>into the future</span>
-                                                                </div>
-                                                            }
-                                                        />
-                                                        <FormControlLabel value="dateRange" control={<Radio />} label="Within a date range" />
-                                                        <FormControlLabel value="indefinite" control={<Radio />} label="Indefinitely into the future" />
-                                                    </RadioGroup>
-                                                </FormControl>
+                                                
                                                 <div>
                                                     <label>Weekly Hours</label>
                                                     <div className="select_timezone">

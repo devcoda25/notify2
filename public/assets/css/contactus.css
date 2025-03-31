@@ -3937,7 +3937,7 @@ margin-right: 10px;
   margin-bottom: 20px;
   position: relative;
 }
-.html_editor .add_variable_btn,.reports_style .add_filter_btn{
+.html_editor .add_variable_btn{
   font-size: 13px;
   padding: 7px 20px;
   border: 1px solid #ababb1;

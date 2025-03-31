@@ -2,56 +2,58 @@ import React from "react";
 import ChartComponent from "./ChartComponent";
 import AccordionTable from "./AccordionTable";
 
+const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
+const resolutionTime = [
+    {
+        name: "Ticket creation",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "blue",
+        borderRadius: 2,
+        pointWidth: 20,
+    },
+    {
+        name: "Assignment to agent",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "green",
+        borderRadius: 2,
+        pointWidth: 20,
+    },
+
+];
+const resolutionTimePerTeam = [
+    {
+        title: "Resolution time per team",
+        columns: [{ label: 'Name' },
+        { label: 'Avg.time from assignment to team', color: 'green' },
+        { label: 'Avg.time from ticket creation', color: '#3357FF' }
+        ],
+        rows: [["Average", "0s", "0s"]],
+    },
+]
+const resolutionTimePerAgent = [
+    {
+        title: "Resolution time per agent",
+        columns: [{ label: 'Name' },
+        { label: 'Avg.time from assignment to agent', color: 'green' },
+        { label: 'Avg.time from ticket creation', color: '#3357FF' }
+        ],
+        rows: [["Average", "0s", "0s"]],
+    },
+]
+const resolutionTimeBreakdown = [
+    {
+        title: "Resolution time breakdown",
+        columns: ["Series", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
+        rows: [
+            ["Avg. time from ticket creation", "-", "-", "-", "-", "-", "-", "-", "-"],
+            ["Avg. time from assignment to agent", "-", "-", "-", "-", "-", "-", "-", "-"],
+
+        ],
+    },
+];
+
 const ResolutionTime = () => {
-    const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
-    const resolutionTime = [
-        {
-            name: "Ticket creation",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "blue",
-            borderRadius: 2,
-            pointWidth: 20,
-        },
-        {
-            name: "Assignment to agent",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "green",
-            borderRadius: 2,
-            pointWidth: 20,
-        },
-
-    ];
-    const resolutionTimePerTeam = [
-        {
-            title: "Resolution time per team",
-            columns: [{ label: 'Name' },
-            { label: 'Avg.time from assignment to team', color: 'green' },
-            { label: 'Avg.time from ticket creation', color: '#3357FF' }
-            ],
-            rows: [["Average", "0s", "0s"]],
-        },
-    ]
-    const resolutionTimePerAgent = [
-        {
-            title: "Resolution time per agent",
-            columns: [{ label: 'Name' },
-            { label: 'Avg.time from assignment to agent', color: 'green' },
-            { label: 'Avg.time from ticket creation', color: '#3357FF' }
-            ],
-            rows: [["Average", "0s", "0s"]],
-        },
-    ]
-    const resolutionTimeBreakdown = [
-        {
-            title: "Resolution time breakdown",
-            columns: ["Series", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
-            rows: [
-                ["Avg. time from ticket creation", "-", "-", "-", "-", "-", "-", "-", "-"],
-                ["Avg. time from assignment to agent", "-", "-", "-", "-", "-", "-", "-", "-"],
-
-            ],
-        },
-    ];
+  
     return (
         <div className="reports_newtickets">
 

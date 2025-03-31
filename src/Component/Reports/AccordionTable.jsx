@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import { ArrowForwardIosSharpIcon } from '../Icon';
 
 const AccordionTable = ({ title, columns, rows, isColored = false }) => {
     return (

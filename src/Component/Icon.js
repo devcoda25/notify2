@@ -84,9 +84,21 @@ import {
    RadioButtonChecked as RadioButtonCheckedIcon,
    FormatColorText as FormatColorTextIcon,
    AutoFixHigh as AutoFixHighIcon,
-   CloseOutlined as CloseOutlinedIcon
-   
-  
+   CloseOutlined as CloseOutlinedIcon,
+  MoreVertOutlined as MoreVertOutlinedIcon,
+  ChatBubbleOutlineOutlined as ChatBubbleOutlineOutlinedIcon,
+  LockOutlined as LockOutlinedIcon,
+  SearchOutlined as SearchOutlinedIcon,
+  Straight as StraightIcon,
+  LocalOfferOutlined as LocalOfferOutlinedIcon,
+  TranslateOutlined as TranslateOutlinedIcon,
+  SentimentSatisfiedAlt as SentimentSatisfiedAltIcon,
+  SentimentSatisfied as SentimentSatisfiedIcon,
+  SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
+  Person as PersonIcon,
+  BusinessOutlined as BusinessOutlinedIcon,
+  ArrowForwardIosSharp as ArrowForwardIosSharpIcon
+
    } from "@mui/icons-material";
   
   // Export all icons
@@ -176,7 +188,20 @@ import {
     RadioButtonCheckedIcon,
    FormatColorTextIcon,
    AutoFixHighIcon,
-   CloseOutlinedIcon
-    
+   CloseOutlinedIcon,
+   MoreVertOutlinedIcon,
+   ChatBubbleOutlineOutlinedIcon,
+   LockOutlinedIcon,
+   SearchOutlinedIcon,
+   StraightIcon,
+   LocalOfferOutlinedIcon,
+   TranslateOutlinedIcon,
+   SentimentSatisfiedAltIcon,
+   SentimentSatisfiedIcon,
+   SentimentVeryDissatisfiedIcon,
+   PersonIcon,
+   BusinessOutlinedIcon,
+   ArrowForwardIosSharpIcon
+   
   
 };

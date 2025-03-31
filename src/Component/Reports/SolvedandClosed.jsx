@@ -2,58 +2,60 @@ import React from "react";
 import ChartComponent from "./ChartComponent";
 import AccordionTable from "./AccordionTable";
 
+const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
+const solvedandClosed = [
+    {
+        name: "Solved",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "green",
+        borderRadius: 2,
+        pointWidth: 20,
+    },
+    {
+        name: "Closed",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+        color: "rgb(118, 118, 128)",
+        borderRadius: 2,
+        pointWidth: 20,
+    }
+
+];
+const solvedandClosedPerTeam = [
+    {
+        title: "Solved and closed per team",
+        columns: [{ label: 'Name' },
+        { label: 'Solved', color: 'green' },
+        { label: 'Closed', color: 'rgb(118, 118, 128)' },
+        { label: 'Overall' }
+        ],
+        rows: [["Average", "0", "0", "0"]],
+    },
+];
+const solvedandClosedPerAgent = [
+    {
+        title: "Solved and closed per agent",
+        columns: [{ label: 'Name' },
+        { label: 'Solved', color: 'green' },
+        { label: 'Closed', color: 'rgb(118, 118, 128)' },
+        { label: 'Overall' }
+        ],
+        rows: [["Average", "0", "0", "0"]],
+    },
+];
+const solvedandClosedBreakdown = [
+    {
+        title: "Solved and closed breakdown",
+        columns: ["Status", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
+        rows: [
+            ["Solved", "0", "0", "0", "0", "0", "0", "0", "0"],
+            ["Closed", "0", "0", "0", "0", "0", "0", "0", "0"]
+        ],
+    },
+];
+
+
 const SolvedandClosed = () => {
-    const categories = ["Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17"];
-    const solvedandClosed = [
-        {
-            name: "Solved",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "green",
-            borderRadius: 2,
-            pointWidth: 20,
-        },
-        {
-            name: "Closed",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
-            color: "rgb(118, 118, 128)",
-            borderRadius: 2,
-            pointWidth: 20,
-        }
-
-    ];
-    const solvedandClosedPerTeam = [
-        {
-            title: "Solved and closed per team",
-            columns: [{ label: 'Name' },
-            { label: 'Solved', color: 'green' },
-            { label: 'Closed', color: 'rgb(118, 118, 128)' },
-            { label: 'Overall' }
-            ],
-            rows: [["Average", "0", "0", "0"]],
-        },
-    ];
-    const solvedandClosedPerAgent = [
-        {
-            title: "Solved and closed per agent",
-            columns: [{ label: 'Name' },
-            { label: 'Solved', color: 'green' },
-            { label: 'Closed', color: 'rgb(118, 118, 128)' },
-            { label: 'Overall' }
-            ],
-            rows: [["Average", "0", "0", "0"]],
-        },
-    ];
-    const solvedandClosedBreakdown = [
-        {
-            title: "Solved and closed breakdown",
-            columns: ["Status", "Feb 11", "Feb 12", "Feb 13", "Feb 14", "Feb 15", "Feb 16", "Feb 17", "Total"],
-            rows: [
-                ["Solved", "0", "0", "0", "0", "0", "0", "0", "0"],
-                ["Closed", "0", "0", "0", "0", "0", "0", "0", "0"]
-            ],
-        },
-    ];
-
+  
     return (
         <div className="reports_newtickets">
 

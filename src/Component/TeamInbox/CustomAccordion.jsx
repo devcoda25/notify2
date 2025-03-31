@@ -2,27 +2,19 @@ import React from "react";
 import MuiAccordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import style from "../MuiStyles/muiStyle";
+import {ArrowForwardIosIcon} from '../Icon';
 
-const styles={
-    accordionSummary: {
-        fontSize: '12px',
-        fontWeight: 700,
-        color: 'black',
-    },
-    accordionDetails:{
-        fontSize:'14px'
-    }
-}
+
 const CustomAccordion = ({ label }) => {
     return (
         <>
             <MuiAccordion>
-                <AccordionSummary sx={{ ...styles.accordionSummary }}
+                <AccordionSummary sx={{ ...style.accordionSummary }}
                     expandIcon={<ArrowForwardIosIcon sx={{ fontSize: '13px' }} />}>
                     {label}
                 </AccordionSummary>
-                <AccordionDetails sx={{...styles.accordionDetails}}>
+                <AccordionDetails sx={{...style.accordionDetails}}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
                     malesuada lacus ex, sit amet blandit leo lobortis eget.
                 </AccordionDetails>

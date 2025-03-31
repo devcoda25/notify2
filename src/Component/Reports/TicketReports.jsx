@@ -1,19 +1,21 @@
 import React from "react";
 import ChartComponent from "./ChartComponent";
-import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
-import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { SentimentSatisfiedAltIcon, SentimentSatisfiedIcon, SentimentVeryDissatisfiedIcon } from '../Icon'
+
+const categories = ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu"];
+
+const ticketReports = [
+    {
+        name: "Data",
+        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 4,],
+        color: "green",
+        borderRadius: 2,
+        pointWidth: 40,
+    },
+];
+
 const TicketReports = () => {
-    const categories = ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu"];
-    const ticketReports = [
-        {
-            name: "Data",
-            data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 4,],
-            color: "green",
-            borderRadius: 2,
-            pointWidth: 40,
-        },
-    ];
+  
     return (
         <div className="reports_newtickets">
 
