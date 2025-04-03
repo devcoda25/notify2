@@ -97,7 +97,15 @@ import {
   SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
   Person as PersonIcon,
   BusinessOutlined as BusinessOutlinedIcon,
-  ArrowForwardIosSharp as ArrowForwardIosSharpIcon
+  ArrowForwardIosSharp as ArrowForwardIosSharpIcon,
+  DragIndicator as DragIndicatorIcon,
+  Add as AddIcon,
+  DeleteOutline as DeleteOutlineIcon,
+  RedoOutlined as RedoOutlinedIcon,
+  Campaign as CampaignIcon,
+  ReplayOutlined as ReplayOutlinedIcon,
+  RefreshOutlined as RefreshOutlinedIcon,
+  ReportGmailerrorred as ReportGmailerrorredIcon
 
    } from "@mui/icons-material";
   
@@ -201,7 +209,13 @@ import {
    SentimentVeryDissatisfiedIcon,
    PersonIcon,
    BusinessOutlinedIcon,
-   ArrowForwardIosSharpIcon
-   
-  
+   ArrowForwardIosSharpIcon,
+   DragIndicatorIcon,
+   AddIcon,
+   DeleteOutlineIcon,
+   RedoOutlinedIcon,
+   CampaignIcon,
+   ReplayOutlinedIcon,
+   RefreshOutlinedIcon,
+   ReportGmailerrorredIcon
 };

@@ -17511,9 +17511,11 @@ fieldset:disabled .btn {
   border: none !important;
   margin-bottom: 20px;
 }
-.textfield_style:hover,.textfield_style:focus{
-border: none !important;
-outline:none !important;
+
+.textfield_style:hover,
+.textfield_style:focus {
+  border: none !important;
+  outline: none !important;
 }
 
 /* more dropodown */
@@ -17658,12 +17660,14 @@ outline:none !important;
   padding: 5px;
   cursor: pointer;
 }
-.reports_style .add_filter_btn{
-background: white !important;
-color:black !important;
-border: 1px solid #c9c9cd !important;
-box-shadow: none !important;
+
+.reports_style .add_filter_btn {
+  background: white !important;
+  color: black !important;
+  border: 1px solid #c9c9cd !important;
+  box-shadow: none !important;
 }
+
 .reports_style .popup_container li:hover {
   background: #e2e2e4;
 }
@@ -17933,9 +17937,8 @@ box-shadow: none !important;
 }
 
 
-.calendar_edit_modal .updatebutton
- {
-    color: white;
+.calendar_edit_modal .updatebutton {
+  color: white;
   padding: 8px 16px;
   border: #006bff;
   border-radius: 40px;
@@ -17945,6 +17948,7 @@ box-shadow: none !important;
   box-shadow: none;
   text-transform: capitalize;
 }
+
 .calendar_edit_modal .cancelbutton {
   color: black;
   padding: 8px 16px;
@@ -18084,7 +18088,8 @@ box-shadow: none !important;
   padding: 16px 0 8px;
 }
 
-.calendar_Eventtype .user_logo,.details_main_content .user_logo{
+.calendar_Eventtype .user_logo,
+.details_main_content .user_logo {
   border-radius: 50%;
   border: 2px solid transparent;
   color: black;
@@ -18151,6 +18156,7 @@ box-shadow: none !important;
   color: blue;
   background: none;
 }
+
 .meeting_card .copy_icon {
   margin-right: 10px
 }
@@ -18257,6 +18263,7 @@ box-shadow: none !important;
   gap: 10px;
   margin-right: 13px;
 }
+
 .calendar_allteamcontainer .cancel_btn {
   border: 1px solid gray;
   color: black;
@@ -18286,8 +18293,7 @@ box-shadow: none !important;
   font-size: 16px;
 }
 
-.calendar_meet .tab_content .view_event_button
-{
+.calendar_meet .tab_content .view_event_button {
   box-shadow: none;
   margin-top: 10px;
   border-radius: 20px;
@@ -18496,9 +18502,10 @@ box-shadow: none !important;
 }
 
 .data_specific_hours {
-margin-top:10px
+  margin-top: 10px
 }
-.data_specific_hours .add_meet_hours{
+
+.data_specific_hours .add_meet_hours {
   border: 1px solid #476788 !important;
   color: black !important;
   border-radius: 17px !important;
@@ -18898,10 +18905,12 @@ margin-top:10px
   text-transform: capitalize;
   color: black;
 }
-.meet_editor_textbox{
+
+.meet_editor_textbox {
   position: relative;
-  margin-top:10px;
+  margin-top: 10px;
 }
+
 .meet_editor_textbox .icons_container {
   position: absolute;
   margin-top: 9px;
@@ -18948,6 +18957,7 @@ margin-top:10px
   align-items: center;
   width: 100%;
 }
+
 .upcoming_tab_event .event_date {
   width: 100%;
   font-size: 18px;
@@ -18958,44 +18968,53 @@ margin-top:10px
   padding: 15px;
   border-bottom: 1px solid #d4e0ed;
 }
+
 .upcoming_tab_event .event_box {
   width: 100%;
   padding: 12px;
   border-bottom: 1px solid #ddd;
 }
+
 .upcoming_tab_event .event_details {
   display: flex;
   gap: 238px;
   width: 100%;
 }
+
 .upcoming_tab_event .event_info {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .upcoming_tab_event .event_dot {
   width: 30px;
   height: 30px;
   background-color: rgb(130, 71, 245);
   border-radius: 50%;
 }
+
 .upcoming_tab_event .event_time {
   font-size: 14px;
   color: #555;
 }
+
 .upcoming_tab_event .event_host {
   font-size: 16px;
   font-weight: bold;
   color: black;
 }
+
 .upcoming_tab_event .event_type {
   font-size: 12px;
   color: black;
 }
+
 .upcoming_tab_event .event_participants {
   font-size: 14px;
   color: #666;
 }
+
 .upcoming_tab_event .event_details_btn {
   background: none;
   border: none;
@@ -19003,16 +19022,19 @@ margin-top:10px
   cursor: pointer;
   color: rgb(26 26 26 / 61%)
 }
+
 .upcoming_tab_event .event_end_text {
   font-size: larger;
   text-align: center;
   padding: 16px 0px;
 }
-.meet_upcoming_event_grid_container{
-display: flex;
-padding: 35px 24px 24px 24px;
+
+.meet_upcoming_event_grid_container {
+  display: flex;
+  padding: 35px 24px 24px 24px;
 }
-.meet_upcoming_event_grid_container .left_container{
+
+.meet_upcoming_event_grid_container .left_container {
   width: 310px;
   padding-right: 80px;
   padding-left: 40px;
@@ -19020,64 +19042,79 @@ padding: 35px 24px 24px 24px;
   flex-direction: column;
   gap: 24px;
 }
-.meet_upcoming_event_grid_container .event_control{
-display: flex;
-gap:14px;
-flex-flow: column wrap;
-align-items: flex-start;
+
+.meet_upcoming_event_grid_container .event_control {
+  display: flex;
+  gap: 14px;
+  flex-flow: column wrap;
+  align-items: flex-start;
 }
-.meet_upcoming_event_grid_container .right_container{
-text-align: left;
+
+.meet_upcoming_event_grid_container .right_container {
+  text-align: left;
 }
-.meet_upcoming_event_grid_container .event_control a,.meet_upcoming_event_grid_container .meeting_note a{
-color:blue;
+
+.meet_upcoming_event_grid_container .event_control a,
+.meet_upcoming_event_grid_container .meeting_note a {
+  color: blue;
 }
-.meet_upcoming_event_grid_container .right_content{
-margin-bottom:16px
+
+.meet_upcoming_event_grid_container .right_content {
+  margin-bottom: 16px
 }
-.meet_upcoming_event_grid_container .right_content label{
-font-weight: bold;
-text-transform: uppercase;
+
+.meet_upcoming_event_grid_container .right_content label {
+  font-weight: bold;
+  text-transform: uppercase;
 }
-.meet_upcoming_event_grid_container .right_content .logo{
-width:26px;
-height:32px;
-display: inline-flex;
-align-items: center;
-overflow: hidden;
-border-radius: 50%;
-background-color: #e7edf6;
-color: black;
+
+.meet_upcoming_event_grid_container .right_content .logo {
+  width: 26px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #e7edf6;
+  color: black;
 }
-.meet_upcoming_event_grid_container .meeting_note{
-margin-top:70px;
+
+.meet_upcoming_event_grid_container .meeting_note {
+  margin-top: 70px;
 }
-.event_share_btn_container .title{
-font-size: 15px;
-color: black;
-font-weight: bold;
+
+.event_share_btn_container .title {
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
 }
-.event_share_btn_container .meet_details{
-display: flex;
-gap:20px;
-flex-direction: row;
-border-bottom: 1px solid rgb(26 26 26 / 10%);
+
+.event_share_btn_container .meet_details {
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  border-bottom: 1px solid rgb(26 26 26 / 10%);
 }
-.event_share_btn_container .meet_details p{
-font-size: 14px;
+
+.event_share_btn_container .meet_details p {
+  font-size: 14px;
 }
-.event_share_btn_container .meet_details img{
-width:15px;
-height:15px;
-margin-right:6px;
+
+.event_share_btn_container .meet_details img {
+  width: 15px;
+  height: 15px;
+  margin-right: 6px;
 }
-.event_share_btn_container .sharelink{
-margin:20px 20px 0px 20px;
-} 
-.event_share_btn_container .sharelink p{
-font-size: 14px;
-text-align: left;
+
+.event_share_btn_container .sharelink {
+  margin: 20px 20px 0px 20px;
 }
+
+.event_share_btn_container .sharelink p {
+  font-size: 14px;
+  text-align: left;
+}
+
 .event_share_btn_container .copy_link_container {
   display: flex;
   align-items: center;
@@ -19089,11 +19126,13 @@ text-align: left;
   height: 43px;
   margin-bottom: 20px;
 }
+
 .event_share_btn_container .copy_link_text {
   font-size: 14px;
   color: #4b5563;
   padding: 0 8px;
 }
+
 .event_share_btn_container .copy_link_button {
   background-color: #3b82f6;
   color: white;
@@ -19104,217 +19143,266 @@ text-align: left;
   border-radius: 10px;
   margin-left: auto;
 }
-.event_share_btn_container .preview{
-color: blue;
-font-size: 14px;
+
+.event_share_btn_container .preview {
+  color: blue;
+  font-size: 14px;
 }
+
 .event_share_btn_container .customization_container {
-margin-top:40px;
+  margin-top: 40px;
 }
+
 .event_share_btn_container .customize_content {
-display: flex;
-gap:10px;
+  display: flex;
+  gap: 10px;
 }
-.event_preview_btn_container{
+
+.event_preview_btn_container {
   width: 400px;
   margin: auto;
   border: 1px solid rgb(26 26 26 / 10%);
 }
-.event_preview_btn_container .event_preview_heading{
+
+.event_preview_btn_container .event_preview_heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #FAFAFA;
   padding: 10px 10px 0px 10px;
 }
-.event_preview_btn_container p{
-color: black;
-font-size: 14px;
-padding:10px
-}
-.event_preview_btn_container .select_timezone,.add_time_toemail_container .select_timezone,.add_time_copylink_container .select_timezone{
-text-align: center;
-padding:10px 10px 25px 10px;
-}
-.sharecontainer_choose_date{
-font-size: 14px;
-text-align: center;
-padding-top:20px;
-}
-.add_time_toemail_container{
-  border: 1px solid rgb(26 26 26 / 10%);
-    width: 400px;
-    margin: auto;
-    padding: 20px;
+
+.event_preview_btn_container p {
+  color: black;
+  font-size: 14px;
+  padding: 10px
 }
 
-.select_dateandtime_content .timeslots_list,.add_time_copylink_container .timeslots_list{
+.event_preview_btn_container .select_timezone,
+.add_time_toemail_container .select_timezone,
+.add_time_copylink_container .select_timezone {
+  text-align: center;
+  padding: 10px 10px 25px 10px;
+}
+
+.sharecontainer_choose_date {
+  font-size: 14px;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.add_time_toemail_container {
+  border: 1px solid rgb(26 26 26 / 10%);
+  width: 400px;
+  margin: auto;
+  padding: 20px;
+}
+
+.select_dateandtime_content .timeslots_list,
+.add_time_copylink_container .timeslots_list {
   max-height: 300px;
   overflow-y: auto;
-  width:200px
+  width: 200px
 }
-.select_dateandtime_content .timeslots_list_item{
-width:158px;
-margin-bottom: 8px;
-/* color: rgb(0, 105, 255); */
-border: 1px solid rgb(0, 105, 255);
-border-radius: 6px;
-padding: 12px 24px;
-font-size: 16px;
-height: 40px;
+
+.select_dateandtime_content .timeslots_list_item {
+  width: 158px;
+  margin-bottom: 8px;
+  /* color: rgb(0, 105, 255); */
+  border: 1px solid rgb(0, 105, 255);
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 16px;
+  height: 40px;
 }
-.add_time_copylink_container .timeslots_list_item{
-font-size: 13px;
-height: 40px;
+
+.add_time_copylink_container .timeslots_list_item {
+  font-size: 13px;
+  height: 40px;
 }
-.select_dateandtime_content .timeslots_grid,.add_time_copylink_container .timeslots_grid {
-padding-left:78px !important;
+
+.select_dateandtime_content .timeslots_grid,
+.add_time_copylink_container .timeslots_grid {
+  padding-left: 78px !important;
 }
-.event_share_btn_container{
-   float: inline-end;
-   padding: 10px 0px 25px 0px;
+
+.event_share_btn_container {
+  float: inline-end;
+  padding: 10px 0px 25px 0px;
 }
-.customizationShareModal .content_text{
+
+.customizationShareModal .content_text {
   color: black;
-    font-size: 15px;
+  font-size: 15px;
 }
-.customizationShareModal .meet_heading{
+
+.customizationShareModal .meet_heading {
   letter-spacing: 0.1em;
   font-size: 12px;
   text-transform: uppercase;
   font-weight: bold;
 }
-.customizationShareModal label{
+
+.customizationShareModal label {
   color: black;
   font-weight: bold;
   font-size: 14px;
 }
-.location_selector .location_Card{
+
+.location_selector .location_Card {
   display: flex;
   align-items: center;
   background-color: #f8fbff;
   padding: 10px;
   border-radius: 8px;
 }
-.location_selector .location_Card img{
-width:15px
+
+.location_selector .location_Card img {
+  width: 15px
 }
-.location_selector .location_Card span{
+
+.location_selector .location_Card span {
   flex-grow: 1;
 }
-.location_selector .location_Card a{
+
+.location_selector .location_Card a {
   border-right: 1px solid gray;
   color: blue;
   padding-right: 5px;
 }
-.location_selector .add_location_container{
-margin-top:15px
+
+.location_selector .add_location_container {
+  margin-top: 15px
 }
-.location_selector .add_location_container a{
-color: blue;
+
+.location_selector .add_location_container a {
+  color: blue;
 }
-.location_selector .select_add_location{
-width:100%;
-margin-top:15px;
+
+.location_selector .select_add_location {
+  width: 100%;
+  margin-top: 15px;
 }
-.location_selector .location_options{
+
+.location_selector .location_options {
   display: flex;
-  align-items:center;
-   gap: 8px
+  align-items: center;
+  gap: 8px
 }
+
 .customizationShareModal .scedule_data {
-margin-top: 20px;
+  margin-top: 20px;
 }
-.meeting_copylink_container{
-position: absolute;
-top:57px;
-background: #fbfcfd;
-width:100%;
+
+.meeting_copylink_container {
+  position: absolute;
+  top: 57px;
+  background: #fbfcfd;
+  width: 100%;
 }
-.meeting_copylink_container .event_container{
-padding-right: 5%;
-padding-left:5%;
-margin-top: 66px;
-margin-bottom: 30px;
-display: flex;
-justify-content: center;
+
+.meeting_copylink_container .event_container {
+  padding-right: 5%;
+  padding-left: 5%;
+  margin-top: 66px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
 }
-.meeting_copylink_container .event_content{
+
+.meeting_copylink_container .event_content {
   display: flex;
   flex: 1 1 auto;
   max-width: 800px;
   min-height: 550px;
   transition: all 0.22sease-out;
-  border:1px solid rgb(26 26 26 / 10%);
+  border: 1px solid rgb(26 26 26 / 10%);
   border-radius: 8px;
   background: white;
   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
 }
-.meeting_copylink_container .left_container,.meeting_copylink_container .right_container{
+
+.meeting_copylink_container .left_container,
+.meeting_copylink_container .right_container {
   /* width: 50%; */
   min-width: 300px;
   border-right: 1px solid rgb(26 26 26 / 10%);
-  padding:25px 15px 15px;
+  padding: 25px 15px 15px;
 }
-.meeting_copylink_container .right_container{
+
+.meeting_copylink_container .right_container {
   border-right: none !important;
 }
-.meeting_copylink_container .left_container p{
-color: black;
-font-size: 16px;
-font-weight: bold;
-margin-bottom: 0px;
-color: rgb(26 26 26 / 61%) ;
+
+.meeting_copylink_container .left_container p {
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  color: rgb(26 26 26 / 61%);
 }
-.meeting_copylink_container .left_container h1{
-margin-top: 0px;
-margin-bottom: 24px;
-}
-.meeting_copylink_container .left_container .timeconatiner{
+
+.meeting_copylink_container .left_container h1 {
+  margin-top: 0px;
   margin-bottom: 24px;
 }
-.meeting_copylink_container .left_container .timeconatiner div{
+
+.meeting_copylink_container .left_container .timeconatiner {
+  margin-bottom: 24px;
+}
+
+.meeting_copylink_container .left_container .timeconatiner div {
   margin-bottom: 10px;
 }
-.meeting_copylink_container .left_container .timeconatiner span{ 
- font-size: 15px;
- color: rgb(26 26 26 / 61%);
- font-weight: bold;
+
+.meeting_copylink_container .left_container .timeconatiner span {
+  font-size: 15px;
+  color: rgb(26 26 26 / 61%);
+  font-weight: bold;
 }
+
 .meeting_copylink_container .left_container .button_container {
-position: absolute;
-bottom: 45px;
-display: flex;
-gap:100px
+  position: absolute;
+  bottom: 45px;
+  display: flex;
+  gap: 100px
 }
+
 .addguests_container .guestsemail_textbox {
-min-height: 100px !important;
+  min-height: 100px !important;
 }
-.meeting_copylink_container .right_container .addguests_details{
+
+.meeting_copylink_container .right_container .addguests_details {
   width: 100%;
   min-height: 80px;
   border: 1px solid #c9c9cd;
   border-radius: 8px;
 }
+
 .meeting_copylink_container .right_container .addguests_details:hover,
-.meeting_copylink_container .right_container .addguests_details:focus{
-border:1px solid blue !important;
-outline:none !important;
+.meeting_copylink_container .right_container .addguests_details:focus {
+  border: 1px solid blue !important;
+  outline: none !important;
 }
-.meeting_copylink_container .right_container .eventdetail_content{
-margin:10px 0px
+
+.meeting_copylink_container .right_container .eventdetail_content {
+  margin: 10px 0px
 }
-.meeting_copylink_container .right_container label{
-font-size: 14px;
-font-weight: bold;
+
+.meeting_copylink_container .right_container label {
+  font-size: 14px;
+  font-weight: bold;
 }
-.meeting_copylink_container .right_container p{
-color: black;
+
+.meeting_copylink_container .right_container p {
+  color: black;
 }
+
 .meeting_copylink_container .right_container p a {
-color: blue;
+  color: blue;
 }
-.meeting_copylink_container .back_button{
+
+.meeting_copylink_container .back_button {
   margin-bottom: 24px;
   color: blue;
   width: 43px;
@@ -19323,7 +19411,8 @@ color: blue;
   border: 1px solid rgb(26 26 26 / 10%);
   cursor: pointer;
 }
-.meeting_copylink_container .top_content{
+
+.meeting_copylink_container .top_content {
   background: white;
   position: relative;
   z-index: 10;
@@ -19333,7 +19422,8 @@ color: blue;
   justify-content: center;
   min-height: 56px;
 }
-.meeting_copylink_container .menu_content{
+
+.meeting_copylink_container .menu_content {
   width: 190px;
   z-index: 1000;
   background: white;
@@ -19346,17 +19436,19 @@ color: blue;
   min-height: 125px;
   border: 1px solid #d4e0ed;
 }
+
 /* meeting--> edit event type */
 .edit_event_type_container {
-display: flex;
-width: 100%;
-height:100%;
-position: absolute;
-top:57px
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 57px
 }
-.edit_event_type_container .left_container{
+
+.edit_event_type_container .left_container {
   width: 440px;
-  height:733px;
+  height: 733px;
   box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
   background: white;
   z-index: 20;
@@ -19365,209 +19457,250 @@ top:57px
   border-right: 1px solid #CCCCCC;
   overflow-y: auto;
 }
-.edit_event_type_container .left_container .header{
+
+.edit_event_type_container .left_container .header {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 16px 24px;
   border-bottom: 1px solid #CCCCCC;
 }
-.edit_event_type_container .left_container .header_button{
+
+.edit_event_type_container .left_container .header_button {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
   justify-content: space-between;
   min-height: 45px;
 }
-.edit_event_type_container .left_container .header_button div{ 
+
+.edit_event_type_container .left_container .header_button div {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap:13px;
+  gap: 13px;
 }
-.edit_event_type_container .left_container .main_content{
-padding:0px 24px;
-height:'100%';
-overflow-y: auto;
+
+.edit_event_type_container .left_container .main_content {
+  padding: 0px 24px;
+  height: '100%';
+  overflow-y: auto;
 }
-.edit_event_type_container .left_container .card_container{
-display: flex;
-padding:24px 0px;
-border-bottom: 1px solid #CCCCCC;
+
+.edit_event_type_container .left_container .card_container {
+  display: flex;
+  padding: 24px 0px;
+  border-bottom: 1px solid #CCCCCC;
 }
-.edit_event_type_container .left_container .card_container:hover{
-background:#F2F8FF;
-border-bottom: 2px solid blue;
+
+.edit_event_type_container .left_container .card_container:hover {
+  background: #F2F8FF;
+  border-bottom: 2px solid blue;
 }
-.edit_event_type_container .left_container .card_details{
-display: flex;
-flex-direction: column;
-flex: 1;
-margin-left: 16px;
+
+.edit_event_type_container .left_container .card_details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-left: 16px;
 }
-.edit_event_type_container .right_container{
+
+.edit_event_type_container .right_container {
   align-items: center;
   margin: 10px auto;
   padding: 16px 16px;
 }
-.edit_event_type_container .right_container .header{
+
+.edit_event_type_container .right_container .header {
   display: flex;
-gap: 32px;
-justify-content: space-between;
-align-items: center;
-width: 100%;
-height: 36px;
-padding: 8px 16px;
-border-radius: 8px 8px 0 0;
-background: #333333;
-color:white
+  gap: 32px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  padding: 8px 16px;
+  border-radius: 8px 8px 0 0;
+  background: #333333;
+  color: white
 }
-.edit_event_type_container .right_container .header p{ 
-  color:white
+
+.edit_event_type_container .right_container .header p {
+  color: white
 }
-.edit_event_type_container .right_container .main_content{
-box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
-background: white;
-border-radius: 8px;
+
+.edit_event_type_container .right_container .main_content {
+  box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
+  background: white;
+  border-radius: 8px;
 }
-.edit_event_type_container .right_container .main_content .eventdetails_content{
-  border-bottom:1px solid rgb(26 26 26 / 10%);
+
+.edit_event_type_container .right_container .main_content .eventdetails_content {
+  border-bottom: 1px solid rgb(26 26 26 / 10%);
   display: flex;
   flex-direction: column;
   gap: 7px;
   align-items: center;
   padding: 20px 0px;
 }
-.edit_event_type_container .right_container .event{
-margin:0px;
+
+.edit_event_type_container .right_container .event {
+  margin: 0px;
 }
-.edit_event_type_container .right_container .eventdetails_content div{
-display: flex;
-gap:15px;
-font-size: 15px;
-font-weight: bold;
-color:rgb(26 26 26 / 61%)
+
+.edit_event_type_container .right_container .eventdetails_content div {
+  display: flex;
+  gap: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  color: rgb(26 26 26 / 61%)
 }
-.edit_event_type_container .right_container .select_dateandtime_container{
-padding:24px 15px;
+
+.edit_event_type_container .right_container .select_dateandtime_container {
+  padding: 24px 15px;
 }
+
 /* edit event type --> event details */
-.edit_event_details{
-padding:15px 20px;
-position: relative;
+.edit_event_details {
+  padding: 15px 20px;
+  position: relative;
 }
-.edit_event_details .event_header{
-padding-bottom: 10px;
-border-bottom: 1px solid #CCCCCC;
+
+.edit_event_details .event_header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #CCCCCC;
 }
-.edit_event_details .details_main_content{
-padding: 15px 0px;
-height: 990px;
+
+.edit_event_details .details_main_content {
+  padding: 15px 0px;
+  height: 1065px;
 }
-.edit_event_details .details_event_name{
-display: flex;
-align-items: center
+
+.edit_event_details .details_event_name {
+  display: flex;
+  align-items: center
 }
-.edit_event_details .color_container{
+
+.edit_event_details .color_container {
   margin-bottom: 17px;
   padding: 5px 0px;
   border: 1px solid #c9c9cd;
   border-radius: 5px;
   display: flex;
 }
-.edit_event_details .color_picker_dropdown{
- display:grid;
- grid-template-columns: repeat(5, 1fr);
-  padding:10px;
-   gap:8px
+
+.edit_event_details .color_picker_dropdown {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 10px;
+  gap: 8px
 }
-.edit_event_details label{
-  color:black;
+
+.edit_event_details label {
+  color: black;
   font-size: 15px;
   font-weight: bold;
+  width: 100%
 }
-.edit_event_details .edit_event_details_footer{
- border-top: 1px solid #cccc;
- padding: 15px 0px 15px 156px;
- position: absolute;
- bottom: -51px;
+
+.edit_event_details .edit_event_details_footer {
+  border-top: 1px solid #cccc;
+  padding: 15px 0px 15px 156px;
+  position: absolute;
+  bottom: -51px;
 }
-.details_main_content .host_invitees{
-display: flex;
-gap:10px;
-margin-bottom: 15px;
+
+.details_main_content .host_invitees {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
 }
-.details_main_content .host_invitees div{
-margin-top:10px;
-font-size: 15px;
+
+.details_main_content .host_invitees div {
+  margin-top: 10px;
+  font-size: 15px;
 }
-.event_notification_table{
-width:100%;
-border:1px solid #cccc;
-margin-bottom:15px;
+
+.event_notification_table {
+  width: 100%;
+  border: 1px solid #cccc;
+  margin-bottom: 15px;
 }
-.event_notification_table tr{
-border-bottom: 1px solid #cccc;
+
+.event_notification_table tr {
+  border-bottom: 1px solid #cccc;
 }
-.event_notification_table .text{
-text-align: left;
+
+.event_notification_table .text {
+  text-align: left;
 }
-.event_notification_table .switch{
-background: #e7edf6;
-color:black;
-font-weight: bold;
-font-size: 14px;
-width:37px;
-height:23px
+
+.event_notification_table .switch {
+  background: #e7edf6;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  width: 37px;
+  height: 23px
 }
-.details_main_content .workflows_container{
+
+.details_main_content .workflows_container {
   border: 1px solid #e7edf6;
   padding: 16px;
   background: #e7edf6;
   border-radius: 8px;
 }
-.details_main_content .none_container{
-border:1px dashed #B2B2B2;
-padding:16px;
-color:#476788;
-margin-top:20px;
-text-align: center;
+
+.details_main_content .none_container {
+  border: 1px dashed #B2B2B2;
+  padding: 16px;
+  color: #476788;
+  margin-top: 20px;
+  text-align: center;
 }
-.basicnotification_edit{
-  padding:10px; 
-  min-width:150px;
+
+.basicnotification_edit {
+  padding: 10px;
+  min-width: 150px;
 }
-.basicnotification_edit div{
-display:flex;
- align-items:center;
- cursor:pointer
+
+.basicnotification_edit div {
+  display: flex;
+  align-items: center;
+  cursor: pointer
 }
-.basicnotification_switch{
-  display:flex;
-  align-items:center;
-  margin-top:10px
+
+.basicnotification_switch {
+  display: flex;
+  align-items: center;
+  margin-top: 10px
 }
-.basicnotification_switch div{
-   margin-right: 8px
+
+.basicnotification_switch div {
+  margin-right: 8px
 }
-.datarange_scheduleoptions .radio_container{
-  display:flex;
-   align-items:center;
-   gap: 8px
+
+.datarange_scheduleoptions .radio_container {
+  display: flex;
+  align-items: center;
+  gap: 8px
 }
-.datarange_scheduleoptions .textfield{
-width:60px
+
+.datarange_scheduleoptions .textfield {
+  width: 60px
 }
-.edit_event_details .scheduling_settings .calendar_setting{
-display: flex;
-gap:61px;
+
+.edit_event_details .scheduling_settings .calendar_setting {
+  display: flex;
+
 }
-.scheduling_settings .set_time{
+
+.scheduling_settings .set_time {
   font-size: 15px;
   margin-top: 14px;
   color: #476788;
   margin-bottom: 16px;
 }
+
 .searchbox_component {
   display: flex;
   align-items: center;
@@ -19575,19 +19708,22 @@ gap:61px;
   border-radius: 5px;
   padding: 10px;
   gap: 10px;
-  width:100%
+  width: 100%
 }
+
 .searchbox_component input {
   border: none;
   outline: none;
-  width:100%;
-  font-size:14px;
+  width: 100%;
+  font-size: 14px;
 }
+
 .searchbox_component .search_icon {
   font-size: 18px;
   color: #888;
 }
-.scheduling_settings .scheduling_card{
+
+.scheduling_settings .scheduling_card {
   position: absolute;
   z-index: 1000;
   width: 350px;
@@ -19598,74 +19734,269 @@ gap:61px;
   border: 1px solid #ddd;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   background-color: white;
-  height:225px;
+  height: 225px;
 }
-.scheduling_settings .no_result{
+
+.scheduling_settings .no_result {
   color: #666;
   font-size: 15px;
   margin-top: 20px;
 }
-.scheduling_settings .user_container{
-display: flex;
-gap:35px;
-padding: 27px 0px;
-border-top: 1px solid #cccc;
-border-bottom: 1px solid #cccc;
-margin-bottom: 15px;
+
+.scheduling_settings .user_container {
+  display: flex;
+  gap: 35px;
+  padding: 27px 0px;
+  border-top: 1px solid #cccc;
+  border-bottom: 1px solid #cccc;
+  margin-bottom: 15px;
 }
-.scheduling_settings .user_container p{
+
+.scheduling_settings .user_container p {
   font-size: 16px;
-} 
+}
+
 .scheduling_settings .buffer_time_container {
   width: 375px;
   padding: 12px;
   border-radius: 8px;
   background-color: #fafafa;
- 
+
 }
+
 .scheduling_settings .buffer_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .scheduling_settings .buffer_label {
   font-weight: bold;
   color: #000;
 }
+
 .scheduling_settings .buffer_value {
   color: #007bff;
   cursor: pointer;
 }
+
 .scheduling_settings .buffer_dropdown {
   margin-top: 10px;
 }
+
 .scheduling_settings .buffer_option {
   display: flex;
   margin-bottom: 8px;
   width: 100%;
 }
+
 .scheduling_settings .buffer_option label {
   font-size: 14px;
   margin-bottom: 4px;
 }
-.scheduling_settings .buffer_dropdown .dropdown_content{
-width:50%;
-margin-left:8px;
+
+.scheduling_settings .buffer_dropdown .dropdown_content {
+  width: 50%;
+  margin-left: 8px;
 }
-.scheduling_settings .minimum_notice_container{
-display: flex;
-flex-direction: row;
-gap:10px
+
+.scheduling_settings .minimum_notice_container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px
 }
-.scheduling_settings .minimum_notice_textfield{
-width:35%;
-height:33px;
+
+.scheduling_settings .minimum_notice_textfield {
+  width: 35%;
+  height: 33px;
 }
-.scheduling_settings .daily_limit_container{
+
+.scheduling_settings .daily_limit_container {
   display: flex;
   gap: 10px;
   margin-top: 15px;
 }
-.scheduling_settings .timezonedisplay_container{
-margin-top:15px;
+
+.scheduling_settings .timezonedisplay_container {
+  margin-top: 15px;
+}
+
+.event_invitee_container {
+  border-radius: 10px;
+  border: 1px solid #b3b3b3;
+}
+
+.event_invitee_content {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.event_invitee_content .event_invitee_center_content {
+  flex-grow: 1;
+  font-size: 15px;
+}
+
+.event_invitee_content span {
+  padding: 5px 10px;
+  background: #e7edf6;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.bookingpage_container .booking_container {
+  margin: 20px 0px;
+}
+
+.event_Edit_Question_modal {
+  width: 30%;
+  margin: auto
+}
+
+.event_Edit_Question_modal .modal_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+.event_Edit_Question_modal .modal_content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.event_Edit_Question_modal label {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+}
+
+.event_Edit_Question_modal textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  outline: none;
+}
+
+.event_Edit_Question_modal .status_container {
+  margin: 0px;
+}
+
+.availablehours_tabs_container {
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #FAFAFA;
+}
+
+.availablehours_tabs_container .weeklyhours_tab_container {
+  display: flex;
+  padding: 5px 10px;
+  gap: 15px;
+  text-align: center;
+}
+
+.availablehours_tabs_container .tab_content {
+  padding: 20px 10px;
+}
+
+.scheduling_newbtn {
+  min-height: 25px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  background: #0b3558;
+  margin-left: 10px
+}
+
+.message_deliverystatus_drodpown {
+  width: 35%;
+  margin-left: auto;
+  margin-top: -20px;
+  margin-right: 77px;
+}
+
+.available_schedule_modal {
+  position: absolute;
+  width: 250px;
+  border: 1px solid #d4e0ed;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 1px 5px rgba(0, 74, 16, 0.15);
+  z-index: 1000;
+  background: white;
+}
+
+.addmeeting_exception_container {
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px
+}
+
+.addmeeting_exception_container .meeting_name_container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.addmeeting_exception_container .meeting_name_container h4 {
+  margin-bottom: 0px;
+}
+
+.canlendar_invitation {
+  display: flex;
+  flex-direction: column;
+  gap: 32px
+}
+
+.canlendar_invitation .edit {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 16px;
+  background: #d4e0ed;
+  border: 1px solid #d4e0ed;
+  color: #0a2540;
+  border-radius: 8px;
+}
+
+.canlendar_invitation .edit a {
+  color: blue
+}
+
+.variable_box_container {
+  border: 1px solid #CCCCCC;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 250px;
+  max-width: 400px;
+}
+.variable_box_container .variable_box_header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.variable_box_container .variable_box_content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.canlendar_invitation .cancelation_content{
+background: #FAFAFA;
+border-radius: 8px;
+padding:16px;
+display: flex;
+flex-direction: column;
+gap:15px;
 }
