@@ -12437,7 +12437,7 @@ fieldset:disabled .btn {
   font-size: 12px;
   line-height: 18px;
   color: rgb(162, 162, 162);
-  width: 100px;
+  width:auto;
 }
 
 .togglelabel {
@@ -13045,7 +13045,32 @@ fieldset:disabled .btn {
   gap: 5px;
   margin-top: 40px;
 }
-
+.button_style{
+width:auto;
+height:40px;
+border-radius: 5px;
+border:none;
+min-width: 100px;
+cursor: pointer;
+font-size: 13px;
+font-weight: 400;
+display: inline-flex;
+justify-content: center;
+align-items: center;
+background: rgb(35, 164, 85);
+color:white;
+padding:0.5rem 1.5rem;
+box-shadow: rgb(220, 240, 228) 5px 5px 25px 0px;
+}
+.cancel_button_style{
+border:1px solid rgb(35, 164, 85) !important;
+color:rgb(35, 164, 85) !important;
+background: rgb(35 164 85 / 5%) !important;
+box-shadow: none !important;
+}
+.confirm_button_style{
+background: red !important;
+}
 .footer__cancel__btn,
 .footer__upgrade__btn,
 .material__cancel__btn,
@@ -13416,6 +13441,7 @@ fieldset:disabled .btn {
 .chatbotfoooter__delete {
   display: flex;
   justify-content: flex-end;
+  gap:10px;
   margin-top: 50px;
 }
 
@@ -13473,6 +13499,7 @@ fieldset:disabled .btn {
 .pagination_previousnextcont {
   font-size: 1.2rem;
   color: #000;
+  cursor: pointer;
 }
 
 /* keyword editor */
@@ -15473,7 +15500,11 @@ fieldset:disabled .btn {
   column-gap: 10px;
   align-items: center;
 }
-
+.messagesettings_timedelay{
+display: flex;
+gap:10px;
+width:100%
+}
 .message_templates_body {
   margin: 10px 0px;
   border-radius: 5px;
@@ -16024,21 +16055,13 @@ fieldset:disabled .btn {
 }
 
 .newruletype_container .newruletype_header_input {
-  width: 150px;
-  color: rgb(69, 69, 69);
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 5px;
-  padding: 0px 0px 0px 3px;
   height: 28px;
-  border: 2px solid rgb(255, 14, 14);
+  border: 2px solid rgb(255, 14, 14) !important;
+  margin-bottom: 0px;
 }
-
 .newruletype_container .newruletype_header_input:focus {
   border: 2px solid rgb(35, 164, 85) !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
+ }
 
 .newruletype_container .newruletype_savechangesbtn {
   height: 28px
@@ -17507,17 +17530,19 @@ fieldset:disabled .btn {
   padding: 10px;
   font-size: 12px;
   color: rgb(51, 51, 51);
-  width: 100%;
+  width:100%;
   border: none !important;
   margin-bottom: 20px;
 }
 
 .textfield_style:hover,
 .textfield_style:focus {
-  border: none !important;
+  /* border: none !important; */
   outline: none !important;
 }
-
+.custom_textfield:focus{
+  border-bottom:1px solid rgb(255, 153, 51) !important;
+}
 /* more dropodown */
 .moredropdown_menu {
   z-index: 100 !important;
@@ -17710,6 +17735,21 @@ fieldset:disabled .btn {
 
 .reports_table .breakdown_table_bodycell {
   background: #f5f5f5
+}
+.reports_table .accordion_icon{
+  color:blue;
+  margin-right: 8px;
+}
+.reports_table .accordion_title{
+  color:black;
+  font-weight:600;
+  font-size:15px
+}
+.reports_table .table_header_column{
+  width: 15px;
+  height:15px;
+  margin-right:8px;
+  border-radius:3px;
 }
 
 .reports_newtickets .source_series_container {
@@ -19448,14 +19488,13 @@ fieldset:disabled .btn {
 
 .edit_event_type_container .left_container {
   width: 440px;
-  height: 733px;
+  height:845px;
   box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
   background: white;
   z-index: 20;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #CCCCCC;
-  overflow-y: auto;
 }
 
 .edit_event_type_container .left_container .header {
@@ -19561,18 +19600,19 @@ fieldset:disabled .btn {
 
 /* edit event type --> event details */
 .edit_event_details {
-  padding: 15px 20px;
   position: relative;
 }
 
 .edit_event_details .event_header {
-  padding-bottom: 10px;
+  padding:15px 20px;
   border-bottom: 1px solid #CCCCCC;
 }
 
 .edit_event_details .details_main_content {
-  padding: 15px 0px;
-  height: 1065px;
+  padding: 15px 20px;
+  height: 658px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .edit_event_details .details_event_name {
@@ -19605,8 +19645,7 @@ fieldset:disabled .btn {
 .edit_event_details .edit_event_details_footer {
   border-top: 1px solid #cccc;
   padding: 15px 0px 15px 156px;
-  position: absolute;
-  bottom: -51px;
+
 }
 
 .details_main_content .host_invitees {
@@ -19882,8 +19921,11 @@ fieldset:disabled .btn {
   outline: none;
 }
 
-.event_Edit_Question_modal .status_container {
+.event_Edit_Question_modal .status_container,.canlendar_invitation .status_container {
   margin: 0px;
+  display: flex;
+  gap:10px;
+  align-items: center;
 }
 
 .availablehours_tabs_container {
@@ -19999,4 +20041,18 @@ padding:16px;
 display: flex;
 flex-direction: column;
 gap:15px;
+}
+.canlendar_invitation .eventTimingTextfield{
+  width:125px;
+  }
+.canlendar_invitation .timing_container{
+display: flex;
+flex-direction: row;
+gap:20px
+}
+.custom__search_box{
+background: white;
+}
+.custom__search_box:hover,.custom__search_box:focus{
+border:1px solid rgb(35, 164, 85);
 }

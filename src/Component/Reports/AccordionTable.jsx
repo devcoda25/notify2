@@ -7,8 +7,8 @@ const AccordionTable = ({ title, columns, rows, isColored = false }) => {
         <div className="reports_table">
             <Accordion defaultExpanded>
                 <AccordionSummary>
-                    <ArrowForwardIosSharpIcon style={{ color: "blue", marginRight: 8 }} />
-                    <Typography style={{ color: "black", fontWeight: "600", fontSize: "15px" }}>
+                    <ArrowForwardIosSharpIcon className="accordion_icon" />
+                    <Typography className='accordion_title'>
                         {title}
                     </Typography>
                 </AccordionSummary>
@@ -30,14 +30,8 @@ const AccordionTable = ({ title, columns, rows, isColored = false }) => {
                                             >  <div style={{ display: 'flex' }}>
                                                     {isColored && col.color && (
 
-                                                        <div
-                                                            style={{
-                                                                width: "15px",
-                                                                height: "15px",
-                                                                backgroundColor: columnColor,
-                                                                marginRight: "8px",
-                                                                borderRadius: "3px",
-                                                            }}
+                                                        <div className="table_header_column"
+                                                            style={{ backgroundColor: columnColor }}
                                                         ></div>
                                                     )}
                                                     {columnLabel}

@@ -105,7 +105,10 @@ import {
   Campaign as CampaignIcon,
   ReplayOutlined as ReplayOutlinedIcon,
   RefreshOutlined as RefreshOutlinedIcon,
-  ReportGmailerrorred as ReportGmailerrorredIcon
+  ReportGmailerrorred as ReportGmailerrorredIcon,
+  Edit as EditIcon,
+  ArrowBack as ArrowBackIcon
+  
 
    } from "@mui/icons-material";
   
@@ -217,5 +220,7 @@ import {
    CampaignIcon,
    ReplayOutlinedIcon,
    RefreshOutlinedIcon,
-   ReportGmailerrorredIcon
+   ReportGmailerrorredIcon,
+   EditIcon,
+   ArrowBackIcon
 };

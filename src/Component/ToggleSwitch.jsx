@@ -3,7 +3,7 @@ import React from "react";
 
 const ToggleSwitch = ({ isActive, onToggle, leftLabel, rightLabel }) => {
   return (
-    <div className="holidaytoggle" style={{ width: '210px' }}>
+    <div className="holidaytoggle" >
       {leftLabel && <label className="toggle-label">{leftLabel}</label>}
       
       <button

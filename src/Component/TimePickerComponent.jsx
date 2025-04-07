@@ -26,13 +26,14 @@ const Styles = {
 
     }
 }
-const TimePickerComponent = ({ initialValue, disabled,customStyles }) => {
+const TimePickerComponent = ({ initialValue, disabled,customStyles,onChange,placeholder }) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimePicker
                 disabled={disabled}
                 ampm={false}
                 value={initialValue ? dayjs(initialValue) : null}
+                onChange={onChange}
                 viewRenderers={{
                     hours: renderTimeViewClock,
                     minutes: renderTimeViewClock,
@@ -41,6 +42,9 @@ const TimePickerComponent = ({ initialValue, disabled,customStyles }) => {
                 slotProps={{
                     textField: {
                         sx: { ...Styles.timePicker,...customStyles },
+                    },
+                    inputProps: {
+                        placeholder: placeholder || 'HH:mm', 
                     },
                 }}
             />

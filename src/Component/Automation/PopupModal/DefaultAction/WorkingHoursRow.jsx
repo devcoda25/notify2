@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import React,{useState} from "react";
 import { Box, Typography } from '@mui/material';
-import TimePickerComponent from '../../TimePickerComponent';
+import TimePickerComponent from '../../../TimePickerComponent';
+import ToggleSwitch from '../../../ToggleSwitch';
+
 
 const WorkingHoursRow = ({ day, isOpen, handleToggle }) => {
 
@@ -22,14 +23,7 @@ const WorkingHoursRow = ({ day, isOpen, handleToggle }) => {
             <div className="working-row">
                 <div className="toggle-block">
                     <div className="working-day">{day}</div>
-                    <div className={`day-toggle ${isOpen ? 'active' : ''}`} style={{ width: '100px' }}>
-                        <button type="button" className="toggle__control" onClick={handleToggle}>
-                            <div className={`toggle-indicator ${isOpen ? 'active' : ''}`}></div>
-                        </button>
-                        <label className={`day-toggle-label ${isOpen ? 'toggle__label_on' : 'toggle__label_off'}`}>
-                            {isOpen ? 'Open' : 'Closed'}
-                        </label>
-                    </div>
+                    <ToggleSwitch onToggle={handleToggle} isActive={isOpen} rightLabel={isOpen ? 'Open' : 'Closed'} />
                 </div>
                 <Box display="flex" alignItems="center" gap={2} disabled={!isOpen}>
                     <TimePickerComponent initialValue="2024-02-01T09:00" disabled={!isOpen} />
@@ -62,81 +56,5 @@ const WorkingHoursRow = ({ day, isOpen, handleToggle }) => {
 
     );
 };
-
-
-
-const WorkingHoursSettings = ({ show, handleClose }) => {
-    const [isHolidayMode, setIsHolidayMode] = useState(false);
-    const [openStates, setOpenStates] = useState({
-        Monday: true,
-        Tuesday: true,
-        Wednesday: true,
-        Thursday: true,
-        Friday: true,
-        Saturday: true,
-    });
-
-
-
-    const handleToggle = () => {
-        setIsHolidayMode(!isHolidayMode);
-    };
-
-    const toggleDayOpen = (day) => {
-        setOpenStates(prev => ({ ...prev, [day]: !prev[day] }));
-    };
-
-
-    const handleSave = () => {
-
-        handleClose();
-    };
-
-    return (
-
-        <Modal show={show} onHide={handleClose} dialogClassName="modal-custom">
-            <Modal.Header className="modal-header" closeButton>
-                <Modal.Title className="modal-title">Working Hours Setting</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="modal-body-content">
-                <div className="body-sub-content">
-                    <div className="holiday-mode-text">Holiday Mode</div>
-                    <div className={`holidaytoggle ${isHolidayMode ? 'active' : ''}`} style={{ width: '100px', border: isHolidayMode ? 'none' : 'none' }}>
-                        <label className="toggle-label">Off</label>
-                        <button
-                            type="button"
-                            className="toggle__control"
-                            onClick={handleToggle}
-                            aria-label="Toggle"
-                            style={{ border: isHolidayMode ? 'none' : 'none' }}
-                        >
-                            <div className={`toggle-indicator ${isHolidayMode ? 'active' : ''}`}></div>
-                        </button>
-                        <label className="toggle-label">On</label>
-                    </div>
-                    {isHolidayMode && (<div className='holidaymode__text'>  (Holiday mode is on: Users will be replied with out of office hour reply.) </div>)}
-                </div>
-                <div className="body-sub-text">Working hours in Customer time zone (GMT +3)</div>
-
-
-                {Object.keys(openStates).map(day => (
-                    <WorkingHoursRow
-                        key={day}
-                        day={day}
-                        isOpen={openStates[day]}
-                        handleToggle={() => toggleDayOpen(day)}
-
-
-                    />
-                ))}
-            </Modal.Body>
-            <div className='modal-action'>
-                <button className='btn btn-success modal-savebtn' onClick={handleSave} >Save and close</button>
-            </div>
-        </Modal>
-
-    );
-};
-
-export default WorkingHoursSettings;
+export default WorkingHoursRow;
 

@@ -25,7 +25,7 @@ const style = {
         },
     },
 }
-const AutocompleteComponent = ({ options, value=[], onChange, placeholder,customStyles }) => {
+const AutocompleteComponent = ({ options, value=[], onChange, placeholder,customStyles,disabled = false  }) => {
     
     return (
         <>
@@ -36,6 +36,7 @@ const AutocompleteComponent = ({ options, value=[], onChange, placeholder,custom
                 value={Array.isArray(value) ? value : [value]}
                 disableClearable
                 onChange={onChange}
+                disabled ={disabled} 
                 renderInput={(params) => (
                     <TextField
                         {...params}

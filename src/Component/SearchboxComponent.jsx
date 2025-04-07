@@ -2,9 +2,9 @@ import React from "react";
 import { SearchOutlinedIcon } from './Icon'
 
 
-const SearchboxComponent = ({ placeholder, value, onChange }) => {
+const SearchboxComponent = ({ placeholder, value, onChange,customSearch }) => {
     return (
-        <div className="searchbox_component">
+        <div className={`searchbox_component ${customSearch}`}>
             <span className="search_icon"><SearchOutlinedIcon /></span>
             <input
                 type="text"

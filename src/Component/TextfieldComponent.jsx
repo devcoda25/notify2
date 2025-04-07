@@ -1,8 +1,8 @@
 import React from "react";
-const TextfieldComponent=({placeholder,customStyle,value,onChange})=>{
+const TextfieldComponent=({placeholder,customStyle,value,onChange,type})=>{
     return(
         <>
-         <input type="text" placeholder={placeholder}  
+         <input type={type} placeholder={placeholder}  
          className={`textfield_style ${customStyle}`} value={value} 
          onChange={onChange} />
         </>

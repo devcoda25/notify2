@@ -49,6 +49,8 @@ const startTimeIncrementsOptions = ['5 min', '10 min', '15 min', '20 min', '30 m
 const bookingOptions = ['Display calendar confirmation image', 'Redirect to an external site'];
 const editAnswerTypeOptions = ['one Line', 'Multiple Lines', 'Radio Buttons', 'Checkboxes', 'Dropdown', 'Phone Number'];
 const editNameOptions = ['Name', 'First Name,Last Name'];
+const replyAddressOptions = ["Host's email address", 'No-reply address'];
+const timeOptions = ["minute(s)", "hour(s)", "day(s)"];
 const weeklyHours = [{ day: 'SUN', hours: ['Unavailable'] },
 { day: 'MON', hours: ['6:00PM-7:00PM', '8:00PM-9:00PM'] },
 { day: 'TUE', hours: ['12:00AM-1:00AM', '2:00AM-3:00AM', '4:00AM-5:00AM'] },
@@ -104,7 +106,13 @@ const EditEventType = () => {
         openQuestionDialog: false,
         editNameContent: editNameOptions[0],
         openLinkDialog: false,
-        openCalendarInvitation: false
+        openCalendarInvitation: false,
+        openEmailFollowup: false,
+        replyAddressContent: replyAddressOptions[0],
+        selectedTimeUnit: timeOptions[1],
+        isDropdownDisabled: true,
+        openEmailReminders: false,
+        openTextReminders: false,
 
     })
     const updateState = (newState) => {
@@ -197,6 +205,12 @@ const EditEventType = () => {
         handleNotificationClose();
         if (state.notificationSelectedItem === 'calendar_invitation') {
             updateState({ openCalendarInvitation: true })
+        } else if (state.notificationSelectedItem === 'email_followup') {
+            updateState({ openEmailFollowup: true })
+        } else if (state.notificationSelectedItem === 'email_reminders') {
+            updateState({ openEmailReminders: true })
+        } else if (state.notificationSelectedItem === 'text_reminders') {
+            updateState({ openTextReminders: true })
         }
     }
     return (
@@ -783,61 +797,240 @@ const EditEventType = () => {
                                                                 </div>
                                                             </div>
                                                         </>
-                                                    ) : (
-                                                        <div>
-                                                            <p>Send automatic communications for your events</p>
-                                                            <div>
-                                                                <label>Basic notifications</label>
-                                                                <div className="event_invitee_container">
-                                                                    <div className="event_invitee_content">
-                                                                        <EmailOutlinedIcon />
-                                                                        <div className="event_invitee_center_content">Calendar Invitation<p>Immediately after booking</p></div>
-                                                                        <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "calendar_invitation")} />
-                                                                    </div>
-                                                                    <div className="event_invitee_content">
-                                                                        <EmailOutlinedIcon />
-                                                                        <div className="event_invitee_center_content">Email reminders</div>
-                                                                        <div><span>Off</span><MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_reminders")} /></div>
-                                                                    </div>
-                                                                    <div className="event_invitee_content">
-                                                                        <ChatBubbleOutlineOutlinedIcon />
-                                                                        <div className="event_invitee_center_content">Text reminders</div>
-                                                                        <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "text_reminders")} /></div>
-                                                                    </div>
-                                                                    <div className="event_invitee_content">
-                                                                        <EmailOutlinedIcon />
-                                                                        <div className="event_invitee_center_content">Email follow-up</div>
-                                                                        <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_followup")} /></div>
-                                                                    </div>
-                                                                    <Menu anchorEl={state.notificationAnchorE1} open={Boolean(state.notificationAnchorE1)} onClose={handleNotificationClose}
-                                                                        PaperProps={{
-                                                                            style: { padding: "10px", minWidth: "120px" }
-                                                                        }}>
-
-                                                                        {(state.notificationSelectedItem === "calendar_invitation" || state.notificationSelectedItem === "email_reminders" || state.notificationSelectedItem === "text_reminders" || state.notificationSelectedItem === "email_followup") && (
-                                                                            <div onClick={handleNotificationEditClick}><EditOutlinedIcon />Edit</div>
-                                                                        )}
-
-
-                                                                        {(state.notificationSelectedItem === "email_reminders" || state.notificationSelectedItem === "text_reminders" || state.notificationSelectedItem === "email_followup") && (
-                                                                            <div>On <Switch defaultChecked /></div>
-                                                                        )}
-
-
-                                                                    </Menu>
+                                                    ) : state.openEmailReminders ? (
+                                                        <>
+                                                            <div className="canlendar_invitation">
+                                                                <div className="edit">
+                                                                    <CampaignIcon />
+                                                                    <div><a>Upgrade to Standard</a> to add email reminders to your events.</div>
                                                                 </div>
-
-                                                            </div>
-                                                            <div>
-                                                                <label>Workflows</label>
-                                                                <div className="workflows_container">
-                                                                    <LockOutlinedIcon />
-                                                                    <span>Only the owner of the event type can make changes to workflows</span>
+                                                                <div>An invitee will receive a reminder email before a scheduled event at specified times.</div>
+                                                                <div>
+                                                                    <label>Reply-to address</label>
+                                                                    <AutocompleteComponent
+                                                                        options={replyAddressOptions}
+                                                                        value={state.replyAddressContent}
+                                                                        onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
+                                                                        customStyles={{ ...style.newticketsAutocomplete }}
+                                                                    />
+                                                                    <div className="edit">
+                                                                        <ReportGmailerrorredIcon />
+                                                                        <div>All email communication will use the same option</div>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="none_container">None</div>
+                                                                <div>
+                                                                    <label>Subject</label>
+                                                                    <VariableBox>
+                                                                        Reminder:<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>with
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton> at
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>
+                                                                    </VariableBox>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Body</label>
+                                                                    <VariableBox showTextFormatIcons>
+                                                                        Hi<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Invitee Full Name</CustomButton>, This is a friendly reminder that your
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>with
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton>is at
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>.
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Location</CustomButton>
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Description</CustomButton>
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Questions And Answers</CustomButton>
+                                                                    </VariableBox>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Timing</label>
+                                                                    <div className="timing_container">
+                                                                        <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                                        <AutocompleteComponent
+                                                                            options={timeOptions}
+                                                                            value={state.selectedTimeUnit}
+                                                                            onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                            customStyles={{ ...style.newticketsAutocomplete, ...style.eventTimingDropdown }}
+                                                                            disabled={state.isDropdownDisabled}
+                                                                        />
+                                                                        <span>before event</span>
+                                                                    </div>
+                                                                    <CustomButton variant="text" icon={<AddIcon />}>Add another reminder</CustomButton>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Status</label>
+                                                                    <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                                </div>
+                                                                <div className="edit">
+                                                                    <CampaignIcon />
+                                                                    <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                                </div>
+                                                                <div className="cancelation_content">
+                                                                    <label>Cancellation policy</label>
+                                                                    <div className="edit">
+                                                                        <ReportGmailerrorredIcon />
+                                                                        <div>
+                                                                            <a>Upgrade to Standard</a>Updates to your cancellation policy apply to all emails for this event type</div>
+                                                                    </div>
+                                                                    <div><input type='checkbox' checked disabled /><span>Include cancel and reschedule links in email invitations and reminders (recommended)</span> </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </>
+                                                    ) : state.openTextReminders ? (
+                                                        <>
+                                                            <div className="canlendar_invitation">
+                                                                <div className="edit">
+                                                                    <CampaignIcon />
+                                                                    <div><a>Upgrade to Standard</a> to add text reminders to your events.</div>
+                                                                </div>
+                                                                <div>Your invitees will have the option of receiving text reminders before a scheduled event at specified times.</div>
+                                                                <div>
+                                                                    <label>Text Message</label>
+                                                                    <VariableBox>
+                                                                        Reminder:<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>with
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton> at
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>
+                                                                    </VariableBox>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Timing</label>
+                                                                    <div className="timing_container">
+                                                                        <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                                        <AutocompleteComponent
+                                                                            options={timeOptions}
+                                                                            value={state.selectedTimeUnit}
+                                                                            onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                            customStyles={{ ...style.newticketsAutocomplete, ...style.eventTimingDropdown }}
+                                                                            disabled={state.isDropdownDisabled}
+                                                                        />
+                                                                        <span>before event</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Status</label>
+                                                                    <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                                </div>
+                                                                <div className="edit">
+                                                                    <CampaignIcon />
+                                                                    <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    ) : state.openEmailFollowup ? (
+                                                        <>
+                                                            <div className="canlendar_invitation">
+                                                                <div className="edit">
+                                                                    <CampaignIcon />
+                                                                    <div><a>Upgrade to Standard</a> to edit your calendar invitations.</div>
+                                                                </div>
+                                                                <div>An invitee will receive a reminder email before a scheduled event at specified times.</div>
+                                                                <div>
+                                                                    <label>Reply-to address</label>
+                                                                    <AutocompleteComponent
+                                                                        options={replyAddressOptions}
+                                                                        value={state.replyAddressContent}
+                                                                        onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
+                                                                        customStyles={{ ...style.newticketsAutocomplete }}
+                                                                    />
+                                                                    <div className="edit">
+                                                                        <ReportGmailerrorredIcon />
+                                                                        <div>All email communication will use the same option</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Subject</label>
+                                                                    <VariableBox>
+                                                                        <span>Thank you for your time!</span>
+                                                                    </VariableBox>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Body</label>
+                                                                    <VariableBox showTextFormatIcons>
+                                                                        Hi<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Invitee Full Name</CustomButton>,
+                                                                        Thank you for attending<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Evant Name</CustomButton> at
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                                        <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>.Please respond to this email with any feedback or additional requests.
+                                                                    </VariableBox>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Timing</label>
+                                                                    <div className="timing_container">
+                                                                        <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                                        <AutocompleteComponent
+                                                                            options={timeOptions}
+                                                                            value={state.selectedTimeUnit}
+                                                                            onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                            customStyles={{ ...style.newticketsAutocomplete, ...style.eventTimingDropdown }}
+                                                                            disabled={state.isDropdownDisabled}
+                                                                        />
+                                                                        <span>after event</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <label>Status</label>
+                                                                    <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                                </div>
+                                                                <div className="edit">
+                                                                    <CampaignIcon />
+                                                                    <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                                </div>
+                                                            </div>
+                                                        </>
                                                     )
+                                                        : (
+                                                            <div>
+                                                                <p>Send automatic communications for your events</p>
+                                                                <div>
+                                                                    <label>Basic notifications</label>
+                                                                    <div className="event_invitee_container">
+                                                                        <div className="event_invitee_content">
+                                                                            <EmailOutlinedIcon />
+                                                                            <div className="event_invitee_center_content">Calendar Invitation<p>Immediately after booking</p></div>
+                                                                            <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "calendar_invitation")} />
+                                                                        </div>
+                                                                        <div className="event_invitee_content">
+                                                                            <EmailOutlinedIcon />
+                                                                            <div className="event_invitee_center_content">Email reminders</div>
+                                                                            <div><span>Off</span><MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_reminders")} /></div>
+                                                                        </div>
+                                                                        <div className="event_invitee_content">
+                                                                            <ChatBubbleOutlineOutlinedIcon />
+                                                                            <div className="event_invitee_center_content">Text reminders</div>
+                                                                            <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "text_reminders")} /></div>
+                                                                        </div>
+                                                                        <div className="event_invitee_content">
+                                                                            <EmailOutlinedIcon />
+                                                                            <div className="event_invitee_center_content">Email follow-up</div>
+                                                                            <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_followup")} /></div>
+                                                                        </div>
+                                                                        <Menu anchorEl={state.notificationAnchorE1} open={Boolean(state.notificationAnchorE1)} onClose={handleNotificationClose}
+                                                                            PaperProps={{
+                                                                                style: { padding: "10px", minWidth: "120px" }
+                                                                            }}>
+
+                                                                            {(state.notificationSelectedItem === "calendar_invitation" || state.notificationSelectedItem === "email_reminders" || state.notificationSelectedItem === "text_reminders" || state.notificationSelectedItem === "email_followup") && (
+                                                                                <div onClick={handleNotificationEditClick}><EditOutlinedIcon />Edit</div>
+                                                                            )}
+
+
+                                                                            {(state.notificationSelectedItem === "email_reminders" || state.notificationSelectedItem === "text_reminders" || state.notificationSelectedItem === "email_followup") && (
+                                                                                <div>On <Switch defaultChecked /></div>
+                                                                            )}
+
+
+                                                                        </Menu>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div>
+                                                                    <label>Workflows</label>
+                                                                    <div className="workflows_container">
+                                                                        <LockOutlinedIcon />
+                                                                        <span>Only the owner of the event type can make changes to workflows</span>
+                                                                    </div>
+                                                                    <div className="none_container">None</div>
+                                                                </div>
+                                                            </div>
+                                                        )
                                                 }
                                             </>
 

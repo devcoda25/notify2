@@ -77,7 +77,98 @@ const style = {
   padding: '4px 6px 2px',
   borderRadius: '6px',
   backgroundColor: 'rgb(77 80 85 / 10%)',
- }
+ },
+ eventTimingDropdown:{
+  background:'#e7edf6',
+  color:'#a6bbd1',
+  border:'none !important',
+  outline:'none !important'
+},
+defaultActionGrid:{
+  marginLeft: '3.5rem',
+  width: '240px',
+  marginTop: '25px',
+},
+automationAutoComplete:{
  
-}
+    border: '1px solid rgb(232, 234, 242)',
+    borderRadius: '4px',
+    height: '36px',
+    paddingLeft: '10px',
+    width: '100%',
+    paddingBottom: '25px',
+    backgroundColor: 'rgb(245, 246, 250)',
+    '&:hover': {
+        border: '1px solid green',
+    },
+    '&.Mui-focused': {
+        border: '1px solid green',
+        backgroundColor: 'white',
+        outline: 'none',
+    
+},
+},
+tablecontainer: {
+  boxShadow: "none",
+  borderRadius: 0,
+},
+table: {
+  borderCollapse: "separate",
+  borderSpacing: 0,
+},
+tableheaderCell: {
+  borderBottom: "1px solid #e0e0e0",
+  fontWeight: 600,
+  padding: "20px 25px",
+  fontSize: "1.2rem",
+},
+tablebodyCell: {
+  borderBottom: "none",
+  padding: "20px 25px",
+  fontSize: "1.2rem",
+},
+tableIconBtn:{
+  width:'32px',
+  height:'32px',
+  border:'1px solid rgb(206, 208, 206)',
+  borderRadius:'5px',
+  background:'rgb(245, 246, 250)',
+  marginRight:'10px',
+},
+tableeditHover: {
+  "&:hover": {
+    border: "1px solid rgb(35 164 85 / 85%)",
+    color: "rgb(35 164 85 / 85%)",
+    
+  },
+},
+tabledeleteHover: {
+  "&:hover": {
+    border: "1px solid red",
+    color: "red",
+   
+  },
+},
+customTablePagination: {
+  '.MuiTablePagination-displayedRows': {
+    fontSize: '1.2rem',
+    margin: '0px',
+    color: 'rgb(51, 51, 51)',
+  },
+  '.MuiSelect-nativeInput': {
+    padding: '0px 1rem',
+    height: '3rem',
+    margin: '0 0 8px 0px',
+  },
+  '.MuiInputBase-root': {
+    fontSize: '1.2rem',
+    paddingRight: '0',
+  },
+  '.MuiTablePagination-selectLabel': {
+    fontSize: '1.2rem',
+    margin: '0px',
+    color: 'rgb(51, 51, 51)',
+  },
+},
+ }
 export default style;
