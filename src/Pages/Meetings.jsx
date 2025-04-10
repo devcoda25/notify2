@@ -316,7 +316,7 @@ const Meetings = () => {
                                         ) : state.showWeeklyHours && !state.showLocation ? (
                                             <div className="weekly_hours">
                                                 <h1 className="heading">When are you available to meet with people?</h1>
-                                                <p>You’ll only be booked during these times (you can change these times and add other schedules later)</p>
+                                                <p>You'll only be booked during these times (you can change these times and add other schedules later)</p>
                                                 <div className="calendar_container">
                                                     <h2>Weekly hours</h2>
                                                     <p>Set when you are typically available for meetings</p>

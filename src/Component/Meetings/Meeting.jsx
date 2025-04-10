@@ -373,6 +373,7 @@ const Meeting = () => {
                             <div className="upcoming_tab_event">
 
                                 <h2 className="event_date">Saturday, 15 March 2025</h2>
+                                <div>
                                 <div className="event_box">
                                     <div className="event_details">
                                         <div className="event_info">
@@ -434,6 +435,7 @@ const Meeting = () => {
                                             </div>
                                         )
                                     }
+                                </div>
                                 </div>
                                 <p className="event_end_text">You've reached the end of the list</p>
 

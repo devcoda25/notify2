@@ -13,6 +13,10 @@ import AccountDetails from '../Pages/AccountDetails';
 import Reports from '../Pages/Reports';
 import CopyMeetingLink from '../Component/Meetings/CopyMeetingLink';
 import EditEventType from '../Component/Meetings/EditEventType';
+import Event from '../Component/Meetings/Event';
+import Meeting from '../Component/Meetings/Meeting';
+import Availability from '../Component/Meetings/Availability';
+import Analytic from '../Component/Meetings/Analytic';
 const BaseLayouts = () => {
 
     return (
@@ -34,6 +38,10 @@ const BaseLayouts = () => {
                         <Route path='AccountDetails' element={<AccountDetails/>}/>
                         <Route path='/copylink' element={<CopyMeetingLink/>}/>
                         <Route path='/edit-event' element={<EditEventType/>}/>
+                        <Route path='/event-types' element={<Event/>}/>
+                        <Route path='/meet' element={<Meeting/>}/>
+                        <Route path='/availability' element={<Availability/>}/>
+                        <Route path='/analytic' element={<Analytic/>}/>
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>

@@ -170,5 +170,48 @@ customTablePagination: {
     color: 'rgb(51, 51, 51)',
   },
 },
- }
+timeslots_list_nextbtn:{
+  marginLeft:'10px',
+  fontSize:'12px',
+  width:'48.5%',
+  fontWeight:'bold',
+ borderRadius:'2px',
+padding:'0px',
+boxShadow:'none !important',
+height:'52px',
+background:'#006bff !important'
+},
+troubleshoot_btn:{
+  textTransform:"capitalize",
+  border:"1px solid #476788",
+  color:"black",
+  borderRadius:"40px",
+  padding:"6px 20px",
+},
+cookie_btn: {
+  color: '#004eba',
+  fontSize:'16px',
+  textTransform: 'none',
+  '&:hover': {
+    backgroundColor: 'white',
+    '& span': {
+      textDecoration: 'underline',
+    },
+  },
+},
+report_btn:{
+color:'#0a2540 !important',
+fontSize:'13px !important',
+'&:hover': {
+  backgroundColor: 'white',
+  '& span': {
+    textDecoration: 'underline',
+  },
+},
+},
+checkcircle:{
+  color: "#00796b", 
+ fontSize: 20
+}
+}
 export default style;

@@ -12066,11 +12066,13 @@ padding:48px 20px;
 .custom_textfield_box,.channel_email_content .new_tickets_textbox,.calendar_new_scedule_textbox,.new_meeting_event_textbox{
 border:1px solid #c9c9cd !important;
 background: white;
+border-radius: 8px;
+min-height:46px;
 }
 .custom_textfield_box:hover,.custom_textfield_box:focus,.channel_email_content .new_tickets_textbox:focus,
 .calendar_new_scedule_textbox:focus,.new_meeting_event_textbox:focus{
-  border:1px solid blue !important;
-
+  border:1px solid #006bff !important;
+  box-shadow: inset 0 0 0 1px var(--colorStrokeFocus, #007aff);
 }
 .new_tickets_container .requester_name_email{
   display: flex;
