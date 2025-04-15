@@ -17,6 +17,7 @@ import Event from '../Component/Meetings/Event';
 import Meeting from '../Component/Meetings/Meeting';
 import Availability from '../Component/Meetings/Availability';
 import Analytic from '../Component/Meetings/Analytic';
+import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
 const BaseLayouts = () => {
 
     return (
@@ -32,16 +33,17 @@ const BaseLayouts = () => {
                         <Route path='Broadcast' element={<Broadcast />} />
                         <Route path='contactus' element={<ContactUs/>}/>
                         <Route path='automations' element={<Automations/>}/>
-                        <Route path='Analytics' element={<Analytics/>} />
+                        <Route path='analytics' element={<Analytics/>} />
                         <Route path='Reports' element={<Reports/>}/>
                         <Route path='UserManagement' element={<UserManagement/>}/>
                         <Route path='AccountDetails' element={<AccountDetails/>}/>
-                        <Route path='/copylink' element={<CopyMeetingLink/>}/>
+                        <Route path='/hepto' element={<CopyMeetingLink/>}/>
                         <Route path='/edit-event' element={<EditEventType/>}/>
                         <Route path='/event-types' element={<Event/>}/>
                         <Route path='/meet' element={<Meeting/>}/>
                         <Route path='/availability' element={<Availability/>}/>
                         <Route path='/analytic' element={<Analytic/>}/>
+                        <Route path='/one-on-one' element={<OneononeMeeting/>}/>
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>

@@ -1,9 +1,24 @@
 import React, { useState } from 'react'
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Grid, Slider, TextField, Autocomplete, Chip } from '@mui/material';
+import { Grid, Slider } from '@mui/material';
 import { Modal, ModalBody } from 'react-bootstrap';
 import NewTemplate from '../Broadcast/NewTemplate';
 import Nextstep from './Nextstep';
+import ButtonComponent from '../ButtonComponent';
+import SearchboxComponent from '../SearchboxComponent';
+import CustomPagination from '../CustomPagination';
+import TableComponent from '../TableComponent';
+import DeleteModal from '../DeleteModal'
+import { ArrowBackIcon } from '../Icon';
+import style from '../MuiStyles/muiStyle';
+import TextfieldComponent from '../TextfieldComponent';
 
+const columns = [
+  { id: "keywords", label: "Keyword" },
+  { id: "triggered", label: "Triggered" },
+  { id: "matchingMethod", label: "Matching method" },
+  { id: "replyMaterial", label: "Reply material" },
+
+];
 const initialData = [
   {
     id: 1,
@@ -18,10 +33,6 @@ const initialData = [
       "hy", "hey", "Hello", "Hey", "Hi", "i want to book a ride", "i want a cab",
       "car", "book", "ca hire", "EV", "Vehicle", "Electric vehicle", "car rental",
       "transport", "electric", "van", "tuk", "tuk tuk", "boda", "boda boda",
-      "delivery", "courier", "cargo", "pick up", "drop off", "drop", "rental",
-      "transfer", "evzone", "ev ride", "airport", "yo", "ye", "abeeno", "motoka",
-      "ambulance", "eyo", "waguan", "yoyo", "hullo", "yello", "elo", "helo",
-      "hel", "ello", "hulo", "Hi EV zone", "Home", "HOME", "home", "Start Again"
     ],
     triggered: 1397,
     matchingMethod: "Exact matching",
@@ -192,6 +203,7 @@ const initialData = [
     replyMaterial: ['Chatbots: payment_process']
   }
 ]
+
 const buttonData = [
   {
     icon: (
@@ -326,52 +338,74 @@ const buttonData = [
     value: 'Catalog'
   }
 ]
-const InitialLoadingData = 'Text'
-const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
+const AddKeywordModalComponent = ({
+  show,
+  onClose,
+  inputValue,
+  onInputChange,
+  onAddClick,
+}) => {
   return (
-    <>
-      <Modal show={show} dialogClassName="keyword__delete__modal">
-        <div className='keyword__delete__content'>
-          <Modal.Header className='keyword__delete__header'>
-            <Modal.Title >Confirm</Modal.Title>
-          </Modal.Header>
-          <ModalBody className='keyword__body__deletecontent'>
-            <div class="delete__confirm__msg">{msg}</div>
-            <div class="keywordfooter__delete"><button target="_self" className='footer__cancel__btn delete__cancel__btn' onClick={onClose} >Cancel</button><button target="_self" className='delete__confirm__btn' onClick={onConfirm}>Yes</button></div>
-          </ModalBody>
-        </div>
-      </Modal>
-    </>
-  )
-}
-
+    <Modal show={show} onHide={onClose} dialogClassName="keyword__add__modal">
+      <div className="keyword__add__content">
+        <Modal.Header className="keyword__add__header" closeButton>
+          <Modal.Title>Add Keyword</Modal.Title>
+        </Modal.Header>
+        <ModalBody className="keyword__body__addcontent">
+          <TextfieldComponent
+            placeholder="Please input a keyword."
+            value={inputValue}
+            onChange={onInputChange}
+          />
+          <div className="keywordfooter__add">
+            <ButtonComponent
+              label="Add"
+              onClick={onAddClick}
+              customBtn={!inputValue.trim() ? "keyword__add_disabled" : ""}
+              disabled={!inputValue.trim()}
+            />
+          </div>
+        </ModalBody>
+      </div>
+    </Modal>
+  );
+};
+const InitialLoadingData = 'Text'
 const KeywordAction = () => {
 
-  // search keywords 
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [rowIndexToDelete, setRowIndexToDelete] = useState(null);
-  //deletemodal state 
-  const [isOpenDeleteModal, setOpenDeleteModal] = useState(false);
-  //editpage 
-  const [isOpenEditPage, setOpenEditPage] = useState(false);
-  const [selectedRadioMethod, setSelectedRadioMethod] = useState('')
-  const [selectedEditRow, setSelectedEditRow] = useState(null);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [editSliderValue, setEditSliderValue] = useState(80);
-  // addkeywordmodal --> editpage
-  const [addKeywordInput, setAddKeywordInput] = useState('');
-  const [addKeywordOpenModal, setAddKeywordOpenModal] = useState(false);
+  const [state, setState] = useState({
+    // search keywords
+    searchKeyword: '',
+    rowIndexToDelete: null,
+    //deletemodal state 
+    isOpenDeleteModal: false,
+    //editpage 
+    isOpenEditPage: false,
+    selectedRadioMethod: '',
+    selectedEditRow: null,
+    hasChanges: false,
+    editSliderValue: 80,
+    // addkeywordmodal --> editpage
+    addKeywordInput: '',
+    addKeywordOpenModal: false,
+    //Addpage
+    isAddOpenPage: false,
+    addSelectedRadioMethod: 'Fuzzy matching',
+    //addkeywordmodal--> add page
+    addKeyword: '',
+    keywordList: [],
+    nextStepModal: false,
+    //new Template --> template
+    isOpenYourTemplate: false,
+    showError: false,
+    sliderValue: 80,
+    //table and pagination 
+    data: initialData,
+    page: 0,
+    rowsPerPage: 5,
 
-  //Addpage
-  const [isAddOpenPage, setAddOpenPage] = useState(false);
-  const [addSelectedRadioMethod, setAddSelectedRadioMethod] = useState('Fuzzy matching');
-  //addkeywordmodal--> add page
-  const [addKeyword, setAddKeyword] = useState('');
-  const [keywordList, setKeywordList] = useState([]);
-  const [nextStepModal, setNextStepModal] = useState(false);
+  });
 
-  //new Template --> template
-  const [isOpenYourTemplate, setIsOpenYourTemplate] = useState(false);
   const [isMaterialCheckedEdit, setIsMaterialCheckedEdit] = useState({
     Text: [],
     Document: [],
@@ -381,7 +415,7 @@ const KeywordAction = () => {
     Chatbots: [],
     Sequences: [],
     Contact: [],
-    Templates:[],
+    Templates: [],
     SendNotification: [],
     AssigntoUser: [],
     AssigntoTeam: [],
@@ -397,26 +431,17 @@ const KeywordAction = () => {
     Chatbots: [],
     Sequences: [],
     Contact: [],
-    Template:[],
+    Template: [],
     SendNotification: [],
     AssigntoUser: [],
     AssigntoTeam: []
   });
 
-  const [showError, setShowError] = useState(false);
-  const [sliderValue, setSliderValue] = useState(80);
-
-  //table pagination 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, SetRowsPerPage] = useState(5);
-
-  // table data 
-  const [data, setData] = useState(initialData);
 
   //handle nextstep checkbox
 
   const handleCheckboxToggle = (title, type) => {
-    if (isOpenEditPage) {
+    if (state.isOpenEditPage) {
       setIsMaterialCheckedEdit(prev => {
         const currentSelections = prev[type] || [];
         if (currentSelections.includes(title)) {
@@ -425,7 +450,7 @@ const KeywordAction = () => {
           return { ...prev, [type]: [...currentSelections, title] };
         }
       });
-    } else if (isAddOpenPage) {
+    } else if (state.isAddOpenPage) {
       setIsMaterialCheckedAdd(prev => {
         const currentSelections = prev[type] || [];
         if (currentSelections.includes(title)) {
@@ -437,207 +462,290 @@ const KeywordAction = () => {
     }
   };
 
-
   const handleInputChange = (e) => {
-    setAddKeyword(e.target.value)
-  }
+    setState(prev => ({
+      ...prev,
+      addKeyword: e.target.value,
+    }));
+  };
+
   //addkeywordmodal-->editpage
   const handleKeywordInputChange = (e) => {
-    setAddKeywordInput(e.target.value);
-    setHasChanges(true);
-  }
+    setState(prev => ({
+      ...prev,
+      addKeywordInput: e.target.value,
+      hasChanges: true,
+    }));
+  };
 
-  const filterKeywords = data.filter(row => row.keywords.some(keyword => keyword.toLowerCase().includes(searchKeyword.toLowerCase())))
+  // const filterKeywords = data.filter(row => row.keywords.some(keyword => keyword.toLowerCase().includes(searchKeyword.toLowerCase())))
 
   //addkeywordmodal --> close
+
   const handleCloseKeyword = () => {
-    setAddKeywordOpenModal(false)
-  }
+    setState(prev => ({
+      ...prev,
+      addKeywordOpenModal: false,
+    }));
+  };
   //addpage--open
   const handleAddOpenPage = () => {
-    setAddOpenPage(true);
-    setIsMaterialCheckedAdd({})
-    setOpenEditPage(false);
-  }
+    setState(prev => ({
+      ...prev,
+      isAddOpenPage: true,
+      isOpenEditPage: false,
+    }));
+    setIsMaterialCheckedAdd({});
+  };
+
   //add page-->addkeyword modal
   const handleAddKeywordList = () => {
-    if (addKeyword.trim()) {
-      setAddKeyword('');
-      setKeywordList([...keywordList, addKeyword.trim()]);
-      setAddKeywordOpenModal(false);
-      setShowError(false);
-    }
-  }
-  //delete modal 
-  const handleDeleteOpenModal = (index) => {
-    setRowIndexToDelete(index)
-    setOpenDeleteModal(true);
-  }
-  const handleDeleteCloseModal = () => {
-    setRowIndexToDelete(null);
-    setOpenDeleteModal(false)
-  }
-  const handleDeleteConfirm = () => {
-    if (rowIndexToDelete !== null) {
-      setData(prev => prev.filter((_, index) => index !== rowIndexToDelete))
-    }
-    handleDeleteCloseModal();
-
-  }
-  //open and close edit page
-  const handleEditOpenPage = (row) => {
-    setSelectedEditRow(row);
-    // setIsMaterialChecked({});
-    setIsMaterialCheckedEdit({})
-
-
-    setAddOpenPage(false);
-    const method = row.matchingMethod;
-    if (method.startsWith('Fuzzy matching')) {
-      const percentage = parseInt(method.match(/\d+/)[0], 10);
-      setSelectedRadioMethod('Fuzzy matching');
-      setEditSliderValue(percentage);
-    } else {
-      setSelectedRadioMethod(method);
-      setEditSliderValue(0);
-    }
-
-    setOpenEditPage(true);
-
-  }
-  const handleEditClosePage = () => {
-    setSelectedEditRow(null);
-    setOpenEditPage(false);
-    setAddOpenPage(false);
-
-  }
-  //pagination
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowPerPage = (event) => {
-    SetRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  }
-  const handlePreviousPage = () => {
-    if (page > 0) {
-      setPage(prev => prev - 1);
+    if (state.addKeyword.trim()) {
+      setState(prev => ({
+        ...prev,
+        addKeyword: '',
+        keywordList: [...prev.keywordList, prev.addKeyword.trim()],
+        addKeywordOpenModal: false,
+        showError: false,
+      }));
     }
   };
-  const handleNextPage = () => {
-    if (page < Math.ceil(data.length / rowsPerPage) - 1) {
-      setPage(prev => prev + 1)
+
+  //delete modal 
+  const handleDeleteOpenModal = (index) => {
+    setState(prev => ({
+      ...prev,
+      rowIndexToDelete: index,
+      isOpenDeleteModal: true,
+    }));
+  };
+
+  const handleDeleteCloseModal = () => {
+    setState(prev => ({
+      ...prev,
+      rowIndexToDelete: null,
+      isOpenDeleteModal: false,
+    }));
+  };
+
+  const handleDeleteConfirm = () => {
+    if (state.rowIndexToDelete !== null) {
+      setState(prev => ({
+        ...prev,
+        data: prev.data.filter((_, index) => index !== prev.rowIndexToDelete),
+        rowIndexToDelete: null,
+        isOpenDeleteModal: false,
+      }));
     }
-  }
-  const paginatedData = filterKeywords.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  };
+
+  //open and close edit page
+  const handleEditOpenPage = (row) => {
+    setIsMaterialCheckedEdit({});
+
+    const method = row.matchingMethod;
+    let selectedRadioMethod = '';
+    let editSliderValue = 0;
+
+    if (method.startsWith('Fuzzy matching')) {
+      const percentage = parseInt(method.match(/\d+/)[0], 10);
+      selectedRadioMethod = 'Fuzzy matching';
+      editSliderValue = percentage;
+    } else {
+      selectedRadioMethod = method;
+      editSliderValue = 0;
+    }
+
+    setState(prev => ({
+      ...prev,
+      selectedEditRow: row,
+      isAddOpenPage: false,
+      isOpenEditPage: true,
+      selectedRadioMethod,
+      editSliderValue,
+    }));
+  };
+
+  const handleEditClosePage = () => {
+    setState(prev => ({
+      ...prev,
+      selectedEditRow: null,
+      isOpenEditPage: false,
+      isAddOpenPage: false,
+    }));
+  };
+
+  //pagination
+  const handleChangePage = (event, newPage) => {
+    setState(prev => ({
+      ...prev,
+      page: newPage,
+    }));
+  };
+
+  const handleChangeRowPerPage = (event) => {
+    setState(prev => ({
+      ...prev,
+      rowsPerPage: parseInt(event.target.value, 10),
+      page: 0,
+    }));
+  };
+
+
+  // const paginatedData = filterKeywords.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   //edit page --> remove keywords 
   const handleRemoveKeyword = (keywordToRemove) => {
+    const updatedKeywords = state.selectedEditRow.keywords.filter(
+      (keyword) => keyword !== keywordToRemove
+    );
 
-    const updatedKeywords = selectedEditRow.keywords.filter((keyword) => keyword !== keywordToRemove);
-    setSelectedEditRow({ ...selectedEditRow, keywords: updatedKeywords });
-    setHasChanges(true);
+    setState(prev => ({
+      ...prev,
+      selectedEditRow: {
+        ...prev.selectedEditRow,
+        keywords: updatedKeywords,
+      },
+      hasChanges: true,
+    }));
   };
+
   //edit page -->handleradiomethod
   const handleRadioMethodSelection = (method) => {
-    setSelectedRadioMethod(method);
-    setHasChanges(true);
-  }
+    setState(prev => ({
+      ...prev,
+      selectedRadioMethod: method,
+      hasChanges: true,
+    }));
+  };
+
   //add page --> handleradiomethod
   const handleAddRadioMethodSelection = (method) => {
-    setAddSelectedRadioMethod(method)
-  }
+    setState(prev => ({
+      ...prev,
+      addSelectedRadioMethod: method,
+    }));
+  };
 
   const handleAddKeyword = () => {
-    setAddKeywordOpenModal(true);
-    setHasChanges(true);
-  }
+    setState(prev => ({
+      ...prev,
+      addKeywordOpenModal: true,
+      hasChanges: true,
+    }));
+  };
+
+
   const handleRemoveAddKeyword = (index) => {
-    const newKeywords = [...keywordList];
+    const newKeywords = [...state.keywordList];
     newKeywords.splice(index, 1);
-    setKeywordList(newKeywords);
-  }
+
+    setState(prev => ({
+      ...prev,
+      keywordList: newKeywords,
+    }));
+  };
+
   // addkeyword to editlist
   const handleAddkeywordToEditlist = () => {
-    if (addKeywordInput.trim()) {
-      const updatedKeywords = [...selectedEditRow.keywords, addKeywordInput.trim()];
-      setSelectedEditRow({ ...selectedEditRow, keywords: updatedKeywords });
+    if (state.addKeywordInput.trim()) {
+      const updatedKeywords = [
+        ...state.selectedEditRow.keywords,
+        state.addKeywordInput.trim()
+      ];
 
-      setAddKeywordInput('');
-    }
-    setHasChanges(true);
-    setAddKeywordOpenModal(false);
-  }
-  //editpage --savechanges
-
-  const handleSaveChanges = () => {
-    if (selectedEditRow) {
-      const updatedRow = {
-        ...selectedEditRow,
-        matchingMethod: selectedRadioMethod === 'Fuzzy matching'
-          ? `${selectedRadioMethod} (${editSliderValue}%)`
-          : selectedRadioMethod,
-      };
-
-      const updatedData = data.map((row) =>
-        row.id === updatedRow.id ? updatedRow : row
-      );
-
-      // for adding a new row
-      const rowExists = data.some(row => row.id === updatedRow.id);
-      if (!rowExists) {
-        updatedData.push(updatedRow); // only add if it's doesnot exits in the table
-      }
-
-      setData(updatedData);
-      setOpenEditPage(false);
-      setHasChanges(false);
+      setState(prev => ({
+        ...prev,
+        selectedEditRow: {
+          ...prev.selectedEditRow,
+          keywords: updatedKeywords,
+        },
+        addKeywordInput: '',
+        hasChanges: true,
+        addKeywordOpenModal: false,
+      }));
+    } else {
+      setState(prev => ({
+        ...prev,
+        addKeywordOpenModal: false,
+      }));
     }
   };
 
-  //nextstepmodal
+
+  //editpage --savechanges
+  const handleSaveChanges = () => {
+    if (state.selectedEditRow) {
+      const updatedRow = {
+        ...state.selectedEditRow,
+        matchingMethod:
+          state.selectedRadioMethod === 'Fuzzy matching'
+            ? `${state.selectedRadioMethod} (${state.editSliderValue}%)`
+            : state.selectedRadioMethod,
+      };
+
+      const rowExists = state.data.some(row => row.id === updatedRow.id);
+      const updatedData = rowExists
+        ? state.data.map((row) =>
+          row.id === updatedRow.id ? updatedRow : row
+        )
+        : [...state.data, updatedRow];
+
+      setState(prev => ({
+        ...prev,
+        data: updatedData,
+        isOpenEditPage: false,
+        hasChanges: false,
+      }));
+    }
+  };
+
   const handleNextStepModal = () => {
-    if (isAddOpenPage) {
-      if (keywordList.length === 0) {
-        setShowError(true);
-      }
-      else {
-        console.log("Keywords:", keywordList);
-        console.log("Selected Matching Method:", addSelectedRadioMethod);
+    if (state.isAddOpenPage) {
+      if (state.keywordList.length === 0) {
+        setState(prev => ({
+          ...prev,
+          showError: true,
+        }));
+      } else {
+        console.log("Keywords:", state.keywordList);
+        console.log("Selected Matching Method:", state.addSelectedRadioMethod);
 
-        setShowError(false);
-        setNextStepModal(true);
-
+        setState(prev => ({
+          ...prev,
+          showError: false,
+          nextStepModal: true,
+        }));
       }
     }
-    if (isOpenEditPage) {
-      setNextStepModal(true);
 
-
+    if (state.isOpenEditPage) {
+      setState(prev => ({
+        ...prev,
+        nextStepModal: true,
+      }));
     }
+  };
 
-  }
 
   const handleBackbtnNextStepModal = () => {
-    if (isAddOpenPage) {
-      setNextStepModal(false);
-      setAddOpenPage(true);
-    }
-    else {
-      setOpenEditPage(true);
-      setNextStepModal(false);
-    }
-
-
-  }
+    setState(prev => ({
+      ...prev,
+      nextStepModal: false,
+      isAddOpenPage: prev.isAddOpenPage,
+      isOpenEditPage: !prev.isAddOpenPage,
+    }));
+  };
 
   const handleCancelBtn = () => {
-    setNextStepModal(false);
-    setAddOpenPage(false);
-    setOpenEditPage(false);
-  }
+    setState(prev => ({
+      ...prev,
+      nextStepModal: false,
+      isAddOpenPage: false,
+      isOpenEditPage: false,
+    }));
+  };
+
 
   // const handleSaveBtn=()=>{
   //   // console.log("Keywords:", keywordList);
@@ -662,107 +770,207 @@ const KeywordAction = () => {
   // }
 
   const handleSaveBtn = () => {
+    const isValidAdd = state.isAddOpenPage && state.isMaterialCheckedAdd && Object.keys(state.isMaterialCheckedAdd).length > 0;
+    const isValidEdit = state.isOpenEditPage && state.isMaterialCheckedEdit && Object.keys(state.isMaterialCheckedEdit).length > 0;
 
-    if (
-      (isAddOpenPage && isMaterialCheckedAdd && Object.keys(isMaterialCheckedAdd).length > 0) ||
-      (isOpenEditPage && isMaterialCheckedEdit && Object.keys(isMaterialCheckedEdit).length > 0)
-    ) {
+    if (isValidAdd || isValidEdit) {
       let matchingMethod;
       let newEntry;
 
-      if (isAddOpenPage) {
+      if (state.isAddOpenPage) {
         matchingMethod =
-          addSelectedRadioMethod === 'Fuzzy matching'
-            ? `Fuzzy matching (${sliderValue}%)`
-            : addSelectedRadioMethod;
+          state.addSelectedRadioMethod === 'Fuzzy matching'
+            ? `Fuzzy matching (${state.sliderValue}%)`
+            : state.addSelectedRadioMethod;
 
-        const replyMaterial = Object.entries(isMaterialCheckedAdd).flatMap(([type, items]) =>
+        const replyMaterial = Object.entries(state.isMaterialCheckedAdd).flatMap(([type, items]) =>
           items.map(item => `${type}: ${item}`)
         );
 
         newEntry = {
-          keywords: keywordList,
+          keywords: state.keywordList,
           triggered: 0,
-          matchingMethod: matchingMethod,
-          replyMaterial: replyMaterial
+          matchingMethod,
+          replyMaterial
         };
 
-        console.log("replyMaterial:", newEntry.replyMaterial);
-        setData((prevData) => [...prevData, newEntry]);
-      } else if (isOpenEditPage) {
+        setState(prev => ({
+          ...prev,
+          data: [...prev.data, newEntry],
+          nextStepModal: false,
+          isAddOpenPage: false,
+          isOpenEditPage: false,
+        }));
+      } else if (state.isOpenEditPage) {
         matchingMethod =
-          selectedRadioMethod === 'Fuzzy matching'
-            ? `${selectedRadioMethod} (${editSliderValue}%)`
-            : selectedRadioMethod;
+          state.selectedRadioMethod === 'Fuzzy matching'
+            ? `${state.selectedRadioMethod} (${state.editSliderValue}%)`
+            : state.selectedRadioMethod;
 
-        // Get existing replyMaterial for the selected row
-        const existingEntry = data.find(entry => entry.keywords === selectedEditRow.keywords);
+        const existingEntry = state.data.find(entry =>
+          JSON.stringify(entry.keywords) === JSON.stringify(state.selectedEditRow.keywords)
+        );
         const existingReplyMaterial = existingEntry ? existingEntry.replyMaterial : [];
 
         const replyMaterial = [
           ...existingReplyMaterial,
-          ...Object.entries(isMaterialCheckedEdit).flatMap(([type, items]) =>
+          ...Object.entries(state.isMaterialCheckedEdit).flatMap(([type, items]) =>
             items.map(item => `${type}: ${item}`)
           )
         ];
 
         newEntry = {
-          keywords: selectedEditRow.keywords,
-          triggered: selectedEditRow.triggered || 0,
-          matchingMethod: matchingMethod,
+          keywords: state.selectedEditRow.keywords,
+          triggered: state.selectedEditRow.triggered || 0,
+          matchingMethod,
           replyMaterial: Array.from(new Set(replyMaterial))
         };
 
-        setData((prevData) =>
-          prevData.map((entry) =>
-            entry.keywords === selectedEditRow.keywords ? newEntry : entry
-          )
+        const updatedData = state.data.map(entry =>
+          JSON.stringify(entry.keywords) === JSON.stringify(state.selectedEditRow.keywords)
+            ? newEntry
+            : entry
         );
-      }
 
-      setNextStepModal(false);
-      setAddOpenPage(false);
-      setOpenEditPage(false);
+        setState(prev => ({
+          ...prev,
+          data: updatedData,
+          nextStepModal: false,
+          isAddOpenPage: false,
+          isOpenEditPage: false,
+        }));
+      }
     }
   };
 
+  // const handleSaveBtn = () => {
+
+  //   if (
+  //     (isAddOpenPage && isMaterialCheckedAdd && Object.keys(isMaterialCheckedAdd).length > 0) ||
+  //     (isOpenEditPage && isMaterialCheckedEdit && Object.keys(isMaterialCheckedEdit).length > 0)
+  //   ) {
+  //     let matchingMethod;
+  //     let newEntry;
+
+  //     if (isAddOpenPage) {
+  //       matchingMethod =
+  //         addSelectedRadioMethod === 'Fuzzy matching'
+  //           ? `Fuzzy matching (${sliderValue}%)`
+  //           : addSelectedRadioMethod;
+
+  //       const replyMaterial = Object.entries(isMaterialCheckedAdd).flatMap(([type, items]) =>
+  //         items.map(item => `${type}: ${item}`)
+  //       );
+
+  //       newEntry = {
+  //         keywords: keywordList,
+  //         triggered: 0,
+  //         matchingMethod: matchingMethod,
+  //         replyMaterial: replyMaterial
+  //       };
+
+  //       console.log("replyMaterial:", newEntry.replyMaterial);
+  //       setData((prevData) => [...prevData, newEntry]);
+  //     } else if (isOpenEditPage) {
+  //       matchingMethod =
+  //         selectedRadioMethod === 'Fuzzy matching'
+  //           ? `${selectedRadioMethod} (${editSliderValue}%)`
+  //           : selectedRadioMethod;
+
+  //       // Get existing replyMaterial for the selected row
+  //       const existingEntry = data.find(entry => entry.keywords === selectedEditRow.keywords);
+  //       const existingReplyMaterial = existingEntry ? existingEntry.replyMaterial : [];
+
+  //       const replyMaterial = [
+  //         ...existingReplyMaterial,
+  //         ...Object.entries(isMaterialCheckedEdit).flatMap(([type, items]) =>
+  //           items.map(item => `${type}: ${item}`)
+  //         )
+  //       ];
+
+  //       newEntry = {
+  //         keywords: selectedEditRow.keywords,
+  //         triggered: selectedEditRow.triggered || 0,
+  //         matchingMethod: matchingMethod,
+  //         replyMaterial: Array.from(new Set(replyMaterial))
+  //       };
+
+  //       setData((prevData) =>
+  //         prevData.map((entry) =>
+  //           entry.keywords === selectedEditRow.keywords ? newEntry : entry
+  //         )
+  //       );
+  //     }
+
+  //     setNextStepModal(false);
+  //     setAddOpenPage(false);
+  //     setOpenEditPage(false);
+  //   }
+  // };
+
   const handleSliderChange = (event, newValue) => {
-    setSliderValue(newValue);
-  }
+    setState(prev => ({
+      ...prev,
+      sliderValue: newValue,
+    }));
+  };
+
   const handleDeleteMaterial = (material) => {
-    if (selectedEditRow) {
-      const updatedMaterials = selectedEditRow.replyMaterial.filter((m) => m !== material);
+    if (state.selectedEditRow) {
+      const updatedMaterials = state.selectedEditRow.replyMaterial.filter((m) => m !== material);
 
-
-      setSelectedEditRow((prevRow) => ({
-        ...prevRow,
-        replyMaterial: updatedMaterials,
+      setState(prev => ({
+        ...prev,
+        selectedEditRow: {
+          ...prev.selectedEditRow,
+          replyMaterial: updatedMaterials,
+        },
       }));
     }
   };
 
 
+  const customRenderCell = (row, column) => {
+    if (column.id === "keywords") {
+      return row.keywords.map((keyword, i) => (
+        <div key={i} className="keywordaction_keywords">{keyword}</div>
+      ));
+    }
+
+    if (column.id === "replyMaterial") {
+      return row.replyMaterial.map((reply, i) => (
+        <div key={i} className="keywordaction_replymaterial">{reply}</div>
+      ));
+    }
+
+    if (column.id === "triggered") {
+      return <span>{row.triggered}</span>;
+    }
+
+
+    return row[column.id];
+  };
+
   return (
     <>
       {
-        isOpenDeleteModal && (<DeleteModal show={isOpenDeleteModal} onClose={handleDeleteCloseModal}
+        state.isOpenDeleteModal && (<DeleteModal show={state.isOpenDeleteModal} onClose={handleDeleteCloseModal}
           onConfirm={handleDeleteConfirm} msg='Do you want to remove this keyword action?' />)
       }
 
       <div className='keyword_action_container'>
 
         {
-          isOpenYourTemplate ? (
+          state.isOpenYourTemplate ? (
             <NewTemplate />
           )
-            : nextStepModal ? (
+            : state.nextStepModal ? (
               <>
                 <div className='keyword_editor'>
-                  <div className='editor_btn_container'>
-                    <button className='backbtn' onClick={handleBackbtnNextStepModal}>
-                      <span className='back__arrow'><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
-                      Back
-                    </button>
+                  <div className='editor_btn_container' onClick={handleBackbtnNextStepModal}>
+                    <ArrowBackIcon />
+                    <ButtonComponent label='Back' customBtn='generation_backbutton keyword_backbtn' />
+
                   </div>
                   <div className='status_container'>
                     <div>
@@ -791,28 +999,30 @@ const KeywordAction = () => {
                   <Nextstep
                     buttonData={buttonData}
                     InitialLoadingData={InitialLoadingData}
-                    isOpenEditPage={isOpenEditPage}
-                    selectedEditRow={selectedEditRow}
+                    isOpenEditPage={state.isOpenEditPage}
+                    selectedEditRow={state.selectedEditRow}
                     isMaterialCheckedEdit={isMaterialCheckedEdit}
                     isMaterialCheckedAdd={isMaterialCheckedAdd}
                     handleDeleteMaterial={handleDeleteMaterial}
                     handleCheckboxToggle={handleCheckboxToggle}
                     handleCancelBtn={handleCancelBtn}
                     handleSaveBtn={handleSaveBtn}
-                    isAddOpenPage={isAddOpenPage}
-                    showCheckboxes={true} 
-                    setIsOpenYourTemplate={setIsOpenYourTemplate}/>
+                    isAddOpenPage={state.isAddOpenPage}
+                    showCheckboxes={true}
+                    setIsOpenYourTemplate={(value) =>
+                      setState((prev) => ({ ...prev, isOpenYourTemplate: value }))
+                    }
+                  />
                 </div>
               </>
             )
-              : isAddOpenPage ? (
+              : state.isAddOpenPage ? (
                 <>
                   <div className='keyword_editor'>
-                    <div className='editor_btn_container'>
-                      <button className='backbtn' onClick={handleEditClosePage}>
-                        <span className='back__arrow'><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
-                        Back
-                      </button>
+                    <div className='editor_btn_container' onClick={handleEditClosePage}>
+                      <ArrowBackIcon />
+                      <ButtonComponent label='Back' customBtn='generation_backbutton keyword_backbtn' />
+
                     </div>
                     <div className='status_container'>
                       <div>
@@ -844,7 +1054,7 @@ const KeywordAction = () => {
                           </div>
                           <div className='keyword__list'>
                             {
-                              keywordList.map((addkey, index) => (
+                              state.keywordList.map((addkey, index) => (
                                 <button key={index} className='custom_chip'>
                                   <span className='custom_chip_label'>{addkey}</span>
                                   <svg className="custom_chip_delete_icon" focusable="false" onClick={() => handleRemoveAddKeyword(index)} aria-hidden="true" viewBox="0 0 24 24" data-testid="CancelIcon"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path></svg>
@@ -854,7 +1064,8 @@ const KeywordAction = () => {
                             }
 
                           </div>
-                          <button className='keyword__add__btn' onClick={handleAddKeyword}>Add Keyword +</button>
+                          <ButtonComponent label='Add Keyword +' onClick={handleAddKeyword} customBtn='keyword__add__btn' />
+
                         </div>
                       </div>
                       <div>
@@ -863,106 +1074,21 @@ const KeywordAction = () => {
 
                           <div className='match__methods'>
                             <div className='match__method__fuzzy'>
-                              <button type="button" className={`match__radio ${addSelectedRadioMethod === 'Fuzzy matching' ? 'active' : ''}`} onClick={() => handleAddRadioMethodSelection('Fuzzy matching')}><i class="match__radio__style"></i><span>Fuzzy matching</span></button>
+                              <button type="button" className={`match__radio ${state.addSelectedRadioMethod === 'Fuzzy matching' ? 'active' : ''}`} onClick={() => handleAddRadioMethodSelection('Fuzzy matching')}><i class="match__radio__style"></i><span>Fuzzy matching</span></button>
                             </div>
-                            <button type="button" className={`match__radio ${addSelectedRadioMethod === 'Exact matching' ? 'active' : ''}`} onClick={() => handleAddRadioMethodSelection('Exact matching')}><i class="match__radio__style"></i><span>Exact matching</span></button>
-                            <button type="button" className={`match__radio ${addSelectedRadioMethod === 'Contains' ? 'active' : ''}`} onClick={() => handleAddRadioMethodSelection('Contains')}><i class="match__radio__style"></i><span>Contains</span></button>
+                            <button type="button" className={`match__radio ${state.addSelectedRadioMethod === 'Exact matching' ? 'active' : ''}`} onClick={() => handleAddRadioMethodSelection('Exact matching')}><i class="match__radio__style"></i><span>Exact matching</span></button>
+                            <button type="button" className={`match__radio ${state.addSelectedRadioMethod === 'Contains' ? 'active' : ''}`} onClick={() => handleAddRadioMethodSelection('Contains')}><i class="match__radio__style"></i><span>Contains</span></button>
                           </div>
 
-                          {addSelectedRadioMethod === 'Fuzzy matching' && (
+                          {state.addSelectedRadioMethod === 'Fuzzy matching' && (
                             <div className='match__slider'>
                               <div className='slider__mark'>0%</div>
 
                               <Slider
                                 defaultValue={80}
-                                value={sliderValue}
+                                value={state.sliderValue}
                                 onChange={handleSliderChange}
-                                sx={{
-                                  height: 8,
-                                  maxWidth: '540px',
-                                  margin: '0px 10px',
-                                  color: 'rgb(35, 164, 85)',
-                                  '& .MuiSlider-rail': {
-                                    opacity: 0.38,
-                                    height: 'inherit',
-                                    backgroundColor: 'currentColor',
-                                    borderRadius: 'inherit',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                  },
-                                  '& .MuiSlider-track': {
-                                    borderRadius: '4px',
-                                    height: 8,
-                                  },
-                                  '& .MuiSlider-thumb': {
-                                    height: 25,
-                                    width: 25,
-                                    backgroundColor: '#fff',
-                                    border: '7px solid rgb(35, 164, 85)',
-                                    '&:hover, &.Mui-focusVisible, &.Mui-active': {
-                                      boxShadow: '0px 0px 0px 8px rgba(35, 164, 85, 0.16)',
-                                    },
-                                    '&::after': {
-                                      position: 'absolute',
-                                      content: '""',
-                                      width: 42,
-                                      height: 42,
-                                      borderRadius: '50%',
-                                      top: '50%',
-                                      left: '50%',
-                                      transform: 'translate(-50%, -50%)',
-                                    },
-                                  },
-                                  '& .MuiSlider-valueLabel': {
-                                    left: 'calc(-50% + 6px)',
-                                    marginTop: '-8px',
-                                    fontFamily:
-                                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter',
-                                    background: 'rgb(233, 246, 238)',
-                                    border: '1px solid rgb(35, 164, 85)',
-                                    color: 'rgb(35, 164, 85)',
-                                    boxSizing: 'border-box',
-                                    borderRadius: '5px',
-                                    position: 'relative',
-                                    fontWeight: 500,
-                                    fontSize: 12,
-                                    lineHeight: '18px',
-                                    padding: '6px 12px',
-                                    '&::before': {
-                                      content: '""',
-                                      position: 'absolute',
-                                      top: 'calc(100% - 1px)',
-                                      left: '50%',
-                                      transform: 'translateX(-50%)',
-                                      borderTop: '10px solid rgb(35, 164, 85)',
-                                      borderLeft: '5px solid transparent',
-                                      borderRight: '5px solid transparent',
-                                      width: 0,
-                                      height: 0,
-                                      borderRadius: '5px',
-                                    },
-                                    '&::after': {
-                                      content: '""',
-                                      top: 'calc(100% - 3px)',
-                                      left: '50%',
-                                      transform: 'translateX(-50%)',
-                                      position: 'absolute',
-                                      borderTop: '10px solid rgb(233, 246, 238)',
-                                      borderLeft: '5px solid transparent',
-                                      borderRight: '5px solid transparent',
-                                      width: 0,
-                                      height: 0,
-                                      borderRadius: '5px',
-                                    },
-                                  },
-                                  '& .MuiSlider-valueLabel span': {
-                                    width: 'auto',
-                                    height: 'auto',
-                                    translate: 'none',
-                                    background: 'none',
-                                    color: 'rgb(35, 164, 85)',
-                                  },
-                                }}
+                                sx={style.keywordSlider}
                                 valueLabelDisplay="on"
                               />
                               <div className='slider__mark'>100%</div>
@@ -975,7 +1101,7 @@ const KeywordAction = () => {
                       </div>
                       <div>
                         {
-                          showError && (
+                          state.showError && (
                             <Grid container style={{ padding: '10px' }}>
                               <Grid item xs={4} />
                               <Grid item xs={4}>
@@ -992,24 +1118,26 @@ const KeywordAction = () => {
                         }
 
                         <div className='keyword__edit__footer'></div>
-                        <button className="btn btn-success next__step__btn" onClick={handleNextStepModal}>Next step</button>
-                        <button className='save__changes__btn' disabled >Save Changes</button>
+                        <ButtonComponent label='Next step' onClick={handleNextStepModal} />
+                        <ButtonComponent
+                          label="Save Changes"
+                          disabled={true}
+                          customBtn={`save__changes__btn ${true ? 'disabled' : ''}`}
+                        />
+
                       </div>
                     </div>
                     {
-                      addKeywordOpenModal && (
+                      state.addKeywordOpenModal && (
                         <>
-                          <Modal show={addKeywordOpenModal} onHide={handleCloseKeyword} dialogClassName="keyword__add__modal">
-                            <div className='keyword__add__content'>
-                              <Modal.Header className='keyword__add__header' closeButton >
-                                <Modal.Title >Add Keyword</Modal.Title>
-                              </Modal.Header>
-                              <ModalBody className='keyword__body__addcontent'>
-                                <input placeholder='Please input a keywords.' className='keyword__add__input' value={addKeyword} onChange={handleInputChange} />
-                                <div class="keywordfooter__add"><button target="_self" onClick={handleAddKeywordList} className={`keyword__add ${addKeyword.trim() ? 'enabled' : 'disabled'}`} disabled={!addKeyword.trim()} >Add</button></div>
-                              </ModalBody>
-                            </div>
-                          </Modal>
+                          <AddKeywordModalComponent
+                            show={state.addKeywordOpenModal}
+                            onClose={handleCloseKeyword}
+                            inputValue={state.addKeyword}
+                            onInputChange={handleInputChange}
+                            onAddClick={handleAddKeywordList}
+                          />
+
                         </>
                       )
                     }
@@ -1019,13 +1147,11 @@ const KeywordAction = () => {
                 </>
               ) :
 
-                isOpenEditPage ? (
+                state.isOpenEditPage ? (
                   <div className='keyword_editor'>
-                    <div className='editor_btn_container'>
-                      <button className='backbtn' onClick={handleEditClosePage}>
-                        <span className='back__arrow'><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
-                        Back
-                      </button>
+                    <div className='editor_btn_container' onClick={handleEditClosePage}>
+                      <ArrowBackIcon />
+                      <ButtonComponent label='Back' customBtn='generation_backbutton keyword_backbtn' />
                     </div>
                     <div className='status_container'>
                       <div>
@@ -1056,7 +1182,7 @@ const KeywordAction = () => {
                             <div>:</div>
                           </div>
                           <div className='keyword__list'>
-                            {selectedEditRow.keywords.map((keyword, index) => (
+                            {state.selectedEditRow.keywords.map((keyword, index) => (
                               <button key={index} className='custom_chip'>
                                 <span className='custom_chip_label'>{keyword}</span>
                                 <svg className="custom_chip_delete_icon" onClick={() => handleRemoveKeyword(keyword)} focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="CancelIcon"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path></svg>
@@ -1066,7 +1192,8 @@ const KeywordAction = () => {
                             }
 
                           </div>
-                          <button className='keyword__add__btn' onClick={handleAddKeyword}>Add Keyword +</button>
+                          <ButtonComponent label='Add Keyword +' onClick={handleAddKeyword} customBtn='keyword__add__btn' />
+
                         </div>
                       </div>
                       <div>
@@ -1075,106 +1202,21 @@ const KeywordAction = () => {
 
                           <div className='match__methods'>
                             <div className='match__method__fuzzy'>
-                              <button type="button" className={`match__radio ${selectedRadioMethod === 'Fuzzy matching' ? 'active' : ''}`} onClick={() => handleRadioMethodSelection('Fuzzy matching')}><i class="match__radio__style"></i><span>Fuzzy matching</span></button>
+                              <button type="button" className={`match__radio ${state.selectedRadioMethod === 'Fuzzy matching' ? 'active' : ''}`} onClick={() => handleRadioMethodSelection('Fuzzy matching')}><i class="match__radio__style"></i><span>Fuzzy matching</span></button>
                             </div>
-                            <button type="button" className={`match__radio ${selectedRadioMethod === 'Exact matching' ? 'active' : ''}`} onClick={() => handleRadioMethodSelection('Exact matching')}><i class="match__radio__style"></i><span>Exact matching</span></button>
-                            <button type="button" className={`match__radio ${selectedRadioMethod === 'Contains' ? 'active' : ''}`} onClick={() => handleRadioMethodSelection('Contains')}><i class="match__radio__style"></i><span>Contains</span></button>
+                            <button type="button" className={`match__radio ${state.selectedRadioMethod === 'Exact matching' ? 'active' : ''}`} onClick={() => handleRadioMethodSelection('Exact matching')}><i class="match__radio__style"></i><span>Exact matching</span></button>
+                            <button type="button" className={`match__radio ${state.selectedRadioMethod === 'Contains' ? 'active' : ''}`} onClick={() => handleRadioMethodSelection('Contains')}><i class="match__radio__style"></i><span>Contains</span></button>
                           </div>
 
-                          {selectedRadioMethod === 'Fuzzy matching' && (
+                          {state.selectedRadioMethod === 'Fuzzy matching' && (
                             <div className='match__slider'>
                               <div className='slider__mark'>0%</div>
 
                               <Slider
-                                value={editSliderValue}
-                                onChange={(e, newValue) => setEditSliderValue(newValue)}
+                                value={state.editSliderValue}
+                                onChange={(e, newValue) => setState(prev => ({ ...prev, editSliderValue: newValue }))}
                                 defaultValue={80}
-                                sx={{
-                                  height: 8,
-                                  maxWidth: '540px',
-                                  margin: '0px 10px',
-                                  color: 'rgb(35, 164, 85)',
-                                  '& .MuiSlider-rail': {
-                                    opacity: 0.38,
-                                    height: 'inherit',
-                                    backgroundColor: 'currentColor',
-                                    borderRadius: 'inherit',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                  },
-                                  '& .MuiSlider-track': {
-                                    borderRadius: '4px',
-                                    height: 8,
-                                  },
-                                  '& .MuiSlider-thumb': {
-                                    height: 25,
-                                    width: 25,
-                                    backgroundColor: '#fff',
-                                    border: '7px solid rgb(35, 164, 85)',
-                                    '&:hover, &.Mui-focusVisible, &.Mui-active': {
-                                      boxShadow: '0px 0px 0px 8px rgba(35, 164, 85, 0.16)',
-                                    },
-                                    '&::after': {
-                                      position: 'absolute',
-                                      content: '""',
-                                      width: 42,
-                                      height: 42,
-                                      borderRadius: '50%',
-                                      top: '50%',
-                                      left: '50%',
-                                      transform: 'translate(-50%, -50%)',
-                                    },
-                                  },
-                                  '& .MuiSlider-valueLabel': {
-                                    left: 'calc(-50% + 6px)',
-                                    marginTop: '-8px',
-                                    fontFamily:
-                                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif, Inter',
-                                    background: 'rgb(233, 246, 238)',
-                                    border: '1px solid rgb(35, 164, 85)',
-                                    color: 'rgb(35, 164, 85)',
-                                    boxSizing: 'border-box',
-                                    borderRadius: '5px',
-                                    position: 'relative',
-                                    fontWeight: 500,
-                                    fontSize: 12,
-                                    lineHeight: '18px',
-                                    padding: '6px 12px',
-                                    '&::before': {
-                                      content: '""',
-                                      position: 'absolute',
-                                      top: 'calc(100% - 1px)',
-                                      left: '50%',
-                                      transform: 'translateX(-50%)',
-                                      borderTop: '10px solid rgb(35, 164, 85)',
-                                      borderLeft: '5px solid transparent',
-                                      borderRight: '5px solid transparent',
-                                      width: 0,
-                                      height: 0,
-                                      borderRadius: '5px',
-                                    },
-                                    '&::after': {
-                                      content: '""',
-                                      top: 'calc(100% - 3px)',
-                                      left: '50%',
-                                      transform: 'translateX(-50%)',
-                                      position: 'absolute',
-                                      borderTop: '10px solid rgb(233, 246, 238)',
-                                      borderLeft: '5px solid transparent',
-                                      borderRight: '5px solid transparent',
-                                      width: 0,
-                                      height: 0,
-                                      borderRadius: '5px',
-                                    },
-                                  },
-                                  '& .MuiSlider-valueLabel span': {
-                                    width: 'auto',
-                                    height: 'auto',
-                                    translate: 'none',
-                                    background: 'none',
-                                    color: 'rgb(35, 164, 85)',
-                                  },
-                                }}
+                                sx={style.keywordSlider}
                                 valueLabelDisplay="on"
                               />
                               <div className='slider__mark'>100%</div>
@@ -1186,24 +1228,27 @@ const KeywordAction = () => {
                       </div>
                       <div>
                         <div className='keyword__edit__footer'></div>
-                        <button className="btn btn-success next__step__btn" onClick={handleNextStepModal}>Next step</button>
-                        <button className={`save__changes__btn ${!hasChanges ? 'disabled' : ''}`} disabled={!hasChanges} onClick={handleSaveChanges}  >Save Changes</button>
+                        <ButtonComponent label='Next step' onClick={handleNextStepModal} />
+                        <ButtonComponent
+                          label="Save Changes"
+                          onClick={handleSaveChanges}
+                          disabled={!state.hasChanges}
+                          customBtn={`save__changes__btn ${!state.hasChanges ? 'disabled' : ''}`}
+                        />
+
                       </div>
                     </div>
                     {
-                      addKeywordOpenModal && (
+                      state.addKeywordOpenModal && (
                         <>
-                          <Modal show={addKeywordOpenModal} onHide={handleCloseKeyword} dialogClassName="keyword__add__modal">
-                            <div className='keyword__add__content'>
-                              <Modal.Header className='keyword__add__header' closeButton >
-                                <Modal.Title >Add Keyword</Modal.Title>
-                              </Modal.Header>
-                              <ModalBody className='keyword__body__addcontent'>
-                                <input placeholder='Please input a keywords.' className='keyword__add__input' value={addKeywordInput} onChange={handleKeywordInputChange} />
-                                <div class="keywordfooter__add"><button target="_self" onClick={handleAddkeywordToEditlist} className={`keyword__add ${addKeywordInput.trim() ? 'enabled' : 'disabled'}`} disabled={!addKeywordInput.trim()} >Add</button></div>
-                              </ModalBody>
-                            </div>
-                          </Modal>
+                          <AddKeywordModalComponent
+                            show={state.addKeywordOpenModal}
+                            onClose={handleCloseKeyword}
+                            inputValue={state.addKeywordInput}
+                            onInputChange={handleKeywordInputChange}
+                            onAddClick={handleAddkeywordToEditlist}
+                          />
+
                         </>
                       )
                     }
@@ -1214,7 +1259,8 @@ const KeywordAction = () => {
                       <div className='header__bar'>
                         <div className='add__keyword__action'>
                           <a href="https://www.youtube.com/watch?v=vTUPzLQbK5I" target="_blank" className='note-watch-tutorial'><div class="watch-tutorial-content"><svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="13.5" r="13.5" fill="#269CFE"></circle><path d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z" fill="white"></path></svg><span class="watch-tutorial__text">Watch Tutorial</span></div></a>
-                          <button class="btn btn-success keyword__btn" onClick={handleAddOpenPage}>Add Keyword action</button>
+                          <ButtonComponent label='Add Keyword action' onClick={handleAddOpenPage} />
+
                         </div>
                         <div className='header__text'>
                           <h1 className='header__title'>Add Keyword Action List</h1>
@@ -1223,108 +1269,33 @@ const KeywordAction = () => {
                         </div>
                         <div className='header__search'>
                           <div className='search__input'>
-                            <div className='input__wrap'>
-                              <input placeholder="Search..." value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} />
-                              <div tabindex="0" class="header__search__icon"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-                            </div>
+                            <SearchboxComponent value={state.searchKeyword} onChange={(e) => setState((prev) => ({ ...prev, searchKeyword: e.target.value }))} customSearch='custom__search_box' placeholder='Search...' />
                           </div>
                         </div>
                       </div>
                       <div className='keyword__body__content'>
                         <div className='keyword__list__table'>
-                          <Table className='keyword__table'>
-                            <TableHead className='keywordtable__head'>
-                              <TableRow className='keywordtable__row'>
-                                <TableCell className='keywordtable__cell alignleft firstcell'>Keyword</TableCell>
-                                <TableCell className='keywordtable__cell'>Triggered</TableCell>
-                                <TableCell className='keywordtable__cell alignleft'>Matching method</TableCell>
-                                <TableCell className='keywordtable__cell alignleft'>Reply material</TableCell>
-                                <TableCell className='keywordtable__cell lastcell'>Actions</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody className='keyword__table__body'>
-                              {
-                                paginatedData.map((row, index) => (
-                                  <TableRow key={index} className='keyword__body__row'>
-                                    <TableCell className='keyword__body__cell body_first_cell'>
-                                      {
-                                        row.keywords.map((keyword, i) => (
-                                          <div key={i} className='keyword__field'>{keyword}</div>
-                                        ))
-                                      }
-                                    </TableCell>
-                                    <TableCell className='keyword__body__cell trigger_text'>{row.triggered}</TableCell>
-                                    <TableCell className='keyword__body__cell'>{row.matchingMethod}</TableCell>
-                                    <TableCell className='keyword__body__cell'>
-                                      {
-                                        row.replyMaterial.map((replymaterial, idx) => (
-                                          <div key={idx} className='keyword__replymaterial_field'>{replymaterial}</div>
-                                        ))
-                                      }
-                                    </TableCell>
-                                    <TableCell className='keyword__body__cell keywordactions'>
-                                      <button aria-label="edit" className='cell__edit' onClick={() => handleEditOpenPage(row)}><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
-                                      <button aria-label="delete" className='cell__delete' onClick={() => handleDeleteOpenModal(index)}><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                                    </TableCell>
-                                  </TableRow>
-                                ))
-                              }
-                            </TableBody>
-                          </Table>
+                          <TableComponent
+                            columns={columns}
+                            data={state.data}
+                            customRenderCell={customRenderCell}
+                            onEdit={(index) => handleEditOpenPage(state.data[index])}
+                            onDelete={handleDeleteOpenModal}
+                            actionHeaderLabel="Actions"
+                            customStyle={{
+                              headerCell: { fontWeight: '400', fontSize: '17px', padding: '35px 20px' },
+                            }}
+                          />
+
                           <div className='keyword__pagination'>
-                            <TablePagination
-                              rowsPerPageOptions={[5, 10, 25, 100]}
-                              component='div'
-                              count={filterKeywords.length}
-                              rowsPerPage={rowsPerPage}
-                              page={page}
+                            <CustomPagination
+                              count={state.data.length}
+                              rowsPerPage={state.rowsPerPage}
+                              page={state.page}
                               onPageChange={handleChangePage}
                               onRowsPerPageChange={handleChangeRowPerPage}
-                              ActionsComponent={() => (
-                                <div className='tablepagination__action'>
-                                  {/* Previous Button */}
-                                  <div>
-                                    <p onClick={handlePreviousPage} aria-label="Go to previous page" title="Go to previous page">
-                                      <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1.02698 11.9929L5.26242 16.2426L6.67902 14.8308L4.85766 13.0033L22.9731 13.0012L22.9728 11.0012L4.85309 11.0033L6.6886 9.17398L5.27677 7.75739L1.02698 11.9929Z" fill="currentColor"></path>
-                                      </svg>
-                                      <span className="pagination_previousnextcont" style={{ fontSize: '1.2rem', color: 'black' }}>Previous</span>
-                                    </p>
-                                  </div>
-
-                                  {/* Next Button */}
-                                  <div>
-                                    <p onClick={handleNextPage} aria-label="Go to next page" title="Go to next page">
-                                      <span className="pagination_previousnextcont" >Next</span>
-                                      <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M23.0677 11.9929L18.818 7.75739L17.4061 9.17398L19.2415 11.0032L0.932469 11.0012L0.932251 13.0012L19.2369 13.0032L17.4155 14.8308L18.8321 16.2426L23.0677 11.9929Z" fill="currentColor"></path>
-                                      </svg>
-                                    </p>
-                                  </div>
-                                </div>
-                              )}
-                              sx={{
-                                '.MuiTablePagination-displayedRows': {
-                                  fontSize: '1.2rem',
-                                  margin: '0px',
-                                  color: 'rgb(51, 51, 51)'
-                                },
-                                '.MuiSelect-nativeInput': {
-                                  padding: '0px 1rem',
-                                  height: '3rem',
-                                  margin: '0 0 8px 0px',
-                                },
-                                '.MuiInputBase-root': {
-                                  fontSize: '1.2rem',
-                                  paddingRight: '0',
-                                },
-                                '.MuiTablePagination-selectLabel': {
-                                  fontSize: '1.2rem',
-                                  margin: '0px',
-                                  color: 'rgb(51, 51, 51)',
-                                },
-                              }}
                             />
+
                           </div>
                         </div>
                       </div> </>)

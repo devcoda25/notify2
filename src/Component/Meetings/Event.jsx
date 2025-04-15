@@ -8,6 +8,7 @@ import TextfieldComponent from "../TextfieldComponent";
 import TimePickerComponent from '../TimePickerComponent'
 import DataSpecificHoursComponent from "./DataSpecificHoursComponent";
 import dayjs from "dayjs";
+import { useNavigate } from 'react-router-dom';
 import {
     Box, Typography,IconButton, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions,
  Tabs, Tab
@@ -153,10 +154,11 @@ const newEventOptions = [
     { id: 4, title: 'Round Robin', subTitle: 'One rotating host with one invitee', description: 'Good for destributing incoming sales leads', icon: 'assets/images/round_robin.svg', popupType: "inviteUsers" }
 
 ]
+
 const Event = ({ onCreateClick }) => {
     const hostOptions = ['hepto(me)'];
     const durationOptions = ['15 Minutes', '30 Minutes', '45 Minutes', '1 hour', 'Custom'];
-
+    const navigate=useNavigate();
     const [state, setState] = useState({
         open: true,
         createNewEvent: false,
@@ -255,7 +257,7 @@ const Event = ({ onCreateClick }) => {
         }));
     };
     const handleCopyLink = () => {
-        const urlToCopy = `${window.location.origin}/copylink`;
+        const urlToCopy = `${window.location.origin}/hepto`;
         navigator.clipboard.writeText(urlToCopy).catch((err) =>
             console.error("Failed to copy:", err)
         );
@@ -263,7 +265,13 @@ const Event = ({ onCreateClick }) => {
     const handleEventClose = () => {
         setState((prev) => ({ ...prev, isLocationCardVisible: false }));
       };
-    
+    const handleCardClick=(option)=>{
+        if (option.title === "One-on-One") {
+            navigate('/one-on-one');
+          } else {
+          
+          }
+    }
     // const [open, setOpen] = useState(true);
     // const [createNewEvent, setCreateNewEvent] = useState(false);
     // const [openHostModal, setOpenHostModal] = useState(false);
@@ -604,7 +612,7 @@ const Event = ({ onCreateClick }) => {
                             <Grid container spacing={2} sx={{ ...styles.neweventGrid }}>
                                 {newEventOptions.map((option, index) => (
                                     <Grid item xs={12} key={index} sx={{ paddingTop: '0px !important' }}>
-                                        <Card variant="outlined" sx={{ ...styles.cardStyle }}>
+                                        <Card variant="outlined" sx={{ ...styles.cardStyle }} onClick={()=>handleCardClick(option)}>
                                             <Box sx={{ mr: 2 }}><img src={option.icon} /></Box>
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography variant="h6" sx={{ ...styles.title }}>{option.title}</Typography>
@@ -616,12 +624,13 @@ const Event = ({ onCreateClick }) => {
                                                 </Typography>
                                             </CardContent>
                                             <ArrowForwardIosIcon fontSize="small" color="disabled" sx={{ ...styles.forwardArrow }}
-                                                onClick={() => handleOpen(option)} />
+                                                // onClick={() => handleOpen(option)}
+                                                 />
                                         </Card>
                                     </Grid>
                                 ))}
                             </Grid>
-                            <Dialog open={state.openHostModal} onClose={handleClose} >
+                            {/* <Dialog open={state.openHostModal} onClose={handleClose} >
                                 <DialogTitle sx={{ ...styles.hostheading }}>
                                     Who will host this {state.selectedOption?.title.toLowerCase()} event type?
                                 </DialogTitle>
@@ -646,7 +655,7 @@ const Event = ({ onCreateClick }) => {
                                     <CustomButton variant="contained" onClick={handleClose}>Next</CustomButton>
 
                                 </DialogActions>
-                            </Dialog>
+                            </Dialog> */}
 
                             <Dialog open={state.openInviteModal} onClose={handleClose} sx={{ ...styles.inviteUser }}>
                                 <DialogTitle sx={{ ...styles.hostheading }}>Invite people to your account</DialogTitle>

@@ -9,15 +9,12 @@ import {
   TableRow,
   Paper,
   IconButton,
-
 } from "@mui/material";
 import { EditIcon, DeleteOutlineIcon } from "./Icon";
 import style from "./MuiStyles/muiStyle";
 
-const TableComponent = ({ columns, data, onEdit, onDelete, showActions = true, customStyle = {}, }) => {
-
-
-  return (
+const TableComponent = ({ columns, data, onEdit, onDelete, showActions = true,customRenderCell, customStyle = {}, actionHeaderLabel = "Edit/Delete", }) => {
+return (
     <TableContainer
       component={Paper} sx={style.tablecontainer}
     >
@@ -36,7 +33,7 @@ const TableComponent = ({ columns, data, onEdit, onDelete, showActions = true, c
               <TableCell sx={{
                 ...style.tableheaderCell,
                 ...(customStyle.headerCell || {}),
-              }}>Edit/Delete</TableCell>
+              }}>{actionHeaderLabel}</TableCell>
             )}
           </TableRow>
         </TableHead>
@@ -47,20 +44,23 @@ const TableComponent = ({ columns, data, onEdit, onDelete, showActions = true, c
 
             >
               {columns.map((column) => (
-                <TableCell key={column.id} sx={style.tablebodyCell}>{row[column.id]}</TableCell>
+                 <TableCell key={column.id} sx={style.tablebodyCell}>
+                 {customRenderCell
+                   ? customRenderCell(row, column)
+                   : row[column.id]}
+               </TableCell>
+              
               ))}
               {showActions && (
-                <TableCell sx={style.tablebodyCell}>
+                <TableCell  sx={{ ...style.tablebodyCell, ...style.tableiconBodyStyle }}>
                   <IconButton
                     onClick={() => onEdit(index)}
-                    sx={[style.tableIconBtn, style.tableeditHover]}
-                  >
+                    sx={[style.tableIconBtn, style.tableeditHover]} >
                     <EditIcon />
                   </IconButton>
                   <IconButton
                     onClick={() => onDelete(index)}
-                    sx={[style.tableIconBtn, style.tabledeleteHover]}
-                  >
+                    sx={[style.tableIconBtn, style.tabledeleteHover]} >
                     <DeleteOutlineIcon />
                   </IconButton>
                 </TableCell>

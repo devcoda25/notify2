@@ -359,7 +359,10 @@ const EditEventType = () => {
                                                                 isLocationCardVisible={state.isLocationCardVisible}
                                                             />
                                                         ) : (
-                                                            <div>  <SelectEventLocation options={eventOptions} /></div>
+                                                            <div> 
+                                                                 <label>Location</label>
+                                                                 <SelectEventLocation options={eventOptions} />
+                                                                 </div>
                                                         )
                                                     }
 

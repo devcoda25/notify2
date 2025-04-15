@@ -70,7 +70,7 @@ const CreateNewMeetingComponent = () => {
     const weekDays = getWeekDays(state.currentDate);
 
 
-   
+
     const timeSlots = Array.from({ length: 24 }, (_, i) =>
         dayjs().hour(i).minute(0).format("hA")
     );
@@ -239,8 +239,10 @@ const CreateNewMeetingComponent = () => {
                                         <label>Meeting Name</label>
                                         <TextfieldComponent customStyle='new_meeting_event_textbox' />
                                     </div>
-
-                                    <SelectEventLocation options={eventOptions} />
+                                    <div>
+                                        <label>Location</label>
+                                        <SelectEventLocation options={eventOptions} />
+                                    </div>
                                     <div>
                                         {!state.showEditor ? (
                                             <a className="newmeet_description" onClick={() => setState(prev => ({ ...prev, showEditor: true }))}>
@@ -248,9 +250,9 @@ const CreateNewMeetingComponent = () => {
                                             </a>
                                         ) : (
                                             <div className="new_meet_event_description">
-                                               
+
                                                 <TextEditor placeholder="Add any information relevant to this event" />
-                                            
+
                                             </div>
                                         )}
                                     </div>
@@ -298,7 +300,7 @@ const CreateNewMeetingComponent = () => {
                                             options={durationOptions}
                                             value={state.durationContent}
                                             onChange={(event, newValue) => setState(prev => ({ ...prev, durationContent: newValue }))}
-                                            customStyles={{...style.newticketsAutocomplete,width:'50%'}}
+                                            customStyles={{ ...style.newticketsAutocomplete, width: '50%' }}
                                         />
                                     </div>
                                     <div className="content">

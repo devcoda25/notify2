@@ -42,12 +42,12 @@ const style = {
     marginTop: '10px'
 
   },
-  analyticPeriodDropdown:{
+  analyticPeriodDropdown: {
     height: '32px',
     border: 'none !important',
     width: '100%',
     marginBottom: '15px',
-     marginTop:'20px',
+    marginTop: '20px',
     '&:hover': {
       border: 'none !important',
     },
@@ -55,42 +55,42 @@ const style = {
       border: 'none !important',
       outline: 'none',
     },
- },
- operatorPerformaceUser:{
-  border: '1px solid rgb(232, 234, 242)',
-  borderRadius: '4px',
-  width: '200px',
-  minHeight: '40px',
-  paddingLeft: '10px',
- paddingBottom: '25px',
-  backgroundColor: 'rgb(245, 246, 250)',
-  '&:hover': {
-    border: '1px solid green',
   },
-  '&.Mui-focused': {
-    border: '1px solid green',
-    backgroundColor: 'white',
-    outline: 'none',
+  operatorPerformaceUser: {
+    border: '1px solid rgb(232, 234, 242)',
+    borderRadius: '4px',
+    width: '200px',
+    minHeight: '40px',
+    paddingLeft: '10px',
+    paddingBottom: '25px',
+    backgroundColor: 'rgb(245, 246, 250)',
+    '&:hover': {
+      border: '1px solid green',
+    },
+    '&.Mui-focused': {
+      border: '1px solid green',
+      backgroundColor: 'white',
+      outline: 'none',
+    },
   },
- },
- workflowVariableBtn:{
-  padding: '4px 6px 2px',
-  borderRadius: '6px',
-  backgroundColor: 'rgb(77 80 85 / 10%)',
- },
- eventTimingDropdown:{
-  background:'#e7edf6',
-  color:'#a6bbd1',
-  border:'none !important',
-  outline:'none !important'
-},
-defaultActionGrid:{
-  marginLeft: '3.5rem',
-  width: '240px',
-  marginTop: '25px',
-},
-automationAutoComplete:{
- 
+  workflowVariableBtn: {
+    padding: '4px 6px 2px',
+    borderRadius: '6px',
+    backgroundColor: 'rgb(77 80 85 / 10%)',
+  },
+  eventTimingDropdown: {
+    background: '#e7edf6',
+    color: '#a6bbd1',
+    border: 'none !important',
+    outline: 'none !important'
+  },
+  defaultActionGrid: {
+    marginLeft: '3.5rem',
+    width: '240px',
+    marginTop: '25px',
+  },
+  automationAutoComplete: {
+
     border: '1px solid rgb(232, 234, 242)',
     borderRadius: '4px',
     height: '36px',
@@ -99,119 +99,240 @@ automationAutoComplete:{
     paddingBottom: '25px',
     backgroundColor: 'rgb(245, 246, 250)',
     '&:hover': {
-        border: '1px solid green',
+      border: '1px solid green',
     },
     '&.Mui-focused': {
-        border: '1px solid green',
-        backgroundColor: 'white',
-        outline: 'none',
-    
-},
-},
-tablecontainer: {
-  boxShadow: "none",
-  borderRadius: 0,
-},
-table: {
-  borderCollapse: "separate",
-  borderSpacing: 0,
-},
-tableheaderCell: {
-  borderBottom: "1px solid #e0e0e0",
-  fontWeight: 600,
-  padding: "20px 25px",
-  fontSize: "1.2rem",
-},
-tablebodyCell: {
-  borderBottom: "none",
-  padding: "20px 25px",
-  fontSize: "1.2rem",
-},
-tableIconBtn:{
-  width:'32px',
-  height:'32px',
-  border:'1px solid rgb(206, 208, 206)',
-  borderRadius:'5px',
-  background:'rgb(245, 246, 250)',
-  marginRight:'10px',
-},
-tableeditHover: {
-  "&:hover": {
-    border: "1px solid rgb(35 164 85 / 85%)",
-    color: "rgb(35 164 85 / 85%)",
-    
-  },
-},
-tabledeleteHover: {
-  "&:hover": {
-    border: "1px solid red",
-    color: "red",
-   
-  },
-},
-customTablePagination: {
-  '.MuiTablePagination-displayedRows': {
-    fontSize: '1.2rem',
-    margin: '0px',
-    color: 'rgb(51, 51, 51)',
-  },
-  '.MuiSelect-nativeInput': {
-    padding: '0px 1rem',
-    height: '3rem',
-    margin: '0 0 8px 0px',
-  },
-  '.MuiInputBase-root': {
-    fontSize: '1.2rem',
-    paddingRight: '0',
-  },
-  '.MuiTablePagination-selectLabel': {
-    fontSize: '1.2rem',
-    margin: '0px',
-    color: 'rgb(51, 51, 51)',
-  },
-},
-timeslots_list_nextbtn:{
-  marginLeft:'10px',
-  fontSize:'12px',
-  width:'48.5%',
-  fontWeight:'bold',
- borderRadius:'2px',
-padding:'0px',
-boxShadow:'none !important',
-height:'52px',
-background:'#006bff !important'
-},
-troubleshoot_btn:{
-  textTransform:"capitalize",
-  border:"1px solid #476788",
-  color:"black",
-  borderRadius:"40px",
-  padding:"6px 20px",
-},
-cookie_btn: {
-  color: '#004eba',
-  fontSize:'16px',
-  textTransform: 'none',
-  '&:hover': {
-    backgroundColor: 'white',
-    '& span': {
-      textDecoration: 'underline',
+      border: '1px solid green',
+      backgroundColor: 'white',
+      outline: 'none',
+
     },
   },
-},
-report_btn:{
-color:'#0a2540 !important',
-fontSize:'13px !important',
-'&:hover': {
-  backgroundColor: 'white',
-  '& span': {
-    textDecoration: 'underline',
+  tablecontainer: {
+    boxShadow: "none",
+    borderRadius: 0,
   },
-},
-},
-checkcircle:{
-  color: "#00796b", 
- fontSize: 20
-}
+  table: {
+    borderCollapse: "separate",
+    borderSpacing: 0,
+  },
+  tableheaderCell: {
+    borderBottom: "1px solid #e0e0e0",
+    fontWeight: 600,
+    padding: "20px 25px",
+    fontSize: "1.2rem",
+  },
+  tableiconBodyStyle: {
+    display: "flex",
+
+  },
+  tablebodyCell: {
+    borderBottom: "none",
+    padding: "20px 25px",
+    fontSize: "1.2rem",
+  },
+  tableIconBtn: {
+    width: '32px',
+    height: '32px',
+    border: '1px solid rgb(206, 208, 206)',
+    borderRadius: '5px',
+    background: 'rgb(245, 246, 250)',
+    marginRight: '10px',
+    cursor: 'pointer'
+  },
+  tableeditHover: {
+    "&:hover": {
+      border: "1px solid rgb(35 164 85 / 85%)",
+      color: "rgb(35 164 85 / 85%)",
+
+    },
+  },
+  tabledeleteHover: {
+    "&:hover": {
+      border: "1px solid red",
+      color: "red",
+
+    },
+  },
+  customTablePagination: {
+    '.MuiTablePagination-displayedRows': {
+      fontSize: '1.2rem',
+      margin: '0px',
+      color: 'rgb(51, 51, 51)',
+    },
+    '.MuiSelect-nativeInput': {
+      padding: '0px 1rem',
+      height: '3rem',
+      margin: '0 0 8px 0px',
+    },
+    '.MuiInputBase-root': {
+      fontSize: '1.2rem',
+      paddingRight: '0',
+    },
+    '.MuiTablePagination-selectLabel': {
+      fontSize: '1.2rem',
+      margin: '0px',
+      color: 'rgb(51, 51, 51)',
+    },
+  },
+  keywordSlider: {
+
+    height: 8,
+    maxWidth: '540px',
+    margin: '0px 10px',
+    color: 'rgb(35, 164, 85)',
+    '& .MuiSlider-rail': {
+      opacity: 0.38,
+      height: 'inherit',
+      backgroundColor: 'currentColor',
+      borderRadius: 'inherit',
+      top: '50%',
+      transform: 'translateY(-50%)',
+    },
+    '& .MuiSlider-track': {
+      borderRadius: '4px',
+      height: 8,
+    },
+    '& .MuiSlider-thumb': {
+      height: 25,
+      width: 25,
+      backgroundColor: '#fff',
+      border: '7px solid rgb(35, 164, 85)',
+      '&:hover, &.Mui-focusVisible, &.Mui-active': {
+        boxShadow: '0px 0px 0px 8px rgba(35, 164, 85, 0.16)',
+      },
+      '&::after': {
+        position: 'absolute',
+        content: '""',
+        width: 42,
+        height: 42,
+        borderRadius: '50%',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+    '& .MuiSlider-valueLabel': {
+      left: 'calc(-50% + 6px)',
+      marginTop: '-8px',
+      background: 'rgb(233, 246, 238)',
+      border: '1px solid rgb(35, 164, 85)',
+      color: 'rgb(35, 164, 85)',
+      boxSizing: 'border-box',
+      borderRadius: '5px',
+      position: 'relative',
+      fontWeight: 500,
+      fontSize: 12,
+      lineHeight: '18px',
+      padding: '6px 12px',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 'calc(100% - 1px)',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        borderTop: '10px solid rgb(35, 164, 85)',
+        borderLeft: '5px solid transparent',
+        borderRight: '5px solid transparent',
+        width: 0,
+        height: 0,
+        borderRadius: '5px',
+      },
+      '&::after': {
+        content: '""',
+        top: 'calc(100% - 3px)',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        position: 'absolute',
+        borderTop: '10px solid rgb(233, 246, 238)',
+        borderLeft: '5px solid transparent',
+        borderRight: '5px solid transparent',
+        width: 0,
+        height: 0,
+        borderRadius: '5px',
+      },
+    },
+    '& .MuiSlider-valueLabel span': {
+      width: 'auto',
+      height: 'auto',
+      translate: 'none',
+      background: 'none',
+      color: 'rgb(35, 164, 85)',
+    },
+
+  },
+  timeslots_list_nextbtn: {
+    marginLeft: '10px',
+    fontSize: '12px',
+    width: '48.5%',
+    fontWeight: 'bold',
+    borderRadius: '2px',
+    padding: '0px',
+    boxShadow: 'none !important',
+    height: '52px',
+    background: '#006bff !important'
+  },
+  troubleshoot_btn: {
+    textTransform: "capitalize",
+    border: "1px solid #476788",
+    color: "black",
+    borderRadius: "40px",
+    padding: "6px 20px",
+  },
+  cookie_btn: {
+    color: '#004eba',
+    fontSize: '16px',
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: 'white',
+      '& span': {
+        textDecoration: 'underline',
+      },
+    },
+  },
+  report_btn: {
+    color: '#0a2540 !important',
+    fontSize: '13px !important',
+    '&:hover': {
+      backgroundColor: 'white',
+      '& span': {
+        textDecoration: 'underline',
+      },
+    },
+  },
+  checkcircle: {
+    color: "#00796b",
+    fontSize: 20
+  },
+  oneonone_select_container: {
+    borderRadius: 2,
+    width: '100%',
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: '1px solid #c9c9cd',
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      border: '1px solid #c9c9cd',
+    },
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#1976d2',
+    },
+  },
+  oneone_select_menu: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  //edit location modal -->oneonone
+  editlocation_modal: {
+    width: '400px',
+    borderRadius: 2,
+  },
+  editlocation_heading: {
+    color: '#0a2540',
+    fontSize: '23px',
+    fontWeight: 700,
+  }
+
+
 }
 export default style;

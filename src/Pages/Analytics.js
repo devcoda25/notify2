@@ -1,6 +1,7 @@
 import React, {useState } from 'react';
 import InboxAnalytics from '../Component/Analytics/InboxAnalytics';
 import WhatsappAds from '../Component/Analytics/WhatsapAds';
+import { Link,Outlet } from 'react-router-dom';
 
 const Analytics = () => {
 

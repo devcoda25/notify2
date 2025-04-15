@@ -113,7 +113,10 @@ import {
   CheckCircle as CheckCircleIcon,
   OpenInNew as OpenInNewIcon,
   PermIdentityOutlined as PermIdentityOutlinedIcon,
-
+  Check as CheckIcon,
+  Delete as DeleteIcon,
+  FileDownloadOutlined as FileDownloadOutlinedIcon,
+  LocationOnOutlined as LocationOnOutlinedIcon
 
    } from "@mui/icons-material";
   
@@ -233,5 +236,9 @@ import {
    CheckCircleIcon,
    OpenInNewIcon,
    PermIdentityOutlinedIcon,
-  
+   CheckIcon,
+   DeleteIcon,
+   FileDownloadOutlinedIcon,
+   LocationOnOutlinedIcon,
+   
 };

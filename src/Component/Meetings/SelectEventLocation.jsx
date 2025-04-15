@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { ExpandMoreIcon, LinkOutlinedIcon,SettingsOutlinedIcon } from '../Icon';
 
-const SelectEventLocation = ({ options, showWebConfOptions = true }) => {
+const SelectEventLocation = ({ options, showWebConfOptions = true,onSelect }) => {
     const [showOptions, setShowOptions] = useState(false);
 
     return (
         <div className="select_event_location">
-            <label>Location</label>
+          
             <div className="event_container">
                 {options.map((option, index) => (
-                    <div key={index} className="select_event_content">
+                    <div key={index} className="select_event_content"   onClick={() => onSelect(option.label)}>
                         {option.icon}
                         <div>{option.label}</div>
                     </div>
