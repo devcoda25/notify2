@@ -331,8 +331,11 @@ const style = {
     color: '#0a2540',
     fontSize: '23px',
     fontWeight: 700,
-  }
-
+  },
+location_option_btn:{
+  color: '#004eba !important',
+  fontSize:'16px'
+}
 
 }
 export default style;
