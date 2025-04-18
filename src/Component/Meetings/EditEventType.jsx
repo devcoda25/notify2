@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import CustomButton from "./CustomButton";
 import SelectDateandTimeComponent from "./SelectDateandTimeComponent";
 import TimeZoneMenu from "./TimeZoneMenu";
-import { Popover, IconButton, Switch, FormControlLabel, RadioGroup, Radio, Dialog, DialogTitle, DialogContent, Menu, DialogActions, Tabs, Tab } from "@mui/material";
+import { Popover, IconButton, Switch, FormControlLabel, RadioGroup, Radio, Dialog, DialogTitle, DialogContent, Menu, DialogActions, Tabs, Tab, Grid, Tooltip, Button, List, ListItem } from "@mui/material";
 import dayjs from "dayjs";
 import TextfieldComponent from "../TextfieldComponent";
 import AutocompleteComponent from "../AutocompleteComponent";
 import style from "../MuiStyles/muiStyle";
 import LocationSelector from "./LocationSelector";
 import SelectEventLocation from "./SelectEventLocation";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { parse, format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import {
     ArrowBackIosIcon, SettingsOutlinedIcon, LinkOutlinedIcon, IosShareOutlinedIcon, MenuIcon, ArrowForwardIosOutlinedIcon, PeopleAltOutlinedIcon, CalendarTodayOutlinedIcon, KeyboardArrowDownIcon, EventNoteIcon, EmailOutlinedIcon, AccessTimeIcon, VideocamOutlinedIcon, PublicOutlinedIcon, ExpandMoreIcon, BuildOutlinedIcon, CircleIcon, ArrowDropDownIcon, VideoCameraFrontIcon,
     PhoneIcon, EditOutlinedIcon,
     RoomIcon, AddIcon, DeleteOutlineIcon, CampaignIcon,
-    MoreVertOutlinedIcon, ReportGmailerrorredIcon,
+    MoreVertOutlinedIcon, ReportGmailerrorredIcon, ArrowDropUpIcon, InfoOutlinedIcon,
     ChatBubbleOutlineOutlinedIcon, LockOutlinedIcon, DragIndicatorIcon, CloseIcon, RedoOutlinedIcon
 } from '../Icon'
 import TextEditor from "./TextEditor";
@@ -21,11 +25,18 @@ import ScheduleOptions from "./ScheduleOptions";
 import SearchboxComponent from "../SearchboxComponent";
 import EditQuestionModal from "./EditQuestionModal";
 import VariableBox from "./VariableBox";
+import CustomDatePicker from "./CustomDatePicker";
 
 const eventOptions = [
     { icon: <VideoCameraFrontIcon />, label: "Zoom" },
     { icon: <PhoneIcon />, label: "Phone" },
     { icon: <RoomIcon />, label: "In-person" },
+];
+const baseTimeSlots = [
+    "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am",
+    "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm",
+    "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm", "7:00 pm", "7:30 pm",
+    "8:00 pm", "8:30 pm", "9:00 pm", "9:30 pm", "10:00 pm", "10:30 pm", "11:00 pm", "11:30 pm"
 ];
 const locationOptions = [
     { title: "In-person meeting", img: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 10" role="img"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M8 3.5c0 2.5-3 6-3 6S2 6 2 3.5a3 3 0 1 1 6 0v0Z"></path><path stroke="currentColor" d="M5 4a.5.5 0 0 1 0-1M5 4a.5.5 0 0 0 0-1"></path></svg> },
@@ -65,6 +76,7 @@ const EditEventType = () => {
         showTimeSlots: false,
         selectedTime: [],
         timeZoneAnchor: null,
+        isOpenTimeZone: false,
         selectedTimeZone: "Eastern Time - US & Canada",
         selectedCard: null,
         selectedColor: "#DA70D6",
@@ -113,13 +125,31 @@ const EditEventType = () => {
         isDropdownDisabled: true,
         openEmailReminders: false,
         openTextReminders: false,
+        selectedDate: null,
+        showTimeSlots: false,
+        selectedTime: [],
+        is24HourFormat: false,
+        currentTime: '',
+        isOpenTimeZone: false,
 
     })
+    const timeZone = 'America/New_York';
     const updateState = (newState) => {
         setState((prevState) => ({ ...prevState, ...newState }));
     };
     const handleTimeZoneClick = (event) => {
         updateState({ timeZoneAnchor: event.currentTarget });
+    };
+    const handleTimeClick = (time) => {
+        updateState({
+            selectedTime: [time]
+        });
+    };
+    const disablePastDates = (date) => {
+        const today = dayjs().startOf('day');
+        const isPast = date.isBefore(today);
+        const isSunday = date.day() === 0;
+        return isPast || isSunday;
     };
 
     const handleTimeZoneSelect = (zone) => {
@@ -173,7 +203,7 @@ const EditEventType = () => {
         updateState({ bookingAnchorEl: event.currentTarget, bookingSelectedItem: item });
     };
 
-
+  
 
     const handleBookingClose = () => {
         updateState({ bookingAnchorEl: null, bookingSelectedItem: "" });
@@ -213,6 +243,35 @@ const EditEventType = () => {
             updateState({ openTextReminders: true })
         }
     }
+    const handleDateChange = (newDate) => {
+        updateState({ selectedDate: newDate, showTimeSlots: true, selectedTime: [] });
+
+    };
+    const handleTimezone = () => {
+        setState((prev) => ({ ...prev, isOpenTimeZone: !prev.isOpenTimeZone }));
+    };
+    const formatTime = (time) => {
+        const parsed = parse(time, 'h:mm a', new Date());
+        return state.is24HourFormat ? format(parsed, 'HH:mm') : format(parsed, 'h:mm a');
+    };
+    const timeSlots = baseTimeSlots.map(formatTime);
+    const handleFormatSwitch = () => {
+        setState((prev) => ({ ...prev, is24HourFormat: !prev.is24HourFormat }));
+    };
+  useEffect(() => {
+        const updateTime = () => {
+            const now = new Date();
+            const zonedDate = toZonedTime(now, timeZone);
+            const timeFormat = state.is24HourFormat ? 'HH:mm' : 'hh:mm a';
+            const formattedTime = format(zonedDate, timeFormat).toLowerCase();
+            setState((prev) => ({ ...prev, currentTime: formattedTime }));
+        };
+
+        updateTime();
+        const interval = setInterval(updateTime, 30000);
+        return () => clearInterval(interval);
+    }, [state.is24HourFormat]);
+
     return (
         <>
             <div className="edit_event_type_container">
@@ -359,10 +418,10 @@ const EditEventType = () => {
                                                                 isLocationCardVisible={state.isLocationCardVisible}
                                                             />
                                                         ) : (
-                                                            <div> 
-                                                                 <label>Location</label>
-                                                                 <SelectEventLocation options={eventOptions} />
-                                                                 </div>
+                                                            <div>
+                                                                <label>Location</label>
+                                                                <SelectEventLocation options={eventOptions} />
+                                                            </div>
                                                         )
                                                     }
 
@@ -1123,14 +1182,155 @@ const EditEventType = () => {
                             <h3 className="event">30 Minute Meeting</h3>
                             <div><span><AccessTimeIcon />30 min</span> <span><VideocamOutlinedIcon />Web conferencing details provided upon confirmation.</span></div>
                         </div>
-                        <div className="select_dateandtime_container">
-                            <h4>Select a Date & Time</h4>
-                            <SelectDateandTimeComponent selectedDate={state.selectedDate}
+                        <div className="select_dateandtime_container" style={{
+                            maxWidth: state.showTimeSlots ? '571px' : '400px'
+                        }}>
+
+                            <h3>Select a Date & Time</h3>
+                            <div className="add_time_copylink_container" style={{
+                                width: state.showTimeSlots ? '550px' : '345px'
+                            }}>
+
+                                <Grid container spacing={2}>
+
+                                    <Grid item xs={12} md={state.showTimeSlots ? 6 : 12}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                                            <div style={{ width: 320, overflowY: 'hidden' }}>
+
+
+                                                <div className="copylink_datepicker">
+                                                    <CustomDatePicker
+                                                        value={state.selectedDate}
+                                                        onChange={handleDateChange}
+                                                        disablePastDates={disablePastDates}
+                                                    />
+
+                                                </div>
+                                            </div>
+                                        </LocalizationProvider>
+                                        <div className="timezone_troubleshoot">
+                                            <div className="timeZone_copylink">
+                                                <label>Time zone</label>
+                                                <button className='copylink_timezone_container' onClick={handleTimezone} >
+                                                    <PublicOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+                                                    <p>Eastern Time - US & Canada  ({state.currentTime})</p>
+                                                    {state.isOpenTimeZone ? <ArrowDropDownIcon fontSize="small" /> : <ArrowDropUpIcon fontSize="small" />}
+                                                </button>
+                                                {state.isOpenTimeZone && (
+                                                    <div className="custom_timezone_dropdown">
+                                                        <div className="time_container">
+                                                            <p>Available times locked to</p>
+                                                            <div>Eastern Time - US & Canada({state.currentTime})</div>
+                                                        </div>
+                                                        <div className="timeformat_container">
+                                                            <p>TIME FORMAT</p>
+                                                            <div className="time_format_toggle">
+                                                                <span>am/pm</span>
+                                                                <Switch size="small" checked={state.is24HourFormat} onChange={handleFormatSwitch} />
+                                                                <span>24h</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                               
+                                               
+                                            </div>
+
+                                            <div className="troubleshoot_content">
+                                                <Tooltip
+                                                    title={
+                                                        <div className="troubleshoot_tooltipcontainer">
+                                                            <h4>  Troubleshoot your availability</h4>
+                                                            <p>See why specific times are not available on your calendar.</p>
+                                                            <div className='content'>
+                                                                <InfoOutlinedIcon fontSize="small" />
+                                                                <span variant="caption">
+                                                                    <strong>Don't worry</strong>-your invitees will never see this information.
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    placement="top"
+                                                    enterTouchDelay={0}
+                                                    leaveTouchDelay={4000}
+                                                    componentsProps={{
+                                                        tooltip: {
+                                                            sx: {
+
+                                                                backgroundColor: ' #666666;',
+                                                                color: 'white',
+                                                                borderRadius: 1.5,
+                                                                width: '290px'
+                                                            },
+                                                        },
+                                                    }}
+                                                >
+
+                                                    <Button variant="outlined" sx={style.troubleshoot_btn} startIcon={<BuildOutlinedIcon />}>Troubleshoot</Button>
+
+
+                                                </Tooltip>
+                                                <InfoOutlinedIcon fontSize="small" />
+                                            </div>
+                                        </div>
+                                    </Grid>
+
+
+                                    {state.showTimeSlots && (
+                                        <Grid item xs={12} md={6} className="timeslots_grid">
+                                            <h3>
+                                                {state.selectedDate
+                                                    ? dayjs(state.selectedDate).format("dddd, MMMM D")
+                                                    : "Select a date"}
+                                            </h3>
+
+                                            <List className="edit_timeslots_list">
+                                                {timeSlots.map((time, index) => (
+                                                    <ListItem
+                                                        key={index}
+                                                        disablePadding
+                                                        className="timeslots_list_item"
+                                                        onClick={() => handleTimeClick(time)}
+
+                                                    >
+                                                        <Button variant='contained' className="timeslots_list_button" sx={{
+                                                            backgroundColor: "white !important",
+                                                            color: "rgb(0, 105, 255)",
+                                                            width: '100%',
+
+                                                        }}
+                                                        >{time}</Button>
+
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+
+                                        </Grid>
+                                    )}
+                                </Grid>
+                            </div>
+
+                            {/* <SelectDateandTimeComponent selectedDate={state.selectedDate}
                                 showTimeSlots={state.showTimeSlots}
                                 selectedTime={state.selectedTime}
                                 updateState={updateState}
-                            />
-                            <h4>Time zone</h4>
+                            /> */}
+                            {/* <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                                <div style={{ width: 320, overflowY: 'hidden' }}>
+
+
+                                    <div className="copylink_datepicker">
+                                        <CustomDatePicker
+                                            value={state.selectedDate}
+                                            onChange={handleDateChange}
+                                            disablePastDates={disablePastDates}
+                                        />
+                                    </div>
+                                </div>
+                            </LocalizationProvider> */}
+
+                            {/* <h4>Time zone</h4>
                             <div
                                 onClick={handleTimeZoneClick} className="timezone"
 
@@ -1138,7 +1338,7 @@ const EditEventType = () => {
                                 <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
                             </div>
                             <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
-                            <CustomButton variant="outlined" icon={<BuildOutlinedIcon />}>Troubleshoot</CustomButton>
+                            <CustomButton variant="outlined" icon={<BuildOutlinedIcon />}>Troubleshoot</CustomButton> */}
                         </div>
                     </div>
                 </div>

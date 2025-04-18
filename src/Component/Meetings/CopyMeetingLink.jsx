@@ -14,6 +14,7 @@ import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import style from "../MuiStyles/muiStyle";
 import { parse, format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import CustomDatePicker from "./CustomDatePicker";
 import 'dayjs/locale/en-gb';
 import {
     PermIdentityOutlinedIcon,
@@ -27,7 +28,7 @@ import {
     ArrowBackOutlinedIcon,
     KeyboardArrowDownOutlinedIcon,
     LinkOutlinedIcon,
-    
+
 } from '../Icon';
 
 dayjs.extend(weekday);
@@ -379,7 +380,12 @@ const CopyMeetingLink = () => {
 
 
                                                                         <div className="copylink_datepicker">
-                                                                            <StaticDatePicker
+                                                                            <CustomDatePicker
+                                                                                value={state.selectedDate}
+                                                                                onChange={handleDateChange}
+                                                                                disablePastDates={disablePastDates}
+                                                                            />
+                                                                            {/* <StaticDatePicker
                                                                                 displayStaticWrapperAs="desktop"
                                                                                 value={state.selectedDate}
                                                                                 onChange={handleDateChange}
@@ -452,7 +458,7 @@ const CopyMeetingLink = () => {
                                                                                     },
 
                                                                                 }}
-                                                                            />
+                                                                            /> */}
                                                                         </div>
                                                                     </div>
                                                                 </LocalizationProvider>

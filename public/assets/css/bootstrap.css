@@ -19240,7 +19240,13 @@ height:20px
   max-height: 300px;
   overflow-y: auto;
   width: 200px;
-
+}
+.edit_timeslots_list{
+  max-height: 485px;
+  overflow-y: auto;
+  width: 252px;
+  padding: 13px 25px 0px 10px !important;
+  overflow-x: hidden;
 }
 .add_time_copylink_container .timeslots_list {
   max-height: 485px;
@@ -19442,8 +19448,8 @@ margin-bottom: 15px;
   gap: 100px
 }
 .timezone_troubleshoot {
-  position: absolute;
-  bottom:45px;
+  /* position: absolute;
+  bottom:45px; */
   display: flex;
   flex-direction: column;
   gap:10px
@@ -19599,6 +19605,7 @@ background-color: rgb(0 105 255 / 15%);
   align-items: center;
   margin: 10px auto;
   padding: 16px 16px;
+  min-width:683px;
 }
 
 .edit_event_type_container .right_container .header {
@@ -19622,6 +19629,7 @@ background-color: rgb(0 105 255 / 15%);
   box-shadow: 0 1px 6px rgb(0 0 0 / 10%);
   background: white;
   border-radius: 8px;
+  min-height: 680px;
 }
 
 .edit_event_type_container .right_container .main_content .eventdetails_content {
@@ -19646,7 +19654,10 @@ background-color: rgb(0 105 255 / 15%);
 }
 
 .edit_event_type_container .right_container .select_dateandtime_container {
-  padding: 24px 15px;
+   padding: 24px 15px; 
+  border-right: none !important;
+  margin: auto;
+  /* padding: 25px 43px !important; */
 }
 
 /* edit event type --> event details */
@@ -20130,6 +20141,10 @@ border:1px solid rgb(35, 164, 85);
 .timeZone_copylink {
 position: relative;
 width:300px
+}
+.timeZone_copylink  label{
+  font-size: 16px;
+font-weight: 700;
 }
 .timeZone_copylink h4{
 margin:10px 0px 0px 0px;

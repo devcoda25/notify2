@@ -8,7 +8,8 @@ import SelectEventLocation from "./SelectEventLocation";
 import ButtonComponent from "../ButtonComponent";
 import CustomButton from "./CustomButton";
 import CustomDropdown from "./CustomDropdown";
-import { BorderRight } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+
 
 const options = ['15 min', '30 min', '45 min', '60 min', 'Custom'];
 
@@ -56,10 +57,11 @@ const eventLocations = {
         label: 'Zoom',
         description: 'Zoom is not connected. Visit the <a style="color: #004eba">Zoom integration page</a> to connect your account.'
     },
+
     teams: {
         icon: '/assets/images/teams.svg',
         label: 'Teams',
-        description: 'Teams is not connected. Visit the <a style="color: #004eba">Team integration page</a> to connect your account.'
+        description: 'Microsoft Teams is not connected. Visit the <a style="color: #004eba">Microsoft Teams integration page</a> to connect your account.'
     },
     webex: {
         icon: '/assets/images/webex.svg',
@@ -82,10 +84,11 @@ const eventLocations = {
         ),
         label: 'Ask invitee'
 
-    }
+    },
+
 };
 
-const EditLocationPopup = ({ open, handleClose, initialMeetingType }) => {
+const EditLocationPopup = ({ open, handleClose, initialMeetingType, onUpdate }) => {
     const [meetingType, setMeetingType] = useState('');
     const [callOption, setCallOption] = useState('I will call my invitee');
     const [customOption, setCustomOption] = useState('Display location while booking');
@@ -236,7 +239,28 @@ const EditLocationPopup = ({ open, handleClose, initialMeetingType }) => {
 
                     <div className="editlocationModal_button">
                         <CustomButton variant="outlined" sx={{ width: '160px' }} onClick={handleClose}>Cancel</CustomButton>
-                        <CustomButton variant="contained" sx={{ margin: 0 }}>Update</CustomButton>
+
+                        {/* <CustomButton variant="contained" sx={{ margin: 0 }} onClick={() => {
+                            onUpdate(meetingType);
+                            handleClose();
+                        }}>Update</CustomButton> */}
+                        <CustomButton
+                            variant="contained"
+                            sx={{ margin: 0 }}
+                            onClick={() => {
+                                const selected = meetingOptions.find(opt => opt.value === meetingType);
+                                if (selected) {
+                                    onUpdate({
+                                        value: selected.value,
+                                        label: selected.label,
+                                        icon: selected.icon
+                                    });
+                                }
+                                handleClose();
+                            }}
+                        >
+                            Update
+                        </CustomButton>
                     </div>
                 </div>
             </DialogContent>
@@ -251,14 +275,29 @@ const OneononeMeeting = () => {
     const [selectedColor, setSelectedColor] = useState(colors[3]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [duration, setDuration] = useState('30 min');
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [addLocationOption, setLocationOption] = useState(null);
+    // const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState({
+        value: '',
+        label: '',
+        icon: null
+    });
+
+    // const [addLocationOption, setLocationOption] = useState(null);
+    const [addLocationOption, setLocationOption] = useState({
+        value: '',
+        label: '',
+        icon: null
+    });
+    // const [addLocationOption, setLocationOption] = useState(null);
     const [openLocationModal, setOpenLocationModal] = useState(false);
+    const [openAddLocationModal, setOpenAddLocationModal] = useState(false);
     const [showEventLocationContent, setShowEventLocationContent] = useState(false);
     const [openEventLocation, setEventLocation] = useState(false);
     const [addLocationDropdown, setAddLocationDropdown] = useState(false);
     const [meetingType, setMeetingType] = useState('');
     const [editEventLocation, setEditEventLocation] = useState(false);
+    const [editAddEventLocation, setEditAddEventLocation] = useState(false);
+
 
     const handleSelectOption = (option) => {
         setSelectedOption(option);
@@ -266,39 +305,70 @@ const OneononeMeeting = () => {
         if (option === "phone" || option === "inperson" || option === 'custom') {
             setOpenLocationModal(true);
         }
-        else if (option === "zoom" || option === "google" || option === "webex" || option === "gotomeeting" || option === "teams" || option === 'ask') {
+        // else if (option === "zoom" || option === "google" || option === "webex" || option === "gotomeeting" || option === "teams" || option === 'ask') {
+        //     setEventLocation(true);
+        // }
+        else {
             setEventLocation(true);
         }
     };
-    const handleAddLocation = (option) => {
-        const eventBasedOptions = ['zoom', 'google', 'webex', 'gotomeeting', 'teams', 'ask'];
+    const handleAddLocation = (option, fromModal = false) => {
         setLocationOption(option);
 
-        if (option === "phone" || option === "inperson" || option === 'custom') {
-            setOpenLocationModal(true);
+        setShowEventLocationContent(true);
+        setAddLocationDropdown(false);
+        if (!fromModal && (option?.value === "phone" || option?.value === "inperson" || option?.value === 'custom')) {
+            setOpenAddLocationModal(true);
+
         }
-        else if (eventBasedOptions.includes(option)) {
-            setAddLocationDropdown(false);
-            setShowEventLocationContent(true);
-        }
-    };
+
+    }
+    // else if (eventBasedOptions.includes(option)) {
+    //     setAddLocationDropdown(false);
+    //     setShowEventLocationContent(true);
+    // }
+    // else {
+    //     setAddLocationDropdown(false);
+    //    // setShowEventLocationContent(true);
+    // }
+    // };
+
     const handleCloseAddLocation = () => [
         setAddLocationDropdown(false),
         setShowEventLocationContent(false)
     ]
+
     return (
         <div className="oneonone_container">
-            {(selectedOption === "phone" || selectedOption === "inperson" || selectedOption === 'custom' ||
-                addLocationOption === 'phone' || addLocationOption === "inperson" || addLocationOption === 'custom') && (
-                    <EditLocationPopup
-                        open={openLocationModal}
-                        handleClose={() => setOpenLocationModal(false)}
-                        initialMeetingType={selectedOption}
-                    />
-                )}
+            {(selectedOption === "phone" || selectedOption === "inperson" || selectedOption === 'custom') && (
+                <EditLocationPopup
+                    open={openLocationModal}
+                    handleClose={() => setOpenLocationModal(false)}
+                    initialMeetingType={selectedOption}
+                    onUpdate={handleSelectOption}
+
+                />
+            )}
+            {(addLocationOption?.value === 'phone' || addLocationOption?.value === "inperson" || addLocationOption?.value === 'custom') && (
+                <EditLocationPopup
+                    open={openAddLocationModal}
+                    handleClose={() => setOpenAddLocationModal(false)}
+                    initialMeetingType={addLocationOption?.value}
+                    onUpdate={handleAddLocation}
+
+                />
+            )}
             {
                 editEventLocation && (
-                    <EditLocationPopup open={editEventLocation} handleClose={() => setEditEventLocation(false)} initialMeetingType={selectedOption} />
+                    <>
+                        <EditLocationPopup open={editEventLocation} handleClose={() => setEditEventLocation(false)} initialMeetingType={selectedOption?.value} onUpdate={handleSelectOption} />
+
+                    </>
+                )
+            }
+            {
+                editAddEventLocation && (
+                    <EditLocationPopup open={editAddEventLocation} handleClose={() => setEditAddEventLocation(false)} initialMeetingType={addLocationOption?.value} onUpdate={handleAddLocation} />
                 )
             }
             <div className="left_container">
@@ -324,7 +394,6 @@ const OneononeMeeting = () => {
                                                 <div
                                                     className="color_button"
                                                     style={{ backgroundColor: selectedColor }} /><KeyboardArrowDownOutlinedIcon />
-
                                             </div>
                                             <TextfieldComponent type='text' placeholder='Name your event' customStyle='custom_textfield_box color_input_field'
                                                 value={eventName}
@@ -378,8 +447,13 @@ const OneononeMeeting = () => {
                                         {
                                             openEventLocation ? (
                                                 <>
-                                                    <div className="selectedeventlocation_container">
-                                                        <div className="location_left_content">
+                                                    <div className="selectedeventlocation_container"
+                                                        style={{
+                                                            backgroundColor: (selectedOption.value !== 'ask' && selectedOption.value !== 'google')
+                                                                ? 'rgb(227 22 0 / 10%)'
+                                                                : 'rgb(0 105 255 / 7%)'
+                                                        }}>
+                                                        {/* <div className="location_left_content">
                                                             {typeof eventLocations[selectedOption]?.icon === 'string' ? (
                                                                 <img src={eventLocations[selectedOption]?.icon} alt={selectedOption} />
                                                             ) : (
@@ -396,81 +470,53 @@ const OneononeMeeting = () => {
                                                                 Edit
                                                             </CustomButton>
                                                             <CloseIcon onClick={() => setEventLocation(false)} />
+                                                        </div> */}
+                                                        <div className="location_left_content">
+                                                            {typeof selectedOption?.icon === 'string' ? (
+                                                                <img src={selectedOption.icon} alt={selectedOption.label} />
+                                                            ) : (
+                                                                selectedOption?.icon
+                                                            )}
+                                                            <span>{selectedOption?.label}</span>
+                                                        </div>
+
+                                                        <div className="location_right_content">
+                                                            <CustomButton
+                                                                variant="text"
+                                                                sx={{
+                                                                    color: '#0060e6',
+                                                                    borderRight: '1px solid rgb(26 26 26 / 10%) !important'
+                                                                }}
+                                                                onClick={() => setEditEventLocation(true)}
+                                                            >
+                                                                Edit
+                                                            </CustomButton>
+                                                            <CloseIcon onClick={() => setEventLocation(false)} />
                                                         </div>
                                                     </div>
-                                                    {selectedOption === 'zoom' && (
-                                                        <div className="selectedeventLocation_subtext"
-                                                            dangerouslySetInnerHTML={{ __html: eventLocations[selectedOption]?.description }}
-                                                        />
+                                                    {(selectedOption.value !== 'ask' && selectedOption.value !== 'google') && (
+                                                        <div className="selectedeventLocation_subtext">
+                                                            {selectedOption.label} is not connected. Visit the <a style={{ color: '#004eba' }}>{selectedOption.label}integration page</a> to connect your account.
+                                                        </div>
                                                     )}
-                                                    {/* {
-                                                        addLocationDropdown ? (
-                                                            <>
-                                                                <CustomDropdown
-                                                                    value={meetingType}
-                                                                    //  onChange={(e) => setMeetingType(e.target.value)}
-                                                                    onChange={(e) => {
-                                                                        const selectedValue = e.target.value;
-                                                                        setMeetingType(selectedValue); 
-                                                                        handleAddLocation(selectedValue); 
-                                                                      }}
-                                                                    options={meetingOptions}
 
-                                                                    getValueLabel={(val) => {
-                                                                        const selectedOption = meetingOptions.find((o) => o.value === val);
-                                                                        if (!selectedOption) return 'Add a Location';
-
-                                                                        return (
-                                                                            <div className="editlocation_custom_dropdown">
-                                                                                {selectedOption.icon && (
-                                                                                    <span>
-                                                                                        {selectedOption.icon}
-                                                                                    </span>
-                                                                                )}
-                                                                                {selectedOption.label}
-                                                                            </div>
-                                                                        );
-                                                                    }}
-
-                                                                    renderOption={(opt, selectedVal) => {
-                                                                        if (opt.type === 'heading') {
-                                                                            return (
-                                                                                <div className="editlocation_dropdown_heading" >
-                                                                                    {opt.label}
-                                                                                </div>
-                                                                            );
-                                                                        }
-
-                                                                        return (
-                                                                            <>
-                                                                                <ListItemIcon>{opt.icon}</ListItemIcon>
-                                                                                <ListItemText primary={opt.label} />
-                                                                                {selectedVal === opt.value && (
-                                                                                    <CheckIcon
-                                                                                        fontSize="small"
-                                                                                        sx={{ color: '#006bff', marginLeft: 'auto' }}
-                                                                                    />
-                                                                                )}
-                                                                            </>
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <div className="selectedeventloc_option">Want to offer choices to your invitee? </div>
-                                                                <CustomButton variant="text"  sx={style.location_option_btn} onClick={() => setAddLocationDropdown(true)}>Add a location option</CustomButton>
-                                                            </>
-                                                        )
-                                                    } */}
                                                     {addLocationDropdown ? (
                                                         <CustomDropdown
                                                             value={meetingType}
                                                             //  onChange={(e) => setMeetingType(e.target.value)}
+                                                            // onChange={(e) => {
+                                                            //     const selectedValue = e.target.value;
+                                                            //     setMeetingType(selectedValue);
+                                                            //     handleAddLocation(selectedValue);
+                                                            //     console.log(selectedValue);
+                                                            // }}
                                                             onChange={(e) => {
                                                                 const selectedValue = e.target.value;
+                                                                const selectedOption = meetingOptions.find((o) => o.value === selectedValue);
+
                                                                 setMeetingType(selectedValue);
-                                                                handleAddLocation(selectedValue);
+                                                                handleAddLocation(selectedOption);
+                                                                console.log(selectedOption);
                                                             }}
                                                             options={meetingOptions}
 
@@ -516,34 +562,52 @@ const OneononeMeeting = () => {
                                                     ) : null}
                                                     {showEventLocationContent && (
                                                         <>
-                                                            <div className="selectedeventlocation_container">
-                                                                <div className="location_left_content">
+                                                            <div className="selectedeventlocation_container"
+                                                                style={{
+                                                                    backgroundColor: (addLocationOption.value !== 'ask' && addLocationOption.value !== 'google')
+                                                                        ? 'rgb(227 22 0 / 10%)'
+                                                                        : 'rgb(0 105 255 / 7%)'
+                                                                }}>
+                                                                {/* <div className="location_left_content">
                                                                     {typeof eventLocations[addLocationOption]?.icon === 'string' ? (
                                                                         <img src={eventLocations[addLocationOption]?.icon} alt={selectedOption} />
                                                                     ) : (
                                                                         eventLocations[addLocationOption]?.icon
                                                                     )}
                                                                     <span>{eventLocations[addLocationOption]?.label}</span>
+                                                                </div> */}
+                                                                <div className="location_left_content">
+                                                                    {typeof addLocationOption?.icon === 'string' ? (
+                                                                        <img src={addLocationOption?.icon} alt={selectedOption} />
+                                                                    ) : (
+                                                                        addLocationOption?.icon
+                                                                    )}
+                                                                    <span>{addLocationOption?.label}</span>
                                                                 </div>
                                                                 <div className="location_right_content">
                                                                     <CustomButton
                                                                         variant="text"
                                                                         sx={{ color: '#0060e6', borderRight: '1px solid rgb(26 26 26 / 10%) !important' }}
-                                                                        onClick={() => setEditEventLocation(true)}
+                                                                        onClick={() => setEditAddEventLocation(true)}
                                                                     >
                                                                         Edit
                                                                     </CustomButton>
                                                                     <CloseIcon onClick={handleCloseAddLocation} />
                                                                 </div>
                                                             </div>
-
-                                                            <div className="selectedeventLocation_subtext"
+                                                            {(addLocationOption.value !== 'ask' && addLocationOption.value !== 'google') && (
+                                                                <div className="selectedeventLocation_subtext">
+                                                                    {addLocationOption.label} is not connected. Visit the <a style={{ color: '#004eba' }}>{addLocationOption.label}integration page</a> to connect your account.
+                                                                </div>
+                                                            )}
+                                                            {/* <div className="selectedeventLocation_subtext"
                                                                 dangerouslySetInnerHTML={{ __html: eventLocations[addLocationOption]?.description }}
-                                                            />
+                                                            /> */}
                                                             <CustomButton
                                                                 variant="text"
                                                                 sx={style.location_option_btn}
-                                                              icon={<AddIcon/>}
+                                                                icon={<AddIcon />}
+
                                                             >
                                                                 Add a location option
                                                             </CustomButton>
@@ -576,7 +640,11 @@ const OneononeMeeting = () => {
                             </div>
                             <div className="button_footer">
                                 <CustomButton variant="text" sx={{ maginLeft: 'auto' }}>Cancel</CustomButton>
-                                <CustomButton variant="contained" sx={{ margin: '0px', width: '100px' }}>Continue</CustomButton>
+                                <Link to="/edit-event" style={{ textDecoration: 'none' }}>
+                                    <CustomButton variant="contained" sx={{ margin: '0px', width: '100px' }}>
+                                        Continue
+                                    </CustomButton></Link>
+                                {/* <CustomButton variant="contained" sx={{ margin: '0px', width: '100px' }}>Continue</CustomButton> */}
                             </div>
                         </div>
                     </div>
@@ -591,10 +659,21 @@ const OneononeMeeting = () => {
                         <div className="middle_content">
                             <div className="middle_header">
                                 <div className="user">hepto</div>
-                                <div className="eventname">Event name here</div>
+                                <div className="eventname">{eventName ? eventName: 'Event name here'}</div>
                                 <div className="location_container">
-                                    <div className="loc_content"><AccessTimeOutlinedIcon /><span>30 min</span></div>
-                                    <div className="loc_content"><LocationOnOutlinedIcon /><span>Add a location for it to show here</span></div>
+
+                                    <div className="loc_content"><AccessTimeOutlinedIcon /><span>{duration ? duration :'30 min'}</span></div>
+                                    {
+                                        selectedOption.value === 'google' && (
+                                            <div className="loc_content"><VideocamOutlinedIcon />Web conferencing details provided upon confirmation.</div>
+                                        )
+                                    }
+                                    {
+                                        !selectedOption.value && (
+                                            <div className="loc_content"><LocationOnOutlinedIcon /><span>Add a location for it to show here</span></div>
+                                        )
+                                    }
+
                                 </div>
                             </div>
                             <div className="sub_content">

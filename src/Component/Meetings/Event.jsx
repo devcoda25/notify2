@@ -148,7 +148,7 @@ const locationOptions = [
     { title: "GoTo Meeting", img: "/assets/images/gotomeeting.svg" },
 ];
 const newEventOptions = [
-    { id: 1, title: 'One-on-One', subTitle: 'One host with one invitee', description: "Good for: coffee chats, 1:1 interviews, etc.", icon: "", popupType: 'hostSelection' },
+    { id: 1, title: 'One-on-One', subTitle: 'One host with one invitee', description: "Good for: coffee chats, 1:1 interviews, etc.", icon: "assets/images/one_on_one.svg", popupType: 'hostSelection' },
     { id: 2, title: 'Group', subTitle: 'One host with group of invitees', description: 'Good for: webinars, online classes, etc.', icon: "assets/images/group.svg", popupType: 'hostSelection' },
     { id: 3, title: 'Collective', subTitle: 'More than one host with one invitee', description: 'Good for: panel interviews, group sales calls, etc.', icon: 'assets/images/collective.svg', popupType: "inviteUsers" },
     { id: 4, title: 'Round Robin', subTitle: 'One rotating host with one invitee', description: 'Good for destributing incoming sales leads', icon: 'assets/images/round_robin.svg', popupType: "inviteUsers" }
