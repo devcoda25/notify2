@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CustomButton from "./CustomButton";
 import SelectDateandTimeComponent from "./SelectDateandTimeComponent";
 import TimeZoneMenu from "./TimeZoneMenu";
@@ -203,7 +203,7 @@ const EditEventType = () => {
         updateState({ bookingAnchorEl: event.currentTarget, bookingSelectedItem: item });
     };
 
-  
+
 
     const handleBookingClose = () => {
         updateState({ bookingAnchorEl: null, bookingSelectedItem: "" });
@@ -258,7 +258,7 @@ const EditEventType = () => {
     const handleFormatSwitch = () => {
         setState((prev) => ({ ...prev, is24HourFormat: !prev.is24HourFormat }));
     };
-  useEffect(() => {
+    useEffect(() => {
         const updateTime = () => {
             const now = new Date();
             const zonedDate = toZonedTime(now, timeZone);
@@ -426,7 +426,10 @@ const EditEventType = () => {
                                                     }
 
                                                 </div>
-                                                <TextEditor placeholder="Add any information relevant to this event" /></>
+                                                <div>
+                                                <h4>Description/Instructions</h4>
+                                                <TextEditor placeholder="Add any information relevant to this event" /></div></>
+                                                
                                         )
                                     }
                                     {
@@ -1196,8 +1199,6 @@ const EditEventType = () => {
                                     <Grid item xs={12} md={state.showTimeSlots ? 6 : 12}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
                                             <div style={{ width: 320, overflowY: 'hidden' }}>
-
-
                                                 <div className="copylink_datepicker">
                                                     <CustomDatePicker
                                                         value={state.selectedDate}
@@ -1232,8 +1233,8 @@ const EditEventType = () => {
                                                         </div>
                                                     </div>
                                                 )}
-                                               
-                                               
+
+
                                             </div>
 
                                             <div className="troubleshoot_content">

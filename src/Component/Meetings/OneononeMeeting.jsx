@@ -640,7 +640,7 @@ const OneononeMeeting = () => {
                             </div>
                             <div className="button_footer">
                                 <CustomButton variant="text" sx={{ maginLeft: 'auto' }}>Cancel</CustomButton>
-                                <Link to="/edit-event" style={{ textDecoration: 'none' }}>
+                                <Link to="/edit-eventtype" style={{ textDecoration: 'none' }}>
                                     <CustomButton variant="contained" sx={{ margin: '0px', width: '100px' }}>
                                         Continue
                                     </CustomButton></Link>

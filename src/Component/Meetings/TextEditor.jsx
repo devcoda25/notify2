@@ -12,7 +12,7 @@ const TextEditor = ({ placeholder = "" }) => {
 
   return (
     <div className="meet_editor_textbox">
-         <h4>Description/Instructions</h4>
+         {/* <h4>Description/Instructions</h4> */}
       {/* Toolbar */}
       <div className="icons_container">
         <IconButton onClick={() => applyFormatting("bold")}>

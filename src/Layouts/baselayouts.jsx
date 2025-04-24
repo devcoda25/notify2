@@ -18,6 +18,7 @@ import Meeting from '../Component/Meetings/Meeting';
 import Availability from '../Component/Meetings/Availability';
 import Analytic from '../Component/Meetings/Analytic';
 import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
+import EditEvent from '../Component/Meetings/EditEvent';
 const BaseLayouts = () => {
 
     return (
@@ -39,11 +40,13 @@ const BaseLayouts = () => {
                         <Route path='AccountDetails' element={<AccountDetails/>}/>
                         <Route path='/hepto' element={<CopyMeetingLink/>}/>
                         <Route path='/edit-event' element={<EditEventType/>}/>
+                        <Route path='/edit-eventtype' element={<EditEvent/>}/>
+                        <Route path='/one-on-one' element={<OneononeMeeting/>}/>
                         <Route path='/event-types' element={<Event/>}/>
                         <Route path='/meet' element={<Meeting/>}/>
                         <Route path='/availability' element={<Availability/>}/>
                         <Route path='/analytic' element={<Analytic/>}/>
-                        <Route path='/one-on-one' element={<OneononeMeeting/>}/>
+                        
                     </Routes>
                 </BrowserRouter>
             </React.Fragment>

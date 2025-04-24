@@ -10,6 +10,7 @@ const CustomDropdown = ({
   renderOption,
   getValueLabel,
   fullWidth = true,
+  sx = {},
  }) => {
   return (
     <Select
@@ -17,7 +18,12 @@ const CustomDropdown = ({
       onChange={onChange}
       displayEmpty
       fullWidth={fullWidth}
-      sx={style.oneonone_select_container}
+    //  sx={style.oneonone_select_container}
+    sx={{
+      ...style.oneonone_select_container,
+      ...sx, 
+    }}
+
       renderValue={(selected) =>
         getValueLabel ? getValueLabel(selected) : selected || 'Select'
       }

@@ -335,7 +335,28 @@ const style = {
 location_option_btn:{
   color: '#004eba !important',
   fontSize:'16px'
-}
-
+},
+eventAccordion:{
+boxShadow:'none',
+border:'none',
+borderBottom:'1px solid #F2F2F2',
+'&.Mui-expanded': {
+  margin: 0,
+},
+},
+eventheading:{
+fontSize:'15px',
+fontWeight:'bold',
+color:'black'
+},
+eventAccordionsummary:{
+  padding: '16px 24px',
+  '& .MuiAccordionSummary-content': {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '5px',
+    margin: 0, 
+  },
+},
 }
 export default style;
