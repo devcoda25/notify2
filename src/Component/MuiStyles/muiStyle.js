@@ -358,5 +358,10 @@ eventAccordionsummary:{
     margin: 0, 
   },
 },
+calendar_invitation_custombtn:{
+  fontSize:'16px',
+  color:'#004eba',
+  padding:'0px 3px 0px 0px'
+}
 }
 export default style;

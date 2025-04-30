@@ -816,7 +816,7 @@ const EditEventType = () => {
                                                 {
                                                     state.openCalendarInvitation ? (
                                                         <>
-                                                            <div className="canlendar_invitation">
+                                                            <div className="calendar_invitation">
                                                                 <div className="edit">
                                                                     <CampaignIcon />
                                                                     <div><a>Upgrade to Standard</a> to edit your calendar invitations.</div>
@@ -864,7 +864,7 @@ const EditEventType = () => {
                                                         </>
                                                     ) : state.openEmailReminders ? (
                                                         <>
-                                                            <div className="canlendar_invitation">
+                                                            <div className="calendar_invitation">
                                                                 <div className="edit">
                                                                     <CampaignIcon />
                                                                     <div><a>Upgrade to Standard</a> to add email reminders to your events.</div>
@@ -941,7 +941,7 @@ const EditEventType = () => {
                                                         </>
                                                     ) : state.openTextReminders ? (
                                                         <>
-                                                            <div className="canlendar_invitation">
+                                                            <div className="calendar_invitation">
                                                                 <div className="edit">
                                                                     <CampaignIcon />
                                                                     <div><a>Upgrade to Standard</a> to add text reminders to your events.</div>
@@ -982,7 +982,7 @@ const EditEventType = () => {
                                                         </>
                                                     ) : state.openEmailFollowup ? (
                                                         <>
-                                                            <div className="canlendar_invitation">
+                                                            <div className="calendar_invitation">
                                                                 <div className="edit">
                                                                     <CampaignIcon />
                                                                     <div><a>Upgrade to Standard</a> to edit your calendar invitations.</div>

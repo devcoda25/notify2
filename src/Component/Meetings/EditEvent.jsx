@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, List, Switch, Tooltip, Button, ListItem, Typography } from "@mui/material";
 import { Accordion, AccordionSummary, AccordionDetails, RadioGroup, Radio, FormControlLabel, Menu } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CloseIcon, AccessTimeOutlinedIcon, LocationOnOutlinedIcon, InfoOutlinedIcon, BuildOutlinedIcon, PublicOutlinedIcon, ArrowDropDownIcon, ArrowDropUpIcon, AddIcon, OpenInNewIcon, DeleteOutlineIcon, LockOutlinedIcon, EmailOutlinedIcon, MoreVertOutlinedIcon, ChatBubbleOutlineOutlinedIcon, EditOutlinedIcon } from "../Icon";
+import { CloseIcon, AccessTimeOutlinedIcon, LocationOnOutlinedIcon, ReportGmailerrorredIcon, InfoOutlinedIcon, BuildOutlinedIcon, CampaignIcon, PublicOutlinedIcon, ArrowDropDownIcon, ArrowDropUpIcon, AddIcon, OpenInNewIcon, DeleteOutlineIcon, LockOutlinedIcon, EmailOutlinedIcon, MoreVertOutlinedIcon, ChatBubbleOutlineOutlinedIcon, EditOutlinedIcon } from "../Icon";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { parse, format } from 'date-fns';
@@ -14,13 +14,15 @@ import style from "../MuiStyles/muiStyle";
 import TextEditor from "./TextEditor";
 import CustomDropdown from "./CustomDropdown";
 import TextfieldComponent from "../TextfieldComponent";
-import { Email } from "@mui/icons-material";
+import VariableBox from "./VariableBox";
 const bufferTimeOptions = ['0 min', '5 min', '10 min', '15 min', '30 min', '45 min'];
 const buffterMaxMeetOption = ['day', 'week', 'month'];
 const meetExeptionOption = ['includes', 'matches exactly'];
 const inviteDetailsOptions = ['Name Email', 'First Name,Last Name,Email'];
 const answerTypeOptions = ['one Line', 'Multiple lines', 'Radio buttons', 'checkboxes', 'Dropdown', 'Phone Number'];
-const pageBookingOption = ['Display confirmation page', 'Redirect to an external site']
+const pageBookingOption = ['Display confirmation page', 'Redirect to an external site'];
+const replyAddressOptions = ["Host's email address", 'No-reply address'];
+const timeOptions = ["minute(s)", "hour(s)", "day(s)"];
 const baseTimeSlots = [
     "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am",
     "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm",
@@ -48,8 +50,17 @@ const EditEvent = () => {
         notificationAnchorE1: null,
         notificationSelectedItem: '',
         answerTypeValue: answerTypeOptions[0],
-        pageBookingValue:pageBookingOption[0],
+        pageBookingValue: pageBookingOption[0],
         isOn: false,
+        questions: [{ id: 1, answerTypeValue: '' }],
+        links: [{ id: 1, isOn: true }],
+        openCalendarInvitation: false,
+        openEmailFollowup: false,
+        openEmailReminders: false,
+        openTextReminders: false,
+        replyAddressContent: replyAddressOptions[0],
+        selectedTimeUnit: timeOptions[1],
+
     })
     const [limits, setLimits] = useState([
         { bufferMaxMeet: buffterMaxMeetOption[0] }
@@ -101,12 +112,52 @@ const EditEvent = () => {
     const handleNotificationClose = () => {
         updateState({ notificationAnchorE1: null, notificationSelectedItem: "" });
     };
-    const handleSwitchChange = (event) => {
-        setState(prevState => ({
-          ...prevState,
-          isOn: event.target.checked,
+
+    const handleAddQuestion = () => {
+        updateState({
+            questions: [
+                ...state.questions,
+                { id: state.questions.length + 1, answerTypeValue: '', isQuesOn: true },
+            ],
+        });
+    };
+    const handleDeleteQuestion = (id) => {
+        const updatedQuestions = state.questions.filter((q) => q.id !== id);
+        updateState({ questions: updatedQuestions });
+    };
+    const handleAddLink = () => {
+        setState((prev) => ({
+            ...prev,
+            links: [
+                ...prev.links,
+                { id: prev.links.length + 1, isOn: true },
+            ],
         }));
-      };
+    };
+    const handleSwitchChange = (id, checked) => {
+        const updatedLinks = state.links.map((link) =>
+            link.id === id ? { ...link, isOn: checked } : link
+        );
+        setState((prev) => ({ ...prev, links: updatedLinks }));
+    };
+    const handleLinkNameChange = (id, value) => {
+        const updatedLinks = state.links.map((link) =>
+            link.id === id ? { ...link, linkName: value } : link
+        );
+        setState((prev) => ({ ...prev, links: updatedLinks }));
+    };
+    const handleNotificationEditClick = () => {
+        handleNotificationClose();
+        if (state.notificationSelectedItem === 'calendar_invitation') {
+            updateState({ openCalendarInvitation: true })
+        } else if (state.notificationSelectedItem === 'email_followup') {
+            updateState({ openEmailFollowup: true })
+        } else if (state.notificationSelectedItem === 'email_reminders') {
+            updateState({ openEmailReminders: true })
+        } else if (state.notificationSelectedItem === 'text_reminders') {
+            updateState({ openTextReminders: true })
+        }
+    }
     useEffect(() => {
         const updateTime = () => {
             const now = new Date();
@@ -359,7 +410,7 @@ const EditEvent = () => {
                             options={inviteDetailsOptions}
 
                         />
-                        <div><input type='checkbox' /><span>Autofill Invitee Name, Email, and Text Reminder Phone Number (when applicable) from prior bookings</span></div>
+                        <div className="invitee_checkbox"><input type='checkbox' /><span>Autofill Invitee Name, Email, and Text Reminder Phone Number (when applicable) from prior bookings</span></div>
 
                     </div>
                     <div className="invitee_container">
@@ -368,49 +419,64 @@ const EditEvent = () => {
                     </div>
                     <div className="invitee_container">
                         <p className="booking_text">Invitee questions</p>
-                        <>
-                        <div className="invitee_question_content">
-                            <div className="invitee_ques_heading">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" role="img"><circle cx="6.5" cy="3" r="2.25" fill="currentColor"></circle><circle cx="6.5" cy="10" r="2.25" fill="currentColor"></circle><circle cx="6.5" cy="17.0002" r="2.25" fill="currentColor"></circle><circle cx="13.4961" cy="3" r="2.25" fill="currentColor"></circle><circle cx="13.4961" cy="10" r="2.25" fill="currentColor"></circle><circle cx="13.4961" cy="17.0002" r="2.25" fill="currentColor"></circle></svg>
-                                <p>Question 1</p>
-                            </div>
-                            <DeleteOutlineIcon />
-                        </div>
-                        <textarea className="addguests_details" value='Please share anything that will help prepare for our meeting.'></textarea>
-                        <div><input type='checkbox' />Required</div>
-                        <div className="answertype">
-                            <p>Answer type</p>
-                            <CustomDropdown
-                                value={state.answerTypeValue}
-                                onChange={(e) =>
-                                    setState((prev) => ({
-                                        ...prev,
-                                        answerTypeValue: e.target.value,
-                                    }))
-                                }
-                                options={answerTypeOptions}
+                        {state.questions.map((question, index) => (
+                            <div key={index} className="invitee_question_container">
+                                <div className="invitee_question_content">
+                                    <div className="invitee_ques_heading">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" role="img"><circle cx="6.5" cy="3" r="2.25" fill="currentColor"></circle><circle cx="6.5" cy="10" r="2.25" fill="currentColor"></circle><circle cx="6.5" cy="17.0002" r="2.25" fill="currentColor"></circle><circle cx="13.4961" cy="3" r="2.25" fill="currentColor"></circle><circle cx="13.4961" cy="10" r="2.25" fill="currentColor"></circle><circle cx="13.4961" cy="17.0002" r="2.25" fill="currentColor"></circle></svg>
+                                        <p>Question {question.id}</p>
+                                    </div>
+                                    <DeleteOutlineIcon onClick={() => handleDeleteQuestion(question.id)}
+                                        style={{ cursor: 'pointer' }} />
+                                </div>
+                                <textarea className="addguests_details" value='Please share anything that will help prepare for our meeting.'></textarea>
+                                <div className="invitee_checkbox"><input type='checkbox' />Required</div>
+                                <div className="answertype">
+                                    <p>Answer type</p>
+                                    <CustomDropdown
+                                        value={question.answerTypeValue}
+                                        onChange={(e) => {
+                                            const updatedQuestions = state.questions.map((q) =>
+                                                q.id === question.id ? { ...q, answerTypeValue: e.target.value } : q
+                                            );
+                                            setState((prev) => ({ ...prev, questions: updatedQuestions }));
+                                        }}
+                                        options={answerTypeOptions}
 
-                            />
-                        </div>
-                        <div className="answertype">
-                            <p>Status</p>
-                            <div><label>On</label><Switch defaultChecked /></div>
-                        </div>
-                        <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#004eba' }}>Add new question</CustomButton>
-                        </>
+                                    />
+                                </div>
+                                <div className="answertype">
+                                    <p>Status</p>
+                                    <div>
+                                        <label>{question.isQuesOn ? 'On' : 'Off'}</label>
+                                        <Switch
+                                            checked={question.isQuesOn}
+                                            onChange={(e) => {
+                                                const updatedQuestions = state.questions.map((q) =>
+                                                    q.id === question.id ? { ...q, isQuesOn: e.target.checked } : q
+                                                );
+                                                setState((prev) => ({ ...prev, questions: updatedQuestions }));
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                            </div>
+                        ))}
                     </div>
+                    <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#004eba' }} onClick={handleAddQuestion} >Add new question</CustomButton>
                 </>
             )
         },
+        // {
+        //     key: 'panel8',
+        //     title: 'payment',
+        //     subText: (
+        //         <><svg fill="none" viewBox="0 0 10 10" role="img"><path d="M5.027 2.378V2m0 6v-.44M6.25 3.75v0a1 1 0 0 0-1-1h-.401c-.607 0-1.099.492-1.099 1.099v0c0 .524.37.975.883 1.078l.734.146a1.1 1.1 0 0 1 .883 1.078v0c0 .607-.492 1.099-1.099 1.099H4.75a1 1 0 0 1-1-1v0" stroke="currentColor" stroke-linecap="round"></path><circle cx="5" cy="5" r="4.5" stroke="currentColor"></circle></svg><div>Collect payment for your event</div></>
+        //     )
+        // },
         {
             key: 'panel8',
-            title: 'payment',
-            subText: (
-                <><svg fill="none" viewBox="0 0 10 10" role="img"><path d="M5.027 2.378V2m0 6v-.44M6.25 3.75v0a1 1 0 0 0-1-1h-.401c-.607 0-1.099.492-1.099 1.099v0c0 .524.37.975.883 1.078l.734.146a1.1 1.1 0 0 1 .883 1.078v0c0 .607-.492 1.099-1.099 1.099H4.75a1 1 0 0 1-1-1v0" stroke="currentColor" stroke-linecap="round"></path><circle cx="5" cy="5" r="4.5" stroke="currentColor"></circle></svg><div>Collect payment for your event</div></>
-            )
-        },
-        {
-            key: 'panel9',
             title: 'Notification and workflows',
             subText: (
                 <><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" role="img"><path d="M8 7.5H2v-4a3 3 0 0 1 6 0ZM4.5 9.499h1M.5 7.499h9" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg><div>Calendar invitations</div></>
@@ -431,22 +497,22 @@ const EditEvent = () => {
                             <div className="event_invitee_content">
                                 <EmailOutlinedIcon />
                                 <div className="event_invitee_center_content">Calendar Invitation<p>Immediately after booking</p></div>
-                                <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "calendar_invitation")} />
+                                <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "calendar_invitation")} sx={{cursor:'pointer'}} />
                             </div>
                             <div className="event_invitee_content">
                                 <EmailOutlinedIcon />
                                 <div className="event_invitee_center_content">Email reminders</div>
-                                <div><span>Off</span><MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_reminders")} /></div>
+                                <div><span>Off</span><MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_reminders")} sx={{cursor:'pointer'}}/></div>
                             </div>
                             <div className="event_invitee_content">
                                 <ChatBubbleOutlineOutlinedIcon />
                                 <div className="event_invitee_center_content">Text reminders</div>
-                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "text_reminders")} /></div>
+                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "text_reminders")} sx={{cursor:'pointer'}}/></div>
                             </div>
                             <div className="event_invitee_content">
                                 <EmailOutlinedIcon />
                                 <div className="event_invitee_center_content">Email follow-up</div>
-                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_followup")} /></div>
+                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_followup")} sx={{cursor:'pointer'}}/></div>
                             </div>
                             <Menu anchorEl={state.notificationAnchorE1} open={Boolean(state.notificationAnchorE1)} onClose={handleNotificationClose}
                                 PaperProps={{
@@ -454,7 +520,7 @@ const EditEvent = () => {
                                 }}>
 
                                 {(state.notificationSelectedItem === "calendar_invitation" || state.notificationSelectedItem === "email_reminders" || state.notificationSelectedItem === "text_reminders" || state.notificationSelectedItem === "email_followup") && (
-                                    <div ><EditOutlinedIcon />Edit</div>
+                                    <div onClick={handleNotificationEditClick} style={{cursor:'pointer'}}><EditOutlinedIcon />Edit</div>
                                 )}
 
 
@@ -470,7 +536,7 @@ const EditEvent = () => {
             )
         },
         {
-            key: 'panel10',
+            key: 'panel9',
             title: 'Confirmation page',
             subText: (
                 <><svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M.5 3.5v-2a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v2M9.5 7.5v1a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-1M2 5.5l1 1 2-3M6.5 5.5h2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg><div>Display confirmation page</div></>
@@ -494,15 +560,20 @@ const EditEvent = () => {
                     </div>
                     <div className="afterbooking_content">
                         <p className="booking_text">Links on confirmation page</p>
-                        <div className="link_content"><LockOutlinedIcon /><p>Link name</p></div>
-                        <TextfieldComponent value='Schedule another event' customStyle="custom_textfield_box" />
+                        {state.links.map((link) => (
+                            <>
+                                <div className="link_content"><LockOutlinedIcon /><p>Link name</p></div>
+                                <TextfieldComponent type='text' value={link.linkName}
+                                    customStyle="custom_textfield_box"
+                                    onChange={(e) => handleLinkNameChange(link.id, e.target.value)} />
+                                <p className="booking_text">Status</p>
+                                <div><label>{link.isOn ? 'On' : 'Off'}</label><Switch checked={link.isOn}
+                                    onChange={(e) => handleSwitchChange(link.id, e.target.checked)} /></div>
+                            </>
+                        ))}
                     </div>
-                    <div className="afterbooking_content">
-                        <p className="booking_text">Status</p>
-                        <div><label>{state.isOn ? 'On' : 'Off'}</label><Switch onChange={handleSwitchChange} /></div>
 
-                    </div>
-                    <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#004eba' }}>Add new link</CustomButton>
+                    <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#004eba' }} onClick={handleAddLink}>Add new link</CustomButton>
                 </div>
             )
         },
@@ -519,39 +590,304 @@ const EditEvent = () => {
                         <div className="main_container">
                             <div className="main_content">
                                 <div className="event_details">
-                                    {accordionData.map(({ key, title, subText, details, subHostText }) => (
-                                        <Accordion
-                                            key={key}
-                                            sx={{ ...style.eventAccordion }}
-                                            expanded={state.expandedPanel === key}
-                                            onChange={(e, isExpanded) =>
-                                                updateState({ expandedPanel: isExpanded ? key : null })
-                                            }
-                                        >
-                                            <AccordionSummary
-                                                expandIcon={<ExpandMoreIcon />}
-                                                sx={{
-                                                    padding: '16px 24px',
-                                                    '& .MuiAccordionSummary-content': {
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        gap: '5px',
-                                                        color: 'black',
-                                                        margin: 0,
-                                                    },
-                                                }}
-                                            >
-                                                <Typography sx={{ ...style.eventheading }}>{title}</Typography>
-                                                <div>{subHostText}</div>
-                                                {state.expandedPanel !== key && (
-                                                    <div className="accordion_headingsubtext">{subText}</div>
-                                                )}
-                                            </AccordionSummary>
-                                            <AccordionDetails>
-                                                {details}
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    ))}
+                                    {
+                                        state.openCalendarInvitation ? (
+                                            <div className="calendar_invitation_modal">
+                                                <h1>Calendar Invitation</h1>
+                                                <div className="calendar_invitation">
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
+                                                    </div>
+                                                    <div>A calendar invitation is sent to your invitee when booking, which adds the event to their calendar.
+                                                        <CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Switch to email confirmation</CustomButton>
+                                                    </div>
+                                                    <div>
+                                                        <label>Subject</label>
+                                                        <VariableBox>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Invitee Full Name</CustomButton>
+                                                            <span>and</span>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton>
+                                                        </VariableBox>
+                                                    </div>
+                                                    <div>
+                                                        <label>Body</label>
+                                                        <VariableBox>
+                                                            <p>Event Name:</p>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Description</CustomButton>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Location</CustomButton>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Questions And Answers</CustomButton>
+                                                        </VariableBox>
+                                                    </div>
+                                                    <div>
+                                                        <label>Timing</label>
+                                                        <p>Sends immediately when booked</p>
+                                                        <div className="edit">
+                                                            <CampaignIcon />
+                                                            <div>
+                                                                <CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton> to edit your cancellation agreement.</div>
+                                                        </div>
+                                                    </div>
+                                                    <fieldset className="cancelation_content" disabled>
+                                                        <label>Cancellation policy</label>
+                                                        <textarea className="addguests_details cancellation_textarea"></textarea>
+                                                        <div className="edit">
+                                                            <ReportGmailerrorredIcon />
+                                                            <div>
+                                                                <CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton> to edit your cancellation agreement.</div>
+                                                        </div>
+                                                        <div><input type='checkbox' checked disabled /><span>Include cancel and reschedule links in email invitations and reminders (recommended)</span> </div>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        ) : state.openEmailReminders ? (
+                                            <>
+                                                <div className="calendar_invitation_modal">
+                                                    <h1>Email reminders</h1>
+                                                    <div className="calendar_invitation">
+                                                        <div className="edit">
+                                                            <CampaignIcon />
+                                                            <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
+                                                        </div>
+                                                        <div>An invitee will receive a reminder email before a scheduled event at specified times.</div>
+                                                        <div>
+                                                            <label>Reply-to address</label>
+                                                            <CustomDropdown
+                                                                value={state.replyAddressContent}
+                                                                onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
+                                                                options={replyAddressOptions}
+
+                                                            />
+
+                                                            <div className="edit">
+                                                                <ReportGmailerrorredIcon />
+                                                                <div>All email communication will use the same option</div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label>Subject</label>
+                                                            <VariableBox>
+                                                                Reminder:<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>with
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton> at
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>
+                                                            </VariableBox>
+                                                        </div>
+                                                        <div>
+                                                            <label>Body</label>
+                                                            <VariableBox showTextFormatIcons>
+                                                                Hi<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Invitee Full Name</CustomButton>, This is a friendly reminder that your
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>with
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton>is at
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>.
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Location</CustomButton>
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Description</CustomButton>
+                                                                <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Questions And Answers</CustomButton>
+                                                            </VariableBox>
+                                                        </div>
+                                                        <fieldset disabled>
+                                                            <div>
+                                                                <label>Timing</label>
+                                                                <div className="timing_container">
+                                                                    <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                                    <CustomDropdown
+                                                                        value={state.selectedTimeUnit}
+                                                                        onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                        options={timeOptions}
+                                                                        disabled
+
+                                                                    />
+
+                                                                    <span>before event</span>
+                                                                </div>
+                                                                <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#a6bbd1', fontSize: 16 }}>Add another reminder</CustomButton>
+                                                            </div>
+                                                            <div>
+                                                                <label>Status</label>
+                                                                <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                            </div>
+                                                        </fieldset >
+                                                        <div className="edit">
+                                                            <CampaignIcon />
+                                                            <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                        </div>
+                                                        <div className="cancelation_content">
+                                                            <label>Cancellation policy</label>
+                                                            <div className="edit">
+                                                                <ReportGmailerrorredIcon />
+                                                                <div>
+                                                                    <a>Upgrade to Standard</a>Updates to your cancellation policy apply to all emails for this event type</div>
+                                                            </div>
+                                                            <div><input type='checkbox' checked disabled /><span>Include cancel and reschedule links in email invitations and reminders (recommended)</span> </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        ) : state.openTextReminders ? (
+                                            <div className="calendar_invitation_modal">
+                                                <h1>Text reminders</h1>
+                                                <div className="calendar_invitation">
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><a>Upgrade to Standard</a> to add text reminders to your events.</div>
+                                                    </div>
+                                                    <div>Your invitees will have the option of receiving text reminders before a scheduled event at specified times.</div>
+                                                    <div>
+                                                        <label>Text Message</label>
+                                                        <VariableBox>
+                                                            Reminder:<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>with
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton> at
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>
+                                                        </VariableBox>
+                                                    </div>
+                                                    <div>
+                                                        <label>Timing</label>
+                                                        <div className="timing_container">
+                                                            <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                            <CustomDropdown
+                                                                value={state.selectedTimeUnit}
+                                                                onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                options={timeOptions}
+                                                                disabled
+
+                                                            />
+                                                            {/* <AutocompleteComponent
+                                                                options={timeOptions}
+                                                                value={state.selectedTimeUnit}
+                                                                onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                customStyles={{ ...style.newticketsAutocomplete, ...style.eventTimingDropdown }}
+                                                                disabled={state.isDropdownDisabled}
+                                                            /> */}
+                                                            <span>before event</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label>Status</label>
+                                                        <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                    </div>
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : state.openEmailFollowup ? (
+                                            <div className="calendar_invitation_modal">
+                                                <h1>Email Follow-up</h1>
+                                                <div className="calendar_invitation">
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><a>Upgrade to Standard</a> to edit your calendar invitations.</div>
+                                                    </div>
+                                                    <div>An invitee will receive a reminder email before a scheduled event at specified times.</div>
+                                                    <div>
+                                                        <label>Reply-to address</label>
+                                                        <CustomDropdown
+                                                            value={state.replyAddressContent}
+                                                            onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
+                                                            options={replyAddressOptions}
+
+
+                                                        />
+                                                        {/* <AutocompleteComponent
+                                                            options={replyAddressOptions}
+                                                            value={state.replyAddressContent}
+                                                            onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
+                                                            customStyles={{ ...style.newticketsAutocomplete }}
+                                                        /> */}
+                                                        <div className="edit">
+                                                            <ReportGmailerrorredIcon />
+                                                            <div>All email communication will use the same option</div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label>Subject</label>
+                                                        <VariableBox>
+                                                            <span>Thank you for your time!</span>
+                                                        </VariableBox>
+                                                    </div>
+                                                    <div>
+                                                        <label>Body</label>
+                                                        <VariableBox showTextFormatIcons>
+                                                            Hi<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Invitee Full Name</CustomButton>,
+                                                            Thank you for attending<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Evant Name</CustomButton> at
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>.Please respond to this email with any feedback or additional requests.
+                                                        </VariableBox>
+                                                    </div>
+                                                    <div>
+                                                        <label>Timing</label>
+                                                        <div className="timing_container">
+                                                            <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                            <CustomDropdown
+                                                                options={timeOptions}
+                                                                value={state.selectedTimeUnit}
+                                                                onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                disabled
+                                                            />
+                                                            {/* <AutocompleteComponent
+                                                                options={timeOptions}
+                                                                value={state.selectedTimeUnit}
+                                                                onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                customStyles={{ ...style.newticketsAutocomplete, ...style.eventTimingDropdown }}
+                                                                disabled={state.isDropdownDisabled}
+                                                            /> */}
+                                                            <span>after event</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <label>Status</label>
+                                                        <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                    </div>
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {accordionData.map(({ key, title, subText, details, subHostText }) => (
+                                                    <Accordion
+                                                        key={key}
+                                                        sx={{ ...style.eventAccordion }}
+                                                        expanded={state.expandedPanel === key}
+                                                        onChange={(e, isExpanded) =>
+                                                            updateState({ expandedPanel: isExpanded ? key : null })
+                                                        }
+                                                    >
+                                                        <AccordionSummary
+                                                            expandIcon={<ExpandMoreIcon />}
+                                                            sx={{
+                                                                padding: '16px 24px',
+                                                                '& .MuiAccordionSummary-content': {
+                                                                    display: 'flex',
+                                                                    flexDirection: 'column',
+                                                                    gap: '5px',
+                                                                    color: 'black',
+                                                                    margin: 0,
+                                                                },
+                                                            }}
+                                                        >
+                                                            <Typography sx={{ ...style.eventheading }}>{title}</Typography>
+                                                            <div>{subHostText}</div>
+                                                            {state.expandedPanel !== key && (
+                                                                <div className="accordion_headingsubtext">{subText}</div>
+                                                            )}
+                                                        </AccordionSummary>
+                                                        <AccordionDetails>
+                                                            {details}
+                                                        </AccordionDetails>
+                                                    </Accordion>
+                                                ))}
+                                            </>
+                                        )
+                                    }
+
+
 
                                     {/* <Accordion sx={{ ...style.eventAccordion }}
                                         expanded={state.expandedPanel === 'panel8'}

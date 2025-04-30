@@ -11,6 +11,7 @@ const CustomDropdown = ({
   getValueLabel,
   fullWidth = true,
   sx = {},
+  disabled = false,
  }) => {
   return (
     <Select
@@ -18,6 +19,7 @@ const CustomDropdown = ({
       onChange={onChange}
       displayEmpty
       fullWidth={fullWidth}
+      disabled={disabled} 
     //  sx={style.oneonone_select_container}
     sx={{
       ...style.oneonone_select_container,

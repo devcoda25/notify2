@@ -19998,7 +19998,7 @@ margin-top:0px !important;
   outline: none;
 }
 
-.event_Edit_Question_modal .status_container,.canlendar_invitation .status_container {
+.event_Edit_Question_modal .status_container,.calendar_invitation .status_container {
   margin: 0px;
   display: flex;
   gap:10px;
@@ -20070,13 +20070,14 @@ margin-top:0px !important;
   margin-bottom: 0px;
 }
 
-.canlendar_invitation {
+.calendar_invitation {
   display: flex;
   flex-direction: column;
-  gap: 32px
+  gap: 32px;
+  font-size: 16px;
 }
 
-.canlendar_invitation .edit {
+.calendar_invitation .edit {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -20086,11 +20087,19 @@ margin-top:0px !important;
   color: #0a2540;
   border-radius: 8px;
 }
-
-.canlendar_invitation .edit a {
+.calendar_invitation label{
+font-weight: 700;
+}
+.calendar_invitation .edit a {
   color: blue
 }
-
+.calendar_invitation_modal{
+padding: 0px 24px;
+}
+.calendar_invitation_modal h1{
+color:rgb(26, 26, 26);
+font-size: 24px;
+}
 .variable_box_container {
   border: 1px solid #CCCCCC;
   border-radius: 8px;
@@ -20111,7 +20120,7 @@ margin-top:0px !important;
   flex-wrap: wrap;
   gap: 5px;
 }
-.canlendar_invitation .cancelation_content{
+.calendar_invitation .cancelation_content{
 background: #FAFAFA;
 border-radius: 8px;
 padding:16px;
@@ -20119,13 +20128,20 @@ display: flex;
 flex-direction: column;
 gap:15px;
 }
-.canlendar_invitation .eventTimingTextfield{
+.calendar_invitation .eventTimingTextfield{
   width:125px;
+  height:46px;
   }
-.canlendar_invitation .timing_container{
-display: flex;
-flex-direction: row;
-gap:20px
+.calendar_invitation .timing_container{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 46px;
+  margin-bottom: 10px;
+}
+.calendar_invitation .cancellation_textarea{
+  background: #d4e0ed;
+  border: 1px solid #c9c9cd !important;
 }
 .custom__search_box{
 background: white;
@@ -20711,6 +20727,17 @@ margin:10px 0px 15px 0px;
 .edit_event_container .invitee_container{
 display: flex;
 flex-direction:column;
+gap:10px;
+margin-bottom: 13px;
+}
+.edit_event_container .invitee_container .invitee_checkbox{
+display: flex;
+align-items: baseline;
+gap:5px;
+}
+.edit_event_container .invitee_container .invitee_question_container{
+display: flex;
+flex-direction: column;
 gap:10px
 }
 .edit_event_container .invitee_question_content{
