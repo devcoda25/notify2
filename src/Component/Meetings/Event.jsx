@@ -3,15 +3,15 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AutocompleteComponent from "../AutocompleteComponent";
-import TimeZoneMenu from "./TimeZoneMenu";
+import TimezoneDropdown from "./TimeZoneMenu";
 import TextfieldComponent from "../TextfieldComponent";
 import TimePickerComponent from '../TimePickerComponent'
-import DataSpecificHoursComponent from "./DataSpecificHoursComponent";
+import DataSpecificHoursModal from "./DataSpecificHoursComponent";
 import dayjs from "dayjs";
 import { useNavigate } from 'react-router-dom';
 import {
-    Box, Typography,IconButton, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions,
- Tabs, Tab
+    Box, Typography, IconButton, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogActions,
+    Tabs, Tab
 } from "@mui/material";
 import {
     SettingsOutlinedIcon,
@@ -20,9 +20,7 @@ import {
     ArrowForwardIosIcon,
     ChevronLeftOutlinedIcon,
     CalendarTodayOutlinedIcon,
-    ExpandMoreIcon,
-    PublicOutlinedIcon,
-    AddCircleOutlineIcon
+    AddOutlinedIcon
 } from '../Icon';
 import CustomButton from "./CustomButton";
 import WeeklyHours from "./WeeklyHours";
@@ -139,6 +137,16 @@ const timeSlots = [
     "4:00 PM",
     "4:30 PM",
 ];
+const timezones = [
+    { label: "Eastern Time - US & Canada", time: "12:00am" },
+    { label: "Central Time - US & Canada", time: "8:20am" },
+    { label: "Mountain Time - US & Canada", time: "7:20am" },
+    { label: "Pacific Time - US & Canada", time: "9:20am" },
+    { label: "Alaska Time", time: "5.20am" },
+    { label: "Arizona, Yukon Time", time: "5:00pm" },
+    { label: "Newfoundland Time", time: "10:50am" },
+];
+
 const locationOptions = [
     { title: "In-person meeting", img: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 10" role="img"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M8 3.5c0 2.5-3 6-3 6S2 6 2 3.5a3 3 0 1 1 6 0v0Z"></path><path stroke="currentColor" d="M5 4a.5.5 0 0 1 0-1M5 4a.5.5 0 0 0 0-1"></path></svg> },
     { title: "Phone call", img: <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" role="img"><path d="M6.216 9.151a2.215 2.215 0 0 0 2.758-.3l.31-.31a.738.738 0 0 0 0-1.043l-1.3-1.3a.739.739 0 0 0-1.044 0h0a.738.738 0 0 1-1.043 0L3.806 4.107a.738.738 0 0 1 0-1.043h0a.739.739 0 0 0 0-1.044L2.5.716a.738.738 0 0 0-1.043 0l-.31.31a2.214 2.214 0 0 0-.3 2.758 19.976 19.976 0 0 0 5.369 5.367Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg> },
@@ -158,7 +166,7 @@ const newEventOptions = [
 const Event = ({ onCreateClick }) => {
     const hostOptions = ['hepto(me)'];
     const durationOptions = ['15 Minutes', '30 Minutes', '45 Minutes', '1 hour', 'Custom'];
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const [state, setState] = useState({
         open: true,
         createNewEvent: false,
@@ -172,7 +180,7 @@ const Event = ({ onCreateClick }) => {
         selectedDate: dayjs(),
         showTimeSlots: false,
         selectedTime: [],
-        timeZoneAnchor: null,
+        timeZoneAnchor: "Eastern Time - US & Canada",
         durationContent: durationOptions[1],
         showLocationDropdown: false,
         selectedLocation: "",
@@ -180,6 +188,9 @@ const Event = ({ onCreateClick }) => {
         customizeShareModal: false,
         selectedTimeZone: "Eastern Time - US & Canada",
         isLocationCardVisible: true,
+        showOpenDataHours: false,
+        selectedhoursDate: null,
+        showSelectedTimeSlots: false,
     });
     const [meetingHours, setMeetingHours] = useState({
         Sunday: [{ from: "09:00", to: "17:00", available: true }],
@@ -264,14 +275,30 @@ const Event = ({ onCreateClick }) => {
     };
     const handleEventClose = () => {
         setState((prev) => ({ ...prev, isLocationCardVisible: false }));
-      };
-    const handleCardClick=(option)=>{
+    };
+    const handleCardClick = (option) => {
         if (option.title === "One-on-One") {
             navigate('/one-on-one');
-          } else {
-          
-          }
+        } else {
+
+        }
     }
+    const handleaddSpecifichours = () => {
+        updateState({ showOpenDataHours: true })
+    }
+    const handleCloseAddHours = () => {
+        updateState({ showOpenDataHours: false })
+    }
+      const disablePastDatesHours = (date) => {
+              const today = dayjs().startOf('day');
+              const isPast = date.isBefore(today);
+              const isSunday = date.day() === 0;
+              return isPast || isSunday;
+          };
+      const handleDateHoursChange = (newDate) => {
+        updateState({ selectedhoursDate: newDate, showSelectedTimeSlots: true });
+    
+    };
     // const [open, setOpen] = useState(true);
     // const [createNewEvent, setCreateNewEvent] = useState(false);
     // const [openHostModal, setOpenHostModal] = useState(false);
@@ -349,6 +376,12 @@ const Event = ({ onCreateClick }) => {
     return (
         <>
             <div className="calendar_Eventtype">
+                <DataSpecificHoursModal open={state.showOpenDataHours}
+                    onClose={handleCloseAddHours}
+                    onDataChange={handleDateHoursChange}
+                    selectedDate={state.selectedhoursDate}
+                    disablePastDates={disablePastDatesHours}
+                    showTimeSlots={state.showSelectedTimeSlots} />
                 {
                     state.customizeShareModal ? (
                         <>
@@ -367,37 +400,43 @@ const Event = ({ onCreateClick }) => {
                                             options={durationOptions}
                                             value={state.durationContent}
                                             onChange={(event, newValue) => updateState({ durationContent: newValue })}
-                                            customStyles={{...style.newticketsAutocomplete,width:'50%'}}
+                                            customStyles={{ ...style.newticketsAutocomplete, width: '50%' }}
                                         />
                                     </div>
                                     <div>
-                                     
+
                                         <LocationSelector
                                             selectedLocation={state.selectedLocation}
                                             showLocationDropdown={state.showLocationDropdown}
                                             locationOptions={locationOptions}
                                             handleLocationChange={handleLocationChange}
                                             handleAddLocation={handleAddLocation}
-                                            onClose={handleEventClose} 
+                                            onClose={handleEventClose}
                                             isLocationCardVisible={state.isLocationCardVisible}
                                         />
                                         <div className="scedule_data">
                                             <p className="meet_heading">Availability offered</p>
                                             <label>Data Range</label>
                                             <ScheduleOptions selectedValue={state.selectedRadioSchedule} onChange={(e) => updateState({ selectedRadioSchedule: e.target.value })} />
-                                          
+
                                             <div>
-                                                
+
                                                 <div>
                                                     <label>Weekly Hours</label>
                                                     <div className="select_timezone">
-                                                        <div
+                                                        {/* <div
                                                             onClick={handleTimeZoneClick} className="timezone"
 
                                                         >
                                                             <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
                                                         </div>
                                                         <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
+                                                    */}
+                                                        <TimezoneDropdown
+                                                            options={timezones}
+                                                            selectedValue={state.timeZoneAnchor}
+                                                            onSelect={(zone) => setState({ ...state, timeZoneAnchor: zone })}
+                                                        />
                                                     </div>
                                                     {/* <div>
                                                         {
@@ -452,8 +491,12 @@ const Event = ({ onCreateClick }) => {
                                                     <div>  <WeeklyHours meetingHours={meetingHours} setMeetingHours={setMeetingHours} /></div>
 
                                                     <div>
-                                                        <DataSpecificHoursComponent />
-
+                                                        {/* <DataSpecificHoursComponent /> */}
+                                                        <div className="data_specific_hours">
+                                                            <h4>Data Specific Hours</h4>
+                                                            <p>Override your availability for specific dates when your hours differ from your regular weekly hours.</p>
+                                                            <CustomButton variant="outlined" onClick={handleaddSpecifichours} icon={<AddOutlinedIcon />} > Add date-specific hours</CustomButton>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -497,13 +540,18 @@ const Event = ({ onCreateClick }) => {
                                                             />
                                                         </LocalizationProvider>
                                                         <div className="select_timezone">
-                                                            <div
+                                                            {/* <div
                                                                 onClick={handleTimeZoneClick} className="timezone"
 
                                                             >
                                                                 <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
                                                             </div>
-                                                            <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
+                                                            <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} /> */}
+                                                            <TimezoneDropdown
+                                                                options={timezones}
+                                                                selectedValue={state.timeZoneAnchor}
+                                                                onSelect={(zone) => setState({ ...state, timeZoneAnchor: zone })}
+                                                            />
                                                         </div>
                                                     </div>
                                                 ) : (
@@ -581,13 +629,18 @@ const Event = ({ onCreateClick }) => {
                                                 />
 
                                                 <div className="select_timezone">
-                                                    <div
+                                                    {/* <div
                                                         onClick={handleTimeZoneClick} className="timezone"
 
                                                     >
                                                         <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
                                                     </div>
-                                                    <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
+                                                    <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} /> */}
+                                                    <TimezoneDropdown
+                                                        options={timezones}
+                                                        selectedValue={state.timeZoneAnchor}
+                                                        onSelect={(zone) => setState({ ...state, timeZoneAnchor: zone })}
+                                                    />
                                                 </div>
                                                 <p>Dates Selected : <b>0/7</b></p>
                                                 <p>Time slot Selected:<b>0</b></p>
@@ -612,7 +665,7 @@ const Event = ({ onCreateClick }) => {
                             <Grid container spacing={2} sx={{ ...styles.neweventGrid }}>
                                 {newEventOptions.map((option, index) => (
                                     <Grid item xs={12} key={index} sx={{ paddingTop: '0px !important' }}>
-                                        <Card variant="outlined" sx={{ ...styles.cardStyle }} onClick={()=>handleCardClick(option)}>
+                                        <Card variant="outlined" sx={{ ...styles.cardStyle }} onClick={() => handleCardClick(option)}>
                                             <Box sx={{ mr: 2 }}><img src={option.icon} /></Box>
                                             <CardContent sx={{ flexGrow: 1 }}>
                                                 <Typography variant="h6" sx={{ ...styles.title }}>{option.title}</Typography>
@@ -624,8 +677,8 @@ const Event = ({ onCreateClick }) => {
                                                 </Typography>
                                             </CardContent>
                                             <ArrowForwardIosIcon fontSize="small" color="disabled" sx={{ ...styles.forwardArrow }}
-                                                // onClick={() => handleOpen(option)}
-                                                 />
+                                            // onClick={() => handleOpen(option)}
+                                            />
                                         </Card>
                                     </Grid>
                                 ))}

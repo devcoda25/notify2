@@ -6,20 +6,22 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import TimePickerComponent from '../TimePickerComponent'
 import AutocompleteComponent from "../AutocompleteComponent";
 import TextfieldComponent from "../TextfieldComponent";
-import TimeZoneMenu from "./TimeZoneMenu";
-import DataSpecificHoursComponent from "./DataSpecificHoursComponent";
+import TimezoneDropdown from "./TimeZoneMenu";
+import DataSpecificHoursModal from "./DataSpecificHoursComponent";
 import EventTypeMenu from "./EventTypeMenu";
-import { CalendarMonthIcon, AddCircleOutlineIcon, ViewListIcon, ContentCopyIcon, CloseIcon, ExpandMoreIcon } from "../Icon";
+import { CalendarMonthIcon, AddCircleOutlineIcon, ViewListIcon, ContentCopyIcon, CloseIcon, ExpandMoreIcon, AddOutlinedIcon } from "../Icon";
 import { Tabs, Tab, Box, Typography, Button, ToggleButton, ToggleButtonGroup, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import CustomButton from "./CustomButton";
 import WeeklyHours from "./WeeklyHours";
 import style from "../MuiStyles/muiStyle";
+import dayjs from "dayjs";
+
 
 
 const localizer = momentLocalizer(moment);
 
 const styles = {
- 
+
   timePickerStyles: {
     background: 'white',
     border: '1px solid #a6bbd1',
@@ -56,11 +58,11 @@ const styles = {
   selectdateTitle: {
     color: "black",
   },
-  
+
   listview_date_cancel: {
     width: "130px",
-    marginRight:'5px'
-    
+    marginRight: '5px'
+
   },
   listHolidayText: {
     marginBottom: '30px',
@@ -73,6 +75,16 @@ const styles = {
     color: 'black'
   }
 }
+
+const timezones = [
+  { label: "Eastern Time - US & Canada", time: "12:00am" },
+  { label: "Central Time - US & Canada", time: "8:20am" },
+  { label: "Mountain Time - US & Canada", time: "7:20am" },
+  { label: "Pacific Time - US & Canada", time: "9:20am" },
+  { label: "Alaska Time", time: "5.20am" },
+  { label: "Arizona, Yukon Time", time: "5:00pm" },
+  { label: "Newfoundland Time", time: "10:50am" },
+];
 
 
 const CustomToolbar = ({ label, onNavigate }) => {
@@ -102,8 +114,11 @@ const Availability = () => {
     newScheduleOpen: false,
     scheduleName: "",
     eventAnchor: null,
-    timeZoneAnchor: null,
+    timeZoneAnchor: "Eastern Time - US & Canada",
     selected: true,
+    showOpenDataHours: false,
+    selectedhoursDate: null,
+    showSelectedTimeSlots: false,
     //open: false,
   });
   const [meetingHours, setMeetingHours] = useState({
@@ -163,10 +178,26 @@ const Availability = () => {
       [day]: [...prevHours[day], { from: "09:00", to: "17:00", available: true }],
     }));
   };
+  const handleaddSpecifichours = () => {
+    updateState({ showOpenDataHours: true })
+  }
+  const handleCloseAddHours=()=>{
+    updateState({showOpenDataHours:false})
+  }
+   const disablePastDates = (date) => {
+          const today = dayjs().startOf('day');
+          const isPast = date.isBefore(today);
+          const isSunday = date.day() === 0;
+          return isPast || isSunday;
+      };
+  const handleDateHoursChange = (newDate) => {
+    updateState({ selectedhoursDate: newDate, showSelectedTimeSlots: true });
+
+};
   // const handleOpen = () => updateState({ open: true });
   // const handleClose = () => updateState({ open: false });
 
- 
+
   // const [tabIndex, setTabIndex] = useState(0);
   // const [view, setView] = useState("calendar");
   //holiday_settings 
@@ -200,7 +231,7 @@ const Availability = () => {
   // }
 
 
- 
+
   // const handleChange = (event, newIndex) => {
   //   setTabIndex(newIndex);
   // }
@@ -235,6 +266,12 @@ const Availability = () => {
   return (
     <div className="calendar_availability">
       {/* <DatePickerModal open={open} onClose={handleClose} /> */}
+      <DataSpecificHoursModal open={state.showOpenDataHours}
+        onClose={handleCloseAddHours}
+        onDataChange={handleDateHoursChange}
+        selectedDate={state.selectedhoursDate}
+        disablePastDates={disablePastDates}
+        showTimeSlots={state.showSelectedTimeSlots} />
       <Dialog
         open={state.newScheduleOpen}
         onClose={() => updateState({ newScheduleOpen: false })}
@@ -308,13 +345,19 @@ const Availability = () => {
                       <Typography variant="body2" style={{ fontWeight: "bold", color: "#333" }}>
                         Time zone
                       </Typography>
-                      <div
+                      {/* <div
                         onClick={handleTimeZoneClick}
                         style={{ color: "#007bff", cursor: "pointer", display: "flex", alignItems: "center" }}
                       >
                         Eastern Time - US & Canada <ExpandMoreIcon fontSize="small" />
                       </div>
                       <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} />
+                         */}
+                      <TimezoneDropdown
+                        options={timezones}
+                        selectedValue={state.timeZoneAnchor}
+                        onSelect={(zone) => setState({ ...state, timeZoneAnchor: zone })}
+                      />
                     </div>
                   </div>
                   <ToggleButtonGroup className="scedule_calendar_toggle"
@@ -405,11 +448,15 @@ const Availability = () => {
                             ))
                           }
                         </div> */}
-                        <WeeklyHours meetingHours={meetingHours} setMeetingHours={setMeetingHours}/>
+                        <WeeklyHours meetingHours={meetingHours} setMeetingHours={setMeetingHours} />
                       </div>
                       <div className="right_container">
-                        <DataSpecificHoursComponent />
-
+                        {/* <DataSpecificHoursComponent /> */}
+                        <div className="data_specific_hours">
+                          <h4>Data Specific Hours</h4>
+                          <p>Override your availability for specific dates when your hours differ from your regular weekly hours.</p>
+                          <CustomButton variant="outlined" onClick={handleaddSpecifichours} icon={<AddOutlinedIcon />} > Add date-specific hours</CustomButton>
+                        </div>
                       </div>
                     </div>
                   </>

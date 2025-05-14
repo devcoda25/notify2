@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-const CustomButton = ({ variant = "contained", icon, onClick,  className = "",children, endicon, sx = {} }) => {
+const CustomButton = ({ variant = "contained", icon, onClick,  className = "",children, endicon, sx = {}, disabled = false }) => {
     const customStyles = {
         contained: {
             color: " white",
@@ -37,6 +37,7 @@ const CustomButton = ({ variant = "contained", icon, onClick,  className = "",ch
             startIcon={icon}
             endIcon={endicon}
             className={className} 
+            disabled={disabled}
 
 
         >

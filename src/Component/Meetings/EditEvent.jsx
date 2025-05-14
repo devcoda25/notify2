@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Grid, List, Switch, Tooltip, Button, ListItem, Typography } from "@mui/material";
+import { Grid, List, Switch, Tooltip, Button, ListItem, Typography, FormControl, Modal, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { Accordion, AccordionSummary, AccordionDetails, RadioGroup, Radio, FormControlLabel, Menu } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CloseIcon, AccessTimeOutlinedIcon, LocationOnOutlinedIcon, ReportGmailerrorredIcon, InfoOutlinedIcon, BuildOutlinedIcon, CampaignIcon, PublicOutlinedIcon, ArrowDropDownIcon, ArrowDropUpIcon, AddIcon, OpenInNewIcon, DeleteOutlineIcon, LockOutlinedIcon, EmailOutlinedIcon, MoreVertOutlinedIcon, ChatBubbleOutlineOutlinedIcon, EditOutlinedIcon } from "../Icon";
+import { CloseIcon, AccessTimeOutlinedIcon, LocationOnOutlinedIcon, AddCircleOutlineIcon, ContentCopyIcon, ReportGmailerrorredIcon, InfoOutlinedIcon, BuildOutlinedIcon, CampaignIcon, PublicOutlinedIcon, ArrowDropDownIcon, ArrowDropUpIcon, AddIcon, OpenInNewIcon, DeleteOutlineIcon, LockOutlinedIcon, EmailOutlinedIcon, MoreVertOutlinedIcon, ChatBubbleOutlineOutlinedIcon, EditOutlinedIcon, KeyboardArrowDownIcon, CalendarMonthIcon, CloseOutlinedIcon, ListIcon, CalendarTodayOutlinedIcon, KeyboardArrowUpIcon } from "../Icon";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { parse, format } from 'date-fns';
@@ -15,6 +15,57 @@ import TextEditor from "./TextEditor";
 import CustomDropdown from "./CustomDropdown";
 import TextfieldComponent from "../TextfieldComponent";
 import VariableBox from "./VariableBox";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import TimePickerComponent from "../TimePickerComponent";
+import moment from "moment";
+import TimezoneDropdown from "./TimeZoneMenu";
+import DataSpecificHoursModal from "./DataSpecificHoursComponent";
+import WorkingHoursModal from "./WorkingHoursModal";
+
+const localizer = momentLocalizer(moment);
+const styles = {
+    selectdateTitle: {
+        color: "black",
+    },
+
+    listview_date_cancel: {
+        width: "130px",
+        marginRight: "5px"
+    },
+
+}
+const defaultMeetingHours = {
+    Sunday: [{ from: "09:00", to: "17:00", available: true }],
+    Monday: [{ from: "09:00", to: "17:00", available: true }],
+    Tuesday: [{ from: "09:00", to: "17:00", available: true }],
+    Wednesday: [{ from: "09:00", to: "17:00", available: true }],
+    Thursday: [{ from: "09:00", to: "17:00", available: true }],
+    Friday: [{ from: "09:00", to: "17:00", available: true }],
+    Saturday: [{ from: "09:00", to: "17:00", available: true }],
+};
+const defaultEvents = [
+    {
+        title: "9:00am - 5:00pm",
+        start: new Date(2025, 4, 2, 9, 0),
+        end: new Date(2025, 4, 2, 17, 0),
+    },
+    {
+        title: "6:00pm - 7:00pm",
+        start: new Date(2025, 4, 7, 18, 0),
+        end: new Date(2025, 4, 7, 19, 0),
+    },
+    {
+        title: "12:00am - 1:00am",
+        start: new Date(2025, 4, 15, 0, 0),
+        end: new Date(2025, 4, 15, 1, 0),
+    },
+    {
+        title: "9:00am - 5:00pm",
+        start: new Date(2025, 4, 30, 9, 0),
+        end: new Date(2025, 4, 30, 17, 0),
+    },
+]
 const bufferTimeOptions = ['0 min', '5 min', '10 min', '15 min', '30 min', '45 min'];
 const buffterMaxMeetOption = ['day', 'week', 'month'];
 const meetExeptionOption = ['includes', 'matches exactly'];
@@ -23,18 +74,91 @@ const answerTypeOptions = ['one Line', 'Multiple lines', 'Radio buttons', 'check
 const pageBookingOption = ['Display confirmation page', 'Redirect to an external site'];
 const replyAddressOptions = ["Host's email address", 'No-reply address'];
 const timeOptions = ["minute(s)", "hour(s)", "day(s)"];
+const dataRangeOptions = ['Calendar days', 'Weekdays'];
+const availabilityScheduleOptions = ['Working hours(default)', 'Custom schedule']
 const baseTimeSlots = [
     "9:00 am", "9:30 am", "10:00 am", "10:30 am", "11:00 am", "11:30 am",
     "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm", "2:00 pm", "2:30 pm", "3:00 pm", "3:30 pm",
     "4:00 pm", "4:30 pm", "5:00 pm", "5:30 pm", "6:00 pm", "6:30 pm", "7:00 pm", "7:30 pm",
     "8:00 pm", "8:30 pm", "9:00 pm", "9:30 pm", "10:00 pm", "10:30 pm", "11:00 pm", "11:30 pm"
 ];
+const scheduleData = {
+    S0: ["Unavailable"],
+    M: ["6:00pm - 7:00pm", "8:00pm - 9:00pm"],
+    T: [
+        "12:00am - 1:00am",
+        "2:00am - 3:00am",
+        "4:00am - 5:00am",
+        "9:00am - 5:00pm",
+        "6:00pm - 7:00pm",
+        "8:00pm - 9:00pm",
+        "10:00pm - 11:00pm",
+    ],
+    W: ["9:00am - 5:00pm"],
+    T2: ["9:00am - 5:00pm"],
+    F: ["9:00am - 5:00pm"],
+    S1: ["9:00am - 5:00pm"],
+};
+
+const days = [
+    { key: "S0", label: "S" },
+    { key: "M", label: "M" },
+    { key: "T", label: "T" },
+    { key: "W", label: "W" },
+    { key: "T2", label: "T" },
+    { key: "F", label: "F" },
+    { key: "S1", label: "S" },
+]
+const timezones = [
+    { label: "Eastern Time - US & Canada", time: "12:00am" },
+    { label: "Central Time - US & Canada", time: "8:20am" },
+    { label: "Mountain Time - US & Canada", time: "7:20am" },
+    { label: "Pacific Time - US & Canada", time: "9:20am" },
+    { label: "Alaska Time", time: "5.20am" },
+    { label: "Arizona, Yukon Time", time: "5:00pm" },
+    { label: "Newfoundland Time", time: "10:50am" },
+];
+
+
+const CustomToolbar = ({ label, onNavigate, currentDate }) => {
+    const now = new Date();
+    const disablePrev =
+        currentDate.getFullYear() <= now.getFullYear() &&
+        currentDate.getMonth() <= now.getMonth();
+    return (
+        <div className="calendar_custom_toolbar">
+
+
+            <button onClick={() => onNavigate("PREV")}
+                disabled={disablePrev}
+                style={{
+                    background: "none",
+                    border: "none",
+                    cursor: disablePrev ? "not-allowed" : "pointer",
+                    fontSize: "18px",
+                    marginRight: "10px",
+                    opacity: disablePrev ? 0.3 : 1,
+                    color: disablePrev ? "gray" : "black",
+                }}>
+                <FaChevronLeft />
+            </button>
+            <h2 style={{ margin: 0 }}>{label}</h2>
+            <button onClick={() => onNavigate("NEXT")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px" }}>
+                <FaChevronRight />
+            </button>
+
+        </div>
+    );
+};
+
 
 const EditEvent = () => {
     const [state, setState] = useState({
         selectedDate: null,
+        selectedhoursDate: null,
         showTimeSlots: false,
         selectedTime: [],
+        showSelectedTimeSlots: false,
         is24HourFormat: false,
         currentTime: '',
         isOpenTimeZone: false,
@@ -43,6 +167,7 @@ const EditEvent = () => {
         bufferAfterEvent: bufferTimeOptions[0],
         // bufferMaxMeet: buffterMaxMeetOption[0],
         meetException: meetExeptionOption[0],
+        scheduleContent: availabilityScheduleOptions[0],
         showAddException: true,
         bookingPageValue: bufferTimeOptions[0],
         inviteDetailsValue: inviteDetailsOptions[0],
@@ -60,15 +185,38 @@ const EditEvent = () => {
         openTextReminders: false,
         replyAddressContent: replyAddressOptions[0],
         selectedTimeUnit: timeOptions[1],
-
+        emailConfirmation: false,
+        showDaysInput: false,
+        showNoticeInput: false,
+        selectedRadioSchedule: "future",
+        dataRangeValue: dataRangeOptions[0],
+        workingHoursModal: false,
+        showAddHours: false,
+        selectedZone: "Eastern Time - US & Canada",
+        showViewCalendar: false,
+        events: defaultEvents,
     })
     const [limits, setLimits] = useState([
         { bufferMaxMeet: buffterMaxMeetOption[0] }
     ]);
+    const [meetingHours, setMeetingHours] = useState(defaultMeetingHours);
+    const [currentDate, setCurrentDate] = useState(new Date());
     const timeZone = 'America/New_York';
     const updateState = (newState) => {
         setState((prevState) => ({ ...prevState, ...newState }));
     };
+    const handleAddSlot = (day) => {
+        setMeetingHours((prevHours) => ({
+            ...prevHours,
+            [day]: [...prevHours[day], { from: "09:00", to: "17:00", available: true }],
+        }));
+    };
+    const handleRemoveSlot = (day, index) => {
+        setMeetingHours((prev) => {
+            const updateSlots = prev[day].filter((_, i) => i !== index);
+            return { ...prev, [day]: updateSlots }
+        })
+    }
     const disablePastDates = (date) => {
         const today = dayjs().startOf('day');
         const isPast = date.isBefore(today);
@@ -77,6 +225,10 @@ const EditEvent = () => {
     };
     const handleDateChange = (newDate) => {
         updateState({ selectedDate: newDate, showTimeSlots: true, selectedTime: [] });
+
+    };
+    const handleDateHoursChange = (newDate) => {
+        updateState({ selectedhoursDate: newDate, showSelectedTimeSlots: true });
 
     };
     const handleTimezone = () => {
@@ -158,6 +310,51 @@ const EditEvent = () => {
             updateState({ openTextReminders: true })
         }
     }
+    const handleSwitchEmailConfirmation = () => {
+        updateState({ emailConfirmation: true, openCalendarInvitation: false })
+    }
+    const toggleDaysInput = () => {
+        updateState({ showDaysInput: !state.showDaysInput });
+    };
+    const toggleNoticeInput = () => {
+        updateState({ showNoticeInput: !state.showNoticeInput });
+    };
+    const handleWorkingHours = () => {
+        updateState({ workingHoursModal: true })
+    }
+    const handleCloseWorkinghours = () => {
+        updateState({ workingHoursModal: false })
+    }
+    const handleHoursbtn = () => {
+        updateState({ showAddHours: true })
+    }
+    const handleCloseAddHours = () => {
+        updateState({ showAddHours: false })
+    }
+    const handleViewCalendar = () => {
+        updateState({ showViewCalendar: true })
+    }
+    const handleCloseViewCalendar = () => {
+        updateState({ showViewCalendar: false })
+    }
+    const handleNavigate = (action) => {
+        let newDate = new Date(currentDate);
+
+        if (action === "PREV") {
+            newDate.setMonth(newDate.getMonth() - 1);
+        } else if (action === "NEXT") {
+            newDate.setMonth(newDate.getMonth() + 1);
+        }
+
+        const now = new Date();
+        const isPrevDisabled =
+            newDate.getFullYear() < now.getFullYear() ||
+            (newDate.getFullYear() === now.getFullYear() && newDate.getMonth() < now.getMonth());
+
+        if (action === "NEXT" || !isPrevDisabled) {
+            setCurrentDate(newDate);
+        }
+    };
     useEffect(() => {
         const updateTime = () => {
             const now = new Date();
@@ -191,6 +388,208 @@ const EditEvent = () => {
             title: 'Availability',
             subText: (
                 <>Mon,Tue,Wed,Thu,Fri,Sat,hours Vary</>
+            ),
+            details: (
+                <div className="availability_container">
+                    <>
+                        <label>Data-range</label>
+                        <div className="data_range">Invitees can schedule <span className='datarange_dropodown' onClick={toggleDaysInput}>60 days <KeyboardArrowDownIcon /></span>
+                            into the future with at least <span className='datarange_dropodown' onClick={toggleNoticeInput}>4 hours<KeyboardArrowDownIcon /></span>notice</div>
+                        {
+                            state.showDaysInput && (
+                                <>
+                                    <FormControl>
+
+                                        <RadioGroup value={state.selectedRadioSchedule} onChange={(e) => updateState({ selectedRadioSchedule: e.target.value })}>
+                                            <FormControlLabel
+                                                value="future"
+                                                control={<Radio />}
+                                                label={
+                                                    <div className="radio_container">
+                                                        <TextfieldComponent type='text' value='60' customStyle="custom_textfield_box" />
+                                                        <CustomDropdown
+                                                            value={state.dataRangeValue}
+                                                            onChange={(e) =>
+                                                                setState((prev) => ({
+                                                                    ...prev,
+                                                                    dataRangeValue: e.target.value,
+                                                                }))
+                                                            }
+                                                            options={dataRangeOptions}
+
+                                                        />
+                                                        <span>into the future</span>
+                                                    </div>
+                                                }
+                                            />
+                                            <FormControlLabel value="dateRange" control={<Radio />} label="Within a date range" />
+                                            <FormControlLabel value="indefinite" control={<Radio />} label="Indefinitely into the future" />
+                                        </RadioGroup>
+                                    </FormControl>
+                                </>
+                            )
+                        }
+                        {
+                            state.showNoticeInput && (
+                                <>
+                                    <div className="radio_container">
+                                        <TextfieldComponent type='text' value='4' customStyle="custom_textfield_box custom_notice_inputbox" />
+                                        <CustomDropdown
+                                            value={state.selectedTimeUnit}
+                                            onChange={(e) =>
+                                                setState((prev) => ({
+                                                    ...prev,
+                                                    selectedTimeUnit: e.target.value,
+                                                }))
+                                            }
+                                            options={timeOptions}
+                                        />
+                                        <span>of an event start time.</span>
+                                    </div>
+                                </>
+                            )
+                        }
+                    </>
+                    <div className="schedule_container">
+                        <div>
+                            <label>Schedule:</label>
+                            <CustomDropdown
+                                value={state.scheduleContent}
+                                onChange={(e) =>
+                                    setState((prev) => ({
+                                        ...prev,
+                                        scheduleContent: e.target.value,
+                                    }))
+                                }
+                                sx={{ ...style.busyrule_customdropdown, width: '152px' }}
+                                options={availabilityScheduleOptions}
+
+                            />
+                            {
+                                state.scheduleContent === 'Custom schedule' && (
+                                    <>
+                                        <CustomButton variant='outlined' icon={<CalendarMonthIcon />} onClick={handleViewCalendar}>View calendar</CustomButton>
+                                        <ContentCopyIcon sx={{ cursor: 'pointer', ml: '5px' }} />
+                                    </>
+                                )
+                            }
+
+                        </div>
+                        {
+                            state.scheduleContent === 'Working hours(default)' && (
+                                <div className="schedule_content">
+                                    <div className="heading">
+                                        <p>This event type uses the weekly and custom hours saved on the schedule</p>
+                                        <EditOutlinedIcon onClick={handleWorkingHours} />
+                                    </div>
+                                    <div className="schedule_time_container">
+                                        <div className="weeklyhours_title"><svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" role="img"><path d="m6.5.5 2 1.75L6.5 4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M.5 4.5V3.25a1 1 0 0 1 1-1h7M3.5 9.5l-2-1.75L3.5 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5v1.25a1 1 0 0 1-1 1h-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                            <p>Weekly hours</p></div>
+                                        {days.map(({ key, label }) => (
+                                            <div key={key} className="schedule__row">
+                                                <div className="day__circle">{label}</div>
+                                                <div className="time__list">
+                                                    {scheduleData[key].map((time, idx) => (
+                                                        <div
+                                                            key={idx}
+                                                            className={`time__entry ${time === "Unavailable" ? "unavailable" : ""}`}
+                                                        >
+                                                            {time}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <p>Eastern Time - US & Canada </p>
+                                        <div className="weeklyhours_title"><CalendarMonthIcon />
+                                            <p>Data-specific hours</p></div>
+                                        <p>None</p>
+                                    </div>
+
+                                </div>
+                            )
+                        }
+                        {
+                            state.scheduleContent === 'Custom schedule' && (
+                                <div className="custom_schedule_container">
+                                    <div className="working_hours_list_container">
+
+                                        <div className="title">
+                                            <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg" role="img"><path d="m6.5.5 2 1.75L6.5 4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M.5 4.5V3.25a1 1 0 0 1 1-1h7M3.5 9.5l-2-1.75L3.5 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5v1.25a1 1 0 0 1-1 1h-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                            <p>Weekly hours</p>
+                                        </div>
+                                        <p>Set when you are typically available for meetings</p>
+                                        <div className="weekly_hours">
+                                            {
+                                                Object.entries(meetingHours).map(([day, slots], dayIndex) => (
+                                                    <div key={dayIndex} className='setmeeting_hours_container'>
+                                                        <div className="day">{day.charAt(0)}</div>
+                                                        <div className="set_time_container">
+                                                            {
+                                                                slots.length > 0 && slots[0].available ? (
+                                                                    slots.map((slot, index) => (
+                                                                        <div key={index} className='set_time'>
+
+                                                                            <TimePickerComponent
+                                                                                initialValue={slot.from}
+                                                                                disabled={false}
+                                                                                customStyles={{ ...style.calendarlist_timePickerStyles, width: '134px' }}
+
+                                                                            />
+                                                                            <span style={{ margin: "0 5px" }}>—</span>
+                                                                            <TimePickerComponent
+                                                                                initialValue={slot.from}
+                                                                                disabled={false}
+                                                                                customStyles={{ ...style.calendarlist_timePickerStyles, width: '134px' }}
+
+                                                                            />
+                                                                            <CloseIcon onClick={() => handleRemoveSlot(day, index)} style={style.calendarlist_iconStyle} />
+
+                                                                            {index === 0 && (
+                                                                                <>
+                                                                                    <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={style.calendarlist_iconStyle} />
+
+                                                                                </>
+                                                                            )}
+
+                                                                        </div>
+                                                                    ))
+                                                                ) : (
+                                                                    <> <span style={{ color: "gray" }}>Unavailable
+                                                                        <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={style.calendarlist_iconStyle} /></span>
+                                                                    </>
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                        <TimezoneDropdown
+                                            options={timezones}
+                                            selectedValue={state.selectedZone}
+                                            onSelect={(zone) => setState({ ...state, selectedZone: zone })}
+                                        />
+
+
+                                        <div className="heading">
+                                            <div className="title">
+                                                <CalendarTodayOutlinedIcon />
+                                                <p>Date-specific hours</p>
+                                            </div>
+                                            <CustomButton variant='outlined' icon={<AddIcon />} onClick={handleHoursbtn}>Hours</CustomButton>
+                                        </div>
+                                        <p>Adjust hours for specific days</p>
+
+
+                                    </div>
+                                </div>
+                            )
+                        }
+
+                    </div>
+                </div>
+
             )
         },
         {
@@ -324,16 +723,7 @@ const EditEvent = () => {
                                                 meetException: e.target.value,
                                             }))
                                         }
-                                        sx={{
-                                            width: '150px',
-                                            color: '#004eba',
-                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                border: 'none',
-                                            },
-                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                border: 'none',
-                                            },
-                                        }}
+                                        sx={style.busyrule_customdropdown}
                                         options={meetExeptionOption}
 
                                     />
@@ -497,22 +887,22 @@ const EditEvent = () => {
                             <div className="event_invitee_content">
                                 <EmailOutlinedIcon />
                                 <div className="event_invitee_center_content">Calendar Invitation<p>Immediately after booking</p></div>
-                                <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "calendar_invitation")} sx={{cursor:'pointer'}} />
+                                <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "calendar_invitation")} sx={{ cursor: 'pointer' }} />
                             </div>
                             <div className="event_invitee_content">
                                 <EmailOutlinedIcon />
                                 <div className="event_invitee_center_content">Email reminders</div>
-                                <div><span>Off</span><MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_reminders")} sx={{cursor:'pointer'}}/></div>
+                                <div><span>Off</span><MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_reminders")} sx={{ cursor: 'pointer' }} /></div>
                             </div>
                             <div className="event_invitee_content">
                                 <ChatBubbleOutlineOutlinedIcon />
                                 <div className="event_invitee_center_content">Text reminders</div>
-                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "text_reminders")} sx={{cursor:'pointer'}}/></div>
+                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "text_reminders")} sx={{ cursor: 'pointer' }} /></div>
                             </div>
                             <div className="event_invitee_content">
                                 <EmailOutlinedIcon />
                                 <div className="event_invitee_center_content">Email follow-up</div>
-                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_followup")} sx={{cursor:'pointer'}}/></div>
+                                <div><span>Off</span>  <MoreVertOutlinedIcon onClick={(e) => handleNotificationClick(e, "email_followup")} sx={{ cursor: 'pointer' }} /></div>
                             </div>
                             <Menu anchorEl={state.notificationAnchorE1} open={Boolean(state.notificationAnchorE1)} onClose={handleNotificationClose}
                                 PaperProps={{
@@ -520,7 +910,7 @@ const EditEvent = () => {
                                 }}>
 
                                 {(state.notificationSelectedItem === "calendar_invitation" || state.notificationSelectedItem === "email_reminders" || state.notificationSelectedItem === "text_reminders" || state.notificationSelectedItem === "email_followup") && (
-                                    <div onClick={handleNotificationEditClick} style={{cursor:'pointer'}}><EditOutlinedIcon />Edit</div>
+                                    <div onClick={handleNotificationEditClick} style={{ cursor: 'pointer' }}><EditOutlinedIcon />Edit</div>
                                 )}
 
 
@@ -582,6 +972,48 @@ const EditEvent = () => {
     return (
         <>
             <div className="edit_event_container">
+                <WorkingHoursModal open={state.workingHoursModal} onClose={handleCloseWorkinghours} />
+                <DataSpecificHoursModal open={state.showAddHours}
+                    onClose={handleCloseAddHours}
+                    onDataChange={handleDateHoursChange}
+                    selectedDate={state.selectedhoursDate}
+                    disablePastDates={disablePastDates}
+                    showTimeSlots={state.showSelectedTimeSlots} />
+
+                <Modal open={state.showViewCalendar} sx={{ zIndex: 1300 }} onClose={handleCloseViewCalendar}>
+                    <div className="manage_availablehours_container">
+                        <div className="title">
+                            <h3>Manage your available hours</h3>
+                            <CloseOutlinedIcon onClick={handleCloseViewCalendar} sx={{ cursor: 'pointer' }} />
+                        </div>
+                        <p>Select a date to customize your availability</p>
+                        <div style={{ padding: "20px 0px" }}>
+                            <Calendar
+                                localizer={localizer}
+                                events={state.events}
+                                startAccessor="start"
+                                endAccessor="end"
+                                views={{ month: true }}
+                                defaultView="month"
+                                date={currentDate}
+                                onNavigate={(newDate) => setCurrentDate(newDate)}
+                                components={{
+                                    toolbar: (props) => (
+                                        <CustomToolbar {...props} currentDate={currentDate} onNavigate={handleNavigate} />
+                                    ),
+                                }}
+                                formats={{
+                                    weekdayFormat: (date, culture, localizer) => localizer.format(date, "ddd", culture).toUpperCase(),
+                                }}
+
+                                style={{ background: "white", borderRadius: "8px", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}
+                            />
+                        </div>
+                        <div className="footer_container">
+                            <CustomButton variant="contained" onClick={handleCloseViewCalendar}>Close</CustomButton>
+                        </div>
+                    </div>
+                </Modal>
                 <div className="left_container">
                     <div className="left_content">
                         <div className="header">
@@ -600,7 +1032,7 @@ const EditEvent = () => {
                                                         <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
                                                     </div>
                                                     <div>A calendar invitation is sent to your invitee when booking, which adds the event to their calendar.
-                                                        <CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Switch to email confirmation</CustomButton>
+                                                        <CustomButton variant="text" sx={style.calendar_invitation_custombtn} onClick={handleSwitchEmailConfirmation}>Switch to email confirmation</CustomButton>
                                                     </div>
                                                     <div>
                                                         <label>Subject</label>
@@ -651,13 +1083,12 @@ const EditEvent = () => {
                                                             <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
                                                         </div>
                                                         <div>An invitee will receive a reminder email before a scheduled event at specified times.</div>
-                                                        <div>
+                                                        <div className="reply_address">
                                                             <label>Reply-to address</label>
                                                             <CustomDropdown
                                                                 value={state.replyAddressContent}
                                                                 onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
                                                                 options={replyAddressOptions}
-
                                                             />
 
                                                             <div className="edit">
@@ -702,26 +1133,26 @@ const EditEvent = () => {
 
                                                                     <span>before event</span>
                                                                 </div>
-                                                                <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#a6bbd1', fontSize: 16 }}>Add another reminder</CustomButton>
+                                                                <CustomButton variant="text" icon={<AddIcon />} sx={{ color: '#a6bbd1', fontSize: 16 }} disabled={true}>Add another reminder</CustomButton>
                                                             </div>
                                                             <div>
                                                                 <label>Status</label>
                                                                 <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
                                                             </div>
-                                                        </fieldset >
+                                                        </fieldset>
                                                         <div className="edit">
                                                             <CampaignIcon />
-                                                            <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                            <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton> to edit your cancellation agreement.</div>
                                                         </div>
-                                                        <div className="cancelation_content">
+                                                        <fieldset className="cancelation_content" disabled>
                                                             <label>Cancellation policy</label>
+                                                            <textarea className="addguests_details cancellation_textarea"></textarea>
                                                             <div className="edit">
                                                                 <ReportGmailerrorredIcon />
-                                                                <div>
-                                                                    <a>Upgrade to Standard</a>Updates to your cancellation policy apply to all emails for this event type</div>
+                                                                <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
                                                             </div>
                                                             <div><input type='checkbox' checked disabled /><span>Include cancel and reschedule links in email invitations and reminders (recommended)</span> </div>
-                                                        </div>
+                                                        </fieldset>
                                                     </div>
                                                 </div>
                                             </>
@@ -770,7 +1201,8 @@ const EditEvent = () => {
                                                     </div>
                                                     <div className="edit">
                                                         <CampaignIcon />
-                                                        <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                        <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your cancellation agreement.</div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -780,10 +1212,11 @@ const EditEvent = () => {
                                                 <div className="calendar_invitation">
                                                     <div className="edit">
                                                         <CampaignIcon />
-                                                        <div><a>Upgrade to Standard</a> to edit your calendar invitations.</div>
+                                                        <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
+
                                                     </div>
                                                     <div>An invitee will receive a reminder email before a scheduled event at specified times.</div>
-                                                    <div>
+                                                    <div className="reply_address">
                                                         <label>Reply-to address</label>
                                                         <CustomDropdown
                                                             value={state.replyAddressContent}
@@ -792,12 +1225,7 @@ const EditEvent = () => {
 
 
                                                         />
-                                                        {/* <AutocompleteComponent
-                                                            options={replyAddressOptions}
-                                                            value={state.replyAddressContent}
-                                                            onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
-                                                            customStyles={{ ...style.newticketsAutocomplete }}
-                                                        /> */}
+
                                                         <div className="edit">
                                                             <ReportGmailerrorredIcon />
                                                             <div>All email communication will use the same option</div>
@@ -818,34 +1246,105 @@ const EditEvent = () => {
                                                             <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>.Please respond to this email with any feedback or additional requests.
                                                         </VariableBox>
                                                     </div>
-                                                    <div>
-                                                        <label>Timing</label>
-                                                        <div className="timing_container">
-                                                            <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
-                                                            <CustomDropdown
-                                                                options={timeOptions}
-                                                                value={state.selectedTimeUnit}
-                                                                onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
-                                                                disabled
-                                                            />
-                                                            {/* <AutocompleteComponent
-                                                                options={timeOptions}
-                                                                value={state.selectedTimeUnit}
-                                                                onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
-                                                                customStyles={{ ...style.newticketsAutocomplete, ...style.eventTimingDropdown }}
-                                                                disabled={state.isDropdownDisabled}
-                                                            /> */}
-                                                            <span>after event</span>
+                                                    <fieldset disabled>
+                                                        <div>
+                                                            <label>Timing</label>
+                                                            <div className="timing_container">
+                                                                <TextfieldComponent value='1' customStyle='eventTimingTextfield' />
+                                                                <CustomDropdown
+                                                                    options={timeOptions}
+                                                                    value={state.selectedTimeUnit}
+                                                                    onChange={(e, newValue) => updateState({ selectedTimeUnit: newValue })}
+                                                                    disabled
+                                                                />
+
+                                                                <span>after event</span>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label>Status</label>
+                                                            <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                        </div>
+                                                    </fieldset>
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your cancellation agreement.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : state.emailConfirmation ? (
+                                            <div className="calendar_invitation_modal">
+                                                <h1>Email Confirmation</h1>
+                                                <div className="calendar_invitation">
+                                                    <div className="edit">
+                                                        <CampaignIcon />
+                                                        <div><CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton>to edit your calendar invitations.</div>
+
+                                                    </div>
+                                                    <div>A calendar invitation is sent to your invitee when booking, which adds the event to their calendar.
+                                                        <CustomButton variant="text" sx={style.calendar_invitation_custombtn} onClick={() => updateState({ openCalendarInvitation: true })}>Switch to calendar invitation</CustomButton>
+                                                    </div>
+                                                    <div className="reply_address">
+                                                        <label>Reply-to address</label>
+                                                        <CustomDropdown
+                                                            value={state.replyAddressContent}
+                                                            onChange={(e, newValue) => updateState({ replyAddressContent: newValue })}
+                                                            options={replyAddressOptions}
+
+
+                                                        />
+
+                                                        <div className="edit">
+                                                            <ReportGmailerrorredIcon />
+                                                            <div>All email communication will use the same option</div>
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <label>Status</label>
-                                                        <div className='status_container'>Off <FormControlLabel disabled control={<Switch />} /></div>
+                                                        <label>Subject</label>
+                                                        <VariableBox>
+                                                            <span>Confirmed:</span>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Name</CustomButton>
+                                                            <span>with</span>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton><span>On</span>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton>
+                                                        </VariableBox>
                                                     </div>
-                                                    <div className="edit">
-                                                        <CampaignIcon />
-                                                        <div><a>Upgrade to Standard</a> to edit your cancellation agreement.</div>
+                                                    <div>
+                                                        <label>Body</label>
+                                                        <VariableBox showTextFormatIcons>
+                                                            Hi<CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Invitee Full Name</CustomButton>,
+                                                            <span>Your</span><CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Evant Name</CustomButton> with
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>My Name</CustomButton> at
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Time</CustomButton> on
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Date</CustomButton> is scheduled.
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Event Description</CustomButton>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Location</CustomButton>
+                                                            <CustomButton variant="text" sx={{ ...style.workflowVariableBtn }}>Questions And Answers</CustomButton>
+                                                        </VariableBox>
                                                     </div>
+                                                    <fieldset disabled>
+                                                        <div>
+                                                            <label>Timing</label>
+                                                            <p>Sends immediately when booked</p>
+                                                            <div className="edit">
+                                                                <CampaignIcon />
+                                                                <div>
+                                                                    <CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton> to edit your cancellation agreement.</div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </fieldset>
+                                                    <fieldset className="cancelation_content" disabled>
+                                                        <label>Cancellation policy</label>
+                                                        <textarea className="addguests_details cancellation_textarea"></textarea>
+                                                        <div className="edit">
+                                                            <ReportGmailerrorredIcon />
+                                                            <div>
+                                                                <CustomButton variant="text" sx={style.calendar_invitation_custombtn}>Upgrade to Standard</CustomButton> to edit your cancellation agreement.</div>
+                                                        </div>
+                                                        <div><input type='checkbox' checked disabled /><span>Include cancel and reschedule links in email invitations and reminders (recommended)</span> </div>
+                                                    </fieldset>
                                                 </div>
                                             </div>
                                         ) : (

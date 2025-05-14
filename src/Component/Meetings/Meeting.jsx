@@ -153,7 +153,7 @@ const Meeting = () => {
         <>
             <div className="calendar_meet">
                 <h1>Meetings</h1>
-                <div >
+                <div>
                     <div className="meetings_dropdown_container">
                         <Button
                             variant="outlined"

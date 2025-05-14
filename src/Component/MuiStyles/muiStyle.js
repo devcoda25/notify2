@@ -1,3 +1,4 @@
+import { FaWeight } from "react-icons/fa";
 
 
 const style = {
@@ -332,36 +333,71 @@ const style = {
     fontSize: '23px',
     fontWeight: 700,
   },
-location_option_btn:{
-  color: '#004eba !important',
-  fontSize:'16px'
-},
-eventAccordion:{
-boxShadow:'none',
-border:'none',
-borderBottom:'1px solid #F2F2F2',
-'&.Mui-expanded': {
-  margin: 0,
-},
-},
-eventheading:{
-fontSize:'15px',
-fontWeight:'bold',
-color:'black'
-},
-eventAccordionsummary:{
-  padding: '16px 24px',
-  '& .MuiAccordionSummary-content': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '5px',
-    margin: 0, 
+  location_option_btn: {
+    color: '#004eba !important',
+    fontSize: '16px'
   },
-},
-calendar_invitation_custombtn:{
-  fontSize:'16px',
-  color:'#004eba',
-  padding:'0px 3px 0px 0px'
-}
+  eventAccordion: {
+    boxShadow: 'none',
+    border: 'none',
+    borderBottom: '1px solid #F2F2F2',
+    '&.Mui-expanded': {
+      margin: 0,
+    },
+  },
+  eventheading: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    color: 'black'
+  },
+  eventAccordionsummary: {
+    padding: '16px 24px',
+    '& .MuiAccordionSummary-content': {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '5px',
+      margin: 0,
+    },
+  },
+  calendar_invitation_custombtn: {
+    fontSize: '16px',
+    color: '#004eba',
+    padding: '0px 3px 0px 0px'
+  },
+  calendarlist_timePickerStyles: {
+    background: 'white',
+    border: '1px solid #a6bbd1',
+
+    "& .MuiOutlinedInput-root": {
+
+      "&:hover fieldset": {
+        border: "2px solid #006bff",
+
+
+      },
+      "&.Mui-focused fieldset": {
+        border: "2px solid #006bff",
+
+
+      },
+    },
+  },
+  calendarlist_iconStyle: {
+    marginLeft: '10px',
+    cursor: "pointer",
+    width: "16px",
+    height: "16px"
+  },
+  busyrule_customdropdown: {
+    width: '150px',
+    color: '#004eba',
+  fontWeight:'700',
+  '& .MuiOutlinedInput-notchedOutline': {
+      border: 'none',
+    },
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      border: 'none',
+    },
+  }
 }
 export default style;

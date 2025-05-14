@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import dayjs from "dayjs";
 import { Button, IconButton } from "@mui/material";
-import TimeZoneMenu from "./TimeZoneMenu";
+import TimezoneDropdown from "./TimeZoneMenu";
 import AutocompleteComponent from "../AutocompleteComponent";
 import TextfieldComponent from "../TextfieldComponent";
 import style from "../MuiStyles/muiStyle";
@@ -36,13 +36,22 @@ const eventOptions = [
     { icon: <PhoneIcon />, label: "Phone" },
     { icon: <RoomIcon />, label: "In-person" },
 ];
+const timezones = [
+    { label: "Eastern Time - US & Canada", time: "12:00am" },
+    { label: "Central Time - US & Canada", time: "8:20am" },
+    { label: "Mountain Time - US & Canada", time: "7:20am" },
+    { label: "Pacific Time - US & Canada", time: "9:20am" },
+    { label: "Alaska Time", time: "5.20am" },
+    { label: "Arizona, Yukon Time", time: "5:00pm" },
+    { label: "Newfoundland Time", time: "10:50am" },
+];
 
 const CreateNewMeetingComponent = () => {
     const durationOptions = ['15 Minutes', '30 Minutes', '45 Minutes', '1 hour', 'Custom'];
     const currentTime = dayjs();
 
     const [state, setState] = useState({
-        timeZoneAnchor: null,
+        timeZoneAnchor: "Eastern Time - US & Canada",
         selectedTimeZone: "Eastern Time - US & Canada",
         durationContent: durationOptions[1],
         currentDate: dayjs(),
@@ -286,13 +295,19 @@ const CreateNewMeetingComponent = () => {
                                         <label>
                                             Time zone
                                         </label>
-                                        <div
+                                        {/* <div
                                             onClick={handleTimeZoneClick} className="timezone"
 
                                         >
                                             {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
                                         </div>
                                         <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => setState(prev => ({ ...prev, timeZoneAnchor: null }))} onSelect={handleTimeZoneSelect} />
+                                  */}
+                                        <TimezoneDropdown
+                                            options={timezones}
+                                            selectedValue={state.timeZoneAnchor}
+                                            onSelect={(zone) => setState({ ...state, timeZoneAnchor: zone })}
+                                        />
                                     </div>
                                     <div className="content">
                                         <label>Duration</label>

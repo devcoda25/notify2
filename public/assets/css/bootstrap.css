@@ -18104,7 +18104,7 @@ align-items: center;
   padding: 16px 0 8px;
 }
 .calendar_Eventtype .user_logo,
-.details_main_content .user_logo,.edit_event_container .user_logo {
+.details_main_content .user_logo,.edit_event_container .user_logo,.user_logo {
   border-radius: 50%;
   border: 2px solid transparent;
   color: black;
@@ -19716,7 +19716,7 @@ background-color: rgb(0 105 255 / 15%);
 
 }
 
-.details_main_content .host_invitees,.edit_event_container .host_invitees {
+.details_main_content .host_invitees,.edit_event_container .host_invitees{
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
@@ -20077,7 +20077,7 @@ margin-top:0px !important;
   font-size: 16px;
 }
 
-.calendar_invitation .edit {
+.calendar_invitation .edit,.event_workinghours_modal .edit {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -20790,7 +20790,314 @@ gap:10px
 .edit_event_container .invitee_ques_heading svg{
 width:15px
 }
-
-
+.calendar_invitation .reply_address{
+display: flex;
+flex-direction: column;
+gap:15px
+}
+.edit_event_container .availability_container .datarange_dropodown{
+color:#004eba;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+}
+.edit_event_container .availability_container .datarange_dropodown:hover{
+text-decoration: underline;
+}
+.edit_event_container .availability_container label{
+font-size: 15px;
+font-weight: 700;
+}
+.edit_event_container .availability_container .radio_container{
+display: flex;
+gap:5px;
+align-items: baseline;
+width:75%;
+}
+.edit_event_container .availability_container .data_range{
+font-size: 14px;
+}
+.edit_event_container .availability_container .custom_notice_inputbox{
+  width:100px !important;
+}
+.edit_event_container .availability_container .schedule_container{
+display:flex;
+flex-direction: column;
+gap:10px
+}
+.edit_event_container .schedule_container .schedule_content{
+background: #fafafa;
+border:1px solid #d4e0ed;
+display: flex;
+flex-direction: column;
+border-radius: 8px;
+}
+.edit_event_container .schedule_content .heading{
+display: flex;
+gap:8px;
+align-items: center;
+justify-content: space-between;
+padding:16px 24px;
+}
+.edit_event_container .schedule_content .heading p{
+color:#476788;
+font-size:14px;
+}
+.edit_event_container .schedule_content .schedule_time_container{
+border-top:1px solid #d4e0ed;
+padding: 16px 24px;
+display: flex;
+flex-direction: column;
+gap:5px
+}
+.edit_event_container .schedule_time_container .weeklyhours_title{
+display: flex;
+gap:10px;
+font-size: 14px;
+}
+.edit_event_container .weeklyhours_title svg,.working_hours_list_container svg{
+width:15px;
+height:15px
+}
+.edit_event_container .schedule_time_container .schedule__row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+.edit_event_container .schedule_time_container .day__circle {
+  background-color: #003366;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+.edit_event_container .schedule_time_container .time__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.edit_event_container .schedule_time_container .time__entry {
+  color: #000;
+  font-size: 14px;
+}
+.edit_event_container .schedule_time_container .unavailable {
+  color: #888;
+  font-style: italic;
+}
+.event_workinghours_modal,.manage_availablehours_container{
+  position: absolute;
+  z-index: 1300;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  max-width: 1130px;
+  background-color: white;
+  padding: 20px 0px;
+  border-radius: 8px;
+  outline: none;
+  max-height: 632px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.event_workinghours_modal .title_content{
+display: flex;
+flex-direction: column;
+gap:10px;
+padding:16px 24px;
+}
+.event_workinghours_modal .user_info{
+display: flex;
+justify-content: space-between;
+}
+.event_workinghours_modal .toggle_container{
+  display: flex;
+  gap: 8px;
+  background-color: #f1f5f9;
+  padding: 5px;
+  border-radius: 10px;
+  width: fit-content;
+}
+.event_workinghours_modal .toggle_btn {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.event_workinghours_modal .toggle_btn.active {
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+.event_workinghours_modal .main_content{
+  padding: 24px 0px 20px;
+  position: relative;
+  border-top: 1px solid #d4e0ed;
+  border-bottom: 1px solid #d4e0ed;
+}
+.event_workinghours_modal .rbc-month-view{
+border-top:none !important;
+margin-top:15px;
+}
+.event_workinghours_modal .rbc-month-view .rbc-row.rbc-month-header {
+  border: none !important;
+  height:34px !important;
+}
+.event_workinghours_modal .rbc-month-header .rbc-header {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+.event_workinghours_modal .working_hours_list_container{
+padding:24px;
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-between;
+column-gap:95px;
+}
+.working_hours_list_container .left_container{
+display:flex;
+flex-direction: column;
+gap:16px;
+}
+.working_hours_list_container .title{
+display: flex;
+align-items: center;
+font-size: 16px;
+gap:4px;
+}
+.working_hours_list_container .title p{
+font-size: 16px !important;
+color:rgb(10, 37, 64) !important;
+font-weight: 700 !important;
+}
+.working_hours_list_container p{
+font-size: 12px;
+color:#476788;
+}
+.working_hours_list_container .right_container{
+flex-grow: 1;
+}
+.working_hours_list_container .right_container .heading, .custom_schedule_container .heading{
+display: flex;
+justify-content: space-between;
+}
+.workinghours_list_addhours{
+border-color:rgb(26 26 26 / 10%);
+border-radius: 2px 0;
+background: #FAFAFA;
+border-style: solid;
+padding:20px 24px;
+margin:0px -26px 10px;
+}
+.workinghours_list_addhours h4{
+font-size: 14px;
+font-weight: 700;
+margin-bottom: 14px;
+}
+.workinghours_list_addhours .addhours_container{
+display: flex;
+flex-direction: column;
+gap:10px;
+position: relative;
+}
+.workinghours_list_addhours .addhours_container .timepicker{
+display: flex;
+align-items: center; 
+margin-bottom:10px;
+gap:5px;
+}
+.workinghours_list_btn{
+display: flex;
+margin:0px 30px;
+}
+.country_timezone_wrapper{
+  width: 400px;
+  font-size: 14px;
+  position: relative;
+}
+.country_timezone_wrapper .selected_timezone {
+  font-weight: bold;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  color:rgb(0, 78, 186);
+  cursor:pointer
+}
+.country_timezone_wrapper .dropdown {
+  border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 15px 20px;
+    z-index: 1000;
+    width: 328px;
+    position: absolute;
+    left: -6px;
+}
+.country_timezone_wrapper .dropdown_list {
+  max-height: 250px;
+  overflow-y: auto;
+  margin:10px -20px;
+}
+.country_timezone_wrapper .dropdown_item {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.country_timezone_wrapper .dropdown_item:hover {
+  background-color: #e6f0ff;
+}
+.country_timezone_wrapper .dropdown_item.active {
+  background-color:rgb(0, 78, 186);
+  font-weight: 600;
+  color:white !important;
+}
+.country_timezone_wrapper .time {
+  font-size: 13px;
+}
+.working_hours_calendar_container .timezone_container{
+  position: absolute;
+  right: -72px;
+  top: 43px;
+}
+.event_workinghours_modal .footer_container{
+  display: flex;
+  justify-content: flex-end;
+  gap: 11px;
+  padding: 15px 32px;
+}
+.custom_schedule_container{
+margin:0px -10px;
+}
+.custom_schedule_container .weekly_hours .setmeeting_hours_container,
+.custom_schedule_container .weekly_hours .set_time{
+gap:0px !important
+}
+.manage_availablehours_container .title{
+display:flex;
+justify-content: space-between;
+padding:20px 25px 0px;
+}
+.manage_availablehours_container p{
+color:#476788;
+font-size: 14px;
+padding:20px 25px 0px;
+}
+.manage_availablehours_container .footer_container{
+display: flex;
+margin-right:20px;
+}
 
 
