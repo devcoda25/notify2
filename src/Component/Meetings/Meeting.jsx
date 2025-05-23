@@ -230,7 +230,7 @@ const Meeting = () => {
                                 <div>Tracking ID<div className="filter_sec_content" onClick={handleAllIdClick}>All ID's<KeyboardArrowDownIcon /></div></div>
                                 <div>Invitee Emails<div className="filter_sec_content" onClick={handleAllInviteeEvents}>All Invite Email<KeyboardArrowDownIcon /></div></div>
                                 <div className="clear_btn">
-                                    <CustomButton variant="text" sx={{color:'blue'}}>Clear all filters</CustomButton>
+                                    <CustomButton variant="text" sx={{ color: 'blue' }}>Clear all filters</CustomButton>
                                 </div>
 
                             </div>
@@ -374,68 +374,74 @@ const Meeting = () => {
 
                                 <h2 className="event_date">Saturday, 15 March 2025</h2>
                                 <div>
-                                <div className="event_box">
-                                    <div className="event_details">
-                                        <div className="event_info">
-                                            <span className="event_dot"></span>
-                                            <p className="event_time">12:00pm - 12:30pm</p>
-                                            <div>
+                                    <div className="event_box">
+                                        <div className="event_details">
+                                            <div className="event_info">
+                                                <span className="event_dot"></span>
+                                                <p className="event_time">12:00pm - 12:30pm</p>
+                                                <div>
 
-                                                <p className="event_host">Hepto</p>
-                                                <p className="event_type">Event type <b>30 Minute Meeting</b></p>
-                                            </div>
-                                        </div>
-                                        <div className="event_participants">1 host | 0 non-hosts</div>
-                                        <button className="event_details_btn" onClick={toggleDetails}>▶ Details</button>
-
-                                    </div>
-                                    {
-                                        state.showDetails && (
-                                            <div className="meet_upcoming_event_grid_container">
-                                                <div className="left_container">
-                                                    <div className="event_control">
-                                                        <CustomButton variant="outlined" sx={{ width: '130px' }}>Reschedule</CustomButton>
-                                                        <CustomButton variant="outlined" sx={{ width: '130px' }}>Cancel</CustomButton>
-                                                    </div>
-                                                    <div className="event_control">
-                                                        {/* <a>Edit Event Type</a> */}
-                                                        <Link to="/edit-event">Edit Event Type</Link>
-                                                        <a><FilterListOutlinedIcon />Filter by Event Type</a>
-                                                        <a><AutorenewOutlinedIcon />Schedule invite again</a>
-                                                        <a><OutlinedFlagOutlinedIcon />Report this event</a>
-                                                    </div>
+                                                    <p className="event_host">Hepto</p>
+                                                    <p className="event_type">Event type <b>30 Minute Meeting</b></p>
                                                 </div>
-                                                <div className="right_container">
-                                                    <div className="right_content">
-                                                        <label>Email</label>
-                                                        <div>hepto@gmail.com</div>
-                                                    </div>
-                                                    <div className="right_content">
-                                                        <label>Location</label>
-                                                        <div>This is Google Meet web conference. <a>Join now</a></div>
-                                                    </div>
-                                                    <div className="right_content">
-                                                        <label>Invitee Time Zone</label>
-                                                        <div>India Standard Time</div>
-                                                    </div>
-                                                    <div className="right_content">
-                                                        <label>Meeting Host</label>
-                                                        <div>Host will attend this meeting</div>
-                                                        <div className="logo">
-                                                            H
+                                            </div>
+                                            <div className="event_participants">1 host | 0 non-hosts</div>
+                                            <button className="event_details_btn" onClick={toggleDetails}>▶ Details</button>
+
+                                        </div>
+                                        {
+                                            state.showDetails && (
+                                                <div className="meet_upcoming_event_grid_container">
+                                                    <>
+                                                    <div className="left_container">
+                                                        <div className="event_control">
+                                                            <CustomButton variant="outlined" sx={{ width: '130px' }}>Reschedule</CustomButton>
+                                                            <CustomButton variant="outlined" sx={{ width: '130px' }}>Cancel</CustomButton>
+                                                        </div>
+                                                        <div className="event_control">
+                                                            {/* <a>Edit Event Type</a> */}
+                                                            <Link to="/edit-event">Edit Event Type</Link>
+                                                            <a><FilterListOutlinedIcon />Filter by Event Type</a>
+                                                            <a><AutorenewOutlinedIcon />Schedule invite again</a>
+                                                            <a><OutlinedFlagOutlinedIcon />Report this event</a>
                                                         </div>
                                                     </div>
-                                                    <div className="meeting_note">
-                                                        <a>Add meeting notes</a>
-                                                        <p>only the host will see these</p>
-                                                        <p>created  17 March 2025 by hepto</p>
-                                                    </div>
+                                                    <div className="right_container">
+                                                        <div className="right_content">
+                                                            <label>Email</label>
+                                                            <div>hepto@gmail.com</div>
+                                                        </div>
+                                                        <div className="right_content">
+                                                            <label>Location</label>
+                                                            <div>This is Google Meet web conference. <a>Join now</a></div>
+                                                        </div>
+                                                        <div className="right_content">
+                                                            <label>Invitee Time Zone</label>
+                                                            <div>India Standard Time</div>
+                                                        </div>
+                                                        <div className="right_content">
+                                                            <label>Meeting Host</label>
+                                                            <div>Host will attend this meeting</div>
+                                                            <div className="logo">
+                                                                H
+                                                            </div>
+                                                        </div>
+                                                        <div className="meeting_note">
+                                                            <a>Add meeting notes</a>
+                                                            <p>only the host will see these</p>
+                                                            <p>created  17 March 2025 by hepto</p>
+                                                        </div>
 
+                                                    </div>
+                                                    <video width="400" height="200" controls>
+                                                        <source src="/videos/myvideo.mp4" type="video/mp4"/>
+                                                          
+                                                    </video>
+                                                    </>
                                                 </div>
-                                            </div>
-                                        )
-                                    }
-                                </div>
+                                            )
+                                        }
+                                    </div>
                                 </div>
                                 <p className="event_end_text">You've reached the end of the list</p>
 

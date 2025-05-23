@@ -423,10 +423,16 @@
 .acc-icon-text{
   font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
 }
 .acc-icon-text i{
   font-size: 20px;
   margin-right: 10px;
+}
+.acc-icon-text svg{
+margin-right: 10px;
+stroke:#666666;
+
 }
 .accordion-button:not(.collapsed) {
   color: #0b2040 !important;

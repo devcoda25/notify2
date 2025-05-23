@@ -96,11 +96,13 @@ const styles = {
 }
 const NewTemplate = () => {
     const categoryOptions = ['Email', 'SMS', 'Platform', 'Whatsapp', 'Push'];
+    const ticketTypeOptions=['Red Notifications','Blue Notifications','Green Notifications','Yellow Notifications']
     const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
     const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Call phone']
     const secondbuttonOptions = ['Quick replies'];
     const teamOptions = ['Support Heroes(Default team)']
     const [categoryData, setCategoryData] = useState('Whatsapp');
+    const [ticketTypeData,setTicketTypeData]=useState(ticketTypeOptions[0]);
     const [languageData, setLanguageData] = useState('English (US)');
     const [buttonData, setButtonData] = useState('Visit website');
     const [secondButtonData, setSecondButtonData] = useState('Quick replies');
@@ -498,6 +500,15 @@ const NewTemplate = () => {
                                     options={categoryOptions}
                                     value={categoryData}
                                     onChange={(event, newValue) => setCategoryData(newValue)}
+                                    customStyles={styles.autocompleteStyle}
+                                />
+                            </div>
+                            <div className="name_block_field">
+                                <div className="name_block_title">Ticket Type</div>
+                                <AutocompleteComponent
+                                    options={ticketTypeOptions}
+                                    value={ticketTypeData}
+                                    onChange={(event, newValue) => setTicketTypeData(newValue)}
                                     customStyles={styles.autocompleteStyle}
                                 />
                             </div>

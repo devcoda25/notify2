@@ -3396,7 +3396,7 @@ height:40px;
  }
  .new_template_container .name_block_field{
  flex: 1 1 1px;
- min-width: 30%;
+ min-width:15%;
 margin-right: 25px;
  }
 .new_template_container .name_block_title{

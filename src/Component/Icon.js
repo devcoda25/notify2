@@ -119,6 +119,7 @@ import {
   LocationOnOutlined as LocationOnOutlinedIcon,
   List as ListIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
+  RepeatSharp as RepeatSharpIcon,
    } from "@mui/icons-material";
   
   // Export all icons
@@ -242,5 +243,6 @@ import {
    FileDownloadOutlinedIcon,
    LocationOnOutlinedIcon,
    ListIcon,
-   KeyboardArrowUpIcon
+   KeyboardArrowUpIcon,
+   RepeatSharpIcon
 };

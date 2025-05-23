@@ -8,13 +8,16 @@ import Accordion from 'react-bootstrap/Accordion';
 import style from '../Component/MuiStyles/muiStyle';
 import ReporterType from '../Component/Reporter';
 import Editorbox from '../Component/TeamInbox/Editorbox';
+import Select from 'react-select';
 import SearchboxComponent from '../Component/SearchboxComponent';
 import {
     AccessTimeOutlinedIcon, ErrorOutlineOutlinedIcon, ExpandLessOutlinedIcon, DoNotDisturbOnOutlinedIcon, ExpandCircleDownOutlinedIcon, PestControlOutlinedIcon,
     EmailOutlinedIcon, RemoveRedEyeOutlinedIcon, MoreHorizOutlinedIcon, KeyboardArrowDownIcon, ArrowForwardIcon, CloseIcon, KeyboardDoubleArrowRightRoundedIcon, TodayOutlinedIcon,
     AccountCircleOutlinedIcon, AttachFileOutlinedIcon, PeopleAltOutlinedIcon, TranslateSharpIcon, MailOutlineSharpIcon, ArrowUpwardSharpIcon, ThumbUpAltOutlinedIcon, FolderOutlinedIcon, CheckCircleOutlineOutlinedIcon, SellOutlinedIcon, WorkspacesOutlinedIcon,
-AddOutlinedIcon, CloseOutlinedIcon
+    AddOutlinedIcon, CloseOutlinedIcon, FormatBoldOutlinedIcon, FormatItalicOutlinedIcon, FormatUnderlinedOutlinedIcon, StrikethroughSOutlinedIcon, CodeOffOutlinedIcon, FormatListNumberedOutlinedIcon, FormatListBulletedOutlinedIcon, InsertLinkOutlinedIcon, PhotoSizeSelectActualIcon, TagIcon, AttachFileIcon,
+    RadioButtonCheckedIcon, FormatColorTextIcon, AutoFixHighIcon,
 } from '../Component/Icon';
+import ToggleSwitch from '../Component/ToggleSwitch';
 
 
 const ticketData = [
@@ -156,10 +159,16 @@ const filterData = [
 const channelOptions = ['Email', 'Push', 'Platform', 'SMS', 'WhatsApp']//channel
 const priorityOptions = ['High', 'Medium', 'Low']; //priority
 const assignedOptions = ['Allie Harmon', 'Thameem', 'Vinu']; //assigned to 
-const projectOptions = ['Administrative', 'Project1', 'Project2']; // project
+const projectOptions = ['School', 'Marketplace', 'Wallet', 'Chargstation']; // project
 const ticketTypeOptions = ['Task1', 'Task2', 'Task3']; //ticket type
 const reporterOptions = ['Allie Harmon', 'Reporter1', 'Reporter2']; //reporter
-const ticketStatusOptions = ['Open', 'Pending', 'On hold', 'Solved', 'Closed']; // ticket status 
+const fieldTypeOption = ['Simplex', 'Duplex']; //field type
+const templateTypeOption = ['Email', 'SMS', 'Platform', 'Push', 'WhatsApp'];//template type
+const sidOptions = [
+    { value: 'user 1', label: 'user 1' },
+    { value: 'user 2', label: 'user 2' },
+    { value: 'user 3', label: 'user 3' }
+];
 const teamOptions = ['Team1', 'Team2', 'Team3'];//team 
 const agentOptions = ['Assigned', 'Unassigned'];//agent
 const ticketsPriorityOptions = ['Low', 'Medium', 'High', 'Urgent']; //ticket priority
@@ -177,7 +186,7 @@ const TeamInbox = () => {
         openNewTicketsModal: false,
         priorityContent: 'Medium',
         assignedContent: 'Allie Harmon',
-        projectContent: 'Administrative',
+        projectContent: projectOptions[0],
         ticketTypeContent: 'Task1',
         reporterContent: 'Allie Harmon',
         ticketStatusContent: 'Closed',
@@ -186,6 +195,7 @@ const TeamInbox = () => {
         isActive: false,
         addpeopleContent: false,
         addtagContent: false,
+        sidContent: [],
         teamContent: 'Team1',
         agentContent: 'Unassigned',
         ticketsPriorityContent: 'Medium',
@@ -193,9 +203,14 @@ const TeamInbox = () => {
         tagContent: null,
         selectedTags: [],
         channelContent: 'Email',
+        fieldTypeContent: fieldTypeOption[0],
+        templateTypeContent: templateTypeOption[0],
+        selectedFileName: '',
     });
 
     const popupRef = useRef(null);
+    const textareaRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     const updateState = (key, value) => {
         setState((prevState) => ({
@@ -249,6 +264,184 @@ const TeamInbox = () => {
             updateState("addFilterPopup", false);
         }
     };
+
+    // const applyFormat = (tag) => {
+    //     const textarea = textareaRef.current;
+    //     const start = textarea.selectionStart;
+    //     const end = textarea.selectionEnd;
+    //     const selectedText = textarea.value.substring(start, end) || 'text';
+
+    //     let formatted = selectedText;
+
+    //     switch (tag) {
+    //         case 'bold':
+    //             formatted = `**${selectedText}**`;
+    //             break;
+    //         case 'italic':
+    //             formatted = `*${selectedText}*`;
+    //             break;
+    //         case 'underline':
+    //             formatted = `<u>${selectedText}</u>`;
+    //             break;
+    //         case 'strikethrough':
+    //             formatted = `~~${selectedText}~~`;
+    //             break;
+    //         case 'numbered':
+    //             formatted = `1. ${selectedText}`;
+    //             break;
+    //         case 'bulleted':
+    //             formatted = `- ${selectedText}`;
+    //             break;
+    //         case 'link':
+    //             formatted = `[${selectedText}](http://example.com)`;
+    //             break;
+    //         case 'image':
+    //             formatted = `![alt text](http://image-url.com/image.jpg)`;
+    //             break;
+    //         case 'tag':
+    //             formatted = `#${selectedText}`;
+    //             break;
+    //         case 'attach':
+    //             formatted = `[attachment.pdf]`;
+    //             break;
+    //         case 'radio':
+    //             formatted = `• ${selectedText}`;
+    //             break;
+    //         case 'color':
+    //             formatted = `<span style="color:red;">${selectedText}</span>`;
+    //             break;
+    //         case 'highlight':
+    //             formatted = `<mark>${selectedText}</mark>`;
+    //             break;
+    //         case 'mention':
+    //             formatted = `@${selectedText}`;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+
+    //     const before = textarea.value.substring(0, start);
+    //     const after = textarea.value.substring(end);
+
+    //     textarea.value = before + formatted + after;
+
+    //     const newPos = before.length + formatted.length;
+    //     textarea.setSelectionRange(newPos, newPos);
+    //     textarea.focus();
+    // };
+
+    const handleUploadExcelClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            updateState("selectedFileName", file.name);
+            console.log("Selected file:", file.name);
+        }
+    };
+
+    const applyFormat = (tag) => {
+        const editor = textareaRef.current;
+        editor.focus();
+
+        switch (tag) {
+            case 'bold':
+                document.execCommand('bold');
+                break;
+            case 'italic':
+                document.execCommand('italic');
+                break;
+            case 'underline':
+                document.execCommand('underline');
+                break;
+            case 'strikethrough':
+                document.execCommand('strikeThrough');
+                break;
+            case 'numbered':
+                document.execCommand('insertOrderedList');
+                break;
+            case 'bulleted':
+                document.execCommand('insertUnorderedList');
+                break;
+            case 'radio':
+                document.execCommand('insertText', false, '• ');
+                break;
+            case 'link': {
+                const url = prompt('Enter URL:', 'https://');
+                if (url) {
+                    document.execCommand('createLink', false, url);
+                }
+                break;
+            }
+            case 'image': {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.style.display = 'none';
+                document.body.appendChild(input);
+
+                input.onchange = () => {
+                    const file = input.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = file.name;
+                            img.width = 36;
+                            img.height = 36;
+                            editor.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    document.body.removeChild(input);
+                };
+
+                input.click();
+                break;
+            }
+            case 'tag':
+                document.execCommand('insertText', false, '#');
+                break;
+            case 'attach': {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.pdf,.doc,.docx,.xls,.xlsx,.txt';
+                input.style.display = 'none';
+                document.body.appendChild(input);
+
+                input.onchange = () => {
+                    const file = input.files[0];
+                    if (file) {
+                        const fileName = file.name;
+                        const span = document.createElement('span');
+                        span.textContent = `[${fileName}]`;
+                        span.style.color = 'blue';
+                        span.style.textDecoration = 'underline';
+                        editor.appendChild(span);
+                    }
+                    document.body.removeChild(input);
+                };
+
+                input.click();
+                break;
+            }
+            case 'color':
+                document.execCommand('foreColor', false, 'red');
+                break;
+            case 'highlight':
+                document.execCommand('backColor', false, 'yellow');
+                break;
+            case 'mention':
+                document.execCommand('insertText', false, '@');
+                break;
+            default:
+                break;
+        }
+    };
+
     useEffect(() => {
         if (state.addFilterPopup) {
             document.addEventListener("mousedown", handleClickOutside);
@@ -291,10 +484,31 @@ const TeamInbox = () => {
                                 </div>
                                 <div className='textbox_container'>
                                     <label>User SID</label>
-                                    <TextfieldComponent placeholder='Enter SID' customStyle='custom_textfield_box' />
+                                    <Select
+                                        isMulti
+                                        options={sidOptions}
+                                        placeholder="Select the SID"
+                                    />
+
+                                    {/* <TextfieldComponent placeholder='Enter SID' customStyle='custom_textfield_box' /> */}
+
+                                </div>
+                                <div className='upload_excelfile_container'>
+                                    {state.selectedFileName && (
+                                        <p> {state.selectedFileName}</p>
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept=".xls,.xlsx"
+                                        ref={fileInputRef}
+                                        onChange={handleFileChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                    <ButtonComponent label='upload Excel file' onClick={handleUploadExcelClick} />
+                                    <ButtonComponent label='submit' />
                                 </div>
 
-                                {
+                                {/* {
                                     state.addpeopleContent ? (
                                         <div className='textbox_container'>
                                             <label>People in the loop<span className='close_btn'><CloseOutlinedIcon onClick={handleCloseAddpeople} /></span></label>
@@ -376,16 +590,16 @@ const TeamInbox = () => {
                                         ))}
                                     </div>
 
-                                </div>
-                                <Editorbox
+                                </div> */}
+                                {/* <Editorbox
                                     isActive={state.isActive}
                                     ticketStatusOptions={ticketStatusOptions}
                                     onTogglePrivate={handleTogglePrivate}
                                     ticketStatusContent={state.ticketStatusContent}
                                     onChange={(event, newValue) => updateState({ ticketStatusContent: newValue })}
                                     showTicketStatus={false}
-                                />
-                            
+                                /> */}
+
                             </div>
                         </div>
                     ) : (
@@ -415,7 +629,10 @@ const TeamInbox = () => {
                                                 </ul>
                                             </Accordion.Body>
                                             <ul>
-                                                <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>                                     <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
+                                                <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-headphones" aria-hidden="true"></i> Live Chat</span></li>
+                                                <li className='tic-view-chat'><span className='acc-icon-text'><i className="fa fa-th-large" aria-hidden="true"></i> Boards</span></li>
+                                                <li className='tic-view-chat'><span className='acc-icon-text'>Extended</span></li>
+                                                <li className='tic-view-chat'><span className='acc-icon-text'><svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><g id="_5_Chatbots" data-name="5_Chatbots"><path d="M20,35H16A15,15,0,0,1,1,20V16A15,15,0,0,1,16,1h4A15,15,0,0,1,35,16v4A15,15,0,0,1,20,35ZM16,3A13,13,0,0,0,3,16v4A13,13,0,0,0,16,33h4A13,13,0,0,0,33,20V16A13,13,0,0,0,20,3Z" fill="#777" /><path d="M12.3,26a1,1,0,0,1-1-1V15.71a1,1,0,0,1,2,0V25A1,1,0,0,1,12.3,26Z" fill="#777" /><path d="M18,21.29a1,1,0,0,1-1-1V11a1,1,0,1,1,2,0v9.28A1,1,0,0,1,18,21.29Z" fill="#777" /><path d="M23.7,26a1,1,0,0,1-1-1V15.71a1,1,0,1,1,2,0V25A1,1,0,0,1,23.7,26Z" fill="#777" /></g></svg>Chatbots</span></li>
                                             </ul>
                                         </Accordion.Item>
 
@@ -444,7 +661,6 @@ const TeamInbox = () => {
                                     <span className='ticketview-open' onClick={toggleLeftContainer} ><i className="fa fa-bars" aria-hidden="true"></i></span>
                                     <span className='mytickets_title'>My Tickets</span>
                                     <div className="ticket-filter-btn ticket-popupbtn">
-
                                         <ButtonComponent label='+ New Ticket' customBtn='new_ticket_button' onClick={handleNewTicketToggle} />
                                     </div>
 
@@ -522,8 +738,8 @@ const TeamInbox = () => {
                                                             <div className='ticketsgrid_left_side'><PestControlOutlinedIcon sx={{ color: '#0069d9' }} />
                                                                 <span className='ticketsgrid_subtitle'>OPS-102(100669518)| created 11/14/22 12:32 PST</span></div>
                                                             <div className='ticketsgrid_right_side'>
-                                                                <span className='ticketsgrid_span'><EmailOutlinedIcon /></span>
-                                                                <span className='ticketsgrid_span'><RemoveRedEyeOutlinedIcon sx={{ marginRight: '3px' }} /><span >2</span></span>
+                                                                {/* <span className='ticketsgrid_span'><EmailOutlinedIcon /></span>
+                                                                <span className='ticketsgrid_span'><RemoveRedEyeOutlinedIcon sx={{ marginRight: '3px' }} /><span >2</span></span> */}
                                                                 <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
                                                                 <span className='hum-avator'>
                                                                     <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
@@ -538,47 +754,148 @@ const TeamInbox = () => {
 
                                                     <div className='tickets_timeline'>
                                                         <div className='user_tickets_timeline'>
-                                                            <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
-                                                            <div className="userline">
-                                                                <div className="userline_left">
-                                                                    <div>Allie Harmon</div>
-                                                                    <div className='tickets_usersubname'>To Name Name@gmail.com</div>
-                                                                </div>
-                                                                <div className="userline_right">
-                                                                    <div className='tickets_userdate'>Feb 9, 2022 10:31 AM</div>
-                                                                    <KeyboardArrowDownIcon className='tickets_arrowbtn' />
-                                                                </div>
-                                                            </div>
-                                                            <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </div>
-                                                            <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                                            <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                                            <div className='chatmessage receiver_side'>
+                                                                <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                                                <div className="userline">
+                                                                    <div className="userline_left">
+                                                                        <div>Allie Harmon</div>
+                                                                        <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                                                    </div>
+                                                                    <div className="userline_right">
+                                                                        <div className='tickets_userdate'>Feb 9, 2022 10:31 AM</div>
+                                                                        {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                                                    </div>
 
+                                                                </div>
+                                                                <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </div>
+                                                                <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                                                <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                                            </div>
+                                                            <div className='chatmessage sender_side'>
+                                                                <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                                                <div className="userline">
+                                                                    <div className="userline_left">
+                                                                        <div>Allie Harmon</div>
+                                                                        <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                                                    </div>
+                                                                    <div className="userline_right">
+                                                                        <div className='tickets_userdate'>Feb 9, 2022 10:40AM</div>
+                                                                        {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                                                    </div>
+
+                                                                </div>
+                                                                <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className='tickets_timeline'>
                                                         <div className='user_tickets_timeline'>
-                                                            <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
-                                                            <div className="userline">
-                                                                <div className="userline_left">
-                                                                    <div>Allie Harmon</div>
-                                                                    <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                                            <div className='chatmessage receiver_side'>
+                                                                <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                                                <div className="userline">
+                                                                    <div className="userline_left">
+                                                                        <div>Allie Harmon</div>
+                                                                        <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                                                    </div>
+                                                                    <div className="userline_right">
+                                                                        <div className='tickets_userdate'>Feb 9, 2022 10:31 AM</div>
+                                                                        {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                                                    </div>
                                                                 </div>
-                                                                <div className="userline_right">
-                                                                    <div className='tickets_userdate'>Feb 9, 2022 10:31 AM</div>
-                                                                    <KeyboardArrowDownIcon className='tickets_arrowbtn' />
-                                                                </div>
+                                                                <div className='timeline_content'>Dolorem similique et aliquid illum dolor.vel quo magnam. </div>
                                                             </div>
-                                                            <div className='timeline_content'>Dolorem similique et aliquid illum dolor.vel quo magnam. </div>
+                                                            <div className='chatmessage sender_side'>
+                                                                <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                                                <div className="userline">
+                                                                    <div className="userline_left">
+                                                                        <div>Allie Harmon</div>
+                                                                        <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                                                    </div>
+                                                                    <div className="userline_right">
+                                                                        <div className='tickets_userdate'>Feb 9, 2022 10:40 AM</div>
+                                                                        {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                                                    </div>
+                                                                </div>
+                                                                <div className='timeline_content'>Dolorem similique et aliquid illum dolor.vel quo magnam. </div>
+
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <Editorbox
-                                                        isActive={state.isActive}
-                                                        ticketStatusOptions={ticketStatusOptions}
-                                                        onTogglePrivate={handleTogglePrivate}
-                                                        ticketStatusContent={state.ticketStatusContent}
-                                                        onChange={(event, newValue) => updateState({ ticketStatusContent: newValue })}
-                                                        showTicketStatus={true} />
-                                                 
+
+                                                    <div className="editorbox_container">
+                                                        <div className='support_tickets'>
+                                                            {/* <textarea
+                                                              ref={textareaRef}
+                                                                placeholder={state.isActive ? 'Enter private note visible only to agents' : 'Enter Message'}
+                                                                className='tab_reply_content'
+                                                            ></textarea>
+
+                                                            */}
+                                                            <div
+                                                                ref={textareaRef}
+                                                                contentEditable
+                                                                spellCheck={false}
+                                                                placeholder={state.isActive ? 'Enter private note visible only to agents' : 'Enter Message'}
+                                                                className='tab_reply_content'
+                                                            ></div>
+
+                                                            {/* Formatting Toolbar */}
+                                                            <div className='reply_text_container'>
+                                                                <div className='reply_text_style'>
+                                                                    <FormatBoldOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('bold')} />
+                                                                    <FormatItalicOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('italic')} />
+                                                                    <FormatUnderlinedOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('underline')} />
+                                                                    <StrikethroughSOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('strikethrough')} />
+                                                                    <CodeOffOutlinedIcon className='reply_text_container_icons' />
+                                                                    <FormatListNumberedOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('numbered')} />
+                                                                    <FormatListBulletedOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('bulleted')} />
+                                                                    <InsertLinkOutlinedIcon className='reply_text_container_icons' onClick={() => applyFormat('link')} />
+                                                                    <PhotoSizeSelectActualIcon className='reply_text_container_icons' onClick={() => applyFormat('image')} />
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Second Toolbar */}
+                                                            <div className='reply_text_second_container'>
+                                                                <div className='reply_text_style'>
+                                                                    <ToggleSwitch leftLabel='Private' isActive={state.isActive} onToggle={handleTogglePrivate} />
+
+
+                                                                    <TagIcon className='reply_text_container_icons' onClick={() => applyFormat('tag')} />
+                                                                    <AttachFileIcon className='reply_text_container_icons' onClick={() => applyFormat('attach')} />
+                                                                    <RadioButtonCheckedIcon className='reply_text_container_icons' onClick={() => applyFormat('radio')} />
+                                                                    <FormatColorTextIcon className='reply_text_container_icons' onClick={() => applyFormat('color')} />
+                                                                    <AutoFixHighIcon className='reply_text_container_icons' onClick={() => applyFormat('highlight')} />
+                                                                    <div onClick={() => applyFormat('mention')} className='reply_text_container_icons'>@</div>
+                                                                </div>
+
+                                                                {/* Ticket Status & Submit Button */}
+                                                                <div className='mail_send_btn'>
+
+                                                                    <div>
+
+                                                                        <AutocompleteComponent
+                                                                            options={fieldTypeOption}
+                                                                            value={state.fieldTypeContent}
+                                                                            onChange={(event, newValue) => updateState({ fieldTypeContent: newValue })}
+                                                                            customStyles={style.ticketsStatusAutocomplete}
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+
+                                                                        <AutocompleteComponent
+                                                                            options={templateTypeOption}
+                                                                            value={state.templateTypeContent}
+                                                                            onChange={(event, newValue) => updateState({ templateTypeContent: newValue })}
+                                                                            customStyles={style.ticketsStatusAutocomplete}
+                                                                        />
+                                                                    </div>
+                                                                    <ButtonComponent label='Submit' customBtn='submit_btn' />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </Grid>
                                             <Grid item xs={3} className='todo_container'>
@@ -615,8 +932,8 @@ const TeamInbox = () => {
                                                             <AutocompleteComponent
                                                                 options={channelOptions}
                                                                 value={state.channelContent}
-                                                                onChange={(event, newValue) => updateState({ channelContent: newValue })} 
-                                                                customStyles={style.newticketsAutocomplete}/>
+                                                                onChange={(event, newValue) => updateState({ channelContent: newValue })}
+                                                                customStyles={style.newticketsAutocomplete} />
                                                         </div>
                                                         <div className='todo_dropdown_container'>
                                                             <label className='todo_dropdown_label'>Priority</label>

@@ -11799,6 +11799,23 @@ padding:8px
 .teaminbox_container .user_tickets_timeline{
 padding-left: 40px;
 }
+.teaminbox_container .user_tickets_timeline .chatmessage{
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+  margin: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  position: relative;
+}
+.teaminbox_container .user_tickets_timeline .sender_side{
+align-self: flex-end;
+margin-left: auto;
+}
+.teaminbox_container .user_tickets_timeline .receiver_side{
+  align-self: flex-start;
+  text-align: left;
+  }
 .teaminbox_container .userline_left,
 .teaminbox_container .userline_right {
   display: flex;
@@ -12044,6 +12061,7 @@ border-radius:4px;
 }
 .new_tickets_container{
   background: white;
+  height: 100vh;
 }
 .new_tickets_container .new_tickets_header{
   border:1px solid rgb(232, 234, 242);
@@ -12120,6 +12138,12 @@ cursor: pointer;
   position: absolute;
   right:3px;
   top:-7px;
+}
+.new_tickets_container .upload_excelfile_container{
+display: flex;
+justify-content: end;
+gap:10px;
+margin-top: 15px;
 }
 .teaminbox_container .new_ticket_button{
 background: #0069d9 !important;

@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const ToggleSwitch = ({ isActive, onToggle, leftLabel, rightLabel }) => {
+const ToggleSwitch = ({ isActive, onToggle, leftLabel, rightLabel,customRightLabel }) => {
   return (
     <div className="holidaytoggle" >
       {leftLabel && <label className="toggle-label">{leftLabel}</label>}
@@ -13,7 +13,7 @@ const ToggleSwitch = ({ isActive, onToggle, leftLabel, rightLabel }) => {
         <div className="toggle-indicator"></div>
       </button>
 
-      {rightLabel && <label className="toggle-label">{rightLabel}</label>}
+      {rightLabel && <label  className={`toggle-label ${customRightLabel || ""}`}>{rightLabel}</label>}
     </div>
   );
 };

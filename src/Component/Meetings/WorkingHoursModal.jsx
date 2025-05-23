@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal } from "@mui/material";
 import DataSpecificHoursModal from "./DataSpecificHoursComponent";
-import { CloseIcon, AddCircleOutlineIcon, ContentCopyIcon, CampaignIcon, AddIcon, CalendarMonthIcon, CloseOutlinedIcon, ListIcon, CalendarTodayOutlinedIcon } from "../Icon";
+import { CloseIcon,RepeatSharpIcon, AddCircleOutlineIcon, ContentCopyIcon, CampaignIcon, AddIcon, CalendarMonthIcon, CloseOutlinedIcon, ListIcon, CalendarTodayOutlinedIcon } from "../Icon";
 import CustomButton from "./CustomButton";
 import style from "../MuiStyles/muiStyle";
 import TimezoneDropdown from "./TimeZoneMenu";
@@ -85,6 +85,16 @@ const CustomToolbar = ({ label, onNavigate, currentDate }) => {
         </div>
     );
 };
+
+const CustomDateHeader = ({ label }) => {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold' }}>
+        <span>{label}</span>
+        <RepeatSharpIcon style={{ fontSize: '16px', color: '#666' }} />
+      </div>
+    );
+  };
+
 const WorkingHoursModal = ({ open, onClose }) => {
     const [activeView, setActiveView] = useState("calendar");
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -308,6 +318,9 @@ const WorkingHoursModal = ({ open, onClose }) => {
                                                 toolbar: (props) => (
                                                     <CustomToolbar {...props} currentDate={currentDate} onNavigate={handleNavigate} />
                                                 ),
+                                                month: {
+                                                    dateHeader: CustomDateHeader, 
+                                                },
                                             }}
                                             formats={{
                                                 weekdayFormat: (date, culture, localizer) => localizer.format(date, "ddd", culture).toUpperCase(),
