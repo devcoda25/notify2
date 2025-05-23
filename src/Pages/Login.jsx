@@ -79,7 +79,7 @@ const Login = ({ onLogin }) => {
                 }
                 <div className="left_content">
                   <>
-                    <img src='/assets/images/notification_logo.svg' alt='welcome' />
+                    <img src='/assets/images/Notify_login_logo.svg' alt='welcome' />
                   
                      {selectedToggle && (
                         <>
@@ -134,7 +134,7 @@ const Login = ({ onLogin }) => {
                         <button className="continue_button" onClick={handleContinue}>Continue</button>
                     </div>
                     <h4><a style={{ color: '#f77f00' }}><span style={{ color: 'black' }}>Not you?</span> Log in with a different personal account</a></h4>
-                    <button className="login_btn">Login</button>
+                    {/* <button className="login_btn">Login</button> */}
                 </div>
             </div>
         </>
