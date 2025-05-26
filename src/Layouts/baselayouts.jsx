@@ -96,7 +96,7 @@ const BaseLayouts = () => {
         <>
             <BrowserRouter>
                 {
-                    isAuthenticated ? (
+                    isAuthenticated || window.location.pathname === '/hepto' ? (
                         <AppRoutes />
                     )
                         : (

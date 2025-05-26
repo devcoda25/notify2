@@ -3339,6 +3339,7 @@
   height: 24px;
   align-items: center;
   justify-content: start;
+  cursor: pointer;
 }
 .new_template_container .new_template_title{
   font-size: 16px;
@@ -4146,6 +4147,7 @@ margin:0px !important;
   margin-bottom:20px;
   align-items: center;
   margin-top:15px;
+  width:50%
 }
 .new_broadcast_template .filter_btn{
  background: #F4FFF8;

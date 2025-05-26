@@ -16,8 +16,10 @@ const styles = {
     }
 
 }
+const contactAttribute = ['Source', 'Channel', 'actual_fare', 'actuall_estimate', 'additional_items', 'address_count', 'agent', 'agent_name', 'airport', 'airport_name', 'allowbroadcast', 'allowsms', 'amount']
+
 const SelectAttributeModal = ({ show, onClose, onSelectAttribute }) => {
-    const contactAttribute = ['Source', 'Channel', 'actual_fare', 'actuall_estimate', 'additional_items', 'address_count', 'agent', 'agent_name', 'airport', 'airport_name', 'allowbroadcast', 'allowsms', 'amount']
+  
     const handleChipClick = (attribute) => {
         onSelectAttribute(`{{${attribute}}}`);
         onClose();

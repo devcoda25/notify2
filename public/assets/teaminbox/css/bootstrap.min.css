@@ -11472,6 +11472,16 @@ a.text-dark:hover {
 .teaminbox_container .todogridbox {
   border-right: 1px solid rgb(232, 234, 242);
 }
+.teaminbox_container .ticketsgridbox .chat_wrapper{
+display: flex;
+flex-direction: column;
+height: 100vh;
+position: relative;
+}
+.ticketsgridbox .chat_wrapper .chat_section{
+max-height: 250px;
+overflow-y: auto;
+}
 .teaminbox_container .teaminbox_add_filter{
 border: 1px solid #c9c9cd !important;
 color:#131317 !important;
@@ -11811,6 +11821,11 @@ padding-left: 40px;
 .teaminbox_container .user_tickets_timeline .sender_side{
 align-self: flex-end;
 margin-left: auto;
+}
+.sender_side .user_information{
+display: flex;
+gap:61px;
+justify-content: flex-end;
 }
 .teaminbox_container .user_tickets_timeline .receiver_side{
   align-self: flex-start;

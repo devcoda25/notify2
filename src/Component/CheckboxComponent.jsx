@@ -13,7 +13,7 @@ const CheckboxComponent = ({ checked,onToggle }) => {
   
                   role="checkbox"
                   onClick={handleToggle}
-  
+                 
               >
                   <svg
                       stroke="currentColor"

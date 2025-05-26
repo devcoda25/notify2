@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, TableBody, TableCell, TablePagination, TableRow, TextField, Autocomplete, Chip, TableHead } from '@mui/material';
-import { Modal, ModalBody } from 'react-bootstrap';
-import style from '../MuiStyles/muiStyle';
+import { Table, TableBody, TableCell, TableRow, TableHead } from '@mui/material';
 import TextComponent from './NextSteps/TextComponent';
 import EditTextModal from './NextSteps/Modal/EditTextModal';
 import DocumentComponent from './NextSteps/DocumentComponent';
@@ -26,14 +24,18 @@ import Cuppylovewithcookie from '../Assets/img/09_Cuppy_lovewithcookie.webp';
 import Cuppyhmm from '../Assets/img/10_Cuppy_hmm.webp';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import NewTemplate from '../Broadcast/NewTemplate'
+import SendNotificationComponent from './NextSteps/SendNotificationComponent';
+import AssigntoUserComponent from './NextSteps/AssigntoUserComponent';
+import AssigntoTeamComponent from './NextSteps/AssigntoTeamComponent';
+import CatalogComponent from './NextSteps/CatalogComponent';
 import ButtonComponent from '../ButtonComponent';
 import SearchboxComponent from '../SearchboxComponent';
 import CustomPagination from '../CustomPagination';
+import EditNotificationModal from './NextSteps/Modal/EditNotificationModal';
+import EditAssigntoUserModal from './NextSteps/Modal/EditAssigntoUserModal';
+import EditAssigntoTeamModal from './NextSteps/Modal/EditAssigntoTeamModal';
 import CheckboxComponent from '../CheckboxComponent';
-import { DeleteOutlineIcon, EditIcon, EditOutlinedIcon, FileDownloadOutlinedIcon } from '../Icon';
-import TextfieldComponent from '../TextfieldComponent';
-import AutocompleteComponent from '../AutocompleteComponent';
+
 const initialCardData = [
     {
         title: "Offline_message",
@@ -129,256 +131,20 @@ const initialAssigntoUserData = [];
 const initialAssigntoTeamData = [];
 
 const initialTemplateData = [
-    { name: 'to_airport_for_someone_later', category: 'Marketing', status: 'Approved', language: 'English', date: "5/8/2023" },
-    { name: 'from_airport_ride_someone_12', category: 'Marketing', status: 'Approved', language: 'English', date: "5/8/2023" },
-    { name: 'from_airport_for_me_today', category: 'Utility', status: 'Approved', language: 'English', date: "5/8/2023" },
-    { name: 'ambulance_ride_later', category: 'Utility', status: 'Approved', language: 'English', date: "5/8/2023" },
-    { name: 'driver_app', category: 'Marketing', status: 'Approved', language: 'English', date: "5/8/2023" }
+    { id:1,name: 'to_airport_for_someone_later', category: 'Marketing', status: 'Approved', language: 'English', date: "5/8/2023" },
+    { id:2,name: 'from_airport_ride_someone_12', category: 'Marketing', status: 'Approved', language: 'English', date: "5/8/2023" },
+    { id:3,name: 'from_airport_for_me_today', category: 'Utility', status: 'Approved', language: 'English', date: "5/8/2023" },
+    { id:4,name: 'ambulance_ride_later', category: 'Utility', status: 'Approved', language: 'English', date: "5/8/2023" },
+    { id:5,name: 'driver_app', category: 'Marketing', status: 'Approved', language: 'English', date: "5/8/2023" }
 ]
 
-
-const EditNotificationModal = ({ show, onClose, onSave, initialTitle, initialContent }) => {
-    const [title, setTitle] = useState(initialTitle);
-    const [content, setContent] = useState(initialContent || []);
-    const options = ["Thameem Hameed", "EV zone", "juliet_1"];
-
-    useEffect(() => {
-        setTitle(initialTitle);
-        setContent(initialContent || []);
-    }, [initialTitle, initialContent]);
-
-    const handleEditSave = () => {
-        onSave(title, content);
-    };
-
-    const handleAddUser = (newValue) => {
-        if (newValue && !content.includes(newValue)) {
-            setContent((prev) => [...prev, newValue]);
-        }
-    };
-
-    const handleDelete = (userToDelete) => {
-        setContent((prev) => prev.filter(user => user !== userToDelete));
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
-            <div className='edit_text_material_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Send Notification Material</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div>
-                        <div className='edit__text__label'>Material name</div>
-                        <input type="text" placeholder="Please input" className='edit__text__input'
-                            value={title} onChange={(e) => setTitle(e.target.value)} />
-                    </div>
-                    <div>
-                        <div className='edit__text__label'>User List</div>
-                        <Autocomplete
-                            options={options.filter(option => !content.includes(option))}
-                            disableClearable
-                            onChange={(event, newValue) => handleAddUser(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="Input value & Please enter to search"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-                    <div className='notification_selected_user'>
-                        <div className='notification_selected_label'>Selected User(s)</div>
-                        {content.map((user) => (
-                            <Chip
-                                key={user}
-                                label={user}
-                                variant="outlined"
-                                onDelete={() => handleDelete(user)}
-                            />
-                        ))}
-                    </div>
-                    <div className='edit__text__save'>
-                        <button className='btn btn-success' onClick={handleEditSave}>Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-
-const EditAssigntoUserModal = ({ show, onClose, onSave, initialTitle, initialContent }) => {
-    const [title, setTitle] = useState(initialTitle);
-    const [content, setContent] = useState(initialContent);
-    const options = ["EV zone", "Thameem Hameed", "juliet_1"]
-    useEffect(() => {
-        setTitle(initialTitle);
-        setContent(initialContent)
-    }, [initialTitle, initialContent])
-    const handleEditSave = () => {
-        onSave(title, content)
-    }
-    return (
-
-        <>
-            <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
-                <div className='edit_text_material_content'>
-                    <Modal.Header className='edit_text_material_header' closeButton >
-                        <Modal.Title className='edit_text_style' >Assign to User Material</Modal.Title>
-                    </Modal.Header>
-                    <ModalBody className='edittext__body__content'>
-                        <div >
-                            <div className='edit__text__label'>Material name</div>
-                            <input type="text" placeholder="Please input" className='edit__text__input'
-                                value={title} onChange={(e) => setTitle(e.target.value)} />
-                        </div>
-                        <div>
-                            <div className='edit__text__label'>Selected User</div>
-
-                            <Autocomplete
-                                options={options}
-                                value={content}
-                                disableClearable
-                                onChange={(event, newValue) => setContent(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        placeholder="Input value & Please enter to search"
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            disableUnderline: true,
-                                            sx: {
-                                                border: '1px solid rgb(232, 234, 242)',
-                                                borderRadius: '4px',
-                                                height: '3rem',
-                                                paddingLeft: '10px',
-                                                backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                                '&:hover': {
-                                                    border: '1px solid green',
-                                                },
-                                                '&.Mui-focused': {
-                                                    border: '1px solid green',
-                                                    backgroundColor: 'white',
-                                                    outline: 'none',
-                                                },
-                                            },
-                                        }}
-
-                                    />
-                                )}
-
-                            />
-                        </div>
-                        <div className='edit__text__save'>
-                            <button className='btn btn-success' onClick={handleEditSave} >Save</button>
-                        </div>
-                    </ModalBody>
-                </div>
-            </Modal>
-        </>
-
-    )
-}
-const EditAssigntoTeamModal = ({ show, onClose, onSave, initialTitle, initialContent }) => {
-    const [title, setTitle] = useState(initialTitle);
-    const [content, setContent] = useState(initialContent);
-    const options = ["EV_Zone_everyone", "call_center_Kampala", "Ride_Agents_officers", "Corporate_Liasion_officers"]
-    useEffect(() => {
-        setTitle(initialTitle);
-        setContent(initialContent)
-    }, [initialTitle, initialContent])
-    const handleEditSave = () => {
-        onSave(title, content)
-    }
-    return (
-
-        <>
-            <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
-                <div className='edit_text_material_content'>
-                    <Modal.Header className='edit_text_material_header' closeButton >
-                        <Modal.Title className='edit_text_style' >New Routing Material</Modal.Title>
-                    </Modal.Header>
-                    <ModalBody className='edittext__body__content'>
-                        <div >
-                            <div className='edit__text__label'>Material name</div>
-                            <input type="text" placeholder="Please input" className='edit__text__input'
-                                value={title} onChange={(e) => setTitle(e.target.value)} />
-                        </div>
-                        <div>
-                            <div className='edit__text__label'>Selected Team</div>
-
-                            <Autocomplete
-                                options={options}
-                                value={content}
-                                disableClearable
-                                onChange={(event, newValue) => setContent(newValue)}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        placeholder="Input value & Please enter to search"
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            disableUnderline: true,
-                                            sx: {
-                                                border: '1px solid rgb(232, 234, 242)',
-                                                borderRadius: '4px',
-                                                height: '3rem',
-                                                paddingLeft: '10px',
-                                                backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                                '&:hover': {
-                                                    border: '1px solid green',
-                                                },
-                                                '&.Mui-focused': {
-                                                    border: '1px solid green',
-                                                    backgroundColor: 'white',
-                                                    outline: 'none',
-                                                },
-                                            },
-                                        }}
-
-                                    />
-                                )}
-
-                            />
-                        </div>
-                        <div className='edit__text__save'>
-                            <button className='btn btn-success' onClick={handleEditSave} >Save</button>
-                        </div>
-                    </ModalBody>
-                </div>
-            </Modal>
-        </>
-
-    )
-}
 
 const TemplateComponent = ({
     isMaterialChecked,
     handleCheckboxToggle,
     showCheckboxes,
 }) => {
+   
     return (
         <div>
             <Table className='templates_table'>
@@ -399,31 +165,13 @@ const TemplateComponent = ({
                         initialTemplateData.map((data) => (
                             <TableRow key={data.id}>
                                 {showCheckboxes && (
-                                    <TableCell className='table_body_cell'>
-                                        <div
-                                            className={`${isMaterialChecked['Templates']?.includes(data.name) ? 'checkbox_checked' : 'checkbox_unchecked'}`}
-                                            role="checkbox"
-                                            onClick={() => handleCheckboxToggle(data.name, 'Templates')}
 
-                                        >
-                                            {isMaterialChecked['Templates']?.includes(data.name) && (
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="currentColor"
-                                                    strokeWidth="0"
-                                                    viewBox="0 0 20 20"
-                                                    aria-hidden="true"
-                                                    height="1em"
-                                                    width="1em"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            )}
-                                        </div>
+                                    <TableCell className='table_body_cell'>
+                                         <CheckboxComponent
+                                                    checked={isMaterialChecked['Templates']?.includes(data.title)}
+                                                    onToggle={() => handleCheckboxToggle(data.title, 'Templates')}
+                                                />
+                                     
                                     </TableCell>
                                 )}
                                 <TableCell className='table_body_cell'>{data.name}<div className='table_cell_category'>{data.category}</div></TableCell>
@@ -449,227 +197,8 @@ const TemplateComponent = ({
         </div>
     )
 }
-const SendNotificationComponent = ({
 
-    isMaterialChecked,
-    handleCheckboxToggle,
-    filterCardData,
-    handleEditTextModal,
-    handleDeleteTextCard,
-    showCheckboxes,
-}) => {
-    return (
-        <>
-            <div>
 
-                <div className='materials__action__item'>
-                    <div className='action__item__'>
-                        <div className='action__cards'>
-                            {
-                                filterCardData.map((data, index) => (
-                                    <div key={index} className='material__action__cards'>
-                                        <div className='action__edit'>
-                                            <div className='action__edit__check'>
-                                                {showCheckboxes && (
-                                                    <div
-                                                        className={`${isMaterialChecked['SendNotification']?.includes(data.title) ? 'checkbox_checked' : 'checkbox_unchecked'}`}
-                                                        role="checkbox"
-                                                        onClick={() => handleCheckboxToggle(data.title, 'SendNotification')}
-
-                                                    >
-                                                        {isMaterialChecked['SendNotification']?.includes(data.title) && (
-                                                            <svg
-                                                                stroke="currentColor"
-                                                                fill="currentColor"
-                                                                strokeWidth="0"
-                                                                viewBox="0 0 20 20"
-                                                                aria-hidden="true"
-                                                                height="1em"
-                                                                width="1em"
-                                                            >
-                                                                <path
-                                                                    fillRule="evenodd"
-                                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                    clipRule="evenodd"
-                                                                />
-                                                            </svg>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <button aria-label="edit" className='material__btn cell__edit' onClick={() => handleEditTextModal(data)} ><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
-                                            <button aria-label="delete" className=' material__btn cell__delete' onClick={() => handleDeleteTextCard(data.title)} ><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                                        </div>
-
-                                        <div className='material__action__title'>{data.title}</div>
-
-                                    </div>
-                                ))
-                            }
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
-const AssigntoUserComponent = ({
-
-    isMaterialChecked,
-    handleCheckboxToggle,
-    filterCardData,
-    handleEditTextModal,
-    handleDeleteTextCard,
-    showCheckboxes,
-}) => {
-    return (
-        <>
-            <div>
-
-                <div className='materials__action__item'>
-                    <div className='action__item__'>
-                        <div className='action__cards'>
-                            {
-                                filterCardData.map((data, index) => (
-                                    <div key={index} className='material__action__cards'>
-                                        <div className='action__edit'>
-                                            <div className='action__edit__check'>
-                                                {showCheckboxes && (
-                                                    <div
-                                                        className={`${isMaterialChecked['AssigntoUser']?.includes(data.title) ? 'checkbox_checked' : 'checkbox_unchecked'}`}
-                                                        role="checkbox"
-                                                        onClick={() => handleCheckboxToggle(data.title, 'AssigntoUser')}
-
-                                                    >
-                                                        {isMaterialChecked['AssigntoUser']?.includes(data.title) && (
-                                                            <svg
-                                                                stroke="currentColor"
-                                                                fill="currentColor"
-                                                                strokeWidth="0"
-                                                                viewBox="0 0 20 20"
-                                                                aria-hidden="true"
-                                                                height="1em"
-                                                                width="1em"
-                                                            >
-                                                                <path
-                                                                    fillRule="evenodd"
-                                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                    clipRule="evenodd"
-                                                                />
-                                                            </svg>
-                                                        )}
-
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <button aria-label="edit" className='material__btn cell__edit' onClick={() => handleEditTextModal(data)} ><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
-                                            <button aria-label="delete" className=' material__btn cell__delete' onClick={() => handleDeleteTextCard(data.title)} ><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                                        </div>
-
-                                        <div className='material__action__title'>{data.title}</div>
-                                        <div className='material__action__content'>Assign to User:{data.content}
-
-                                        </div>
-                                    </div>
-                                ))
-                            }
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
-const AssigntoTeamComponent = ({
-
-    isMaterialChecked,
-    handleCheckboxToggle,
-    filterCardData,
-    handleEditTextModal,
-    handleDeleteTextCard,
-    showCheckboxes,
-}) => {
-    return (
-        <>
-            <div>
-
-                <div className='materials__action__item'>
-                    <div className='action__item__'>
-                        <div className='action__cards'>
-                            {
-                                filterCardData.map((data, index) => (
-                                    <div key={index} className='material__action__cards'>
-                                        <div className='action__edit'>
-                                            <div className='action__edit__check'>
-                                                {showCheckboxes && (
-                                                    <div
-                                                        className={`${isMaterialChecked['AssigntoUser']?.includes(data.title) ? 'checkbox_checked' : 'checkbox_unchecked'}`}
-                                                        role="checkbox"
-                                                        onClick={() => handleCheckboxToggle(data.title, 'AssigntoUser')}
-
-                                                    >
-                                                        {isMaterialChecked['AssigntoUser']?.includes(data.title) && (
-                                                            <svg
-                                                                stroke="currentColor"
-                                                                fill="currentColor"
-                                                                strokeWidth="0"
-                                                                viewBox="0 0 20 20"
-                                                                aria-hidden="true"
-                                                                height="1em"
-                                                                width="1em"
-                                                            >
-                                                                <path
-                                                                    fillRule="evenodd"
-                                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                    clipRule="evenodd"
-                                                                />
-                                                            </svg>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <button aria-label="edit" className='material__btn cell__edit' onClick={() => handleEditTextModal(data)} ><svg className='editsvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3753 9.16041C12.6078 9.74959 10.2511 7.39287 10.8402 5.62533M11.5664 4.89913L7.75841 8.70716C6.10291 10.3627 4.92846 12.437 4.36063 14.7083L4.17663 15.4443C4.11929 15.6736 4.32702 15.8814 4.55635 15.824L5.29236 15.64C7.56369 15.0722 9.638 13.8977 11.2935 12.2422L15.1015 8.43421C15.5703 7.96543 15.8337 7.32963 15.8337 6.66667C15.8337 5.28614 14.7145 4.16699 13.334 4.16699C12.671 4.16699 12.0352 4.43035 11.5664 4.89913Z" stroke="#333" stroke-width="1.25"></path></svg></button>
-                                            <button aria-label="delete" className=' material__btn cell__delete' onClick={() => handleDeleteTextCard(data.title)} ><svg className='deletesvg' width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                                        </div>
-
-                                        <div className='material__action__title'>{data.title}</div>
-                                        <div className='material__action__content'>
-                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.75 16.8973C2.75 15.0619 4.08361 13.4986 5.89603 13.2093L6.05929 13.1833C7.51058 12.9517 8.98942 12.9517 10.4407 13.1833L10.604 13.2093C12.4164 13.4986 13.75 15.0619 13.75 16.8973C13.75 17.6906 13.1069 18.3337 12.3136 18.3337H4.18639C3.39309 18.3337 2.75 17.6906 2.75 16.8973Z" stroke="#666666" stroke-width="1.375"></path><path d="M11.4583 6.87533C11.4583 8.64724 10.0219 10.0837 8.25 10.0837C6.47809 10.0837 5.04167 8.64724 5.04167 6.87533C5.04167 5.10341 6.47809 3.66699 8.25 3.66699C10.0219 3.66699 11.4583 5.10341 11.4583 6.87533Z" stroke="#666666" stroke-width="1.375"></path><path d="M13.75 10.0837C15.5219 10.0837 16.9583 8.64724 16.9583 6.87533C16.9583 5.10341 15.5219 3.66699 13.75 3.66699M15.9407 18.3337H17.8136C18.6069 18.3337 19.25 17.6906 19.25 16.8973C19.25 15.0619 17.9164 13.4986 16.104 13.2093V13.2093C15.9953 13.192 15.8852 13.1833 15.7752 13.1833C15.4821 13.1833 15.391 13.1833 14.8877 13.1833" stroke="#666666" stroke-width="1.375" stroke-linecap="round"></path></svg>
-                                            {data.content}
-
-                                        </div>
-                                    </div>
-                                ))
-                            }
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
-const CatalogComponent = () => {
-    return (
-        <div>
-            <div className='catalog_content'>
-                <div>All Sets created in Catalog gets displayed here. Checkout the <a href="https://www.youtube.com/watch?v=07vdgqGcU50" target="_blank" className='catalog_tutorial_link' color="#0E71C3"><div className="watch-tutorial-content"><svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="13.5" r="13.5" fill="#0E71C3"></circle><path d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z" fill="white"></path></svg><span >Video</span></div></a> to learn how to create Sets in Meta Catalog.</div>
-                <p>Note: Maximum of 30 items in a Set gets sent when a Set Catalog message is delivered to user.</p>
-            </div>
-            <div className='materials__action__item'>
-                <div className='action__item__'>
-                    <div className='material__list__nocontent'>
-                        <img alt="No data" src="https://live-6053.wati.io/static/media/no_data.f7f1c72cf9ac99dfe00aa267dbd7928f.svg" />
-                        <span className="nocontent__title">Catalog empty</span>
-                        <span className="nocontent__text"><div>Visit <a href="https://live-6053.wati.io/catalog">Catalog setup page</a> to enable Catalog with WATI</div></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
 
 const Nextstep = ({
     buttonData,

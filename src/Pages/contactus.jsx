@@ -15,6 +15,7 @@ import Uploadicon from '../Component/Assets/img/Contact/upload.svg'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveIcon from '@mui/icons-material/Remove';
 import sampleFile from '../Component/Assets/img/Contact/Contacts_Upload_Sample.csv'
+import { EmailIcon } from '../Component/Icon';
 
 const countries = [
     { flag: "https://www.worldometers.info//img/flags/small/tn_in-flag.gif", shortname: "IN", code: "+91", name: "India" },
@@ -1950,7 +1951,7 @@ const ContactUs = () => {
                                             <img src="https://cdn.clare.ai/flags/IN.svg" alt="country flag" className="item-country-flag" />
                                             <p>{row.phone}</p>
                                         </div>
-                                        <p>{row.email}</p>
+                                        <p><EmailIcon/>{row.email}</p>
                                     </TableCell>
                                     <TableCell> {row.source}</TableCell>
                                     <TableCell>

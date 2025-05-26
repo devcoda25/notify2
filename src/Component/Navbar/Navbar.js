@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className='rnav'>
           <li className='navicon1'><BiLogoMeta /></li>
           <span className='border'></span>
-          <li className='navicon2'><a href="https://accounts.dev.evzone.app/auth" target="_blank" rel="noopener noreferrer" className="wallet-icon"><LiaWalletSolid /></a></li>
+          <li className='navicon2'><a href="https://wallet.evzone.app/" target="_blank" rel="noopener noreferrer" className="wallet-icon"><LiaWalletSolid /></a></li>
           <span className='border'></span>
           <li className='navicon3'><GoBellFill /></li>
           <span className='border'></span>

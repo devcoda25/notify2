@@ -16748,6 +16748,7 @@ fieldset:disabled .btn {
 .usermanagement_container .action_wrap {
   display: flex;
   align-items: center;
+  gap:18px;
 }
 
 .usermanagement_container .adduserbtn {
@@ -16954,7 +16955,7 @@ fieldset:disabled .btn {
   margin-bottom: 10px;
 }
 
-.usermanagement_table .teamswarningicon {
+.userandteamswarningicon {
   width: 20px;
   height: 20px;
   margin-left: 10px;
@@ -16993,7 +16994,6 @@ fieldset:disabled .btn {
 .analytics_container .datarange_content {
   margin: 0px;
   padding-bottom: 1.5rem;
-
 }
 
 .analytics_container .headerbar__label,

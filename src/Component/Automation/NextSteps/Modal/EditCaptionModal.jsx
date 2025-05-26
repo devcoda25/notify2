@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
-import ButtonComponent from "../../../ButtonComponent";
 import { Modal, ModalBody } from 'react-bootstrap';
+import ButtonComponent from "../../../ButtonComponent";
 
 const EditCaptionModal = ({ show, onClose, onSave, initialTitle }) => {
     const [title, setTitle] = useState(initialTitle);

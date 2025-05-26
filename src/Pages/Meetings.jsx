@@ -121,53 +121,8 @@ const Meetings = () => {
             updateState({ showConfirmation: false });
         }
     };
-    // const [selectedCalendar, setSelectedCalendar] = useState(null);
-    // const [showConfirmation, setShowConfirmation] = useState(false);
-    // const [showCalendarModal, setShowCalendarModal] = useState(false);
-    // const [showEditModal, setEditModal] = useState(false);
-    // const [mailAccount, setMailAccount] = useState(mailAccountOptions[0]);
-    // const [showWeeklyHours, setShowWeeklyHours] = useState(false);
-    // const [showLocation, setShowLocation] = useState(false);
-
-    // const [selectedLocation, setSelectedLocation] = useState('googlemeet');
-    // const [showEventType, setShowEventType] = useState(false);
-    // const handlerCalendarSelect = (imageSrc, name) => {
-    //     setSelectedCalendar({ imageSrc, name });
-    // }
-    // const handleNextClick = () => {
-    //     if (!showConfirmation) {
-    //         setShowConfirmation(true);
-    //     } else if (!showWeeklyHours) {
-    //         setShowWeeklyHours(true);
-    //     }
-    //     else if (showWeeklyHours) {
-    //         setShowLocation(true);
-    //     }
-    //     else if (!showLocation) {
-    //         setShowEventType(true);
-    //     }
-    // };
-    // const handleNextClick = () => {
-    //     if (!showConfirmation) {
-    //         setShowConfirmation(true);
-    //     } else if (!showWeeklyHours) {
-    //         setShowWeeklyHours(true);
-    //     } else if (!showLocation) {
-    //         setShowLocation(true);
-    //     } else if (!showEventType) {
-    //         setShowEventType(true);
-    //     }
-    // };
-    // const handleBackClick = () => {
-    //     if (showLocation) {
-    //         setShowLocation(false)
-    //     }
-    //     else if (showWeeklyHours) {
-    //         setShowWeeklyHours(false);
-    //     } else if (showConfirmation) {
-    //         setShowConfirmation(false);
-    //     }
-    // };
+   
+   
     const [meetingHours, setMeetingHours] = useState({
         Sunday: [{ from: "09:00", to: "17:00", available: true }],
         Monday: [{ from: "09:00", to: "17:00", available: true }],

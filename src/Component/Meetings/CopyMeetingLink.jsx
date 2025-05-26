@@ -214,12 +214,12 @@ const CopyMeetingLink = () => {
     return (
         <>
             <div className="meeting_copylink_container">
-                <div className="top_content">
+                {/* <div className="top_content">
                     <CustomButton variant="text" endicon={<KeyboardArrowDownOutlinedIcon />} onClick={() => updateState({ menuModal: !state.menuModal })}>Menu</CustomButton>
                     <CustomButton variant="outlined" icon={<LinkOutlinedIcon />}>Copy link</CustomButton>
 
-                </div>
-                {
+                </div> */}
+                {/* {
                     state.menuModal && (
                         <div className="menu_content">
                             <p>Home</p>
@@ -227,7 +227,7 @@ const CopyMeetingLink = () => {
                             <p>Troubleshoot Availability</p>
                         </div>
                     )
-                }
+                } */}
                 <div className="event_container">
                     <div className="event_content" style={{
                         maxWidth: state.showTimeSlots ? '1060px' : '800px'

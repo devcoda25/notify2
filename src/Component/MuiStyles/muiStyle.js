@@ -398,6 +398,50 @@ const style = {
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
       border: 'none',
     },
-  }
+  },
+  userAutocompleteStyle: {
+    border: '1px solid rgb(232, 234, 242)',
+    borderRadius: '4px',
+    height: '3rem',
+    paddingLeft: '10px',
+    backgroundColor: 'rgb(245, 246, 250)',
+    '&:hover': {
+        border: '1px solid green',
+    },
+    '&.Mui-focused': {
+        border: '1px solid green',
+        backgroundColor: 'white',
+        outline: 'none',
+    },
+},
+templateAccordionStyle: {
+  boxShadow: 'none',
+  border: '1px solid #e2e2e4',
+  borderRadius: '8px',
+  marginTop: '25px'
+},
+templateAccordionHeading: {
+  fontWeight: 600,
+  fontSize: '16px',
+},
+templateAutocompleteStyle: {
+  backgroundColor: 'rgb(245, 246, 250) !important',
+},
+newTemplateRadiobtn: {
+  color: 'rgb(231 231 232)',
+  '&.Mui-checked': {
+      borderColor: 'rgb(231 231 232)',
+      color: 'green',
+  },
+
+},
+broadcastRadiobtn: {
+  color: 'rgb(231 231 232)',
+  '&.Mui-checked': {
+      borderColor: 'rgb(231 231 232)',
+      color: 'green',
+  },
+
+},
 }
 export default style;

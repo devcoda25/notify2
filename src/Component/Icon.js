@@ -120,6 +120,15 @@ import {
   List as ListIcon,
   KeyboardArrowUp as KeyboardArrowUpIcon,
   RepeatSharp as RepeatSharpIcon,
+  TagFaces as TagFacesIcon,
+  StrikethroughS as StrikethroughSIcon,
+  StayCurrentPortraitRounded as StayCurrentPortraitRoundedIcon,
+  DesktopWindowsRounded as DesktopWindowsRoundedIcon,
+  FormatUnderlinedRounded as FormatUnderlinedRoundedIcon,
+  ErrorOutline as ErrorOutlineIcon,
+  Done as DoneIcon,
+  Extension as ExtensionIcon,
+  Email as EmailIcon
    } from "@mui/icons-material";
   
   // Export all icons
@@ -244,5 +253,14 @@ import {
    LocationOnOutlinedIcon,
    ListIcon,
    KeyboardArrowUpIcon,
-   RepeatSharpIcon
+   RepeatSharpIcon,
+   TagFacesIcon,
+   StrikethroughSIcon,
+   StayCurrentPortraitRoundedIcon,
+   DesktopWindowsRoundedIcon,
+   FormatUnderlinedRoundedIcon,
+   ErrorOutlineIcon,
+   DoneIcon,
+   ExtensionIcon,
+   EmailIcon
 };
