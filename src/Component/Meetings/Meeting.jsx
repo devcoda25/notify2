@@ -5,7 +5,7 @@ import TextfieldComponent from "../TextfieldComponent";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import {
     ArrowDropDownIcon,
@@ -43,7 +43,7 @@ const styles = {
 
 }
 const Meeting = () => {
-
+    const navigate=useNavigate();
     const [state, setState] = useState({
         anchorEl: null,
         tabValue: 0,
@@ -60,6 +60,7 @@ const Meeting = () => {
         isHovered: false
     });
     const open = Boolean(state.anchorEl);
+   
     const updateState = (newState) => {
         setState((prevState) => ({ ...prevState, ...newState }));
     };
@@ -86,67 +87,7 @@ const Meeting = () => {
     const toggleDetails = () => updateState({ showDetails: !state.showDetails });
 
 
-    // const [anchorEl, setAnchorEl] = useState(null);
-    // const [tabValue, setTabValue] = useState(0);
-    // const [startDate, setStartDate] = useState(dayjs());
-    // const [endDate, setEndDate] = useState(dayjs());
-    // const [showFilter, setShowFilter] = useState(false);
-    // const [teamsAnchorEl, setTeamsAnchorEl] = useState(null);
-    // const [hostAnchorEl, setHostAnchorEl] = useState(null);
-    // const [eventTypeAnchorE1, setEventTypeAnchorE1] = useState(null);
-    // const [activeEventsAnchorE1, setActiveEventAnchorE1] = useState(null);
-    // const [allInviteeEventsAnchorE1, setAllInviteeEventsAnchorE1] = useState(null);
-    // const [allIdAnchorE1, setAllIdAnchorE1] = useState(null);
-    // const [showDetails, setShowDetails] = useState(false);
-    // const [isHovered, setIsHovered] = useState(false);
-
-    // const handleClick = (event) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
-    // const handleTabChange = (event, newValue) => {
-    //     setTabValue(newValue);
-
-    // };
-
-    // //popup
-    // const handleClose = () => {
-    //     setAnchorEl(null);
-    // };
-
-
-
-
-    // const handleTeamsClick = (event) => {
-    //     setTeamsAnchorEl(event.currentTarget);
-    // };
-
-    // const handleHostClick = (event) => {
-    //     setHostAnchorEl(event.currentTarget);
-    // };
-    // const handleEventTypeClick = (event) => {
-    //     setEventTypeAnchorE1(event.currentTarget)
-    // }
-    // const handleActiveEventClick = (event) => {
-    //     setActiveEventAnchorE1(event.currentTarget);
-    // }
-    // const handleAllInviteeEvents = (event) => {
-    //     setAllInviteeEventsAnchorE1(event.currentTarget);
-    // }
-    // const handleAllIdClick = (event) => {
-    //     setAllIdAnchorE1(event.currentTarget);
-    // }
-    // const handleClosePopup = () => {
-    //     setTeamsAnchorEl(null);
-    //     setHostAnchorEl(null);
-    //     setEventTypeAnchorE1(null);
-    //     setActiveEventAnchorE1(null);
-    //     setAllInviteeEventsAnchorE1(null);
-    //     setAllIdAnchorE1(null)
-    // };
-
-    // const toggleDetails = () => {
-    //     setShowDetails(!showDetails);
-    // };
+ 
 
 
     return (
@@ -397,6 +338,8 @@ const Meeting = () => {
                                                         <div className="event_control">
                                                             <CustomButton variant="outlined" sx={{ width: '130px' }}>Reschedule</CustomButton>
                                                             <CustomButton variant="outlined" sx={{ width: '130px' }}>Cancel</CustomButton>
+                                                            <CustomButton variant="outlined" sx={{ width: '130px' }} onClick={() => navigate('/meetinghistory')}
+                                                            >Meeting History</CustomButton>
                                                         </div>
                                                         <div className="event_control">
                                                             {/* <a>Edit Event Type</a> */}
@@ -404,6 +347,7 @@ const Meeting = () => {
                                                             <a><FilterListOutlinedIcon />Filter by Event Type</a>
                                                             <a><AutorenewOutlinedIcon />Schedule invite again</a>
                                                             <a><OutlinedFlagOutlinedIcon />Report this event</a>
+                                                          
                                                         </div>
                                                     </div>
                                                     <div className="right_container">

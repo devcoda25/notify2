@@ -197,14 +197,152 @@ const UserManagement = () => {
     const handleOpenDeleteModal = () => updateState({ isOpenDeleteModal: true });
     const handleCloseDeleteModal = () => updateState({ isOpenDeleteModal: false });
 
+    const userColumn = [
+        {
+            id: "checkbox",
+            label: (
+
+                <input type="checkbox" id="customCheckbox" class="usercustom-checkbox"
+                    checked={state.UserHeaderChecked}
+                    onChange={handleUserHeaderCheckboxChange} />
+
+            )
+        },
+        { id: "user", label: "User" },
+        { id: "status", label: "Online Status" },
+        { id: "contact", label: "Email/Phone" },
+        { id: "role", label: "Role" },
+        { id: "teams", label: "Teams" },
+        {
+            id: "actions",
+            label: isAnyUserCheckboxChecked ? (
+                <DeleteOutlineIcon sx={{ ...style.tableIconBtn, color: 'red' }} />
+
+
+            ) : (
+                "Actions"
+            ),
+        },
+
+    ]
+    const transformedUserData = state.usermanagementData.map((user, index) => ({
+        originalData: user,
+        checkbox: (
+
+            <input type="checkbox" id="customCheckbox" class="usercustom-checkbox"
+                checked={state.checkedUserBody[user.id]}
+                onChange={(event) => handleUserBodyCheckboxChange(user.id, event)} />
+        ),
+        user: (
+            <div className="user_flex_item">
+                <img src={user.img} className="user_agent_image" alt="user avatar" />
+                <div className="user_info_container">
+                    <p>{user.firstName} {user.lastName}</p>
+                </div>
+            </div>
+        ),
+        status: (
+            <div className='user_status_content' style={{
+                color: user.status === 'Online' ? 'rgb(35, 164, 85)' : 'rgb(255, 14, 14)',
+                background: user.status === 'Online' ? 'rgb(233, 246, 238)' : 'rgb(255, 231, 231)'
+            }}>
+                {user.status}
+            </div>
+        ),
+        contact: user.email || user.phone,
+        role: user.role,
+        teams: user.teams,
+        actions: (
+            <>
+                <div>
+                    <button
+                        className="user_cell__arrow"
+                        onClick={() => handleToggleRow(user.id)}
+                        aria-label="Toggle Row Details"
+                    >
+                        <svg
+                            className="user_arrowsvg"
+                            stroke="currentColor"
+                            fill="none"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            height="1em"
+                            width="1em"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <button
+                        className="user_cell__moreicon"
+                        onClick={() => handleOpenMoreIcon(user.id)}
+                        aria-label="Open More Options"
+                    >
+                        <svg
+                            className="user_moreiconsvg"
+                            stroke="currentColor"
+                            fill="currentColor"
+                            strokeWidth="0"
+                            viewBox="0 0 16 16"
+                            height="1em"
+                            width="1em"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                {state.expandedRowId === user.id && (
+                    <tr className="body_row user_operator">
+                        <td>
+                            <div className="user_operator_attributes">
+                                <div className="user_attribute__name">Last Login Ip</div>
+                                <div className="user_attribute__value">{user.ip}</div>
+                            </div>
+                            <div className="user_operator_attributes">
+                                <div className="user_attribute__name">Last Login Date:</div>
+                                <div className="user_attribute__value">{user.logindate}</div>
+                            </div>
+                            <div className="user_operator_attributes">
+                                <div className="user_attribute__name">Status:</div>
+                                <div className="user_attribute__value">{user.statusData}</div>
+                            </div>
+                        </td>
+                    </tr>
+                )}
+
+
+                {state.ShowMoreIconContainer === user.id && (
+                    <div key={`moreicon-${user.id}`} className="user_moreicon_container">
+                        <div className="user_moreicon_main_content">
+                            <div className="user_menu__item" onClick={handleOpenUserModal}>
+                                <span>Edit User</span>
+                            </div>
+                            <div className="user_menu__item">
+                                <span>Reset password</span>
+                            </div>
+                            <div className="user_menu__item">
+                                <span>Logout from output sessions</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </>
+        ),
+
+    }));
+
+
     const teamColumns = [
         {
             id: "checkbox",
             label: (
-             
+
                 <input type="checkbox" id="customCheckbox" class="usercustom-checkbox"
-                checked={state.TeamHeaderChecked}
-                onChange={handleTeamHeaderCheckboxChange} />
+                    checked={state.TeamHeaderChecked}
+                    onChange={handleTeamHeaderCheckboxChange} />
             )
         },
         { id: "teamName", label: "Team Name" },
@@ -234,11 +372,11 @@ const UserManagement = () => {
     const customRenderCell = (row, column) => {
         if (column.id === "checkbox") {
             return (
-              
-            
+
+
                 <input type="checkbox" id="customCheckbox" class="usercustom-checkbox"
-                checked={state.checkedTeamBody[row.id]}
-                onChange={(event) => handleTeamBodyCheckboxChange(row.id,event)} />
+                    checked={state.checkedTeamBody[row.id]}
+                    onChange={(event) => handleTeamBodyCheckboxChange(row.id, event)} />
 
             );
         }
@@ -303,7 +441,7 @@ const UserManagement = () => {
                         <div className='right_container'>
                             <div className='action_wrap'>
                                 <a href="https://www.youtube.com/watch?v=kAvFc_59RpU" target="_blank" className='note-watch-tutorial'><div class="watch-tutorial-content"><svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="13.5" r="13.5" fill="#269CFE"></circle><path d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z" fill="white"></path></svg><span class="watch-tutorial__text">Watch Tutorial</span></div></a>
-                              
+
                                 <div className='header__search'>
                                     <div className='search__input'>
                                         <SearchboxComponent value={state.searchUsermanagement} onChange={(e) => setState((prev) => ({ ...prev, searchUsermanagement: e.target.value }))} customSearch='custom__search_box' placeholder='Search...' />
@@ -312,10 +450,10 @@ const UserManagement = () => {
                                 {
                                     state.selectedOption === 'teams' ? (
                                         <ButtonComponent label='Add Team' onClick={handleOpenTeamModal} />
-                                     
+
                                     ) : (
                                         <ButtonComponent label='Add User' onClick={handleOpenUserModal} />
-                                      
+
                                     )
                                 }
 
@@ -363,35 +501,35 @@ const UserManagement = () => {
 
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell className='body__cell' ><div className='flex_item'>
-                                                            <img src={data.img} className='agent_image' /><div className='info_container'><p>{data.firstName}{data.lastName}</p></div></div> </TableCell>
+                                                        <TableCell className='body__cell' ><div className='user_flex_item'>
+                                                            <img src={data.img} className='user_agent_image' /><div className='user_info_container'><p>{data.firstName}{data.lastName}</p></div></div> </TableCell>
                                                         <TableCell className='body__cell'><div style={{
                                                             color: data.status === 'Online' ? 'rgb(35, 164, 85)' : 'rgb(255, 14, 14)',
                                                             background: data.status === 'Online' ? 'rgb(233, 246, 238)' : 'rgb(255, 231, 231)'
-                                                        }} className='status_content'>{data.status}</div></TableCell>
+                                                        }} className='user_status_content'>{data.status}</div></TableCell>
                                                         <TableCell className='body__cell'>{data.email}</TableCell>
                                                         <TableCell className='body__cell' >{data.role}</TableCell>
                                                         <TableCell className='body__cell'>{data.teams}</TableCell>
                                                         <TableCell>
-                                                            <button className='cell__arrow' onClick={() => handleToggleRow(data.id)}><svg className='arrowsvg' stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg></button>
-                                                            <button className='cell__moreicon' onClick={() => handleOpenMoreIcon(data.id)} ><svg className='moreiconsvg' stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path></svg></button>
+                                                            <button className='user_cell__arrow' onClick={() => handleToggleRow(data.id)}><svg className='user_arrowsvg' stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg></button>
+                                                            <button className='user_cell__moreicon' onClick={() => handleOpenMoreIcon(data.id)} ><svg className='user_moreiconsvg' stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path></svg></button>
                                                         </TableCell>
 
                                                     </TableRow>
                                                     {state.expandedRowId === data.id && (
-                                                        <TableRow className="body_row operator">
+                                                        <TableRow className="body_row user_operator">
                                                             <TableCell colSpan={7}>
-                                                                <div className='operator_attributes'>
-                                                                    <div className='attribute__name'>Last Login Ip</div>
-                                                                    <div className='attribute__value'>{data.ip}</div>
+                                                                <div className='user_operator_attributes'>
+                                                                    <div className='user_attribute__name'>Last Login Ip</div>
+                                                                    <div className='user_attribute__value'>{data.ip}</div>
                                                                 </div>
-                                                                <div className='operator_attributes'>
-                                                                    <div className='attribute__name'>Last Login Date:</div>
-                                                                    <div className='attribute__value'>{data.logindate}</div>
+                                                                <div className='user_operator_attributes'>
+                                                                    <div className='user_attribute__name'>Last Login Date:</div>
+                                                                    <div className='user_attribute__value'>{data.logindate}</div>
                                                                 </div>
-                                                                <div className='operator_attributes'>
-                                                                    <div className='attribute__name'>Status:</div>
-                                                                    <div className='attribute__value'>{data.statusData}</div>
+                                                                <div className='user_operator_attributes'>
+                                                                    <div className='user_attribute__name'>Status:</div>
+                                                                    <div className='user_attribute__value'>{data.statusData}</div>
                                                                 </div>
                                                             </TableCell>
                                                         </TableRow>
@@ -399,15 +537,15 @@ const UserManagement = () => {
                                                     {
                                                         state.ShowMoreIconContainer === data.id && (
 
-                                                            <div key={`moreicon-${data.id}`} className='moreicon_container'>
-                                                                <div className='moreicon_main_content'>
-                                                                    <div className='menu__item' onClick={handleOpenUserModal}>
+                                                            <div key={`moreicon-${data.id}`} className='user_moreicon_container'>
+                                                                <div className='user_moreicon_main_content'>
+                                                                    <div className='user_menu__item' onClick={handleOpenUserModal}>
                                                                         <span>Edit User</span>
                                                                     </div>
-                                                                    <div className='menu__item'>
+                                                                    <div className='user_menu__item'>
                                                                         <span>Reset password</span>
                                                                     </div>
-                                                                    <div className='menu__item'>
+                                                                    <div className='user_menu__item'>
                                                                         <span>Logout from output sessions</span>
                                                                     </div>
                                                                 </div>
@@ -421,6 +559,35 @@ const UserManagement = () => {
 
                                         </TableBody>
                                     </Table>
+                                    {/* <TableComponent
+                                        columns={userColumn}
+                                        data={transformedUserData}
+                                        showActions={false}
+                                    /> */}
+                                    {/* <TableComponent
+                                        columns={userColumn}
+                                        data={transformedUserData}
+                                        showActions={false}
+                                        expandedRowId={state.expandedRowId}
+                                        expandedRowRenderer={(user) => (
+                                            <div className="user_operator_content">
+                                                <div className="user_operator_attributes">
+                                                    <div className="user_attribute__name">Last Login Ip:</div>
+                                                    <div className="user_attribute__value">{user.ip}</div>
+                                                </div>
+                                                <div className="user_operator_attributes">
+                                                    <div className="user_attribute__name">Last Login Date:</div>
+                                                    <div className="user_attribute__value">{user.logindate}</div>
+                                                </div>
+                                                <div className="user_operator_attributes">
+                                                    <div className="user_attribute__name">Status:</div>
+                                                    <div className="user_attribute__value">{user.statusData}</div>
+                                                </div>
+                                            </div>
+                                        )}
+                                        getRowId={(row) => row.originalData.id}
+                                    /> */}
+
                                     <div className='usermanagement__pagination'>
                                         <CustomPagination
                                             count={state.usermanagementData.length}
@@ -433,18 +600,18 @@ const UserManagement = () => {
                                 </>
                             ) : (
                                 <>
-                                    
+
                                     <TableComponent
                                         columns={teamColumns}
                                         data={state.teamsData}
                                         onEdit={(index) => handleEditTeam(state.teamsData[index])}
-                                       onDelete={handleOpenDeleteModal}
+                                        onDelete={handleOpenDeleteModal}
                                         showActions={true}
                                         customRenderCell={customRenderCell}
                                         actionHeaderLabel={
                                             isAnyTeamCheckboxChecked ? (
-                                              <DeleteOutlineIcon sx={{...style.tableIconBtn,color:'red'}}/>
-                                               
+                                                <DeleteOutlineIcon sx={{ ...style.tableIconBtn, color: 'red' }} />
+
                                             ) : (
                                                 'Actions'
                                             )
@@ -463,7 +630,7 @@ const UserManagement = () => {
                             )
                         }
 
-                       
+
                     </div>
                 </div>
             </div>

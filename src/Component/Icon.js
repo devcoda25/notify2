@@ -128,7 +128,26 @@ import {
   ErrorOutline as ErrorOutlineIcon,
   Done as DoneIcon,
   Extension as ExtensionIcon,
-  Email as EmailIcon
+  Email as EmailIcon,
+  FormatQuote as FormatQuoteIcon,
+  Videocam as VideocamIcon,
+  Headphones as HeadphonesIcon,
+  Settings as SettingsIcon,
+  Send as SendIcon,
+  ThumbUp as ThumbUpIcon,
+  Reply as ReplyIcon,
+  Comment as CommentIcon,
+  Favorite as FavoriteIcon,
+  PictureAsPdf as PictureAsPdfIcon,
+  Folder as FolderIcon,
+  Description as DescriptionIcon,
+Download as DownloadIcon,
+Link as LinkIcon,
+Image as ImageIcon,
+Group as GroupIcon,
+MoreVert as MoreVertIcon,
+FormatStrikethrough as FormatStrikethroughIcon,
+NoteAlt as NoteAltIcon
    } from "@mui/icons-material";
   
   // Export all icons
@@ -262,5 +281,24 @@ import {
    ErrorOutlineIcon,
    DoneIcon,
    ExtensionIcon,
-   EmailIcon
+   EmailIcon,
+   FormatQuoteIcon,
+   VideocamIcon,
+   HeadphonesIcon,
+   SettingsIcon,
+   SendIcon,
+   ThumbUpIcon,
+   ReplyIcon,
+   CommentIcon,
+   FavoriteIcon,
+   PictureAsPdfIcon,
+   FolderIcon,
+   DescriptionIcon,
+   DownloadIcon,
+   LinkIcon,
+   ImageIcon,
+   GroupIcon,
+   MoreVertIcon,
+   FormatStrikethroughIcon,
+   NoteAltIcon
 };

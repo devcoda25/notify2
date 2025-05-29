@@ -754,6 +754,7 @@ const TeamInbox = () => {
                                                         <div className='chat_section'>
                                                             <div className='tickets_timeline'>
                                                                 <div className='user_tickets_timeline'>
+                                                                    <div>2-9-2022</div>
                                                                     <div className='chatmessage receiver_side'>
                                                                         <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
                                                                         <div className="userline">
@@ -762,7 +763,7 @@ const TeamInbox = () => {
                                                                                 <div className='tickets_usersubname'>To Name Name@gmail.com</div>
                                                                             </div>
                                                                             <div className="userline_right">
-                                                                                <div className='tickets_userdate'>Feb 9, 2022 10:31 AM</div>
+                                                                                <div className='tickets_userdate'>10:31</div>
                                                                                 {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
                                                                             </div>
 

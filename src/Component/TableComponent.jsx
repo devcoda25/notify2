@@ -27,6 +27,7 @@ return (
               <TableCell key={column.id} sx={{
                 ...style.tableheaderCell,
                 ...(customStyle.headerCell || {}),
+                ...(column.width ? { width: column.width, maxWidth: column.width } : {}),
               }}>{column.label}</TableCell>
             ))}
             {showActions && (
@@ -44,7 +45,7 @@ return (
 
             >
               {columns.map((column) => (
-                 <TableCell key={column.id} sx={style.tablebodyCell}>
+                 <TableCell key={column.id} sx={{...style.tablebodyCell, ...(column.width ? { width: column.width, maxWidth: column.width } : {}),}}>
                  {customRenderCell
                    ? customRenderCell(row, column)
                    : row[column.id]}

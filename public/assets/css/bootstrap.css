@@ -13371,8 +13371,8 @@ fieldset:disabled .btn {
 .cell__delete,
 .cell__download,
 .cell__copy,
-.usermanagement_table .cell__arrow,
-.usermanagement_table .cell__moreicon,
+.user_cell__arrow,
+.user_cell__moreicon,
 .usermanagement_container .user_delete_icon {
   display: inline-flex;
   width: 32px;
@@ -13388,8 +13388,8 @@ fieldset:disabled .btn {
 .cell__delete .deletesvg,
 .cell__download .downloadsvg,
 .cell__copy .copysvg,
-.usermanagement_table .arrowsvg,
-.usermanagement_table .moreiconsvg,
+.user_arrowsvg,
+.user_moreiconsvg,
 .usermanagement_container .user_delete_icon svg {
   width: 20px;
   height: 20px;
@@ -16778,17 +16778,17 @@ fieldset:disabled .btn {
   text-align: center;
 }
 
-.usermanagement_table .flex_item {
+.user_flex_item {
   display: flex;
   align-items: center;
 }
 
-.usermanagement_table .agent_image {
+.user_agent_image {
   width: 50px;
   height: 50px
 }
 
-.usermanagement_table .info_container {
+.user_info_container {
   display: inline-block;
   vertical-align: top;
   padding: 0px 0px 0px 20px;
@@ -16801,7 +16801,7 @@ fieldset:disabled .btn {
   color: rgb(51, 51, 51);
 }
 
-.usermanagement_table .status_content {
+.user_status_content {
   padding: 0.7rem;
   min-width: 85px;
   text-align: center;
@@ -16824,7 +16824,7 @@ fieldset:disabled .btn {
   padding-left: 0px !important;
 }
 
-.usermanagement_table .body_row:hover {
+.user_body_row:hover {
   background: #dcf0e4;
 }
 
@@ -16859,21 +16859,21 @@ fieldset:disabled .btn {
   margin-top: 10px;
 }
 
-.usermanagement_container .operator {
+.user_operator {
   padding: 10px 36px 20px;
   background: rgb(245, 246, 250);
 }
 
-.usermanagement_container .operator_attributes {
+.user_operator_attributes {
   display: flex;
 }
 
-.usermanagement_container .attribute__name {
+.user_attribute__name {
   font-weight: 600;
   margin-right: 5px;
 }
 
-.usermanagement_container .moreicon_container {
+.user_moreicon_container {
   position: absolute;
   top: 16rem;
   right: 0px;
@@ -16883,17 +16883,17 @@ fieldset:disabled .btn {
   z-index: 10;
 }
 
-.usermanagement_container .moreicon_main_content {
+.user_moreicon_main_content {
   position: relative;
   border: 1px solid rgb(232, 234, 242);
   border-radius: 5px;
 }
 
-.usermanagement_container .menu__item {
+.user_menu__item {
   padding: 0px 1rem;
 }
 
-.usermanagement_container .menu__item span {
+.user_menu__item span {
   display: block;
   white-space: nowrap;
   padding: 0.8rem 0px;
@@ -17595,15 +17595,16 @@ fieldset:disabled .btn {
   background: white !important;
 }
 
-.templates_table .template_table_btn {
-  width: 32px;
+.template_table_btn {
+  width: 29px;
   cursor: pointer;
   background: rgb(245, 246, 250);
   color: dimgray;
   border: 1px solid rgb(206, 208, 206);
   border-radius: 5px;
   padding: 5px;
-  margin-right: 10px;
+  height: 29px;
+  margin: 0px 4px 5px 0px;
 }
 
 .templates_table .table_heading {
@@ -17625,9 +17626,11 @@ fieldset:disabled .btn {
 .templates_.table_cell_category {
   font-size: 0.9rem;
 }
-
-.templates_table .table_status {
-  font-size: 1rem;
+.templatetable_name_category{
+font-size: 13px;
+}
+.template_table_status {
+  font-size: 14px;
   background-color: rgb(233, 246, 238);
   color: rgb(35, 164, 85);
   text-align: center;
@@ -17636,6 +17639,11 @@ fieldset:disabled .btn {
   height: 42px;
   padding: 12px;
   border-radius: 20px;
+
+}
+.templatetable_actions{
+display: flex;
+gap:2px
 }
 
 .templates_table .template_table_submit_btn {
@@ -21535,8 +21543,17 @@ font-size: 17px;
   .break_table td{
     background-color: #fdf6e3;
   }
-
-
+ .meeting_history_container{
+ position:absolute;
+ top:56px;
+ width:100%; 
+ background:white
+ }
+.meeting_history_container .playbackspeed_content{
+display: flex;
+gap:5px;
+align-items: center;
+}
 
    
 

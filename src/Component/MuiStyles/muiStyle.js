@@ -391,8 +391,8 @@ const style = {
   busyrule_customdropdown: {
     width: '150px',
     color: '#004eba',
-  fontWeight:'700',
-  '& .MuiOutlinedInput-notchedOutline': {
+    fontWeight: '700',
+    '& .MuiOutlinedInput-notchedOutline': {
       border: 'none',
     },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
@@ -406,42 +406,144 @@ const style = {
     paddingLeft: '10px',
     backgroundColor: 'rgb(245, 246, 250)',
     '&:hover': {
-        border: '1px solid green',
+      border: '1px solid green',
     },
     '&.Mui-focused': {
-        border: '1px solid green',
-        backgroundColor: 'white',
-        outline: 'none',
+      border: '1px solid green',
+      backgroundColor: 'white',
+      outline: 'none',
     },
-},
-templateAccordionStyle: {
-  boxShadow: 'none',
-  border: '1px solid #e2e2e4',
-  borderRadius: '8px',
-  marginTop: '25px'
-},
-templateAccordionHeading: {
-  fontWeight: 600,
-  fontSize: '16px',
-},
-templateAutocompleteStyle: {
-  backgroundColor: 'rgb(245, 246, 250) !important',
-},
-newTemplateRadiobtn: {
-  color: 'rgb(231 231 232)',
-  '&.Mui-checked': {
+  },
+  templateAccordionStyle: {
+    boxShadow: 'none',
+    border: '1px solid #e2e2e4',
+    borderRadius: '8px',
+    marginTop: '25px'
+  },
+  templateAccordionHeading: {
+    fontWeight: 600,
+    fontSize: '16px',
+  },
+  templateAutocompleteStyle: {
+    backgroundColor: 'rgb(245, 246, 250) !important',
+  },
+  newTemplateRadiobtn: {
+    color: 'rgb(231 231 232)',
+    '&.Mui-checked': {
       borderColor: 'rgb(231 231 232)',
       color: 'green',
-  },
+    },
 
-},
-broadcastRadiobtn: {
-  color: 'rgb(231 231 232)',
-  '&.Mui-checked': {
+  },
+  broadcastRadiobtn: {
+    color: 'rgb(231 231 232)',
+    '&.Mui-checked': {
       borderColor: 'rgb(231 231 232)',
       color: 'green',
-  },
+    },
 
-},
+  },
+  meetinghistory_content: {
+    p: 2,
+    display: 'flex',
+    gap: 2
+  },
+  meetinghistory_leftcontent: {
+    flex: 2
+  },
+  meetinghistory_header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    mb: 2
+  },
+  meetinghistory_paper: {
+    p: 2,
+    mb: 2,
+    borderRadius: '0 0 16px 16px', 
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)', 
+  },
+  archivemeetbtn:{
+    mt: 2,
+    backgroundColor: '#d32f2f',
+    color: '#fff',
+    fontWeight: 'bold',
+    width:'100%',
+    textTransform:'capitalize',
+    borderRadius:'21px',
+    '&:hover': {
+      backgroundColor: '#b71c1c',
+    },
+  },
+  meetinghistoryModalStyle: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    borderRadius: 2,
+    p: 2,
+    width: '38%',
+    maxHeight: '90vh',
+    overflowY: 'auto'
+  },
+  meetinghistory_headercontent:{
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  },
+  meetingheader_date:{
+   display: 'flex', 
+   alignItems: 'center', 
+   minWidth: 120 
+  },
+  meetinghistory_video:{
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    mb: 1, 
+    px: 1 
+  },
+  meetinghistory_rightcontent:{
+    flex: 1, 
+    display: 'flex', 
+    flexDirection: 'column',
+    gap: 2 
+  },
+  meetinghistory_comment:{
+    maxHeight: 150, 
+    overflowY: 'auto',
+    pr: 1
+  },
+  meetingcomment_list:{
+   p: 1,
+  borderRadius: 2,
+  '&:hover .actions': { visibility: 'visible' },
+ '&:hover': { backgroundColor: '#f9f9f9' },
+  position: 'relative'
+  },
+  meetinghistory_filesupload:{
+    maxHeight: 120, 
+    overflowY: 'auto', 
+    pr: 1 
+  },
+  meetinghistory_options:{
+  display: 'flex', 
+  justifyContent: 'space-between', 
+  alignItems: 'center' 
+  },
+  meetinghistory_editheader:{
+   display: 'flex', 
+    justifyContent: 'space-between', 
+    mb: 2 
+  },
+  meetinghistory_editfooter:{
+   display: 'flex', 
+   justifyContent: 'flex-end', 
+   gap: 2 
+  }
+
 }
 export default style;
