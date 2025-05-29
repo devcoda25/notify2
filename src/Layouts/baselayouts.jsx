@@ -26,6 +26,7 @@ import Analytic from '../Component/Meetings/Analytic';
 import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
 import EditEvent from '../Component/Meetings/EditEvent';
 import Login from '../Pages/Login';
+import MeetingHistory from "../Component/Meetings/MeetingHistory";
 import { setISODay } from 'date-fns';
 
 const AppRoutes = () => {
@@ -76,6 +77,7 @@ const AppRoutes = () => {
                 <Route path='/meet' element={<Meeting />} />
                 <Route path='/availability' element={<Availability />} />
                 <Route path='/analytic' element={<Analytic />} />
+                <Route path='/meetinghistory' element={<MeetingHistory />} />
             </Routes>
         </>
     );

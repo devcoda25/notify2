@@ -78,7 +78,9 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent
 }
-
+/* *{
+  font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif !important
+} */
 /* hr {
   margin: 1rem 0;
   color: inherit;

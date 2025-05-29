@@ -377,10 +377,7 @@ const Meeting = () => {
                                                         </div>
 
                                                     </div>
-                                                    <video width="400" height="200" controls>
-                                                        <source src="/videos/myvideo.mp4" type="video/mp4"/>
-                                                          
-                                                    </video>
+                                                   
                                                     </>
                                                 </div>
                                             )
