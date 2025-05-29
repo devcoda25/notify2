@@ -25,7 +25,19 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <script src="https://myaccount.dev.evzone.app/assets/js/navbar.js"></script>
+      <script>
+      async function is_valid_user() {
+        await makeAjaxCall();
+        window.globalValue = login_user;
+        console.log("window.globalValue", window.globalValue)
+        console.log("login_user", login_user);
+        return login_user;
+      }
+      is_valid_user();
+      </script>
+  </div>
   <!-- <script src="assets/teaminbox/js/jquery-2.1.3.js"></script>
   <script src="assets/teaminbox/js/bootstrap.min.js"></script>
   <script src="assets/teaminbox/js/common.js"></script>
