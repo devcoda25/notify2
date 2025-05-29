@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import TeamInbox from '../Pages/TeamInbox';
-import Meetings from '../Pages/Meetings';
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import TeamInbox from "../Pages/TeamInbox";
+import Meetings from "../Pages/Meetings";
 // import BroadcastBody from '../Component/Broadcast/BroadcastBody';
 import Broadcast from '../Pages/Broadcast';
 import Navbar from '../Component/Navbar/Navbar';
@@ -21,12 +27,31 @@ import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
 import EditEvent from '../Component/Meetings/EditEvent';
 import Login from '../Pages/Login';
 import { setISODay } from 'date-fns';
-import MeetingHistory from '../Component/Meetings/MeetingHistory';
 
 const AppRoutes = () => {
-    const location = useLocation();
-    const hideNavbarPaths = ['/hepto'];
-    const shouldHideNavbar = hideNavbarPaths.includes(location.pathname);
+  const location = useLocation();
+  const [authUser, setauthUser] = useState(null);
+
+  
+    // const checkAuthStatus = () => {
+    //   const params = new URLSearchParams(window.location.search);
+    //   const x_authuser = params.get("x_authuser");
+    //   setauthUser(x_authuser);
+  
+    //   if (x_authuser) {
+    //     console.log("x_authuser", x_authuser);
+    //     window.location.href = `/u/${x_authuser}${
+    //       window.location.pathname !== "/" ? window.location.pathname : ""
+    //     }`;
+    //   }
+    // };
+  
+    // useEffect(() => {
+    //   checkAuthStatus();
+    // }, []);
+
+  const hideNavbarPaths = ["/hepto"];
+  const shouldHideNavbar = hideNavbarPaths.includes(location.pathname);
 
     return (
         <>
@@ -51,67 +76,63 @@ const AppRoutes = () => {
                 <Route path='/meet' element={<Meeting />} />
                 <Route path='/availability' element={<Availability />} />
                 <Route path='/analytic' element={<Analytic />} />
-                <Route path='/meetinghistory' element={<MeetingHistory/>}/>
             </Routes>
         </>
     );
 };
 
 const BaseLayouts = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(
-        () => sessionStorage.getItem('auth') === 'true');
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => sessionStorage.getItem("auth") === "true"
+  );
 
-    const handleLogin = () => {
-        setIsAuthenticated(true);
-    }
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
 
-    return (
-        // <>
-        //     <React.Fragment>
+  return (
+    // <>
+    //     <React.Fragment>
 
-        //         <BrowserRouter>
-        //         <Navbar/>
-        //             <Routes>
-        //                 <Route path='/' element={<TeamInbox />} />
-        //                 <Route path='Teaminbox' element={<TeamInbox />} />
-        //                 <Route path='meetings' element={<Meetings />} />
-        //                 <Route path='Broadcast' element={<Broadcast />} />
-        //                 <Route path='contactus' element={<ContactUs/>}/>
-        //                 <Route path='automations' element={<Automations/>}/>
-        //                 <Route path='analytics' element={<Analytics/>} />
-        //                 <Route path='Reports' element={<Reports/>}/>
-        //                 <Route path='UserManagement' element={<UserManagement/>}/>
-        //                 <Route path='AccountDetails' element={<AccountDetails/>}/>
-        //                 <Route path='/hepto' element={<CopyMeetingLink/>}/>
-        //                 <Route path='/edit-event' element={<EditEventType/>}/>
-        //                 <Route path='/edit-eventtype' element={<EditEvent/>}/>
-        //                 <Route path='/one-on-one' element={<OneononeMeeting/>}/>
-        //                 <Route path='/event-types' element={<Event/>}/>
-        //                 <Route path='/meet' element={<Meeting/>}/>
-        //                 <Route path='/availability' element={<Availability/>}/>
-        //                 <Route path='/analytic' element={<Analytic/>}/>
+    //         <BrowserRouter>
+    //         <Navbar/>
+    //             <Routes>
+    //                 <Route path='/' element={<TeamInbox />} />
+    //                 <Route path='Teaminbox' element={<TeamInbox />} />
+    //                 <Route path='meetings' element={<Meetings />} />
+    //                 <Route path='Broadcast' element={<Broadcast />} />
+    //                 <Route path='contactus' element={<ContactUs/>}/>
+    //                 <Route path='automations' element={<Automations/>}/>
+    //                 <Route path='analytics' element={<Analytics/>} />
+    //                 <Route path='Reports' element={<Reports/>}/>
+    //                 <Route path='UserManagement' element={<UserManagement/>}/>
+    //                 <Route path='AccountDetails' element={<AccountDetails/>}/>
+    //                 <Route path='/hepto' element={<CopyMeetingLink/>}/>
+    //                 <Route path='/edit-event' element={<EditEventType/>}/>
+    //                 <Route path='/edit-eventtype' element={<EditEvent/>}/>
+    //                 <Route path='/one-on-one' element={<OneononeMeeting/>}/>
+    //                 <Route path='/event-types' element={<Event/>}/>
+    //                 <Route path='/meet' element={<Meeting/>}/>
+    //                 <Route path='/availability' element={<Availability/>}/>
+    //                 <Route path='/analytic' element={<Analytic/>}/>
 
-        //             </Routes>
-        //         </BrowserRouter>
-        //     </React.Fragment>
-        // </>
-        <>
-            <BrowserRouter>
-                {
-                    isAuthenticated || window.location.pathname === '/hepto' ? (
-                        <AppRoutes />
-                    )
-                        : (
-                            <Login onLogin={handleLogin}/>
-                            // <>
-                            // <Route path="/" element={<Login onLogin={handleLogin} />} />
-                            // <Route path="*" element={<Navigate to="/" />} />
-                            // </>
-                        )
-                }
-
-            </BrowserRouter>
-        </>
-    );
-}
+    //             </Routes>
+    //         </BrowserRouter>
+    //     </React.Fragment>
+    // </>
+    <>
+      <BrowserRouter>
+        {isAuthenticated || window.location.pathname === "/hepto" ? (
+          <AppRoutes />
+        ) : (
+          <Login onLogin={handleLogin} />
+          // <>
+          // <Route path="/" element={<Login onLogin={handleLogin} />} />
+          // <Route path="*" element={<Navigate to="/" />} />
+          // </>
+        )}
+      </BrowserRouter>
+    </>
+  );
+};
 export default BaseLayouts;

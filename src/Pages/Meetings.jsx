@@ -14,24 +14,16 @@ import {
 import CustomButton from "../Component/Meetings/CustomButton";
 import style from "../Component/MuiStyles/muiStyle";
 
-
 const styles = {
-  
     timePickerStyles: {
         background: 'white',
         border: '1px solid #a6bbd1',
-
         "& .MuiOutlinedInput-root": {
-
             "&:hover fieldset": {
                 border: "2px solid #006bff",
-
-
             },
             "&.Mui-focused fieldset": {
                 border: "2px solid #006bff",
-
-
             },
         },
     },
@@ -62,6 +54,7 @@ const styles = {
         },
     }),
 }
+
 const locations = [
     { id: 'zoom', name: 'Zoom', icon: '/assets/images/Zoom.svg' },
     { id: 'googlemeet', name: 'Google Meet', icon: "/assets/images/Googlemeet.svg" },
@@ -70,19 +63,33 @@ const locations = [
     { id: 'inperson', name: 'In-person', icon: FmdGoodOutlinedIcon },
     { id: 'call', name: 'Phone call', icon: LocalPhoneOutlinedIcon }
 ]
-const CalendarButton = ({ imageSrc, name, onClick, isConnected }) => {
+
+const CalendarButton = ({ imageSrc, name, onClick, isConnected, isSelected }) => {
     return (
-        <button className="button_calendar" onClick={onClick}>
+        <button 
+            className={`button_calendar ${isSelected ? 'selected' : ''}`} 
+            onClick={onClick}
+            style={{
+                border: isSelected ? '2px solid #0057FF' : '1px solid #ccc',
+                backgroundColor: isSelected ? '#F0F7FF' : '#fff',
+                color: isSelected ? '#0057FF' : '#000',
+                boxShadow: isSelected ? '0 2px 8px rgba(0, 87, 255, 0.2)' : 'none'
+            }}
+        >
             <img className="calendar_image" src={imageSrc} alt={`${name} Logo`} />
             <div className="calendar_name">{name}</div>
-            <div className={`connect_btn ${isConnected ? "Connected" : ""}`}>{isConnected ? "Connected" : "Connect"}</div>
+            <div className={`connect_btn ${isConnected ? "Connected" : ""}`}>
+                {isConnected ? "Connected" : "Connect"}
+            </div>
         </button>
     );
 };
+
 const Meetings = () => {
     const mailAccountOptions = ['hepto@gmail.com'];
     const [state, setState] = useState({
         selectedCalendar: null,
+        selectedCalendarType: null, 
         showConfirmation: false,
         showCalendarModal: false,
         showEditModal: false,
@@ -92,14 +99,18 @@ const Meetings = () => {
         selectedLocation: 'googlemeet',
         showEventType: false,
     });
+
     const updateState = (newState) => {
         setState((prevState) => ({ ...prevState, ...newState }));
     };
 
-
     const handlerCalendarSelect = (imageSrc, name) => {
-        updateState({ selectedCalendar: { imageSrc, name } });
+        updateState({ 
+            selectedCalendar: { imageSrc, name },
+            selectedCalendarType: name 
+        });
     };
+
     const handleNextClick = () => {
         if (!state.showConfirmation) {
             updateState({ showConfirmation: true });
@@ -121,8 +132,7 @@ const Meetings = () => {
             updateState({ showConfirmation: false });
         }
     };
-   
-   
+
     const [meetingHours, setMeetingHours] = useState({
         Sunday: [{ from: "09:00", to: "17:00", available: true }],
         Monday: [{ from: "09:00", to: "17:00", available: true }],
@@ -132,18 +142,21 @@ const Meetings = () => {
         Friday: [{ from: "09:00", to: "17:00", available: true }],
         Saturday: [{ from: "09:00", to: "17:00", available: true }],
     });
+
     const handleRemoveSlot = (day, index) => {
         setMeetingHours((prev) => {
             const updateSlots = prev[day].filter((_, i) => i !== index);
             return { ...prev, [day]: updateSlots }
         })
     }
+
     const handleAddSlot = (day) => {
         setMeetingHours((prevHours) => ({
             ...prevHours,
             [day]: [...prevHours[day], { from: "09:00", to: "17:00", available: true }],
         }));
     };
+
     return (
         <>
             <div className='maincontent'>
@@ -164,15 +177,20 @@ const Meetings = () => {
                                                         imageSrc="/assets/images/google_calendar.svg"
                                                         name="Google Calendar"
                                                         onClick={() => handlerCalendarSelect("/assets/images/google_calendar.svg", "Google Calendar")}
+                                                        isSelected={state.selectedCalendarType === "Google Calendar"}
                                                     />
                                                     <CalendarButton
                                                         imageSrc="/assets/images/outlook.svg"
                                                         name="Outlook Calendar"
-                                                        onClick={() => handlerCalendarSelect("/assets/images/outlook.svg", "Outlook Calendar")} />
+                                                        onClick={() => handlerCalendarSelect("/assets/images/outlook.svg", "Outlook Calendar")}
+                                                        isSelected={state.selectedCalendarType === "Outlook Calendar"}
+                                                    />
                                                     <CalendarButton
                                                         imageSrc="/assets/images/exchange.svg"
                                                         name="Exchange Calendar"
-                                                        onClick={() => handlerCalendarSelect("/assets/images/exchange.svg", "Exchange Calendar")} />
+                                                        onClick={() => handlerCalendarSelect("/assets/images/exchange.svg", "Exchange Calendar")}
+                                                        isSelected={state.selectedCalendarType === "Exchange Calendar"}
+                                                    />
                                                 </div>
                                             </>
                                         ) : state.showConfirmation && !state.showWeeklyHours && !state.showLocation ? (
@@ -358,8 +376,13 @@ const Meetings = () => {
       
                                         <CustomButton variant="text" onClick={handleBackClick} icon={<ArrowBackIosIcon/>}>Back</CustomButton>
                                         }
-                                        {
-                                        <CustomButton variant="contained" onClick={handleNextClick} >Next</CustomButton>}
+                                        {state.selectedCalendar ? (
+
+                                            <CustomButton variant="contained" onClick={handleNextClick} >Next</CustomButton>
+                                        ):(
+                                            
+                                            <CustomButton disabled variant="contained" onClick={handleNextClick} >Next</CustomButton>
+                                        )}
                                     </div>
                                 </div>
                             </div>

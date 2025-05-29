@@ -11802,8 +11802,8 @@ padding:8px
 
 .teaminbox_container .userline {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  /* justify-content: space-between; */
+  align-items: left;
   margin-top:-27px;
 }
 .teaminbox_container .user_tickets_timeline{
@@ -11812,7 +11812,7 @@ padding-left: 40px;
 .teaminbox_container .user_tickets_timeline .chatmessage{
   display: flex;
   flex-direction: column;
-  max-width: 60%;
+  max-width: 40%;
   margin: 10px;
   padding: 12px;
   border-radius: 10px;
@@ -11835,14 +11835,17 @@ justify-content: flex-end;
 .teaminbox_container .userline_right {
   display: flex;
   flex-direction: column;
+  justify-content: left;
+  text-align: left;
 }
 
 .teaminbox_container .userline_left {
   font-weight: 700;
+  align-items: left;  
 }
 
 .teaminbox_container .userline_right {
-  align-items: end;
+  align-items: center;
 }
 
 .teaminbox_container .tickets_timeline_user_image {
@@ -11851,6 +11854,23 @@ justify-content: flex-end;
   border-radius: 30px;
   margin-left:-41px;
 }
+
+
+.teaminbox_container .tickets_timeline .chat-timestamp-sender{
+  font-size: x-small;
+  text-align: right;
+  margin-top: 4px;
+}
+.teaminbox_container .tickets_timeline .chat-timestamp-receiver{
+  font-size: x-small;
+  margin-top: 4px;
+  text-align: right;
+  text-wrap: nowrap;
+  
+}
+
+
+
 
 .teaminbox_container .tickets_userdate {
   font-size: 12px;
