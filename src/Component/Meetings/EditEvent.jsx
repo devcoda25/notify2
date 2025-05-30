@@ -1659,7 +1659,7 @@ const EditEvent = () => {
                             </div>
                             <div className="middle_content">
                                 <div className="middle_header">
-                                    <div className="user">hepto</div>
+                                    <div className="user1">hepto</div>
                                     <div className="eventname">Event name here</div>
                                     <div className="location_container">
 
