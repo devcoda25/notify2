@@ -11,6 +11,7 @@ import Editorbox from "../Component/TeamInbox/Editorbox";
 import Select from "react-select";
 import SearchboxComponent from "../Component/SearchboxComponent";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   AccessTimeOutlinedIcon,
   ErrorOutlineOutlinedIcon,
@@ -67,7 +68,7 @@ const ticketData = [
       <AccessTimeOutlinedIcon />,
       <ErrorOutlineOutlinedIcon sx={{ color: "red" }} />,
     ],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
     ticketCount: 2,
   },
   {
@@ -79,7 +80,7 @@ const ticketData = [
       <ExpandLessOutlinedIcon className="expandlessicon" />,
       <ErrorOutlineOutlinedIcon sx={{ color: "red" }} />,
     ],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
     ticketCount: 2,
   },
   {
@@ -88,7 +89,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<DoNotDisturbOnOutlinedIcon style={{ color: "green" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
   {
     title: "Dignissimos maiores porro",
@@ -96,7 +97,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<DoNotDisturbOnOutlinedIcon style={{ color: "green" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
   {
     title: "Nihil porro repudiandae",
@@ -104,7 +105,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<DoNotDisturbOnOutlinedIcon style={{ color: "green" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
   {
     title: "Aspernatur cumque ipsum",
@@ -112,7 +113,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<DoNotDisturbOnOutlinedIcon style={{ color: "green" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
   {
     title: "Culpa quos aliquam",
@@ -120,7 +121,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<ExpandCircleDownOutlinedIcon sx={{ color: "#0069d9" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
   {
     title: "Atque incidunt autem",
@@ -128,7 +129,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<ExpandCircleDownOutlinedIcon sx={{ color: "#0069d9" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
   {
     title: "Atque incidunt autem",
@@ -136,7 +137,7 @@ const ticketData = [
     subtitle: "APPS-216",
     status: "To Do",
     icons: [<ExpandCircleDownOutlinedIcon sx={{ color: "#0069d9" }} />],
-    avatar: "assets/teaminbox/images/resource/friend-avatar.jpg",
+    avatar: "/assets/teaminbox/images/resource/friend-avatar.jpg",
   },
 ];
 const filterData = [
@@ -270,6 +271,8 @@ const TeamInbox = () => {
     selectedFileName: "",
   });
 
+  const {authUser}= useParams();
+  const currentAuthUser = authUser || 0;
   const popupRef = useRef(null);
   const textareaRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -917,10 +920,10 @@ const TeamInbox = () => {
                                                                 <span className='ticketsgrid_span'><RemoveRedEyeOutlinedIcon sx={{ marginRight: '3px' }} /><span >2</span></span> */}
                                                                 <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
                                                                 <span className='hum-avator'>
-                                                                    <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                                                                    <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
                                                                 </span>
                                                                 <span className='hum-avator'>
-                                                                    <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                                                                    <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
                                                                 </span>
                                                                 <span className='oktext'>ok</span></div>
                                                         </div>
@@ -936,7 +939,7 @@ const TeamInbox = () => {
                                                                         {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
                                                                       </div>
                                                                     <div className='chatmessage receiver_side'>
-                                                                        <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                                                        <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
                                                                         <div className="userline">
                                                                             <div className="userline_left">
                                                                                 <div>Allie Harmon</div>
@@ -955,14 +958,14 @@ const TeamInbox = () => {
                                                                     <div className='chatmessage sender_side'>
                                                                     <div className="userline">
                                                                            <div>
-                                                                            <div className='user_information'><span>Allie Harmon</span><img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
+                                                                            <div className='user_information'><span>Allie Harmon</span><img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
                                                                             <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
                                                                              <p className="chat-timestamp-receiver">
                                                                               2:35 PM
                                                                             </p>
                                                                             </div>
                                                                          </div>
-                                                                        {/* <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
+                                                                        {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
                                                                         {/* <div className="userline">
                                                                             <div className="userline_left">
                                                                                 <div>Allie Harmon</div>
@@ -989,7 +992,7 @@ const TeamInbox = () => {
                                 <div className="chatmessage receiver_side">
                                      
                                   <img
-                                    src="assets/teaminbox/images/resource/user1.jpg"
+                                    src="/assets/teaminbox/images/resource/user1.jpg"
                                     alt=""
                                     className="tickets_timeline_user_image"
                                   />
@@ -1011,13 +1014,13 @@ const TeamInbox = () => {
                                   </div>
                                 </div>
                                 <div className="chatmessage sender_side">
-                                  {/* <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
+                                  {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
                                   <div className="userline">
                                     <div>
                                       <div className="user_information">
                                         <span>Allie Harmon</span>
                                         <img
-                                          src="assets/teaminbox/images/resource/user1.jpg"
+                                          src="/assets/teaminbox/images/resource/user1.jpg"
                                           alt=""
                                           className="tickets_timeline_user_image"
                                         />

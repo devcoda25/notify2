@@ -164,6 +164,7 @@ import Analytic from '../Component/Meetings/Analytic';
 import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
 import EditEvent from '../Component/Meetings/EditEvent';
 import Login from '../Pages/Login';
+import MeetingHistory from "../Component/Meetings/MeetingHistory";
 
 const AuthUserRoute = ({ children }) => {
   const { authUser } = useParams();
@@ -218,7 +219,7 @@ const AppRoutes = () => {
             <TeamInbox />
           </AuthUserRoute>
         } />
-        {/* <Route path="/u/:authUser/chatbots" element={
+        <Route path="/u/:authUser/chatbots" element={
           <AuthUserRoute>
             <TeamInbox />
           </AuthUserRoute>
@@ -227,7 +228,7 @@ const AppRoutes = () => {
           <AuthUserRoute>
             <TeamInbox />
           </AuthUserRoute>
-        } /> */}
+        } />
         
         <Route path="/u/:authUser/meetings" element={
           <AuthUserRoute>
@@ -274,6 +275,12 @@ const AppRoutes = () => {
         <Route path="/u/:authUser/AccountDetails" element={
           <AuthUserRoute>
             <AccountDetails />
+          </AuthUserRoute>
+        } />
+
+        <Route path="/u/:authUser/MeetingHistory" element={
+          <AuthUserRoute>
+            <MeetingHistory />
           </AuthUserRoute>
         } />
         

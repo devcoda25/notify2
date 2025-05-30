@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { Link, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import {
     ArrowDropDownIcon,
@@ -44,6 +45,8 @@ const styles = {
 }
 const Meeting = () => {
     const navigate=useNavigate();
+    const {authUser}= useParams();
+    const currentAuthUser = authUser || 0;
     const [state, setState] = useState({
         anchorEl: null,
         tabValue: 0,
@@ -338,7 +341,7 @@ const Meeting = () => {
                                                         <div className="event_control">
                                                             <CustomButton variant="outlined" sx={{ width: '130px' }}>Reschedule</CustomButton>
                                                             <CustomButton variant="outlined" sx={{ width: '130px' }}>Cancel</CustomButton>
-                                                            <CustomButton variant="outlined" sx={{ width: '130px' }} onClick={() => navigate('/meetinghistory')}
+                                                            <CustomButton variant="outlined" sx={{ width: '130px' }} onClick={() => navigate(`/u/${currentAuthUser}/MeetingHistory`)}
                                                             >Meeting History</CustomButton>
                                                         </div>
                                                         <div className="event_control">
