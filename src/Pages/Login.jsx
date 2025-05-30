@@ -10,8 +10,8 @@ const Login = ({ onLogin }) => {
 //   const [authUserId, setAuthUserId] = useState(null);
 //   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-//   const redirect_url = "http://localhost:3000/Teaminbox";
-  const redirect_url = "https://notify.dev.evzone.app/Teaminbox";
+  const redirect_url = "http://localhost:3000/Teaminbox";
+  // const redirect_url = "https://notify.dev.evzone.app/Teaminbox";
   const handleContinue = () => {
     setShowPasscode(true);
   };
@@ -42,7 +42,8 @@ const Login = ({ onLogin }) => {
     if (!window.globalValue) {
       window.location.href = `https://accounts.dev.evzone.app/?redirecturl=${redirect_url}`;
     } else {
-      window.location.href = `https://myaccount.evzone.app/u/${window.globalValue}/profile?change=${redirect_url}`;
+        window.location.href = `https://accounts.dev.evzone.app/?redirecturl=${redirect_url}`;
+    //   window.location.href = `https://myaccount.evzone.app/u/${window.globalValue}/profile?change=${redirect_url}`;
     }
   };
 

@@ -7,9 +7,12 @@ import { TiLink } from "react-icons/ti";
 import { TbListDetails } from "react-icons/tb";
 import { Prev } from 'react-bootstrap/esm/PageItem';
 import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function MoreDropDown() {
   const [isOpen, setIsOpen] = useState(false);
+  const {authUser} = useParams();
+  const currentAuthUser = authUser || 0;
   const toggleDropdown = () => {
     setIsOpen((prevState) => !prevState);
   }
@@ -35,7 +38,7 @@ function MoreDropDown() {
             </li>
             <li className='header_menu_item'>
               <NavLink
-                to="/usermanagement"
+                to={`/u/${currentAuthUser}/usermanagement`}
                 className={({ isActive }) => `moredropdown_link ${isActive ? 'active' : ''}`}
                 onClick={handleTabClick}>
                 <LuUsers2 /> User Management
@@ -70,7 +73,7 @@ function MoreDropDown() {
 
             <li className='header_menu_item'>
               <NavLink
-                to="/accountdetails"
+                to={`/u/${currentAuthUser}/accountdetails`}
                 className={({ isActive }) => `moredropdown_link ${isActive ? 'active' : ''}`}
                 onClick={handleTabClick}>
                 <TbListDetails /> Account Details

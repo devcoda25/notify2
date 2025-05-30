@@ -54,9 +54,6 @@ import {
   FormatColorTextIcon,
   AutoFixHighIcon,
   ExtensionIcon,
-  HeadsetIcon,
-  DashboardIcon,
-  MenuIcon,
 } from "../Component/Icon";
 import ToggleSwitch from "../Component/ToggleSwitch";
 
@@ -732,13 +729,16 @@ const TeamInbox = () => {
                     <ul>
                       <li className="tic-view-chat">
                         <span className="acc-icon-text">
-                          <HeadsetIcon />
+                          <i
+                            className="fa fa-headphones"
+                            aria-hidden="true"
+                          ></i>{" "}
                           Live Chat
                         </span>
                       </li>
                       <li className="tic-view-chat">
                         <span className="acc-icon-text">
-                          <DashboardIcon />
+                          <i className="fa fa-th-large" aria-hidden="true"></i>{" "}
                           Boards
                         </span>
                       </li>
@@ -814,7 +814,7 @@ const TeamInbox = () => {
 
               <div className="mytickets_header">
                 <span className="ticketview-open" onClick={toggleLeftContainer}>
-                  <MenuIcon />
+                  <i className="fa fa-bars" aria-hidden="true"></i>
                 </span>
                 <span className="mytickets_title">My Tickets</span>
                 <div className="ticket-filter-btn ticket-popupbtn">
@@ -915,46 +915,55 @@ const TeamInbox = () => {
                             <div className="ticketsgrid_right_side">
                               {/* <span className='ticketsgrid_span'><EmailOutlinedIcon /></span>
                                                                 <span className='ticketsgrid_span'><RemoveRedEyeOutlinedIcon sx={{ marginRight: '3px' }} /><span >2</span></span> */}
-                              <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
-                              <span className='hum-avator'>
-                                <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                              </span>
-                              <span className='hum-avator'>
-                                <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                              </span>
-                              <span className='oktext'>ok</span></div>
-                          </div>
-                        </div>
-                        <div className='chat_wrapper'>
-                          <div className='chat_section'>
-                            <div className='tickets_timeline'>
-                              <div className='user_tickets_timeline'>
-                                <div className='chatmessage receiver_side'>
-                                  <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
-                                  <div className="userline">
-                                    <div className="userline_left">
-                                      <div>Allie Harmon</div>
-                                      <div className='tickets_usersubname'>To Name Name@gmail.com</div>
-                                    </div>
-                                    <div className="userline_right">
-                                      <div className='tickets_userdate'>Feb 9, 2022 10:31 AM</div>
-                                      {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
-                                    </div>
+                                                                <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
+                                                                <span className='hum-avator'>
+                                                                    <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                                                                </span>
+                                                                <span className='hum-avator'>
+                                                                    <img src="assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                                                                </span>
+                                                                <span className='oktext'>ok</span></div>
+                                                        </div>
+                                                    </div>
+                                                    <div className='chat_wrapper'>
+                                                        <div className='chat_section'>
+                                                            <div className='tickets_timeline'>
+                                                                <div className='user_tickets_timeline'>
+                                                                   <div className="userline_right">
+                                                                        <div className="tickets_userdate">
+                                                                      20/5/2025 
+                                                                        </div>
+                                                                        {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                                                      </div>
+                                                                    <div className='chatmessage receiver_side'>
+                                                                        <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                                                        <div className="userline">
+                                                                            <div className="userline_left">
+                                                                                <div>Allie Harmon</div>
+                                                                                <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                                                            </div>
+                                                                         
 
-                                  </div>
-                                  <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
-                                  <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                  <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                </div>
-                                <div className='chatmessage sender_side'>
-                                  <div className="userline">
-                                    <div>
-                                      <div className='user_information'><span>Allie Harmon</span><img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
-                                      <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
-                                    </div>
-                                  </div>
-                                  {/* <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
-                                  {/* <div className="userline">
+                                                                        </div>
+                                                                        <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+                                                                        <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                                                        <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                                                         <p className="chat-timestamp-sender">
+                                                                          2:30 PM
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className='chatmessage sender_side'>
+                                                                    <div className="userline">
+                                                                           <div>
+                                                                            <div className='user_information'><span>Allie Harmon</span><img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
+                                                                            <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+                                                                             <p className="chat-timestamp-receiver">
+                                                                              2:35 PM
+                                                                            </p>
+                                                                            </div>
+                                                                         </div>
+                                                                        {/* <img src="assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
+                                                                        {/* <div className="userline">
                                                                             <div className="userline_left">
                                                                                 <div>Allie Harmon</div>
                                                                                 <div className='tickets_usersubname'>To Name Name@gmail.com</div>
@@ -972,13 +981,13 @@ const TeamInbox = () => {
                             <div className="tickets_timeline">
                               <div className="user_tickets_timeline">
                                 <div className="userline_right">
-                                  <div className="tickets_userdate">
-                                    25/5/2025
-                                  </div>
-                                  {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
-                                </div>
+                                      <div className="tickets_userdate">
+                                     25/5/2025 
+                                      </div>
+                                      {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                    </div>
                                 <div className="chatmessage receiver_side">
-
+                                     
                                   <img
                                     src="assets/teaminbox/images/resource/user1.jpg"
                                     alt=""
@@ -991,14 +1000,14 @@ const TeamInbox = () => {
                                         To Name Name@gmail.com
                                       </div>
                                     </div>
-
+                                   
                                   </div>
                                   <div className="timeline_content">
                                     Dolorem similique et aliquid illum dolor.vel
                                     quo magnam.{" "}
                                     <p className="chat-timestamp-sender">
-                                      2:30 PM
-                                    </p>
+                                          2:30 PM
+                                        </p>
                                   </div>
                                 </div>
                                 <div className="chatmessage sender_side">
