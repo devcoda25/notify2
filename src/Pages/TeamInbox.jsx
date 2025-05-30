@@ -55,6 +55,9 @@ import {
   FormatColorTextIcon,
   AutoFixHighIcon,
   ExtensionIcon,
+  DashboardIcon,
+  HeadsetIcon, 
+  MenuIcon
 } from "../Component/Icon";
 import ToggleSwitch from "../Component/ToggleSwitch";
 
@@ -732,16 +735,18 @@ const TeamInbox = () => {
                     <ul>
                       <li className="tic-view-chat">
                         <span className="acc-icon-text">
-                          <i
+                          {/* <i
                             className="fa fa-headphones"
                             aria-hidden="true"
-                          ></i>{" "}
+                          ></i>{" "} */}
+                          <HeadsetIcon />
                           Live Chat
                         </span>
                       </li>
                       <li className="tic-view-chat">
                         <span className="acc-icon-text">
-                          <i className="fa fa-th-large" aria-hidden="true"></i>{" "}
+                          {/* <i className="fa fa-th-large" aria-hidden="true"></i>{" "} */}
+                          <DashboardIcon />
                           Boards
                         </span>
                       </li>
@@ -817,7 +822,8 @@ const TeamInbox = () => {
 
               <div className="mytickets_header">
                 <span className="ticketview-open" onClick={toggleLeftContainer}>
-                  <i className="fa fa-bars" aria-hidden="true"></i>
+                  {/* <i className="fa fa-bars" aria-hidden="true"></i> */}
+                  <MenuIcon />
                 </span>
                 <span className="mytickets_title">My Tickets</span>
                 <div className="ticket-filter-btn ticket-popupbtn">
