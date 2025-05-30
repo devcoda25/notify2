@@ -3567,6 +3567,8 @@ outline: none !important;
 
 .header-profile-user1_skd {
   z-index: 9999 !important;
+  top: 15px !important;
+  right: 15px !important;
 }
 
 .user1>span {
