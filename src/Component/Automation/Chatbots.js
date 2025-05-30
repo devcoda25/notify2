@@ -8,6 +8,7 @@ import Ecommerce from '../Assets/img/Ecommerce.jpeg';
 import Realestate from '../Assets/img/Realestate.jpeg';
 import Restaurant from '../Assets/img/Restaurant.jpeg';
 import Finance from '../Assets/img/Finance.jpeg';
+import DeleteModal from '../DeleteModal';
 import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Autocomplete, TextField } from '@mui/material';
 const initialTableData = [
     {
@@ -93,23 +94,23 @@ const initialTemplateData = [
     { id: 12, img:Ecommerce,title: 'Ecommerce', subTitle: 'Ecommerce template' }
 
 ]
-const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
-    return (
-      <>
-        <Modal show={show} dialogClassName="keyword__delete__modal">
-          <div className='keyword__delete__content'>
-            <Modal.Header className='keyword__delete__header'>
-              <Modal.Title >Confirm</Modal.Title>
-            </Modal.Header>
-            <ModalBody className='keyword__body__deletecontent'>
-              <div class="delete__confirm__msg">{msg}</div>
-              <div class="keywordfooter__delete"><button target="_self" className='footer__cancel__btn delete__cancel__btn' onClick={onClose} >Cancel</button><button target="_self" className='delete__confirm__btn' onClick={onConfirm}>Yes</button></div>
-            </ModalBody>
-          </div>
-        </Modal>
-      </>
-    )
-  }
+// const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
+//     return (
+//       <>
+//         <Modal show={show} dialogClassName="keyword__delete__modal">
+//           <div className='keyword__delete__content'>
+//             <Modal.Header className='keyword__delete__header'>
+//               <Modal.Title >Confirm</Modal.Title>
+//             </Modal.Header>
+//             <ModalBody className='keyword__body__deletecontent'>
+//               <div class="delete__confirm__msg">{msg}</div>
+//               <div class="keywordfooter__delete"><button target="_self" className='footer__cancel__btn delete__cancel__btn' onClick={onClose} >Cancel</button><button target="_self" className='delete__confirm__btn' onClick={onConfirm}>Yes</button></div>
+//             </ModalBody>
+//           </div>
+//         </Modal>
+//       </>
+//     )
+//   }
   const CopyModal = ({ show,onClose,onSave}) => {
     const [chatbotName, setChatbotName] = useState('');
 

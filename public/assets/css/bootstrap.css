@@ -78,9 +78,9 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent
 }
-/* *{
+*{
   font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif !important
-} */
+}
 /* hr {
   margin: 1rem 0;
   color: inherit;
@@ -21555,6 +21555,15 @@ font-size: 17px;
 display: flex;
 gap:5px;
 align-items: center;
+}
+.meetinghistory_editorbox{
+  border:1px solid #ccc;
+  min-height: 200px;
+  padding:16px;
+  margin-top: 10px;
+  outline:none;
+  max-height: 350px;
+  overflow-y: auto;
 }
 
    

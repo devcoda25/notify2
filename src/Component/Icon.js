@@ -147,7 +147,10 @@ Image as ImageIcon,
 Group as GroupIcon,
 MoreVert as MoreVertIcon,
 FormatStrikethrough as FormatStrikethroughIcon,
-NoteAlt as NoteAltIcon
+NoteAlt as NoteAltIcon,
+Headset as HeadsetIcon,
+Dashboard as DashboardIcon,
+
    } from "@mui/icons-material";
   
   // Export all icons
@@ -300,5 +303,7 @@ NoteAlt as NoteAltIcon
    GroupIcon,
    MoreVertIcon,
    FormatStrikethroughIcon,
-   NoteAltIcon
+   NoteAltIcon,
+   HeadsetIcon,
+   DashboardIcon
 };

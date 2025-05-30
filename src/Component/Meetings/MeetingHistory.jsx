@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Typography, Modal, Avatar, AvatarGroup, Tabs, Tab, Paper, IconButton, Button, TextField, List, ListItem, ListItemAvatar, ListItemText, Checkbox, Link } from '@mui/material';
 import style from '../MuiStyles/muiStyle';
 import TextfieldComponent from '../TextfieldComponent';
@@ -10,7 +10,7 @@ import 'react-quill/dist/quill.snow.css';
 import {
     FormatQuoteIcon, AccessTimeIcon, CalendarMonthIcon, GroupIcon, LinkIcon, VideocamIcon, HeadphonesIcon, EditIcon, DownloadIcon, SettingsIcon,
     SendIcon, CloseIcon, ThumbUpIcon, ReplyIcon, CommentIcon, MoreVertIcon, DeleteIcon, PersonIcon, FavoriteIcon, PictureAsPdfIcon, ImageIcon, FolderIcon, DescriptionIcon,
-    NoteAltIcon
+    NoteAltIcon, FormatBoldIcon, FormatItalicIcon, FormatUnderlinedIcon, StrikethroughSIcon, InsertLinkIcon, FormatListBulletedIcon, FormatListNumberedIcon
 } from '../Icon';
 
 const participants = [
@@ -53,11 +53,13 @@ export default function MeetingHistory() {
     const [tabIndex, setTabIndex] = useState(0);
     const [commentText, setCommentText] = useState("");
     const [playbackData, setPlaybackData] = useState(playbackOptions[2]);
-    const [showOptions, setShowOptions] = useState(false);
+    // const [showOptions, setShowOptions] = useState(false);
     const [open, setOpen] = useState(false);
     const [note, setNote] = useState('');
-    const quillRef = useRef(null);
-    const fileInputRef = useRef(null);
+    const [content, setContent] = useState('');
+    const editorRef = useRef(null);
+    const imageInputRef = useRef(null);
+    const videoInputRef = useRef(null);
 
     const [CheckboxState, setCheckboxState] = useState({
         timestamp: false,
@@ -73,39 +75,87 @@ export default function MeetingHistory() {
     const handleTabChange = (event, newValue) => {
         setTabIndex(newValue);
     };
-    const handleToggle = () => {
-        setShowOptions(prev => !prev);
-    };
+    // const handleToggle = () => {
+    //     setShowOptions(prev => !prev);
+    // };
     const handleCheckboxChange = (checkboxName, checked) => {
         setCheckboxState(prev => ({
             ...prev,
             [checkboxName]: checked,
         }));
     };
-    const applyFormat = (format) => {
-        const quill = quillRef.current?.getEditor();
-        const range = quill?.getSelection();
-        if (range) {
-            quill.format(format, true);
+
+
+    const execCommand = (command, value = null) => {
+        document.execCommand(command, false, value);
+    };
+
+    const handleInput = () => {
+        setContent(editorRef.current.innerHTML);
+    };
+
+    const handleFormat = (cmd) => {
+        document.execCommand(cmd, false, null);
+
+
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            range.collapse(false); // move cursor to end
+        }
+
+
+        editorRef.current?.focus();
+    };
+
+
+
+    const handleLink = () => {
+        const url = prompt('Enter a URL:');
+        if (url) {
+            document.execCommand('createLink', false, url);
+
+            const selection = window.getSelection();
+            if (selection && selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                range.collapse(false);
+            }
+
+            editorRef.current?.focus();
         }
     };
 
-    const insertImage = () => {
-        fileInputRef.current.click();
+
+    const insertMedia = (file, type) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const tag = type === 'image'
+                ? `<img src="${reader.result}" alt="Uploaded" style="max-width: 100%;height:233px"/>`
+                : `<video controls style="max-width: 100%;"><source src="${reader.result}"></video>`;
+            editorRef.current.focus();
+            document.execCommand('insertHTML', false, tag);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        if (file && /^image\//.test(file.type)) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const quill = quillRef.current?.getEditor();
-                const range = quill?.getSelection(true);
-                quill.insertEmbed(range.index, 'image', reader.result);
-            };
-            reader.readAsDataURL(file);
+        if (file && file.type.startsWith("image/")) {
+            insertMedia(file, 'image');
         }
-    }
+    };
+
+    const handleVideoChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith("video/")) {
+            insertMedia(file, 'video');
+        }
+    };
+    useEffect(() => {
+        if (editorRef.current) {
+            editorRef.current.innerHTML = '';
+        }
+    }, []);
     return (
         <div className='meeting_history_container'>
             <Box sx={style.meetinghistory_content}>
@@ -117,40 +167,58 @@ export default function MeetingHistory() {
                                 <CloseIcon />
                             </IconButton>
                         </Box>
+                        <Box>
+                            <Box sx={{ border: '1px solid #ccc', p: 1, display: 'flex', gap: 1 }}>
+                                <IconButton onClick={() => handleFormat('bold')}>
+                                    <FormatBoldIcon />
+                                </IconButton>
+                                <IconButton onClick={() => handleFormat('italic')}>
+                                    <FormatItalicIcon />
+                                </IconButton>
+                                <IconButton onClick={() => handleFormat('underline')}>
+                                    <FormatUnderlinedIcon />
+                                </IconButton>
+                                <IconButton onClick={() => handleFormat('strikeThrough')}>
+                                    <StrikethroughSIcon />
+                                </IconButton>
+                                <IconButton onClick={handleLink}>
+                                    <InsertLinkIcon />
+                                </IconButton>
+                                <IconButton onClick={() => handleFormat('insertUnorderedList')}>
+                                    <FormatListBulletedIcon />
+                                </IconButton>
+                                <IconButton onClick={() => handleFormat('insertOrderedList')}>
+                                    <FormatListNumberedIcon />
+                                </IconButton>
+                                <IconButton onClick={() => imageInputRef.current.click()}>
+                                    <ImageIcon />
+                                </IconButton>
+                                <IconButton onClick={() => videoInputRef.current.click()}>
+                                    <VideocamIcon />
+                                </IconButton>
+                            </Box>
+                            <Box
+                                ref={editorRef}
+                                contentEditable
+                                onInput={handleInput}
+                                className='meetinghistory_editorbox'
+                            />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                ref={imageInputRef}
+                                onChange={handleImageChange}
+                                style={{ display: 'none' }}
+                            />
+                            <input
+                                type="file"
+                                accept="video/*"
+                                ref={videoInputRef}
+                                onChange={handleVideoChange}
+                                style={{ display: 'none' }}
+                            />
+                        </Box>
 
-
-
-                        <div id="quill-toolbar">
-                            <span className="ql-formats">
-                                <button className="ql-bold" />
-                                <button className="ql-italic" />
-                                <button className="ql-underline" />
-                                <button className="ql-strike" />
-                                <button className="ql-image" />
-                            </span>
-                        </div>
-
-                        {/* 👉 Hidden File Input */}
-                        <input
-                            type="file"
-                            accept="image/*"
-                            ref={fileInputRef}
-                            style={{ display: 'none' }}
-                            onChange={handleImageChange}
-                        />
-
-                        <ReactQuill
-                            ref={quillRef}
-                            theme="snow"
-                            value={note}
-                            onChange={setNote}
-                            modules={{
-                                toolbar: {
-                                    container: '#quill-toolbar',
-                                },
-                            }}
-                            style={{ height: '300px', marginBottom: '1rem' }}
-                        />
 
                         <Box sx={style.meetinghistory_editfooter}>
                             <CustomButton variant='outlined' sx={{ width: '100px' }} onClick={handleClose}>Cancel</CustomButton>
@@ -185,7 +253,7 @@ export default function MeetingHistory() {
 
                             {/* DURATION */}
                             <Box sx={style.meetingheader_date}>
-                                <AccessTimeIcon sx={{ ...style.meetingheader_date, minWidth: 140 }} />
+                                <AccessTimeIcon sx={{ color: '#1976d2', mr: 1 }} />
                                 <Box>
                                     <Typography variant="caption" color="textSecondary">DURATION</Typography>
                                     <Typography variant="body2">1 hour 15 min</Typography>
@@ -401,7 +469,7 @@ export default function MeetingHistory() {
                                     onToggle={(checked) => handleCheckboxChange('timestamp', checked)} />
                                 <Typography variant="body2">Attach to timestamp</Typography>
                                 <Box ml="auto">
-                                    <CustomButton variant='contained' endIcon={<SendIcon />}>Send</CustomButton>
+                                    <CustomButton variant='contained' icon={<SendIcon />}>Send</CustomButton>
 
                                 </Box>
 
@@ -450,18 +518,17 @@ export default function MeetingHistory() {
                             ))}
                         </List>
                     </Paper>
-                    <Box sx={style.meetinghistory_options}>
+                    <Paper elevation={2} sx={style.meetinghistory_paper}>
+                        <Box sx={style.meetinghistory_options}>
 
-                        <Box display="flex" alignItems="center" gap={1}>
-                            <SettingsIcon color="primary" />
-                            <Typography variant="subtitle1" fontWeight="bold">Options</Typography>
+                            <Box display="flex" alignItems="center" gap={1}>
+                                <SettingsIcon color="primary" />
+                                <Typography variant="subtitle1" fontWeight="bold">Options</Typography>
+                            </Box>
+
+
                         </Box>
-                        <IconButton size="small" onClick={handleToggle}>
-                            <MoreVertIcon />
-                        </IconButton>
 
-                    </Box>
-                    {showOptions && (
                         <Box sx={{ mt: 2 }}>
                             <Typography variant="caption" fontWeight="bold" color="text.secondary"> Restrict Access (by role/email)</Typography>
                             <TextfieldComponent type='text' placeholder="Enter roles or emails" />
@@ -484,7 +551,7 @@ export default function MeetingHistory() {
 
 
                         </Box>
-                    )}
+                    </Paper>
                     <Box>
 
 

@@ -542,7 +542,8 @@ const style = {
   meetinghistory_editfooter:{
    display: 'flex', 
    justifyContent: 'flex-end', 
-   gap: 2 
+   gap: 2,
+   marginTop:'15px',
   }
 
 }

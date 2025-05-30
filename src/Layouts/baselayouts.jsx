@@ -78,6 +78,7 @@ const AppRoutes = () => {
                 <Route path='/availability' element={<Availability />} />
                 <Route path='/analytic' element={<Analytic />} />
                 <Route path='/meetinghistory' element={<MeetingHistory />} />
+                
             </Routes>
         </>
     );
