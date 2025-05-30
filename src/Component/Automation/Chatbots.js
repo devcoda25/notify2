@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import { Modal, ModalBody } from 'react-bootstrap';
-import Catalog from '../Assets/img/Catalog.jpeg';
-import education from '../Assets/img/education.jpeg';
-import general from '../Assets/img/general.jpeg';
-import hospital from '../Assets/img/hospital.jpeg';
-import Ecommerce from '../Assets/img/Ecommerce.jpeg';
-import Realestate from '../Assets/img/Realestate.jpeg';
-import Restaurant from '../Assets/img/Restaurant.jpeg';
-import Finance from '../Assets/img/Finance.jpeg';
+// import Catalog from '../Assets/img/Catalog.jpeg';
+// import education from '../Assets/img/education.jpeg';
+// import general from '../Assets/img/general.jpeg';
+// import hospital from '../Assets/img/hospital.jpeg';
+// import Ecommerce from '../Assets/img/Ecommerce.jpeg';
+// import Realestate from '../Assets/img/Realestate.jpeg';
+// import Restaurant from '../Assets/img/Restaurant.jpeg';
+// import Finance from '../Assets/img/Finance.jpeg';
 import DeleteModal from '../DeleteModal';
+import CopyandAddModal from './PopupModal/Chatbot/CopyandAddModal';
+import FlowTemplates from './PopupModal/Chatbot/FlowTemplates';
+import NotificationModal from './PopupModal/Chatbot/NotificationModal';
+import FallbackMessageModal from './PopupModal/Chatbot/FallbackMessageModal';
+import ChatbotTimerModal from './PopupModal/Chatbot/ChatbotTimerModal';
+
 import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Autocomplete, TextField } from '@mui/material';
 const initialTableData = [
     {
@@ -79,21 +85,21 @@ const initialTableData = [
     },
 
 ]
-const initialTemplateData = [
-    { id: 1, img: Catalog, title: 'Catalog', subTitle: 'Catalog checkout flow template' },
-    { id: 2, img:Restaurant,title: 'Restaurant', subTitle: 'Restaurant template' },
-    { id: 3, img:Realestate,title: 'Real Estate', subTitle: 'Real Estate template' },
-    { id: 4, img:hospital,title: 'Hospital Booking', subTitle: 'Hospital Booking template' },
-    { id: 5,img:hospital, title: 'Doctor Appointment', subTitle: 'Doctor Appointment template' },
-    { id: 6,img:general, title: 'General Appointment Booking', subTitle: "General Appointment Booking template" },
-    { id: 7,img:general, title: 'Feedback For Using WATI', subTitle: 'Feedback For Using WATI template' },
-    { id: 8, img:Finance,title: 'New Bank Account', subTitle: 'New Bank Account template' },
-    { id: 9, img:Finance,title: 'Insurance', subTitle: 'Insurance template' },
-    { id: 10,img:education, title: 'Kids Booking Class', subTitle: 'Kids Booking Class template' },
-    { id: 11,img:education, title: 'Education', subTitle: 'Education template' },
-    { id: 12, img:Ecommerce,title: 'Ecommerce', subTitle: 'Ecommerce template' }
+// const initialTemplateData = [
+//     { id: 1, img: Catalog, title: 'Catalog', subTitle: 'Catalog checkout flow template' },
+//     { id: 2, img: Restaurant, title: 'Restaurant', subTitle: 'Restaurant template' },
+//     { id: 3, img: Realestate, title: 'Real Estate', subTitle: 'Real Estate template' },
+//     { id: 4, img: hospital, title: 'Hospital Booking', subTitle: 'Hospital Booking template' },
+//     { id: 5, img: hospital, title: 'Doctor Appointment', subTitle: 'Doctor Appointment template' },
+//     { id: 6, img: general, title: 'General Appointment Booking', subTitle: "General Appointment Booking template" },
+//     { id: 7, img: general, title: 'Feedback For Using WATI', subTitle: 'Feedback For Using WATI template' },
+//     { id: 8, img: Finance, title: 'New Bank Account', subTitle: 'New Bank Account template' },
+//     { id: 9, img: Finance, title: 'Insurance', subTitle: 'Insurance template' },
+//     { id: 10, img: education, title: 'Kids Booking Class', subTitle: 'Kids Booking Class template' },
+//     { id: 11, img: education, title: 'Education', subTitle: 'Education template' },
+//     { id: 12, img: Ecommerce, title: 'Ecommerce', subTitle: 'Ecommerce template' }
 
-]
+// ]
 // const DeleteModal = ({ show, onClose, onConfirm, msg }) => {
 //     return (
 //       <>
@@ -111,320 +117,322 @@ const initialTemplateData = [
 //       </>
 //     )
 //   }
-  const CopyModal = ({ show,onClose,onSave}) => {
-    const [chatbotName, setChatbotName] = useState('');
+//   const CopyModal = ({ show,onClose,onSave}) => {
+//     const [chatbotName, setChatbotName] = useState('');
 
-  const handleInputChange = (event) => {
-    setChatbotName(event.target.value);
-  };
-  const isDisabled = !chatbotName;
-    return (
-      <>
-        <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">
-          <div className='keyword__delete__content copymodal_content'>
-            <Modal.Header className='keyword__delete__header' closeButton>
-              <Modal.Title >Add New Chatbot</Modal.Title>
-            </Modal.Header>
-            <ModalBody className='keyword__body__deletecontent'>
-              <div class="delete__confirm__msg">Chatbot Name</div>
-              <input type="text" placeholder="Chatbot Name" className='edit__text__input copymodal_text_input'
-              value={chatbotName}
-              onChange={handleInputChange} />
-              <div class="keywordfooter__delete"><button target="_self" className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`} disabled={isDisabled} onClick={onSave} >Copy</button></div>
-            </ModalBody>
-          </div>
-        </Modal>
-      </>
-    )
-  }
-  const AddChatbotModal = ({ show,onClose,onSave}) => {
-    const [chatbotName, setChatbotName] = useState('');
+//   const handleInputChange = (event) => {
+//     setChatbotName(event.target.value);
+//   };
+//   const isDisabled = !chatbotName;
+//     return (
+//       <>
+//         <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">
+//           <div className='keyword__delete__content copymodal_content'>
+//             <Modal.Header className='keyword__delete__header' closeButton>
+//               <Modal.Title >Add New Chatbot</Modal.Title>
+//             </Modal.Header>
+//             <ModalBody className='keyword__body__deletecontent'>
+//               <div class="delete__confirm__msg">Chatbot Name</div>
+//               <input type="text" placeholder="Chatbot Name" className='edit__text__input copymodal_text_input'
+//               value={chatbotName}
+//               onChange={handleInputChange} />
+//               <div class="keywordfooter__delete"><button target="_self" className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`} disabled={isDisabled} onClick={onSave} >Copy</button></div>
+//             </ModalBody>
+//           </div>
+//         </Modal>
+//       </>
+//     )
+//   }
+//   const AddChatbotModal = ({ show,onClose,onSave}) => {
+//     const [chatbotName, setChatbotName] = useState('');
 
-  const handleInputChange = (event) => {
-    setChatbotName(event.target.value);
-  };
-  const handleSave=()=>{
-    onSave(chatbotName);
-    setChatbotName('')
-  }
-  const isDisabled = !chatbotName;
-    return (
-      <>
-        <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">
-          <div className='keyword__delete__content copymodal_content'>
-            <Modal.Header className='keyword__delete__header' closeButton>
-              <Modal.Title >Add New Chatbot</Modal.Title>
-            </Modal.Header>
-            <ModalBody className='keyword__body__deletecontent'>
-              <div class="delete__confirm__msg">Chatbot Name</div>
-              <input type="text" placeholder="Chatbot Name" className='edit__text__input copymodal_text_input'
-              value={chatbotName}
-              onChange={handleInputChange} />
-              <div class="keywordfooter__delete"><button target="_self" className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`} disabled={isDisabled} onClick={handleSave} >Add</button></div>
-            </ModalBody>
-          </div>
-        </Modal>
-      </>
-    )
-  }
-const FlowTemplates = ({ handleNotificationModal,handleEditChatbotbutton,onSave }) => {
-    const options = ['All', 'Catalog', 'Restaurant', 'Real Estate', 'Hospital & Doctor', 'General', 'Finance', 'Education', 'Ecommerce']
-    const [content, setContent] = useState('All');
-    const [showAddChatbotModal,setShowAddChatbotModal]=useState(false);
-    const categoryMapping = {
-        'Hospital & Doctor': ['Hospital Booking', 'Doctor Appointment'],
-        'General': ['General Appointment Booking', 'Feedback For Using WATI'],
-        'Finance': ['New Bank Account', 'Insurance'],
-        'Education': ['Kids Booking Class', 'Education']
-    }
-    const filteredTemplates = content === 'All' ? initialTemplateData : content in categoryMapping ?
-        initialTemplateData.filter(template => categoryMapping[content].includes(template.title)) :
-        initialTemplateData.filter(template => template.title === content);
+//   const handleInputChange = (event) => {
+//     setChatbotName(event.target.value);
+//   };
+//   const handleSave=()=>{
+//     onSave(chatbotName);
+//     setChatbotName('')
+//   }
+//   const isDisabled = !chatbotName;
+//     return (
+//       <>
+//         <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">
+//           <div className='keyword__delete__content copymodal_content'>
+//             <Modal.Header className='keyword__delete__header' closeButton>
+//               <Modal.Title >Add New Chatbot</Modal.Title>
+//             </Modal.Header>
+//             <ModalBody className='keyword__body__deletecontent'>
+//               <div class="delete__confirm__msg">Chatbot Name</div>
+//               <input type="text" placeholder="Chatbot Name" className='edit__text__input copymodal_text_input'
+//               value={chatbotName}
+//               onChange={handleInputChange} />
+//               <div class="keywordfooter__delete"><button target="_self" className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`} disabled={isDisabled} onClick={handleSave} >Add</button></div>
+//             </ModalBody>
+//           </div>
+//         </Modal>
+//       </>
+//     )
+//   }
+// const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSave }) => {
+//     const options = ['All', 'Catalog', 'Restaurant', 'Real Estate', 'Hospital & Doctor', 'General', 'Finance', 'Education', 'Ecommerce']
+//     const [content, setContent] = useState('All');
+//     const [showAddChatbotModal, setShowAddChatbotModal] = useState(false);
+//     const categoryMapping = {
+//         'Hospital & Doctor': ['Hospital Booking', 'Doctor Appointment'],
+//         'General': ['General Appointment Booking', 'Feedback For Using WATI'],
+//         'Finance': ['New Bank Account', 'Insurance'],
+//         'Education': ['Kids Booking Class', 'Education']
+//     }
+//     const filteredTemplates = content === 'All' ? initialTemplateData : content in categoryMapping ?
+//         initialTemplateData.filter(template => categoryMapping[content].includes(template.title)) :
+//         initialTemplateData.filter(template => template.title === content);
 
-    const filteredOptions = content === 'All' ? options : options.filter(option => option !== content)
-   const handleShowModal=()=>{
-    setShowAddChatbotModal(true);
-   }
-   const handleCloseChatbotModal=()=>{
-    setShowAddChatbotModal(false);
-   }
+//     const filteredOptions = content === 'All' ? options : options.filter(option => option !== content)
+//     const handleShowModal = () => {
+//         setShowAddChatbotModal(true);
+//     }
+//     const handleCloseChatbotModal = () => {
+//         setShowAddChatbotModal(false);
+//     }
 
-const handleSave = (chatbotName) => {
-    handleCloseChatbotModal(); 
-    handleEditChatbotbutton(); 
-    onSave(chatbotName); 
-  };
-    return (
-        <>
-            <div className='chatbots_template_container'>
-                <div className='template__header'>
-                    <div className='template_notice'>Choose one of our templates or build a bot from scratch</div>
-                    <div className='template__header_category'>
-                        <Autocomplete
-                            options={filteredOptions}
-                            value={content}
-                            disableClearable
-                            onChange={(event, newValue) => setContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="All"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
+//     const handleSave = (chatbotName) => {
+//         handleCloseChatbotModal();
+//         handleEditChatbotbutton();
+//         onSave(chatbotName);
+//     };
+//     return (
+//         <>
+//             <div className='chatbots_template_container'>
+//                 <div className='template__header'>
+//                     <div className='template_notice'>Choose one of our templates or build a bot from scratch</div>
+//                     <div className='template__header_category'>
+//                         <Autocomplete
+//                             options={filteredOptions}
+//                             value={content}
+//                             disableClearable
+//                             onChange={(event, newValue) => setContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="All"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
 
-                                />
-                            )}
+//                                 />
+//                             )}
 
-                        />
-                    </div>
-                </div>
-                <div className='grid__template__main__container'>
-                    <div className='grid__template__container'>
-                        <div className='grid_template_card' onClick={handleShowModal}>
-                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.0595 6.68788C21.9668 5.77071 26.0332 5.77071 29.9405 6.68788C35.2617 7.93695 39.483 11.929 41.0567 17.1153H6.94328C8.517 11.929 12.7383 7.93695 18.0595 6.68788Z" fill="#23A455"></path><path d="M6.40906 19.4144C5.78284 22.9062 5.87562 26.4942 6.6874 29.9574C8.01099 35.604 12.4168 40.013 18.0595 41.3375C19.6378 41.708 21.242 41.9288 22.8513 42V19.4144H6.40906Z" fill="#23A455"></path><path d="M25.1488 42C26.758 41.9288 28.3622 41.708 29.9405 41.3375C35.5832 40.013 39.989 35.604 41.3126 29.9574C42.1244 26.4942 42.2172 22.9062 41.5909 19.4144H25.1488V42Z" fill="#23A455"></path></svg>
-                            Start From Scratch
-                        </div>
-                    </div>
-                    {
-                        filteredTemplates.map((templatacard, index) => (
-                            <div key={index} className='grid__main_flowtemplate'>
-                                <div>
-                                    <div className='template_image'><img className='template_cardimg' src={templatacard.img} /></div>
-                                    <h3 className='template__title'>{templatacard.title}</h3>
-                                    <p>{templatacard.subTitle}</p>
-                                </div>
-                                <div className='template__button'>
-                                    <button className='btn btn-success template_usebtn' onClick={handleNotificationModal}>Use this</button>
-                                </div>
-                            </div>
-                        ))
-                    }
+//                         />
+//                     </div>
+//                 </div>
+//                 <div className='grid__template__main__container'>
+//                     <div className='grid__template__container'>
+//                         <div className='grid_template_card' onClick={handleShowModal}>
+//                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.0595 6.68788C21.9668 5.77071 26.0332 5.77071 29.9405 6.68788C35.2617 7.93695 39.483 11.929 41.0567 17.1153H6.94328C8.517 11.929 12.7383 7.93695 18.0595 6.68788Z" fill="#23A455"></path><path d="M6.40906 19.4144C5.78284 22.9062 5.87562 26.4942 6.6874 29.9574C8.01099 35.604 12.4168 40.013 18.0595 41.3375C19.6378 41.708 21.242 41.9288 22.8513 42V19.4144H6.40906Z" fill="#23A455"></path><path d="M25.1488 42C26.758 41.9288 28.3622 41.708 29.9405 41.3375C35.5832 40.013 39.989 35.604 41.3126 29.9574C42.1244 26.4942 42.2172 22.9062 41.5909 19.4144H25.1488V42Z" fill="#23A455"></path></svg>
+//                             Start From Scratch
+//                         </div>
+//                     </div>
+//                     {
+//                         filteredTemplates.map((templatacard, index) => (
+//                             <div key={index} className='grid__main_flowtemplate'>
+//                                 <div>
+//                                     <div className='template_image'><img className='template_cardimg' src={templatacard.img} /></div>
+//                                     <h3 className='template__title'>{templatacard.title}</h3>
+//                                     <p>{templatacard.subTitle}</p>
+//                                 </div>
+//                                 <div className='template__button'>
+//                                     <button className='btn btn-success template_usebtn' onClick={handleNotificationModal}>Use this</button>
+//                                 </div>
+//                             </div>
+//                         ))
+//                     }
 
-                </div>
-            </div>
-         <AddChatbotModal show={showAddChatbotModal} onClose={handleCloseChatbotModal} onSave={handleSave} />
-        </>
-    )
-}
-const NotificationModal = ({ show, onClose, msg, value }) => {
-    return (
-        <>
-            <Modal show={show} onHide={onClose} dialogClassName="chatbot__notification__modal">
-                <div className='chatbot__notification__content'>
-                    <Modal.Header className='chatbot__notification__header' closeButton>
-                        <Modal.Title >Notification</Modal.Title>
-                    </Modal.Header>
-                    <ModalBody className='chatbot__body__notificationcontent'>
+//                 </div>
+//             </div>
+//             <CopyandAddModal show={showAddChatbotModal} onClose={handleCloseChatbotModal} onSave={handleSave} placeholder="Chatbot Name"
+//                 buttonLabel="Add" />
+//         </>
+//     )
+// }
 
-                        <div class="notification__msg">Chatbot limit :<b>{value}</b><div>{msg}</div></div>
-                        <div class="chatbotfoooter__delete"><button target="_self" className='btn btn-success' onClick={onClose} >Cancel</button></div>
-                    </ModalBody>
-                </div>
-            </Modal>
-        </>
-    )
-}
-const FallbackMessageModal = ({ show, onClose, onSave }) => {
-     const options=[1,2,3];
-    const [value,setValue]=useState(2);
-    const [isChecked,setIsChecked]=useState(false);
-    const filteredOptions = options.filter(option => option !== value)
-   
-    return (
+// const NotificationModal = ({ show, onClose, msg, value }) => {
+//     return (
+//         <>
+//             <Modal show={show} onHide={onClose} dialogClassName="chatbot__notification__modal">
+//                 <div className='chatbot__notification__content'>
+//                     <Modal.Header className='chatbot__notification__header' closeButton>
+//                         <Modal.Title >Notification</Modal.Title>
+//                     </Modal.Header>
+//                     <ModalBody className='chatbot__body__notificationcontent'>
 
-        <>
-            <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
-                <div className='edit_text_material_content'>
-                    <Modal.Header className='edit_text_material_header' closeButton >
-                        <Modal.Title className='edit_text_style' >Fallback Message</Modal.Title>
-                    </Modal.Header>
-                    <ModalBody className='edittext__body__content'>
-                        <div className='fallback_checkbox__container'>
-                        <input type='checkbox' className='fallbackmsg_checkbox' checked={isChecked} onChange={()=>setIsChecked(!isChecked)}/><label className='checkboxlabel'>Enable fallback message</label>
-                        </div>
-                        {
-                            isChecked && 
-                            <>
-                             <div className='fallback_msg_container'>
-                                <label className='fallback_message'>Set fallback message if no keyword is matched in the chatbot:</label>
-                                <span className="text_field__counter">94/1024</span>
-                                <textarea className='edit__text__textarea fallbackmsg__textarea'>Sorry, we don't quite understand what you mean, please select or input from the options below.</textarea>
-                            </div>
-                            <div className='fallback_time_container'>
-                                <div>
-                            <span className='fallback_timemsg'>Fallback message will be triggered up to</span>
-                            <div className='fallback__dropdown'>
-                            <Autocomplete
-                            options={filteredOptions}
-                            value={value}
-                            disableClearable
-                            onChange={(event, newValue) => setValue(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder=""
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
+//                         <div class="notification__msg">Chatbot limit :<b>{value}</b><div>{msg}</div></div>
+//                         <div class="chatbotfoooter__delete"><button target="_self" className='btn btn-success' onClick={onClose} >Cancel</button></div>
+//                     </ModalBody>
+//                 </div>
+//             </Modal>
+//         </>
+//     )
+// }
+// const FallbackMessageModal = ({ show, onClose, onSave }) => {
+//     const options = [1, 2, 3];
+//     const [value, setValue] = useState(2);
+//     const [isChecked, setIsChecked] = useState(false);
+//     const filteredOptions = options.filter(option => option !== value)
 
-                                />
-                            )}
+//     return (
 
-                        />
-                            </div>
-                            <span className='fallback_timemsg'>times before chatbot ends.</span>
-                            </div></div>
-                            </>
-                        }
-                           
-                       
-                        <div className='edit__text__save'>
-                            <button className='btn btn-success' onClick={onSave} >Save</button>
-                        </div>
-                    </ModalBody>
-                </div>
-            </Modal>
-        </>
+//         <>
+//             <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
+//                 <div className='edit_text_material_content'>
+//                     <Modal.Header className='edit_text_material_header' closeButton >
+//                         <Modal.Title className='edit_text_style' >Fallback Message</Modal.Title>
+//                     </Modal.Header>
+//                     <ModalBody className='edittext__body__content'>
+//                         <div className='fallback_checkbox__container'>
+//                             <input type='checkbox' className='fallbackmsg_checkbox' checked={isChecked} onChange={() => setIsChecked(!isChecked)} /><label className='checkboxlabel'>Enable fallback message</label>
+//                         </div>
+//                         {
+//                             isChecked &&
+//                             <>
+//                                 <div className='fallback_msg_container'>
+//                                     <label className='fallback_message'>Set fallback message if no keyword is matched in the chatbot:</label>
+//                                     <span className="text_field__counter">94/1024</span>
+//                                     <textarea className='edit__text__textarea fallbackmsg__textarea'>Sorry, we don't quite understand what you mean, please select or input from the options below.</textarea>
+//                                 </div>
+//                                 <div className='fallback_time_container'>
+//                                     <div>
+//                                         <span className='fallback_timemsg'>Fallback message will be triggered up to</span>
+//                                         <div className='fallback__dropdown'>
+//                                             <Autocomplete
+//                                                 options={filteredOptions}
+//                                                 value={value}
+//                                                 disableClearable
+//                                                 onChange={(event, newValue) => setValue(newValue)}
+//                                                 renderInput={(params) => (
+//                                                     <TextField
+//                                                         {...params}
+//                                                         variant="standard"
+//                                                         placeholder=""
+//                                                         InputProps={{
+//                                                             ...params.InputProps,
+//                                                             disableUnderline: true,
+//                                                             sx: {
+//                                                                 border: '1px solid rgb(232, 234, 242)',
+//                                                                 borderRadius: '4px',
+//                                                                 height: '3rem',
+//                                                                 paddingLeft: '10px',
+//                                                                 backgroundColor: 'rgb(245, 246, 250)',
+//                                                                 '&:hover': {
+//                                                                     border: '1px solid green',
+//                                                                 },
+//                                                                 '&.Mui-focused': {
+//                                                                     border: '1px solid green',
+//                                                                     backgroundColor: 'white',
+//                                                                     outline: 'none',
+//                                                                 },
+//                                                             },
+//                                                         }}
 
-    )
-}
-const ChatbotTimerModal = ({ show, onClose, onSave }) => {
-   const [isChecked,setIsChecked]=useState(false);
-  
-   return (
+//                                                     />
+//                                                 )}
 
-       <>
-           <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
-               <div className='edit_text_material_content'>
-                   <Modal.Header className='edit_text_material_header' closeButton >
-                       <Modal.Title className='edit_text_style' >Chatbot Timer Settings</Modal.Title>
-                   </Modal.Header>
-                   <ModalBody className='edittext__body__content'>
-                   <div className='chatbot_time_container'>
-                               <div>
-                           <span className='chatbot_timemsg'>If user does not reply more than</span>
-                           <input type='text' value='10' className='Timer__input'/>
-                           <span className='chatbot_timemsg'>minutes, the chatbot will end automatically.</span>
-                           </div>
-                           </div>
-                       <div className='chatbot_checkbox__container'>
-                       <input type='checkbox' className='chatbotmsg_checkbox' checked={isChecked} onChange={()=>setIsChecked(!isChecked)}/><label className='checkboxlabel'>Enable fallback message</label>
-                       </div>
-                       {
-                           isChecked && 
-                           <>
-                            <div className='chatbot_msg_container'>
-                               <label className='chatbot_message'>Exit chatbot notification:</label>
-                               <span className="text_field__counter">1/1024</span>
-                               <textarea className='edit__text__textarea chatbotmsg__textarea'>2</textarea>
-                           </div>
-                           <div className='chatbot_time_container'>
-                               <div>
-                           <span className='chatbot_timemsg'>This exit chatbot notification will show</span>
-                          <input type='text' value='5' className='Timer__input'/>
-                           <span className='chatbot_timemsg'>minutes before the chatbot ends.</span>
-                           </div>
-                           </div>
-                           </>
-                       }
-                          
-                      
-                       <div className='edit__text__save'>
-                           <button className='btn btn-success' onClick={onSave} >Save</button>
-                       </div>
-                   </ModalBody>
-               </div>
-           </Modal>
-       </>
+//                                             />
+//                                         </div>
+//                                         <span className='fallback_timemsg'>times before chatbot ends.</span>
+//                                     </div></div>
+//                             </>
+//                         }
 
-   )
-}
-const Chatbots = ({handleEditChatbotbutton,onSave}) => {
+
+//                         <div className='edit__text__save'>
+//                             <button className='btn btn-success' onClick={onSave} >Save</button>
+//                         </div>
+//                     </ModalBody>
+//                 </div>
+//             </Modal>
+//         </>
+
+//     )
+// }
+// const ChatbotTimerModal = ({ show, onClose, onSave }) => {
+//     const [isChecked, setIsChecked] = useState(false);
+
+//     return (
+
+//         <>
+//             <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
+//                 <div className='edit_text_material_content'>
+//                     <Modal.Header className='edit_text_material_header' closeButton >
+//                         <Modal.Title className='edit_text_style' >Chatbot Timer Settings</Modal.Title>
+//                     </Modal.Header>
+//                     <ModalBody className='edittext__body__content'>
+//                         <div className='chatbot_time_container'>
+//                             <div>
+//                                 <span className='chatbot_timemsg'>If user does not reply more than</span>
+//                                 <input type='text' value='10' className='Timer__input' />
+//                                 <span className='chatbot_timemsg'>minutes, the chatbot will end automatically.</span>
+//                             </div>
+//                         </div>
+//                         <div className='chatbot_checkbox__container'>
+//                             <input type='checkbox' className='chatbotmsg_checkbox' checked={isChecked} onChange={() => setIsChecked(!isChecked)} /><label className='checkboxlabel'>Enable fallback message</label>
+//                         </div>
+//                         {
+//                             isChecked &&
+//                             <>
+//                                 <div className='chatbot_msg_container'>
+//                                     <label className='chatbot_message'>Exit chatbot notification:</label>
+//                                     <span className="text_field__counter">1/1024</span>
+//                                     <textarea className='edit__text__textarea chatbotmsg__textarea'>2</textarea>
+//                                 </div>
+//                                 <div className='chatbot_time_container'>
+//                                     <div>
+//                                         <span className='chatbot_timemsg'>This exit chatbot notification will show</span>
+//                                         <input type='text' value='5' className='Timer__input' />
+//                                         <span className='chatbot_timemsg'>minutes before the chatbot ends.</span>
+//                                     </div>
+//                                 </div>
+//                             </>
+//                         }
+
+
+//                         <div className='edit__text__save'>
+//                             <button className='btn btn-success' onClick={onSave} >Save</button>
+//                         </div>
+//                     </ModalBody>
+//                 </div>
+//             </Modal>
+//         </>
+
+//     )
+// }
+const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
     //flow builder --> initial chatbots loading
     const [chatbotData, setChatbotData] = useState(initialTableData);
     const [searchChatbots, setSearchChatbots] = useState('');
     const [page, setPage] = useState(0);
     const [rowsPerPage, SetRowsPerPage] = useState(5);
     const [isOpenFallbackMessage, setIsOpenFallbackMessage] = useState(false);
-    const [isOpenChatbotTimer,setIsOpenChatbotTimer]=useState(false);
+    const [isOpenChatbotTimer, setIsOpenChatbotTimer] = useState(false);
     const [isOpenDeleteModal, setOpenDeleteModal] = useState(false);
     const [rowIndexToDelete, setRowIndexToDelete] = useState(null);
-    const[isOpenCopyModal,setIsOpenCopyModal]=useState(false);
+    const [isOpenCopyModal, setIsOpenCopyModal] = useState(false);
     // flow templates --> add chatbot
     const [isOpenTemplatePage, setIsOpenTemplatePage] = useState(false);
     const [isOpenNotificationModal, setIsOpenNotificationModal] = useState(false);
@@ -470,53 +478,53 @@ const Chatbots = ({handleEditChatbotbutton,onSave}) => {
     const handleCloseFallbackMessage = () => {
         setIsOpenFallbackMessage(false);
     }
-    const handleSaveFallbackMessage=()=>{
+    const handleSaveFallbackMessage = () => {
         setIsOpenFallbackMessage(false);
     }
-    const handleChatbotTimer=()=>{
+    const handleChatbotTimer = () => {
         setIsOpenChatbotTimer(true);
     }
-    const handleCloseChatbotTimer=()=>{
+    const handleCloseChatbotTimer = () => {
         setIsOpenChatbotTimer(false);
     }
-    const handleSaveChatbotTimer=()=>{
+    const handleSaveChatbotTimer = () => {
         setIsOpenChatbotTimer(false);
     }
-    const handleDeleteCloseModal=()=>{
+    const handleDeleteCloseModal = () => {
         setRowIndexToDelete(null);
         setOpenDeleteModal(false);
     }
-    const handleDeleteOpenModal=(index)=>{
+    const handleDeleteOpenModal = (index) => {
         setRowIndexToDelete(index)
         setOpenDeleteModal(true);
     }
-    const handleDeleteConfirm=()=>{
+    const handleDeleteConfirm = () => {
         if (rowIndexToDelete !== null) {
             setChatbotData(prev => prev.filter((_, index) => index !== rowIndexToDelete))
-          }
-          handleDeleteCloseModal();
+        }
+        handleDeleteCloseModal();
     }
-    const handleOpenCopyModal=()=>{
+    const handleOpenCopyModal = () => {
         setIsOpenCopyModal(true);
     }
-    const handleCloseCopy=()=>{
+    const handleCloseCopy = () => {
         setIsOpenCopyModal(false);
     }
-    const handleSaveCopy=()=>{
+    const handleSaveCopy = () => {
         setIsOpenCopyModal(false);
         setIsOpenNotificationModal(true);
     }
     const handleSave = (chatbotName) => {
-        
+
         onSave(chatbotName);
-       
-      };
+
+    };
     return (
         <>
-           {
-        isOpenDeleteModal && (<DeleteModal show={isOpenDeleteModal} onClose={handleDeleteCloseModal}
-          onConfirm={handleDeleteConfirm} msg='Do you want to remove this chatbot?' />)
-      }
+            {
+                isOpenDeleteModal && (<DeleteModal show={isOpenDeleteModal} onClose={handleDeleteCloseModal}
+                    onConfirm={handleDeleteConfirm} msg='Do you want to remove this chatbot?' />)
+            }
             {
                 isOpenNotificationModal &&
                 <NotificationModal show={isOpenNotificationModal} msg='The limit on chatbots is reached and the chatbot cannot be created.' value='20' onClose={handleCloseNotificationModal} />
@@ -525,13 +533,15 @@ const Chatbots = ({handleEditChatbotbutton,onSave}) => {
                 isOpenFallbackMessage &&
                 <FallbackMessageModal show={isOpenFallbackMessage} onClose={handleCloseFallbackMessage} onSave={handleSaveFallbackMessage} />
             }
-             {
+            {
                 isOpenChatbotTimer &&
                 <ChatbotTimerModal show={isOpenChatbotTimer} onClose={handleCloseChatbotTimer} onSave={handleSaveChatbotTimer} />
             }
             {
                 isOpenCopyModal &&
-                <CopyModal show={isOpenCopyModal} onClose={handleCloseCopy} onSave={handleSaveCopy}/>
+                <CopyandAddModal show={isOpenCopyModal} onClose={handleCloseCopy} onSave={handleSaveCopy}
+                    placeholder="Chatbot Name"
+                    buttonLabel="Copy" />
             }
             {
                 isOpenTemplatePage ?

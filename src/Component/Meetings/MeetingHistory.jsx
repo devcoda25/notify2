@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Typography, Modal, Avatar, AvatarGroup, Tabs, Tab, Paper, IconButton, Button, TextField, List, ListItem, ListItemAvatar, ListItemText, Checkbox, Link } from '@mui/material';
+import { Box, Typography, Modal, Avatar, AvatarGroup, Tabs, Tab, Paper, IconButton, Button,List, ListItem, ListItemAvatar, ListItemText,Link } from '@mui/material';
 import style from '../MuiStyles/muiStyle';
 import TextfieldComponent from '../TextfieldComponent';
 import CustomButton from './CustomButton';
 import AutocompleteComponent from '../AutocompleteComponent';
 import CheckboxComponent from '../CheckboxComponent';
-import ReactQuill from 'react-quill';
+// import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {
     FormatQuoteIcon, AccessTimeIcon, CalendarMonthIcon, GroupIcon, LinkIcon, VideocamIcon, HeadphonesIcon, EditIcon, DownloadIcon, SettingsIcon,
-    SendIcon, CloseIcon, ThumbUpIcon, ReplyIcon, CommentIcon, MoreVertIcon, DeleteIcon, PersonIcon, FavoriteIcon, PictureAsPdfIcon, ImageIcon, FolderIcon, DescriptionIcon,
+    SendIcon, CloseIcon, ThumbUpIcon, ReplyIcon, CommentIcon, DeleteIcon, PersonIcon, FavoriteIcon, PictureAsPdfIcon, ImageIcon, FolderIcon, DescriptionIcon,
     NoteAltIcon, FormatBoldIcon, FormatItalicIcon, FormatUnderlinedIcon, StrikethroughSIcon, InsertLinkIcon, FormatListBulletedIcon, FormatListNumberedIcon
 } from '../Icon';
 
@@ -51,7 +51,7 @@ const files = [
 
 export default function MeetingHistory() {
     const [tabIndex, setTabIndex] = useState(0);
-    const [commentText, setCommentText] = useState("");
+    // const [commentText, setCommentText] = useState("");
     const [playbackData, setPlaybackData] = useState(playbackOptions[2]);
     // const [showOptions, setShowOptions] = useState(false);
     const [open, setOpen] = useState(false);
@@ -452,12 +452,8 @@ export default function MeetingHistory() {
 
                         {/* Comment Input */}
                         <Box mt={2} position="relative">
-                            <TextfieldComponent type='text' placeholder="Write a comment..." value={commentText}
-                                onChange={(e) => setCommentText(e.target.value)} customStyle='custom_textfield_box comment_input' />
-
-
-
-                            <Box
+                            <textarea placeholder='"Write a comment...' className='comment_input'></textarea>
+                        <Box
 
                                 display="flex"
                                 alignItems="center"

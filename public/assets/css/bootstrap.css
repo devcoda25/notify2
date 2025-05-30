@@ -14694,20 +14694,16 @@ fieldset:disabled .btn {
 
 .Timer__input {
   margin: 0px 10px;
-  width: 40px;
-  height: 30px;
-  color: rgb(51, 51, 51);
-  appearance: none;
-  display: inline-block;
-  border: 1px solid rgb(227, 227, 227);
-  border-radius: 5px;
-  text-align: center;
+  width: 40px !important;
+  background: white !important;
+  border: 1px solid rgb(227, 227, 227) !important;
+
 }
 
 .Timer__input:focus {
-  box-shadow: 0 1px 0 0 #ff9100;
-  border-bottom: 1px solid #ff9100;
-  outline: none;
+  box-shadow: 0 1px 0 0 #ff9100 !important;
+  border-bottom: 1px solid #ff9100 !important;
+  outline: none !important;
 }
 
 .copymodal_content {
@@ -21565,7 +21561,20 @@ align-items: center;
   max-height: 350px;
   overflow-y: auto;
 }
-
+.meeting_history_container .comment_input{
+  border:1px solid #c9c9cd !important;
+  background: white;
+  border-radius: 8px;
+  min-height:100px;
+  outline:none;
+  width: 100%;
+    padding: 10px;
+    resize: none;
+}
+.meeting_history_container .comment_input:hover{
+  border:1px solid #006bff !important;
+  box-shadow: inset 0 0 0 1px var(--colorStrokeFocus, #007aff);
+}
    
 
 
