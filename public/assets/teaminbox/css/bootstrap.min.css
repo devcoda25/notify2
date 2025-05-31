@@ -11469,7 +11469,10 @@ a.text-dark:hover {
   float: right;
   cursor: pointer;
 }
-
+.teaminbox_container .ticketsgridbox{
+position: fixed;
+width: 48%;
+}
 .teaminbox_container .ticketsgridbox,
 .teaminbox_container .todogridbox {
   border-right: 1px solid rgb(232, 234, 242);
