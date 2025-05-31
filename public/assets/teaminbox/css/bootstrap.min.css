@@ -11477,7 +11477,7 @@ a.text-dark:hover {
 .teaminbox_container .ticketsgridbox .chat_wrapper{
 display: flex;
 flex-direction: column;
-height: calc(100vh - 65px);
+height: calc(100vh - 120px);
 position: relative;
 }
 .ticketsgridbox .chat_wrapper .chat_section{
@@ -11567,11 +11567,21 @@ padding:8px
 
 .teaminbox_container .mytickets_title,
 .teaminbox_container .ticketsgrid_title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   margin-left: 10px;
 }
-
+.teaminbox_container .mytickets_title{
+margin-left:3px !important;
+}
+.teaminbox_container .mynewtickets_header_content{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #e7e7e7;
+  height: 65px;
+}
 .teaminbox_container .ticketsgrid_title {
   margin-left: 0px;
 }
@@ -12191,6 +12201,7 @@ font-size: 12px;
 font-weight: 600;
 box-shadow: #0069d9 0px 1px 2px 0px;
 border-radius: 7px;
+width:112px;
 }
 .teaminbox_container .new_ticket_button:focus{
   box-shadow: #0069d9 0px 1px 2px 0px !important;

@@ -56,7 +56,7 @@ import {
   AutoFixHighIcon,
   ExtensionIcon,
   DashboardIcon,
-  HeadsetIcon, 
+  HeadsetIcon,
   MenuIcon
 } from "../Component/Icon";
 import ToggleSwitch from "../Component/ToggleSwitch";
@@ -274,7 +274,7 @@ const TeamInbox = () => {
     selectedFileName: "",
   });
 
-  const {authUser}= useParams();
+  const { authUser } = useParams();
   const currentAuthUser = authUser || 0;
   const popupRef = useRef(null);
   const textareaRef = useRef(null);
@@ -820,10 +820,9 @@ const TeamInbox = () => {
                 onClick={toggleMyticketsContainer}
               ></div>
 
-              <div className="mytickets_header">
+              {/* <div className="mytickets_header">
                 <span className="ticketview-open" onClick={toggleLeftContainer}>
-                  {/* <i className="fa fa-bars" aria-hidden="true"></i> */}
-                  <MenuIcon />
+                 <MenuIcon />
                 </span>
                 <span className="mytickets_title">My Tickets</span>
                 <div className="ticket-filter-btn ticket-popupbtn">
@@ -833,7 +832,20 @@ const TeamInbox = () => {
                     onClick={handleNewTicketToggle}
                   />
                 </div>
+              </div> */}
+
+              <div className="mynewtickets_header_content">
+                <div><MenuIcon onClick={toggleLeftContainer} />
+                  <span className="mytickets_title">My Tickets</span>
+                </div>
+                <ButtonComponent
+                  label="+ New Ticket"
+                  customBtn="new_ticket_button"
+                  onClick={handleNewTicketToggle}
+                />
               </div>
+
+
               <div className="mytickets_filter_search_container">
                 <ButtonComponent
                   label="+ Add Filter"
@@ -924,55 +936,55 @@ const TeamInbox = () => {
                             <div className="ticketsgrid_right_side">
                               {/* <span className='ticketsgrid_span'><EmailOutlinedIcon /></span>
                                                                 <span className='ticketsgrid_span'><RemoveRedEyeOutlinedIcon sx={{ marginRight: '3px' }} /><span >2</span></span> */}
-                                                                <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
-                                                                <span className='hum-avator'>
-                                                                    <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                                                                </span>
-                                                                <span className='hum-avator'>
-                                                                    <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                                                                </span>
-                                                                <span className='oktext'>ok</span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='chat_wrapper'>
-                                                        <div className='chat_section'>
-                                                            <div className='tickets_timeline'>
-                                                                <div className='user_tickets_timeline'>
-                                                                   <div className="userline_right">
-                                                                        <div className="tickets_userdate">
-                                                                      20/5/2025 
-                                                                        </div>
-                                                                        {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
-                                                                      </div>
-                                                                    <div className='chatmessage receiver_side'>
-                                                                        <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
-                                                                        <div className="userline">
-                                                                            <div className="userline_left">
-                                                                                <div>Allie Harmon</div>
-                                                                                <div className='tickets_usersubname'>To Name Name@gmail.com</div>
-                                                                            </div>
-                                                                         
+                              <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
+                              <span className='hum-avator'>
+                                <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                              </span>
+                              <span className='hum-avator'>
+                                <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                              </span>
+                              <span className='oktext'>ok</span></div>
+                          </div>
+                        </div>
+                        <div className='chat_wrapper'>
+                          <div className='chat_section'>
+                            <div className='tickets_timeline'>
+                              <div className='user_tickets_timeline'>
+                                <div className="userline_right">
+                                  <div className="tickets_userdate">
+                                    20/5/2025
+                                  </div>
+                                  {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                </div>
+                                <div className='chatmessage receiver_side'>
+                                  <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                  <div className="userline">
+                                    <div className="userline_left">
+                                      <div>Allie Harmon</div>
+                                      <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                    </div>
 
-                                                                        </div>
-                                                                        <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
-                                                                        <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                                                        <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                                                         <p className="chat-timestamp-sender">
-                                                                          2:30 PM
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className='chatmessage sender_side'>
-                                                                    <div className="userline">
-                                                                           <div>
-                                                                            <div className='user_information'><span>Allie Harmon</span><img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
-                                                                            <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
-                                                                             <p className="chat-timestamp-receiver">
-                                                                              2:35 PM
-                                                                            </p>
-                                                                            </div>
-                                                                         </div>
-                                                                        {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
-                                                                        {/* <div className="userline">
+
+                                  </div>
+                                  <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+                                  <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                  <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                  <p className="chat-timestamp-sender">
+                                    2:30 PM
+                                  </p>
+                                </div>
+                                <div className='chatmessage sender_side'>
+                                  <div className="userline">
+                                    <div>
+                                      <div className='user_information'><span>Allie Harmon</span><img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
+                                      <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+                                      <p className="chat-timestamp-receiver">
+                                        2:35 PM
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
+                                  {/* <div className="userline">
                                                                             <div className="userline_left">
                                                                                 <div>Allie Harmon</div>
                                                                                 <div className='tickets_usersubname'>To Name Name@gmail.com</div>
@@ -990,13 +1002,13 @@ const TeamInbox = () => {
                             <div className="tickets_timeline">
                               <div className="user_tickets_timeline">
                                 <div className="userline_right">
-                                      <div className="tickets_userdate">
-                                     25/5/2025 
-                                      </div>
-                                      {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
-                                    </div>
+                                  <div className="tickets_userdate">
+                                    25/5/2025
+                                  </div>
+                                  {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                </div>
                                 <div className="chatmessage receiver_side">
-                                     
+
                                   <img
                                     src="/assets/teaminbox/images/resource/user1.jpg"
                                     alt=""
@@ -1009,14 +1021,14 @@ const TeamInbox = () => {
                                         To Name Name@gmail.com
                                       </div>
                                     </div>
-                                   
+
                                   </div>
                                   <div className="timeline_content">
                                     Dolorem similique et aliquid illum dolor.vel
                                     quo magnam.{" "}
                                     <p className="chat-timestamp-sender">
-                                          2:30 PM
-                                        </p>
+                                      2:30 PM
+                                    </p>
                                   </div>
                                 </div>
                                 <div className="chatmessage sender_side">
