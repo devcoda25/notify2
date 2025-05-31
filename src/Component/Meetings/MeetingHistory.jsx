@@ -452,7 +452,7 @@ export default function MeetingHistory() {
 
                         {/* Comment Input */}
                         <Box mt={2} position="relative">
-                            <textarea placeholder='"Write a comment...' className='comment_input'></textarea>
+                            <textarea placeholder='Write a comment...' className='comment_input'></textarea>
                         <Box
 
                                 display="flex"

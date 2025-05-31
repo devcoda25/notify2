@@ -10,11 +10,11 @@ import {
   Paper,
   IconButton,
 } from "@mui/material";
-import { EditIcon, DeleteOutlineIcon } from "./Icon";
+import { EditIcon, DeleteOutlineIcon,ContentCopyIcon } from "./Icon";
 import style from "./MuiStyles/muiStyle";
 
-const TableComponent = ({ columns, data, onEdit, onDelete, showActions = true,customRenderCell, customStyle = {}, actionHeaderLabel = "Edit/Delete", }) => {
-return (
+const TableComponent = ({ columns, data,onCopy, onEdit, onDelete, showActions = true,showCopy=false, customRenderCell, customStyle = {}, actionHeaderLabel = "Edit/Delete", }) => {
+  return (
     <TableContainer
       component={Paper} sx={style.tablecontainer}
     >
@@ -45,15 +45,24 @@ return (
 
             >
               {columns.map((column) => (
-                 <TableCell key={column.id} sx={{...style.tablebodyCell, ...(column.width ? { width: column.width, maxWidth: column.width } : {}),}}>
-                 {customRenderCell
-                   ? customRenderCell(row, column)
-                   : row[column.id]}
-               </TableCell>
-              
+                <TableCell key={column.id} sx={{ ...style.tablebodyCell, ...(column.width ? { width: column.width, maxWidth: column.width } : {}), }}>
+                  {customRenderCell
+                    ? customRenderCell(row, column)
+                    : row[column.id]}
+                </TableCell>
+
               ))}
               {showActions && (
-                <TableCell  sx={{ ...style.tablebodyCell, ...style.tableiconBodyStyle }}>
+
+                <TableCell sx={{ ...style.tablebodyCell, ...style.tableiconBodyStyle }}>
+                  {showCopy && (
+                    <IconButton
+                      onClick={() => onCopy(index)}
+                      sx={[style.tableIconBtn, style.tableeditHover]}
+                    >
+                      <ContentCopyIcon />
+                    </IconButton>
+                  )}
                   <IconButton
                     onClick={() => onEdit(index)}
                     sx={[style.tableIconBtn, style.tableeditHover]} >

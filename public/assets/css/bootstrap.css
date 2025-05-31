@@ -13081,8 +13081,7 @@ fieldset:disabled .btn {
 .footer__upgrade__btn,
 .material__cancel__btn,
 .material__save__btn,
-.contact_attr_add,
-.chatbot_header_btn {
+.contact_attr_add{
   font-size: 13px;
   transition: box-shadow 0.3s;
   min-width: 100px;
@@ -13443,6 +13442,7 @@ fieldset:disabled .btn {
   font-weight: 500;
   font-size: 1rem;
   line-height: 19px;
+  margin-bottom: 10px;
 }
 
 .keywordfooter__delete,
@@ -14413,8 +14413,9 @@ fieldset:disabled .btn {
   width: 287px;
   max-width: 100%;
 }
-
-.chatbots_container .chatbot_header_btn,
+.chatbots_container .chatbot_header_btn{
+ margin-left:15px 
+}
 .sequence_container .sequence_header_btn {
   height: 50px;
   font-size: 15px;
@@ -14445,7 +14446,7 @@ fieldset:disabled .btn {
   font-weight: 600 !important;
 }
 
-.chatbots__table__body .chatbots_name_fieldcontainer {
+.chatbots_name_fieldcontainer {
   display: flex;
   position: relative;
   color: rgb(27, 116, 227);
@@ -14458,7 +14459,7 @@ fieldset:disabled .btn {
 
 }
 
-.chatbots__table__body .chatbots_name_field {
+.chatbots_name_field {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

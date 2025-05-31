@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
 import { Modal, ModalBody } from 'react-bootstrap';
-// import Catalog from '../Assets/img/Catalog.jpeg';
-// import education from '../Assets/img/education.jpeg';
-// import general from '../Assets/img/general.jpeg';
-// import hospital from '../Assets/img/hospital.jpeg';
-// import Ecommerce from '../Assets/img/Ecommerce.jpeg';
-// import Realestate from '../Assets/img/Realestate.jpeg';
-// import Restaurant from '../Assets/img/Restaurant.jpeg';
-// import Finance from '../Assets/img/Finance.jpeg';
 import DeleteModal from '../DeleteModal';
 import CopyandAddModal from './PopupModal/Chatbot/CopyandAddModal';
 import FlowTemplates from './PopupModal/Chatbot/FlowTemplates';
 import NotificationModal from './PopupModal/Chatbot/NotificationModal';
 import FallbackMessageModal from './PopupModal/Chatbot/FallbackMessageModal';
 import ChatbotTimerModal from './PopupModal/Chatbot/ChatbotTimerModal';
+//import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Autocomplete, TextField } from '@mui/material';
+import CustomPagination from '../CustomPagination';
+import SearchboxComponent from '../SearchboxComponent';
+import ButtonComponent from '../ButtonComponent';
+import TableComponent from '../TableComponent';
 
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Autocomplete, TextField } from '@mui/material';
 const initialTableData = [
     {
         id: 1, name: 'catalog', triggered: 0, stepsFinished: 0, finished: 0, modifiedOn: ['created 8 months ago', 'updated 8 months ago']
@@ -423,128 +419,200 @@ const initialTableData = [
 //     )
 // }
 const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
-    //flow builder --> initial chatbots loading
-    const [chatbotData, setChatbotData] = useState(initialTableData);
-    const [searchChatbots, setSearchChatbots] = useState('');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, SetRowsPerPage] = useState(5);
-    const [isOpenFallbackMessage, setIsOpenFallbackMessage] = useState(false);
-    const [isOpenChatbotTimer, setIsOpenChatbotTimer] = useState(false);
-    const [isOpenDeleteModal, setOpenDeleteModal] = useState(false);
-    const [rowIndexToDelete, setRowIndexToDelete] = useState(null);
-    const [isOpenCopyModal, setIsOpenCopyModal] = useState(false);
-    // flow templates --> add chatbot
-    const [isOpenTemplatePage, setIsOpenTemplatePage] = useState(false);
-    const [isOpenNotificationModal, setIsOpenNotificationModal] = useState(false);
+    const [state, setState] = useState({
+        chatbotData: initialTableData,
+        searchChatbots: '',
+        page: 0,
+        rowsPerPage: 5,
+        isOpenFallbackMessage: false,
+        isOpenChatbotTimer: false,
+        isOpenDeleteModal: false,
+        rowIndexToDelete: null,
+        isOpenCopyModal: false,
+        isOpenTemplatePage: false,
+        isOpenNotificationModal: false,
+    });
 
-    //handle pagination and filter
+   const updateState = (updatedValues) => {
+        setState((prev) => ({ ...prev, ...updatedValues }));
+    };
+
+    // handle pagination and filter
     const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    }
-    const handleChangeRowPerPage = (event) => {
-        SetRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    }
-    const handlePreviousPage = () => {
-        if (page > 0) {
-            setPage(prev => prev - 1)
-        }
-    }
-    const handleNextPage = () => {
-        if (page < Math.ceil(chatbotData.length / rowsPerPage) - 1) {
-            setPage(prev => prev + 1)
-        }
-    }
-    const filterChatbots = chatbotData.filter(row =>
-        row.name.toLowerCase().includes(searchChatbots.toLowerCase())
-    );
-    const paginatedChatbotsData = filterChatbots.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+        updateState({ page: newPage });
+    };
 
+    const handleChangeRowPerPage = (event) => {
+        updateState({
+            rowsPerPage: parseInt(event.target.value, 10),
+            page: 0
+        });
+    };
+
+    // const handlePreviousPage = () => {
+    //     if (state.page > 0) {
+    //         updateState({ page: state.page - 1 });
+    //     }
+    // };
+
+    // const handleNextPage = () => {
+    //     if (state.page < Math.ceil(state.chatbotData.length / state.rowsPerPage) - 1) {
+    //         updateState({ page: state.page + 1 });
+    //     }
+    // };
+
+   
+    // const filterChatbots = state.chatbotData.filter(row =>
+    //     row.name.toLowerCase().includes(state.searchChatbots.toLowerCase())
+    // );
+
+    
+
+    // const paginatedChatbotsData = filterChatbots.slice(
+    //     state.page * state.rowsPerPage,
+    //     state.page * state.rowsPerPage + state.rowsPerPage
+    // );
     //addchatbot --> template
     const handleTemplatePage = () => {
-        setIsOpenTemplatePage(true);
-    }
-    const handleNotificationModal = () => {
-        setIsOpenNotificationModal(true);
-        setIsOpenTemplatePage(false);
-    }
-    const handleCloseNotificationModal = () => {
-        setIsOpenNotificationModal(false);
-
-    }
-    const handleFallbackMessage = () => {
-        setIsOpenFallbackMessage(true);
-    }
-    const handleCloseFallbackMessage = () => {
-        setIsOpenFallbackMessage(false);
-    }
-    const handleSaveFallbackMessage = () => {
-        setIsOpenFallbackMessage(false);
-    }
-    const handleChatbotTimer = () => {
-        setIsOpenChatbotTimer(true);
-    }
-    const handleCloseChatbotTimer = () => {
-        setIsOpenChatbotTimer(false);
-    }
-    const handleSaveChatbotTimer = () => {
-        setIsOpenChatbotTimer(false);
-    }
-    const handleDeleteCloseModal = () => {
-        setRowIndexToDelete(null);
-        setOpenDeleteModal(false);
-    }
-    const handleDeleteOpenModal = (index) => {
-        setRowIndexToDelete(index)
-        setOpenDeleteModal(true);
-    }
-    const handleDeleteConfirm = () => {
-        if (rowIndexToDelete !== null) {
-            setChatbotData(prev => prev.filter((_, index) => index !== rowIndexToDelete))
-        }
-        handleDeleteCloseModal();
-    }
-    const handleOpenCopyModal = () => {
-        setIsOpenCopyModal(true);
-    }
-    const handleCloseCopy = () => {
-        setIsOpenCopyModal(false);
-    }
-    const handleSaveCopy = () => {
-        setIsOpenCopyModal(false);
-        setIsOpenNotificationModal(true);
-    }
-    const handleSave = (chatbotName) => {
-
-        onSave(chatbotName);
-
+        updateState({ isOpenTemplatePage: true });
     };
+
+    const handleNotificationModal = () => {
+        updateState({
+            isOpenNotificationModal: true,
+            isOpenTemplatePage: false,
+        });
+    };
+
+    const handleCloseNotificationModal = () => {
+        updateState({ isOpenNotificationModal: false });
+    };
+
+    const handleFallbackMessage = () => {
+        updateState({ isOpenFallbackMessage: true });
+    };
+
+    const handleCloseFallbackMessage = () => {
+        updateState({ isOpenFallbackMessage: false });
+    };
+
+    const handleSaveFallbackMessage = () => {
+        updateState({ isOpenFallbackMessage: false });
+    };
+    const handleChatbotTimer = () => {
+        updateState({ isOpenChatbotTimer: true });
+    };
+
+    const handleCloseChatbotTimer = () => {
+        updateState({ isOpenChatbotTimer: false });
+    };
+
+    const handleSaveChatbotTimer = () => {
+        updateState({ isOpenChatbotTimer: false });
+    };
+
+    const handleDeleteCloseModal = () => {
+        updateState({
+            rowIndexToDelete: null,
+            isOpenDeleteModal: false
+        });
+    };
+
+    const handleDeleteOpenModal = (index) => {
+        updateState({
+            rowIndexToDelete: index,
+            isOpenDeleteModal: true
+        });
+    };
+
+    // const handleDeleteConfirm = () => {
+    //     if (state.rowIndexToDelete !== null) {
+    //         updateState({
+    //             chatbotData: state.chatbotData.filter((_, index) => index !== state.rowIndexToDelete),
+    //         });
+    //     }
+    //     handleDeleteCloseModal();
+    // };
+
+    const handleOpenCopyModal = () => {
+        updateState({ isOpenCopyModal: true });
+    };
+
+    const handleCloseCopy = () => {
+        updateState({ isOpenCopyModal: false });
+    };
+
+    const handleSaveCopy = () => {
+        updateState({
+            isOpenCopyModal: false,
+            isOpenNotificationModal: true
+        });
+    };
+
+    const handleSave = (chatbotName) => {
+        onSave(chatbotName);
+    };
+   
+   const chatbotColumn = [
+        {
+            id: 'name', label: 'Name'
+        },
+        {
+            id: 'triggered', label: 'Triggered'
+        },
+        {
+            id: 'stepsFinished', label: 'Steps Finished'
+        },
+        {
+            id: 'finished', label: 'Finished'
+        },
+        {
+            id: 'modifiedOn', label: 'Modified On'
+        },
+       
+    ]
+    const customRenderCell = (row, column) => {
+        switch (column.id) {
+            case 'name':
+                return (
+                    <div className='chatbots_name_fieldcontainer'>
+                        <div className='chatbots_name_field'>{row.name}</div>
+                    </div>
+                );
+           
+
+            default:
+                return row[column.id];
+        }
+    };
+
     return (
         <>
             {
-                isOpenDeleteModal && (<DeleteModal show={isOpenDeleteModal} onClose={handleDeleteCloseModal}
-                    onConfirm={handleDeleteConfirm} msg='Do you want to remove this chatbot?' />)
+                state.isOpenDeleteModal && (<DeleteModal show={state.isOpenDeleteModal} onClose={handleDeleteCloseModal}
+                    // onConfirm={handleDeleteConfirm} 
+                    msg='Do you want to remove this chatbot?' />)
             }
             {
-                isOpenNotificationModal &&
-                <NotificationModal show={isOpenNotificationModal} msg='The limit on chatbots is reached and the chatbot cannot be created.' value='20' onClose={handleCloseNotificationModal} />
+                state.isOpenNotificationModal &&
+                <NotificationModal show={state.isOpenNotificationModal} msg='The limit on chatbots is reached and the chatbot cannot be created.' value='20' onClose={handleCloseNotificationModal} />
             }
             {
-                isOpenFallbackMessage &&
-                <FallbackMessageModal show={isOpenFallbackMessage} onClose={handleCloseFallbackMessage} onSave={handleSaveFallbackMessage} />
+                state.isOpenFallbackMessage &&
+                <FallbackMessageModal show={state.isOpenFallbackMessage} onClose={handleCloseFallbackMessage} onSave={handleSaveFallbackMessage} />
             }
             {
-                isOpenChatbotTimer &&
-                <ChatbotTimerModal show={isOpenChatbotTimer} onClose={handleCloseChatbotTimer} onSave={handleSaveChatbotTimer} />
+                state.isOpenChatbotTimer &&
+                <ChatbotTimerModal show={state.isOpenChatbotTimer} onClose={handleCloseChatbotTimer} onSave={handleSaveChatbotTimer} />
             }
             {
-                isOpenCopyModal &&
-                <CopyandAddModal show={isOpenCopyModal} onClose={handleCloseCopy} onSave={handleSaveCopy}
+                state.isOpenCopyModal &&
+                <CopyandAddModal show={state.isOpenCopyModal} onClose={handleCloseCopy} onSave={handleSaveCopy}
                     placeholder="Chatbot Name"
                     buttonLabel="Copy" />
             }
             {
-                isOpenTemplatePage ?
+                state.isOpenTemplatePage ?
                     <FlowTemplates handleNotificationModal={handleNotificationModal} handleEditChatbotbutton={handleEditChatbotbutton} onSave={handleSave} /> :
 
                     <div className='chatbots_container'>
@@ -552,21 +620,20 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
                             <h3 class="header__title">Chatbots<p class="header__title_count">(22/20)</p></h3>
                             <div className='header__search'>
                                 <div className='search__input'>
-                                    <div className='input__wrap'>
-                                        <input placeholder="Search..." value={searchChatbots} onChange={(e) => setSearchChatbots(e.target.value)} />
-                                        <div tabindex="0" class="header__search__icon"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-                                    </div>
+                                    <SearchboxComponent value={state.searchChatbots} onChange={(e) => updateState({ searchChatbots: e.target.value })} customSearch='custom__search_box' placeholder='Search...' />
+
                                 </div>
                             </div>
                             <a href="https://www.youtube.com/watch?v=zNCNTsGDbXM" target="_blank" className='note-watch-tutorial'><div class="watch-tutorial-content"><svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="13.5" r="13.5" fill="#269CFE"></circle><path d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z" fill="white"></path></svg><span class="watch-tutorial__text">Watch Tutorial</span></div></a>
-                            <button className='chatbot_header_btn ' onClick={handleFallbackMessage} >Fallback Message</button>
-                            <button className='chatbot_header_btn ' onClick={handleChatbotTimer} >Chatbot Timer</button>
+                            <ButtonComponent label='Fallback Message' onClick={handleFallbackMessage} customBtn='cancel_button_style chatbot_header_btn' />
+                            <ButtonComponent label='Chatbot Timer' onClick={handleChatbotTimer} customBtn='cancel_button_style chatbot_header_btn' />
                             <button className='header_import_btn'><svg className="importicon" viewBox="-0.5 -3.2 16 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 3.828V15H7V3.828L3.757 7.071L2.343 5.657L8 0L13.657 5.657L12.243 7.071L9 3.828ZM0 14H2V18H14V14H16V18C16 19.1 15.1 20 14 20H2C0.9 20 0 19.037 0 18V14Z" fill="#666666"></path></svg></button>
-                            <button className='btn btn-success chatbot_header_btn' onClick={handleTemplatePage} >Add Chatbot</button>
+                            <ButtonComponent label='Add Chatbot' onClick={handleTemplatePage} />
+
                         </div>
                         <div className='chatbots__body__content'>
                             <div className='chatbots__list__table'>
-                                <Table className='chatbots__table'>
+                                {/* <Table className='chatbots__table'>
                                     <TableHead className='chatbotstable__head'>
                                         <TableRow className='chatbotstable__row'>
                                             <TableCell className='chatbotstable__cell alignleft firstcell' style={{ width: '25%' }}>Name</TableCell>
@@ -579,7 +646,7 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
                                     </TableHead>
                                     <TableBody className='chatbots__table__body'>
                                         {
-                                            paginatedChatbotsData.map((row, index) => (
+                                            state.chatbotData.map((row, index) => (
                                                 <TableRow key={index} className='keyword__body__row'>
                                                     <TableCell className='chatbots__body__cell body_first_cell'>
 
@@ -607,63 +674,27 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
                                             ))
                                         }
                                     </TableBody>
-                                </Table>
+                                 </Table> */}
+                                 <TableComponent
+                                columns={chatbotColumn}
+                                data={state.chatbotData}
+                                customRenderCell={customRenderCell}
+                                onDelete={handleDeleteOpenModal}
+                                showCopy={true}
+                                onCopy={handleOpenCopyModal}
+                                actionHeaderLabel="Actions"
+                                />
 
                             </div>
                             <div className='chatbots__pagination'>
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25, 100]}
-                                    component='div'
-                                    count={filterChatbots.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
+                                <CustomPagination
+                                    count={state.chatbotData.length}
+                                    rowsPerPage={state.rowsPerPage}
+                                    page={state.page}
                                     onPageChange={handleChangePage}
                                     onRowsPerPageChange={handleChangeRowPerPage}
-                                    ActionsComponent={() => (
-                                        <div className='tablepagination__action'>
-                                            {/* Previous Button */}
-                                            <div>
-                                                <p onClick={handlePreviousPage} aria-label="Go to previous page" title="Go to previous page">
-                                                    <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1.02698 11.9929L5.26242 16.2426L6.67902 14.8308L4.85766 13.0033L22.9731 13.0012L22.9728 11.0012L4.85309 11.0033L6.6886 9.17398L5.27677 7.75739L1.02698 11.9929Z" fill="currentColor"></path>
-                                                    </svg>
-                                                    <span className="pagination_previousnextcont" style={{ fontSize: '1.2rem', color: 'black' }}>Previous</span>
-                                                </p>
-                                            </div>
-
-                                            {/* Next Button */}
-                                            <div>
-                                                <p onClick={handleNextPage} aria-label="Go to next page" title="Go to next page">
-                                                    <span className="pagination_previousnextcont" >Next</span>
-                                                    <svg stroke="currentColor" fill="none" strokeWidth="0" viewBox="0 0 24 24" className="leftRightArrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M23.0677 11.9929L18.818 7.75739L17.4061 9.17398L19.2415 11.0032L0.932469 11.0012L0.932251 13.0012L19.2369 13.0032L17.4155 14.8308L18.8321 16.2426L23.0677 11.9929Z" fill="currentColor"></path>
-                                                    </svg>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    )}
-                                    sx={{
-                                        '.MuiTablePagination-displayedRows': {
-                                            fontSize: '1.2rem',
-                                            margin: '0px',
-                                            color: 'rgb(51, 51, 51)'
-                                        },
-                                        '.MuiSelect-nativeInput': {
-                                            padding: '0px 1rem',
-                                            height: '3rem',
-                                            margin: '0 0 8px 0px',
-                                        },
-                                        '.MuiInputBase-root': {
-                                            fontSize: '1.2rem',
-                                            paddingRight: '0',
-                                        },
-                                        '.MuiTablePagination-selectLabel': {
-                                            fontSize: '1.2rem',
-                                            margin: '0px',
-                                            color: 'rgb(51, 51, 51)',
-                                        },
-                                    }}
                                 />
+
                             </div>
                         </div>
                     </div>
