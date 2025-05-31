@@ -526,7 +526,14 @@ const TeamInbox = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [state.addFilterPopup]);
-
+  useEffect(() => {
+   
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
   return (
     <>
       <div id="outer-container" className="team_inbox_main-wrapper">
@@ -919,72 +926,73 @@ const TeamInbox = () => {
                   <Grid container spacing={2}>
                     <Grid item xs={9}>
                       <div className="ticketsgridbox">
-                        <div className="ticketsgrid_header">
-                          <div className="ticketsgrid_title">
-                            {ticketData[state.selectedTicket]?.title}
-                          </div>
-
-                          <div className="ticketsgrid_subheader">
-                            <div className="ticketsgrid_left_side">
-                              <PestControlOutlinedIcon
-                                sx={{ color: "#0069d9" }}
-                              />
-                              <span className="ticketsgrid_subtitle">
-                                OPS-102(100669518)| created 11/14/22 12:32 PST
-                              </span>
+                        <div>
+                          <div className="ticketsgrid_header">
+                            <div className="ticketsgrid_title">
+                              {ticketData[state.selectedTicket]?.title}
                             </div>
-                            <div className="ticketsgrid_right_side">
-                              {/* <span className='ticketsgrid_span'><EmailOutlinedIcon /></span>
+
+                            <div className="ticketsgrid_subheader">
+                              <div className="ticketsgrid_left_side">
+                                <PestControlOutlinedIcon
+                                  sx={{ color: "#0069d9" }}
+                                />
+                                <span className="ticketsgrid_subtitle">
+                                  OPS-102(100669518)| created 11/14/22 12:32 PST
+                                </span>
+                              </div>
+                              <div className="ticketsgrid_right_side">
+                                {/* <span className='ticketsgrid_span'><EmailOutlinedIcon /></span>
                                                                 <span className='ticketsgrid_span'><RemoveRedEyeOutlinedIcon sx={{ marginRight: '3px' }} /><span >2</span></span> */}
-                              <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
-                              <span className='hum-avator'>
-                                <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                              </span>
-                              <span className='hum-avator'>
-                                <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
-                              </span>
-                              <span className='oktext'>ok</span></div>
+                                <span className='ticketsgrid_span'><MoreHorizOutlinedIcon /></span>
+                                <span className='hum-avator'>
+                                  <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                                </span>
+                                <span className='hum-avator'>
+                                  <img src="/assets/teaminbox/images/resource/friend-avatar.jpg" alt="" />
+                                </span>
+                                <span className='oktext'>ok</span></div>
+                            </div>
                           </div>
-                        </div>
-                        <div className='chat_wrapper'>
-                          <div className='chat_section'>
-                            <div className='tickets_timeline'>
-                              <div className='user_tickets_timeline'>
-                                <div className="userline_right">
-                                  <div className="tickets_userdate">
-                                    20/5/2025
-                                  </div>
-                                  {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
-                                </div>
-                                <div className='chatmessage receiver_side'>
-                                  <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
-                                  <div className="userline">
-                                    <div className="userline_left">
-                                      <div>Allie Harmon</div>
-                                      <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                          <div className='chat_wrapper'>
+                            <div className='chat_section'>
+                              <div className='tickets_timeline'>
+                                <div className='user_tickets_timeline'>
+                                  <div className="userline_right">
+                                    <div className="tickets_userdate">
+                                      20/5/2025
                                     </div>
+                                    {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                  </div>
+                                  <div className='chatmessage receiver_side'>
+                                    <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' />
+                                    <div className="userline">
+                                      <div className="userline_left">
+                                        <div>Allie Harmon</div>
+                                        <div className='tickets_usersubname'>To Name Name@gmail.com</div>
+                                      </div>
 
 
-                                  </div>
-                                  <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
-                                  <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                  <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
-                                  <p className="chat-timestamp-sender">
-                                    2:30 PM
-                                  </p>
-                                </div>
-                                <div className='chatmessage sender_side'>
-                                  <div className="userline">
-                                    <div>
-                                      <div className='user_information'><span>Allie Harmon</span><img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
-                                      <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
-                                      <p className="chat-timestamp-receiver">
-                                        2:35 PM
-                                      </p>
                                     </div>
+                                    <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+                                    <button className='imagebtn'>Screen_shot.png <div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                    <button className='imagebtn'>Screen_shot.png<div className='imagedate'>16 jun 2022,1:30 PM</div></button>
+                                    <p className="chat-timestamp-sender">
+                                      2:30 PM
+                                    </p>
                                   </div>
-                                  {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
-                                  {/* <div className="userline">
+                                  <div className='chatmessage sender_side'>
+                                    <div className="userline">
+                                      <div>
+                                        <div className='user_information'><span>Allie Harmon</span><img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /></div>
+                                        <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+                                        <p className="chat-timestamp-receiver">
+                                          2:35 PM
+                                        </p>
+                                      </div>
+                                    </div>
+                                    {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
+                                    {/* <div className="userline">
                                                                             <div className="userline_left">
                                                                                 <div>Allie Harmon</div>
                                                                                 <div className='tickets_usersubname'>To Name Name@gmail.com</div>
@@ -994,201 +1002,202 @@ const TeamInbox = () => {
                                                                              
                                                                             </div> */}
 
-                                  {/* </div> */}
-                                  {/* <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div> */}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="tickets_timeline">
-                              <div className="user_tickets_timeline">
-                                <div className="userline_right">
-                                  <div className="tickets_userdate">
-                                    25/5/2025
-                                  </div>
-                                  {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
-                                </div>
-                                <div className="chatmessage receiver_side">
-
-                                  <img
-                                    src="/assets/teaminbox/images/resource/user1.jpg"
-                                    alt=""
-                                    className="tickets_timeline_user_image"
-                                  />
-                                  <div className="userline">
-                                    <div className="userline_left">
-                                      <div>Allie Harmon</div>
-                                      <div className="tickets_usersubname">
-                                        To Name Name@gmail.com
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                  <div className="timeline_content">
-                                    Dolorem similique et aliquid illum dolor.vel
-                                    quo magnam.{" "}
-                                    <p className="chat-timestamp-sender">
-                                      2:30 PM
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="chatmessage sender_side">
-                                  {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
-                                  <div className="userline">
-                                    <div>
-                                      <div className="user_information">
-                                        <span>Allie Harmon</span>
-                                        <img
-                                          src="/assets/teaminbox/images/resource/user1.jpg"
-                                          alt=""
-                                          className="tickets_timeline_user_image"
-                                        />
-                                      </div>
-                                      <div className="timeline_content">
-                                        Dolorem similique et aliquid illum
-                                        dolor.vel quo magnam.{" "}
-                                        <p
-                                          className="chat-timestamp-receiver"
-                                        >
-                                          2:35 PM
-                                        </p>
-                                      </div>
-                                    </div>
+                                    {/* </div> */}
+                                    {/* <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div> */}
                                   </div>
                                 </div>
                               </div>
+                              <div className="tickets_timeline">
+                                <div className="user_tickets_timeline">
+                                  <div className="userline_right">
+                                    <div className="tickets_userdate">
+                                      25/5/2025
+                                    </div>
+                                    {/* <KeyboardArrowDownIcon className='tickets_arrowbtn' /> */}
+                                  </div>
+                                  <div className="chatmessage receiver_side">
+
+                                    <img
+                                      src="/assets/teaminbox/images/resource/user1.jpg"
+                                      alt=""
+                                      className="tickets_timeline_user_image"
+                                    />
+                                    <div className="userline">
+                                      <div className="userline_left">
+                                        <div>Allie Harmon</div>
+                                        <div className="tickets_usersubname">
+                                          To Name Name@gmail.com
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                    <div className="timeline_content">
+                                      Dolorem similique et aliquid illum dolor.vel
+                                      quo magnam.{" "}
+                                      <p className="chat-timestamp-sender">
+                                        2:30 PM
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="chatmessage sender_side">
+                                    {/* <img src="/assets/teaminbox/images/resource/user1.jpg" alt="" className='tickets_timeline_user_image' /> */}
+                                    <div className="userline">
+                                      <div>
+                                        <div className="user_information">
+                                          <span>Allie Harmon</span>
+                                          <img
+                                            src="/assets/teaminbox/images/resource/user1.jpg"
+                                            alt=""
+                                            className="tickets_timeline_user_image"
+                                          />
+                                        </div>
+                                        <div className="timeline_content">
+                                          Dolorem similique et aliquid illum
+                                          dolor.vel quo magnam.{" "}
+                                          <p
+                                            className="chat-timestamp-receiver"
+                                          >
+                                            2:35 PM
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="editorbox_container">
-                            <div className="support_tickets">
-                              {/* <textarea
+                            <div className="editorbox_container">
+                              <div className="support_tickets">
+                                {/* <textarea
                                                 ref={textareaRef}
                                                 placeholder={state.isActive ? 'Enter private note visible only to agents' : 'Enter Message'}
                                                 className='tab_reply_content'
                                             ></textarea>
 
                                             */}
-                              <div
-                                ref={textareaRef}
-                                contentEditable
-                                spellCheck={false}
-                                placeholder={
-                                  state.isActive
-                                    ? "Enter private note visible only to agents"
-                                    : "Enter Message"
-                                }
-                                className="tab_reply_content"
-                              ></div>
+                                <div
+                                  ref={textareaRef}
+                                  contentEditable
+                                  spellCheck={false}
+                                  placeholder={
+                                    state.isActive
+                                      ? "Enter private note visible only to agents"
+                                      : "Enter Message"
+                                  }
+                                  className="tab_reply_content"
+                                ></div>
 
-                              {/* Formatting Toolbar */}
-                              <div className="reply_text_container">
-                                <div className="reply_text_style">
-                                  <FormatBoldOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("bold")}
-                                  />
-                                  <FormatItalicOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("italic")}
-                                  />
-                                  <FormatUnderlinedOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("underline")}
-                                  />
-                                  <StrikethroughSOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("strikethrough")}
-                                  />
-                                  <CodeOffOutlinedIcon className="reply_text_container_icons" />
-                                  <FormatListNumberedOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("numbered")}
-                                  />
-                                  <FormatListBulletedOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("bulleted")}
-                                  />
-                                  <InsertLinkOutlinedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("link")}
-                                  />
-                                  <PhotoSizeSelectActualIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("image")}
-                                  />
-                                </div>
-                              </div>
-
-                              {/* Second Toolbar */}
-                              <div className="reply_text_second_container">
-                                <div className="reply_text_style">
-                                  <ToggleSwitch
-                                    leftLabel="Private"
-                                    isActive={state.isActive}
-                                    onToggle={handleTogglePrivate}
-                                  />
-
-                                  <TagIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("tag")}
-                                  />
-                                  <AttachFileIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("attach")}
-                                  />
-                                  <RadioButtonCheckedIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("radio")}
-                                  />
-                                  <FormatColorTextIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("color")}
-                                  />
-                                  <AutoFixHighIcon
-                                    className="reply_text_container_icons"
-                                    onClick={() => applyFormat("highlight")}
-                                  />
-                                  <div
-                                    onClick={() => applyFormat("mention")}
-                                    className="reply_text_container_icons"
-                                  >
-                                    @
+                                {/* Formatting Toolbar */}
+                                <div className="reply_text_container">
+                                  <div className="reply_text_style">
+                                    <FormatBoldOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("bold")}
+                                    />
+                                    <FormatItalicOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("italic")}
+                                    />
+                                    <FormatUnderlinedOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("underline")}
+                                    />
+                                    <StrikethroughSOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("strikethrough")}
+                                    />
+                                    <CodeOffOutlinedIcon className="reply_text_container_icons" />
+                                    <FormatListNumberedOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("numbered")}
+                                    />
+                                    <FormatListBulletedOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("bulleted")}
+                                    />
+                                    <InsertLinkOutlinedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("link")}
+                                    />
+                                    <PhotoSizeSelectActualIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("image")}
+                                    />
                                   </div>
                                 </div>
 
-                                {/* Ticket Status & Submit Button */}
-                                <div className="mail_send_btn">
-                                  <div>
-                                    <AutocompleteComponent
-                                      options={fieldTypeOption}
-                                      value={state.fieldTypeContent}
-                                      onChange={(event, newValue) =>
-                                        updateState({
-                                          fieldTypeContent: newValue,
-                                        })
-                                      }
-                                      customStyles={
-                                        style.ticketsStatusAutocomplete
-                                      }
+                                {/* Second Toolbar */}
+                                <div className="reply_text_second_container">
+                                  <div className="reply_text_style">
+                                    <ToggleSwitch
+                                      leftLabel="Private"
+                                      isActive={state.isActive}
+                                      onToggle={handleTogglePrivate}
+                                    />
+
+                                    <TagIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("tag")}
+                                    />
+                                    <AttachFileIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("attach")}
+                                    />
+                                    <RadioButtonCheckedIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("radio")}
+                                    />
+                                    <FormatColorTextIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("color")}
+                                    />
+                                    <AutoFixHighIcon
+                                      className="reply_text_container_icons"
+                                      onClick={() => applyFormat("highlight")}
+                                    />
+                                    <div
+                                      onClick={() => applyFormat("mention")}
+                                      className="reply_text_container_icons"
+                                    >
+                                      @
+                                    </div>
+                                  </div>
+
+                                  {/* Ticket Status & Submit Button */}
+                                  <div className="mail_send_btn">
+                                    <div>
+                                      <AutocompleteComponent
+                                        options={fieldTypeOption}
+                                        value={state.fieldTypeContent}
+                                        onChange={(event, newValue) =>
+                                          updateState({
+                                            fieldTypeContent: newValue,
+                                          })
+                                        }
+                                        customStyles={
+                                          style.ticketsStatusAutocomplete
+                                        }
+                                      />
+                                    </div>
+                                    <div>
+                                      <AutocompleteComponent
+                                        options={templateTypeOption}
+                                        value={state.templateTypeContent}
+                                        onChange={(event, newValue) =>
+                                          updateState({
+                                            templateTypeContent: newValue,
+                                          })
+                                        }
+                                        customStyles={
+                                          style.ticketsStatusAutocomplete
+                                        }
+                                      />
+                                    </div>
+                                    <ButtonComponent
+                                      label="Submit"
+                                      customBtn="submit_btn"
                                     />
                                   </div>
-                                  <div>
-                                    <AutocompleteComponent
-                                      options={templateTypeOption}
-                                      value={state.templateTypeContent}
-                                      onChange={(event, newValue) =>
-                                        updateState({
-                                          templateTypeContent: newValue,
-                                        })
-                                      }
-                                      customStyles={
-                                        style.ticketsStatusAutocomplete
-                                      }
-                                    />
-                                  </div>
-                                  <ButtonComponent
-                                    label="Submit"
-                                    customBtn="submit_btn"
-                                  />
                                 </div>
                               </div>
                             </div>

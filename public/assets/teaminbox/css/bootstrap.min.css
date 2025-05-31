@@ -11439,7 +11439,7 @@ a.text-dark:hover {
   /* width: 25%; */
   width:260px;
   background-color: white;
-  height: 100vh;
+  height: 90vh;
   overflow-y: auto;
   border-right: 1px solid rgb(232, 234, 242);
   box-shadow: -5px 0 5px -2px rgba(0, 0, 0, 0.1);
@@ -11469,10 +11469,10 @@ a.text-dark:hover {
   float: right;
   cursor: pointer;
 }
-.teaminbox_container .ticketsgridbox{
+/* .teaminbox_container .ticketsgridbox{
 position: fixed;
 width: 48%;
-}
+} */
 .teaminbox_container .ticketsgridbox,
 .teaminbox_container .todogridbox {
   border-right: 1px solid rgb(232, 234, 242);
@@ -11928,7 +11928,7 @@ justify-content: flex-end;
   padding-left:10px;
 }
 .teaminbox_container .todo_container{
-  height: 100vh;
+  height:90vh;
   overflow-y: auto;
   padding-left:0px !important
 }
