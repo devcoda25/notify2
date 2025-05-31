@@ -191,6 +191,7 @@ const Event = ({ onCreateClick }) => {
         showOpenDataHours: false,
         selectedhoursDate: null,
         showSelectedTimeSlots: false,
+        isCopied: false,
     });
     const [meetingHours, setMeetingHours] = useState({
         Sunday: [{ from: "09:00", to: "17:00", available: true }],
@@ -267,12 +268,22 @@ const Event = ({ onCreateClick }) => {
             [day]: [...prevHours[day], { from: "09:00", to: "17:00", available: true }],
         }));
     };
+    // const handleCopyLink = () => {
+    //     const urlToCopy = `${window.location.origin}/hepto`;
+    //     navigator.clipboard.writeText(urlToCopy).catch((err) =>
+    //         console.error("Failed to copy:", err)
+    //     );
+    // };
     const handleCopyLink = () => {
         const urlToCopy = `${window.location.origin}/hepto`;
-        navigator.clipboard.writeText(urlToCopy).catch((err) =>
-            console.error("Failed to copy:", err)
-        );
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+                updateState({ isCopied: true });
+                setTimeout(() => updateState({ isCopied: false }), 2000); // reset after 2s
+            })
+            .catch((err) => console.error("Failed to copy:", err));
     };
+    
     const handleEventClose = () => {
         setState((prev) => ({ ...prev, isLocationCardVisible: false }));
     };
@@ -773,7 +784,7 @@ const Event = ({ onCreateClick }) => {
                                             <a>View booking page</a>
                                         </div>
                                         <div className="meeting_card_button">
-                                            <CustomButton variant="text" icon={<ContentCopyOutlinedIcon />} sx={{ color: 'blue' }} onClick={handleCopyLink}>Copy link</CustomButton>
+                                            <CustomButton variant="text" icon={<ContentCopyOutlinedIcon />} sx={{ color: 'blue' }} onClick={handleCopyLink}>{state.isCopied ? 'Copied' : 'Copy link'}</CustomButton>
 
                                             <CustomButton variant="outlined" onClick={handleShareOpen} sx={{ ...styles.shareBtn }}>Share</CustomButton>
                                         </div>
