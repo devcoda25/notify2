@@ -1,141 +1,4 @@
-// import React, { useEffect, useState } from "react";
-// import {
-//   BrowserRouter,
-//   Navigate,
-//   Route,
-//   Routes,
-//   useLocation,
-// } from "react-router-dom";
-// import TeamInbox from "../Pages/TeamInbox";
-// import Meetings from "../Pages/Meetings";
-// // import BroadcastBody from '../Component/Broadcast/BroadcastBody';
-// import Broadcast from '../Pages/Broadcast';
-// import Navbar from '../Component/Navbar/Navbar';
-// import ContactUs from '../Pages/contactus';
-// import Automations from '../Pages/automations';
-// import Analytics from '../Pages/Analytics';
-// import UserManagement from '../Pages/UserManagement';
-// import AccountDetails from '../Pages/AccountDetails';
-// import Reports from '../Pages/Reports';
-// import CopyMeetingLink from '../Component/Meetings/CopyMeetingLink';
-// import EditEventType from '../Component/Meetings/EditEventType';
-// import Event from '../Component/Meetings/Event';
-// import Meeting from '../Component/Meetings/Meeting';
-// import Availability from '../Component/Meetings/Availability';
-// import Analytic from '../Component/Meetings/Analytic';
-// import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
-// import EditEvent from '../Component/Meetings/EditEvent';
-// import Login from '../Pages/Login';
-// import { setISODay } from 'date-fns';
-
-// const AppRoutes = () => {
-//   const location = useLocation();
-//   const [authUser, setauthUser] = useState(null);
-
-  
-//     const checkAuthStatus = () => {
-//       const params = new URLSearchParams(window.location.search);
-//       const x_authuser = params.get("x_authuser");
-//       setauthUser(x_authuser);
-  
-//       if (x_authuser) {
-//         console.log("x_authuser", x_authuser);
-//         window.location.href = `/u/${x_authuser}`;
-//       }
-//     };
-  
-//     useEffect(() => {
-//       checkAuthStatus();
-//     }, []);
-
-//   const hideNavbarPaths = ["/hepto"];
-//   const shouldHideNavbar = hideNavbarPaths.includes(location.pathname);
-
-//     return (
-//         <>
-//             {/* {!shouldHideNavbar && <Navbar />} */}
-//             <Routes>
-//                 <Route path='/' element={<TeamInbox />} />
-//                 {/* <Route path='login' element={<Login />} /> */}
-//                 <Route path={`u/${authUser}/Teaminbox`} element={<TeamInbox />} />
-//                 {/* <Route path='/Teaminbox' element={<TeamInbox />} /> */}
-//                 <Route path='meetings' element={<Meetings />} />
-//                 <Route path='Broadcast' element={<Broadcast />} />
-//                 <Route path='contactus' element={<ContactUs />} />
-//                 <Route path='automations' element={<Automations />} />
-//                 <Route path='analytics' element={<Analytics />} />
-//                 <Route path='Reports' element={<Reports />} />
-//                 <Route path='UserManagement' element={<UserManagement />} />
-//                 <Route path='AccountDetails' element={<AccountDetails />} />
-//                 <Route path='/hepto' element={<CopyMeetingLink />} />
-//                 <Route path='/edit-event' element={<EditEventType />} />
-//                 <Route path='/edit-eventtype' element={<EditEvent />} />
-//                 <Route path='/one-on-one' element={<OneononeMeeting />} />
-//                 <Route path='/event-types' element={<Event />} />
-//                 <Route path='/meet' element={<Meeting />} />
-//                 <Route path='/availability' element={<Availability />} />
-//                 <Route path='/analytic' element={<Analytic />} />
-//             </Routes>
-//         </>
-//     );
-// };
-
-// const BaseLayouts = () => {
-//   const [isAuthenticated, setIsAuthenticated] = useState(
-//     () => sessionStorage.getItem("auth") === "true"
-//   );
-
-//   const handleLogin = () => {
-//     setIsAuthenticated(true);
-//   };
-
-//   return (
-//     // <>
-//     //     <React.Fragment>
-
-//     //         <BrowserRouter>
-//     //         <Navbar/>
-//     //             <Routes>
-//     //                 <Route path='/' element={<TeamInbox />} />
-//     //                 <Route path='Teaminbox' element={<TeamInbox />} />
-//     //                 <Route path='meetings' element={<Meetings />} />
-//     //                 <Route path='Broadcast' element={<Broadcast />} />
-//     //                 <Route path='contactus' element={<ContactUs/>}/>
-//     //                 <Route path='automations' element={<Automations/>}/>
-//     //                 <Route path='analytics' element={<Analytics/>} />
-//     //                 <Route path='Reports' element={<Reports/>}/>
-//     //                 <Route path='UserManagement' element={<UserManagement/>}/>
-//     //                 <Route path='AccountDetails' element={<AccountDetails/>}/>
-//     //                 <Route path='/hepto' element={<CopyMeetingLink/>}/>
-//     //                 <Route path='/edit-event' element={<EditEventType/>}/>
-//     //                 <Route path='/edit-eventtype' element={<EditEvent/>}/>
-//     //                 <Route path='/one-on-one' element={<OneononeMeeting/>}/>
-//     //                 <Route path='/event-types' element={<Event/>}/>
-//     //                 <Route path='/meet' element={<Meeting/>}/>
-//     //                 <Route path='/availability' element={<Availability/>}/>
-//     //                 <Route path='/analytic' element={<Analytic/>}/>
-
-//     //             </Routes>
-//     //         </BrowserRouter>
-//     //     </React.Fragment>
-//     // </>
-//     <>
-//       <BrowserRouter>
-//         {isAuthenticated || window.location.pathname === "/hepto" ? (
-//           <AppRoutes />
-//         ) : (
-//           <Login onLogin={handleLogin} />
-//           // <>
-//           // <Route path="/" element={<Login onLogin={handleLogin} />} />
-//           // <Route path="*" element={<Navigate to="/" />} />
-//           // </>
-//         )}
-//       </BrowserRouter>
-//     </>
-//   );
-// };
-// export default BaseLayouts;
-
+// BaseLayouts.js - Updated version
 import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
@@ -179,21 +42,29 @@ const AuthUserRoute = ({ children }) => {
 
 const AppRoutes = () => {
   const location = useLocation();
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setAuthUser] = useState(() => {
+    // Initialize from sessionStorage or URL params
+    const stored = sessionStorage.getItem("authUser");
+    if (stored) return stored;
+    
+    const params = new URLSearchParams(window.location.search);
+    return params.get("x_authuser");
+  });
 
   const checkAuthStatus = () => {
     const params = new URLSearchParams(window.location.search);
     const x_authuser = params.get("x_authuser");
-    setAuthUser(x_authuser);
 
-    if (x_authuser) {
+    if (x_authuser && x_authuser !== authUser) {
+      setAuthUser(x_authuser);
+      sessionStorage.setItem("authUser", x_authuser);
       console.log("x_authuser", x_authuser);
     }
   };
 
   useEffect(() => {
     checkAuthStatus();
-  }, []);
+  }, [location.search]); // Re-run when URL search params change
 
   const hideNavbarPaths = ["/hepto"];
   const shouldHideNavbar = hideNavbarPaths.some(path => 
@@ -204,8 +75,8 @@ const AppRoutes = () => {
     <>
       {!shouldHideNavbar && <Navbar />}
       <Routes>
-        {/* Root redirect */}
-        <Route path="/" element={<Navigate to={`/u/${authUser || '0'}`} replace />} />
+        {/* Root redirect - Fixed to handle null authUser properly */}
+        <Route path="/" element={<Navigate to={`/u/${authUser || 'default'}`} replace />} />
         
         {/* Auth user routes */}
         <Route path="/u/:authUser" element={
@@ -302,14 +173,41 @@ const AppRoutes = () => {
 };
 
 const BaseLayouts = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => sessionStorage.getItem("auth") === "true"
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuth = () => {
+      const params = new URLSearchParams(window.location.search);
+      const x_authuser = params.get("x_authuser");
+      const sessionAuth = sessionStorage.getItem("auth") === "true";
+
+      if (x_authuser) {
+        // If x_authuser is present, set auth to true
+        sessionStorage.setItem("auth", "true");
+        sessionStorage.setItem("authUser", x_authuser);
+        setIsAuthenticated(true);
+      } else if (sessionAuth) {
+        // If session auth exists, keep authenticated
+        setIsAuthenticated(true);
+      }
+      
+      setLoading(false);
+    };
+
+    checkAuth();
+  }, []);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
     sessionStorage.setItem("auth", "true");
   };
+
+  // Show loading while checking auth status
+  if (loading) {
+    return <div>Loading...</div>; // You can replace with your loading component
+  }
 
   return (
     <BrowserRouter>

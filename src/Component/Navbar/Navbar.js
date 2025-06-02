@@ -1,133 +1,4 @@
-// import React, { useState } from 'react'
-// import { FiInbox } from "react-icons/fi";
-// import logo from '../Assets/img/ev-notify-logo.png'
-// import { PiBroadcastDuotone } from "react-icons/pi";
-// import { RiContactsBook2Line } from "react-icons/ri";
-// import { FiSettings } from "react-icons/fi";
-// import { BiGridAlt } from "react-icons/bi";
-// import { TfiMore } from "react-icons/tfi";
-// import { BiLogoMeta } from "react-icons/bi";
-// import { LiaWalletSolid } from "react-icons/lia";
-// import { GoBellFill } from "react-icons/go";
-// import { IoMdPerson } from "react-icons/io";
-// import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
-// import { Modal } from '@mui/material';
-// import EventIcon from '@mui/icons-material/Event';
-// // import '../Style.css'
-// import MoreDropDown from './MoreDropDown';
-// import { NavLink, useLocation } from 'react-router-dom';
-// import { AccessTimeIcon } from '../Icon';
-// import ToggleSwitch from '../ToggleSwitch';
-
-// const Navbar = () => {
-
-//   // const [showMessage, setShowMessage] = useState(false);
-//   const location = useLocation();  // useLocation hook
-//   const [activeItem, setActiveItem] = useState('TeamInbox');
-//   const [breakTime, setBreakTime] = useState(false);
-//   const [toggles, setToggles] = useState({
-//     lunch: false,
-//     teaBreak: false,
-//     bioBreak: false,
-//     meeting: false,
-//     qa: false,
-//     briefing: false,
-//     technical: false,
-//     unwell: false
-//   })
-//   const handleClick = (item) => {
-//     setActiveItem(item);
-//   };
-//   const handleToggle = (key) => {
-//     setToggles((prev) => ({
-//       ...prev,
-//       [key]: !prev[key],
-
-//     }));
-//     sessionStorage.setItem('selectedToggle', key);
-//     sessionStorage.setItem('auth', 'false');
-//   window.location.reload();
-//   }
-//   const handleBreakTime = () => {
-//     setBreakTime(!breakTime);
-//   }
-
-//   const menuItems = [
-//     { path: '/teaminbox', label: 'Team Inbox', icon: <FiInbox /> },
-//     { path: '/meetings', label: 'Meetings', icon: <EventIcon /> },
-//     { path: '/Broadcast', label: 'Broadcast', icon: <PiBroadcastDuotone /> },
-//     { path: '/contactus', label: 'Contacts', icon: <RiContactsBook2Line /> },
-//     { path: '/automations', label: 'Automations', icon: <FiSettings size={20} /> },
-//     { path: '/analytics', label: 'Analytics', icon: <BiGridAlt /> },
-//     { path: '/reports', label: 'Reports', icon: <SignalCellularAltIcon /> }
-
-//     // { path: '/#', label: 'Ads', content:'Beta' ,icon: <svg width="15" height="18" viewBox="0 0 15 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.09473 0.666626C6.26049 0.666626 6.41946 0.732474 6.53667 0.849684C6.65388 0.966894 6.71973 1.12587 6.71973 1.29163V3.37496C6.71973 3.54072 6.65388 3.69969 6.53667 3.8169C6.41946 3.93411 6.26049 3.99996 6.09473 3.99996C5.92897 3.99996 5.77 3.93411 5.65278 3.8169C5.53557 3.69969 5.46973 3.54072 5.46973 3.37496V1.29163C5.46973 1.12587 5.53557 0.966894 5.65278 0.849684C5.77 0.732474 5.92897 0.666626 6.09473 0.666626ZM2.11139 2.30829C2.22858 2.19125 2.38743 2.12551 2.55306 2.12551C2.71869 2.12551 2.87754 2.19125 2.99473 2.30829L4.45306 3.76663C4.51447 3.82384 4.56372 3.89284 4.59788 3.96951C4.63204 4.04618 4.65041 4.12894 4.65189 4.21286C4.65337 4.29678 4.63793 4.38013 4.6065 4.45796C4.57506 4.53578 4.52827 4.60648 4.46893 4.66582C4.40958 4.72517 4.33888 4.77196 4.26106 4.8034C4.18323 4.83483 4.09988 4.85027 4.01596 4.84879C3.93204 4.8473 3.84928 4.82894 3.77261 4.79478C3.69595 4.76062 3.62694 4.71137 3.56973 4.64996L2.11139 3.19163C1.99435 3.07444 1.92861 2.91559 1.92861 2.74996C1.92861 2.58433 1.99435 2.42548 2.11139 2.30829ZM10.0781 2.30829C10.1951 2.42548 10.2608 2.58433 10.2608 2.74996C10.2608 2.91559 10.1951 3.07444 10.0781 3.19163L8.61973 4.64996C8.56251 4.71137 8.49351 4.76062 8.41684 4.79478C8.34018 4.82894 8.25741 4.8473 8.17349 4.84879C8.08958 4.85027 8.00622 4.83483 7.92839 4.8034C7.85057 4.77196 7.77988 4.72517 7.72053 4.66582C7.66118 4.60648 7.61439 4.53578 7.58296 4.45796C7.55152 4.38013 7.53609 4.29678 7.53757 4.21286C7.53905 4.12894 7.55742 4.04618 7.59158 3.96951C7.62574 3.89284 7.67499 3.82384 7.73639 3.76663L9.19473 2.30829C9.31191 2.19125 9.47077 2.12551 9.63639 2.12551C9.80202 2.12551 9.96087 2.19125 10.0781 2.30829ZM0.469727 6.29163C0.469727 6.12587 0.535575 5.9669 0.652785 5.84968C0.769995 5.73247 0.928966 5.66663 1.09473 5.66663H3.17806C3.34382 5.66663 3.50279 5.73247 3.62 5.84968C3.73721 5.9669 3.80306 6.12587 3.80306 6.29163C3.80306 6.45739 3.73721 6.61636 3.62 6.73357C3.50279 6.85078 3.34382 6.91663 3.17806 6.91663H1.09473C0.928966 6.91663 0.769995 6.85078 0.652785 6.73357C0.535575 6.61636 0.469727 6.45739 0.469727 6.29163ZM7.28389 6.07163C6.57139 5.45996 5.46973 5.96663 5.46973 6.90579V16.3008C5.46973 17.3091 6.71556 17.7858 7.38806 17.0341L9.56639 14.5983C9.79639 14.3416 10.1197 14.19 10.4639 14.1758L13.6639 14.0475C14.6614 14.0075 15.0931 12.765 14.3347 12.1141L7.28473 6.07163H7.28389ZM6.71973 15.9058V7.23413L13.2297 12.8141L10.4131 12.9266C10.0757 12.9403 9.74461 13.0215 9.43928 13.1655C9.13395 13.3095 8.86064 13.5134 8.63556 13.765L6.71973 15.9058Z" fill="#666"></path></svg> },
-//     // { path: '#', label: 'ApiDocs' ,icon: <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.26466 9.8588L1.99407 9.68425L1.26466 9.8588ZM1.26466 5.37473L1.99407 5.54927L1.26466 5.37473ZM14.2353 5.37473L13.5059 5.54928L14.2353 5.37473ZM14.2353 9.85879L13.5059 9.68425L14.2353 9.85879ZM10.0372 13.9741L9.86911 13.2432L10.0372 13.9741ZM5.46283 13.9741L5.29476 14.705L5.46283 13.9741ZM5.46283 1.25943L5.63089 1.99036L5.63089 1.99036L5.46283 1.25943ZM10.0372 1.25943L9.86911 1.99036L10.0372 1.25943ZM1.99407 9.68425C1.66864 8.32432 1.66864 6.90921 1.99407 5.54927L0.535251 5.20019C0.154916 6.78961 0.154916 8.44392 0.535251 10.0333L1.99407 9.68425ZM13.5059 5.54928C13.8314 6.90921 13.8314 8.32432 13.5059 9.68425L14.9648 10.0333C15.3451 8.44392 15.3451 6.78961 14.9648 5.20019L13.5059 5.54928ZM9.86911 13.2432C8.47534 13.5636 7.02466 13.5636 5.63089 13.2432L5.29476 14.705C6.90973 15.0764 8.59027 15.0764 10.2052 14.705L9.86911 13.2432ZM5.63089 1.99036C7.02466 1.66988 8.47534 1.66988 9.86911 1.99036L10.2052 0.528507C8.59028 0.157164 6.90973 0.157164 5.29476 0.528507L5.63089 1.99036ZM5.63089 13.2432C3.81903 12.8266 2.41489 11.4429 1.99407 9.68425L0.535251 10.0333C1.09167 12.3586 2.94048 14.1637 5.29476 14.705L5.63089 13.2432ZM10.2052 14.705C12.5595 14.1637 14.4083 12.3586 14.9648 10.0333L13.5059 9.68425C13.0851 11.4429 11.681 12.8266 9.86911 13.2432L10.2052 14.705ZM9.86911 1.99036C11.681 2.40698 13.0851 3.79063 13.5059 5.54928L14.9648 5.20019C14.4083 2.87493 12.5595 1.06984 10.2052 0.528507L9.86911 1.99036ZM5.29476 0.528507C2.94048 1.06984 1.09167 2.87493 0.535251 5.20019L1.99407 5.54927C2.41489 3.79063 3.81903 2.40698 5.63089 1.99036L5.29476 0.528507ZM10.0604 14.5C10.0604 13.3968 10.0621 12.6463 10.1391 12.0843C10.2131 11.5454 10.3434 11.2929 10.521 11.1188L9.47094 10.0476C8.96297 10.5456 8.75054 11.1698 8.65306 11.8805C8.55875 12.5681 8.56041 13.44 8.56041 14.5H10.0604ZM13.9916 9.16117C12.9091 9.16117 12.0231 9.15964 11.3254 9.25161C10.6075 9.34622 9.97684 9.55169 9.47094 10.0476L10.521 11.1188C10.7006 10.9427 10.9644 10.8121 11.5213 10.7387C12.0983 10.6627 12.8675 10.6612 13.9916 10.6612V9.16117Z" fill="#666666"></path><path d="M5.5 5.5H7.75M5.5 7.75H9.25" stroke="#666666" stroke-width="1.5" stroke-linecap="round"></path></svg>},
-//   ];
-//   return (
-//     <div className='main-header'>
-//       <div className='nav bg-white'>
-//         <div className='lnav'>
-//           <img src={logo} alt='car' className="navImg" />
-//           <span className='border'></span>
-//           {menuItems.map((item) => (
-//             <li
-//               key={item.path}
-//               className={location.pathname === item.path ? 'active' : ''}
-//             >
-//               <NavLink to={item.path} className='header_nav_link'>
-//                 {item.icon}
-//                 {item.label}
-//                 <span className='beta'>{item.content}</span>
-//               </NavLink>
-//             </li>
-//           ))}
-//           {/* <li><a href='teaminbox'><FiInbox />Team Inbox</a></li>
-//             <li className='solo'><a href='BroadcastBody'><PiBroadcastDuotone />Broadcast</a></li>
-//             <li><a href='contactus'><RiContactsBook2Line />Contacts</a></li>
-//             <li><a href='automations'><FiSettings />Automations</a></li>
-//             <li><a href='Analytics'><BiGridAlt  />Analytics</a></li>
-//          //  <li className='AdsBeta'><a href='#'><svg width="15" height="18" viewBox="0 0 15 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.09473 0.666626C6.26049 0.666626 6.41946 0.732474 6.53667 0.849684C6.65388 0.966894 6.71973 1.12587 6.71973 1.29163V3.37496C6.71973 3.54072 6.65388 3.69969 6.53667 3.8169C6.41946 3.93411 6.26049 3.99996 6.09473 3.99996C5.92897 3.99996 5.77 3.93411 5.65278 3.8169C5.53557 3.69969 5.46973 3.54072 5.46973 3.37496V1.29163C5.46973 1.12587 5.53557 0.966894 5.65278 0.849684C5.77 0.732474 5.92897 0.666626 6.09473 0.666626ZM2.11139 2.30829C2.22858 2.19125 2.38743 2.12551 2.55306 2.12551C2.71869 2.12551 2.87754 2.19125 2.99473 2.30829L4.45306 3.76663C4.51447 3.82384 4.56372 3.89284 4.59788 3.96951C4.63204 4.04618 4.65041 4.12894 4.65189 4.21286C4.65337 4.29678 4.63793 4.38013 4.6065 4.45796C4.57506 4.53578 4.52827 4.60648 4.46893 4.66582C4.40958 4.72517 4.33888 4.77196 4.26106 4.8034C4.18323 4.83483 4.09988 4.85027 4.01596 4.84879C3.93204 4.8473 3.84928 4.82894 3.77261 4.79478C3.69595 4.76062 3.62694 4.71137 3.56973 4.64996L2.11139 3.19163C1.99435 3.07444 1.92861 2.91559 1.92861 2.74996C1.92861 2.58433 1.99435 2.42548 2.11139 2.30829ZM10.0781 2.30829C10.1951 2.42548 10.2608 2.58433 10.2608 2.74996C10.2608 2.91559 10.1951 3.07444 10.0781 3.19163L8.61973 4.64996C8.56251 4.71137 8.49351 4.76062 8.41684 4.79478C8.34018 4.82894 8.25741 4.8473 8.17349 4.84879C8.08958 4.85027 8.00622 4.83483 7.92839 4.8034C7.85057 4.77196 7.77988 4.72517 7.72053 4.66582C7.66118 4.60648 7.61439 4.53578 7.58296 4.45796C7.55152 4.38013 7.53609 4.29678 7.53757 4.21286C7.53905 4.12894 7.55742 4.04618 7.59158 3.96951C7.62574 3.89284 7.67499 3.82384 7.73639 3.76663L9.19473 2.30829C9.31191 2.19125 9.47077 2.12551 9.63639 2.12551C9.80202 2.12551 9.96087 2.19125 10.0781 2.30829ZM0.469727 6.29163C0.469727 6.12587 0.535575 5.9669 0.652785 5.84968C0.769995 5.73247 0.928966 5.66663 1.09473 5.66663H3.17806C3.34382 5.66663 3.50279 5.73247 3.62 5.84968C3.73721 5.9669 3.80306 6.12587 3.80306 6.29163C3.80306 6.45739 3.73721 6.61636 3.62 6.73357C3.50279 6.85078 3.34382 6.91663 3.17806 6.91663H1.09473C0.928966 6.91663 0.769995 6.85078 0.652785 6.73357C0.535575 6.61636 0.469727 6.45739 0.469727 6.29163ZM7.28389 6.07163C6.57139 5.45996 5.46973 5.96663 5.46973 6.90579V16.3008C5.46973 17.3091 6.71556 17.7858 7.38806 17.0341L9.56639 14.5983C9.79639 14.3416 10.1197 14.19 10.4639 14.1758L13.6639 14.0475C14.6614 14.0075 15.0931 12.765 14.3347 12.1141L7.28473 6.07163H7.28389ZM6.71973 15.9058V7.23413L13.2297 12.8141L10.4131 12.9266C10.0757 12.9403 9.74461 13.0215 9.43928 13.1655C9.13395 13.3095 8.86064 13.5134 8.63556 13.765L6.71973 15.9058Z" fill="#666"></path></svg>Ads<span className='beta'>Beta</span></a></li>
-//             <li className='ApiDocs'><a href='#'><svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.26466 9.8588L1.99407 9.68425L1.26466 9.8588ZM1.26466 5.37473L1.99407 5.54927L1.26466 5.37473ZM14.2353 5.37473L13.5059 5.54928L14.2353 5.37473ZM14.2353 9.85879L13.5059 9.68425L14.2353 9.85879ZM10.0372 13.9741L9.86911 13.2432L10.0372 13.9741ZM5.46283 13.9741L5.29476 14.705L5.46283 13.9741ZM5.46283 1.25943L5.63089 1.99036L5.63089 1.99036L5.46283 1.25943ZM10.0372 1.25943L9.86911 1.99036L10.0372 1.25943ZM1.99407 9.68425C1.66864 8.32432 1.66864 6.90921 1.99407 5.54927L0.535251 5.20019C0.154916 6.78961 0.154916 8.44392 0.535251 10.0333L1.99407 9.68425ZM13.5059 5.54928C13.8314 6.90921 13.8314 8.32432 13.5059 9.68425L14.9648 10.0333C15.3451 8.44392 15.3451 6.78961 14.9648 5.20019L13.5059 5.54928ZM9.86911 13.2432C8.47534 13.5636 7.02466 13.5636 5.63089 13.2432L5.29476 14.705C6.90973 15.0764 8.59027 15.0764 10.2052 14.705L9.86911 13.2432ZM5.63089 1.99036C7.02466 1.66988 8.47534 1.66988 9.86911 1.99036L10.2052 0.528507C8.59028 0.157164 6.90973 0.157164 5.29476 0.528507L5.63089 1.99036ZM5.63089 13.2432C3.81903 12.8266 2.41489 11.4429 1.99407 9.68425L0.535251 10.0333C1.09167 12.3586 2.94048 14.1637 5.29476 14.705L5.63089 13.2432ZM10.2052 14.705C12.5595 14.1637 14.4083 12.3586 14.9648 10.0333L13.5059 9.68425C13.0851 11.4429 11.681 12.8266 9.86911 13.2432L10.2052 14.705ZM9.86911 1.99036C11.681 2.40698 13.0851 3.79063 13.5059 5.54928L14.9648 5.20019C14.4083 2.87493 12.5595 1.06984 10.2052 0.528507L9.86911 1.99036ZM5.29476 0.528507C2.94048 1.06984 1.09167 2.87493 0.535251 5.20019L1.99407 5.54927C2.41489 3.79063 3.81903 2.40698 5.63089 1.99036L5.29476 0.528507ZM10.0604 14.5C10.0604 13.3968 10.0621 12.6463 10.1391 12.0843C10.2131 11.5454 10.3434 11.2929 10.521 11.1188L9.47094 10.0476C8.96297 10.5456 8.75054 11.1698 8.65306 11.8805C8.55875 12.5681 8.56041 13.44 8.56041 14.5H10.0604ZM13.9916 9.16117C12.9091 9.16117 12.0231 9.15964 11.3254 9.25161C10.6075 9.34622 9.97684 9.55169 9.47094 10.0476L10.521 11.1188C10.7006 10.9427 10.9644 10.8121 11.5213 10.7387C12.0983 10.6627 12.8675 10.6612 13.9916 10.6612V9.16117Z" fill="#666666"></path><path d="M5.5 5.5H7.75M5.5 7.75H9.25" stroke="#666666" stroke-width="1.5" stroke-linecap="round"></path></svg>API Docs</a></li> */}
-//           <li><MoreDropDown /></li>
-//         </div>
-//         <div className='rnav'>
-//           <li className='navicon1'><BiLogoMeta /></li>
-//           <span className='border'></span>
-//           <li className='navicon2'><a href="https://wallet.evzone.app/" target="_blank" rel="noopener noreferrer" className="wallet-icon"><LiaWalletSolid /></a></li>
-//           <span className='border'></span>
-//           <li className='navicon3'><GoBellFill /></li>
-//           <span className='border'></span>
-//           {/* <li className='navcont'>
-//             <p className='dangerWithCont'>CONNECTED <span className='dangerIcon'>!</span></p><span className='dangerNum'>+256393249612</span>
-//           </li> */}
-//           <li className='navicon3' onClick={handleBreakTime}><AccessTimeIcon /></li>
-//           <span className='border'></span>
-//           <li className='navicon3'><IoMdPerson /></li>
-//         </div>
-//       </div>
-//       {breakTime && (
-//         <div className='breaktime_modal'>
-
-//           <ToggleSwitch isActive={toggles.lunch} onToggle={() => handleToggle("lunch")} rightLabel="Lunch"  customRightLabel='toggleRightLabel' />
-//           <ToggleSwitch isActive={toggles.teaBreak} onToggle={() => handleToggle("teaBreak")} rightLabel="Tea Break" customRightLabel='toggleRightLabel' />
-//           <ToggleSwitch isActive={toggles.bioBreak} onToggle={() => handleToggle("bioBreak")} rightLabel="Bio Break" customRightLabel='toggleRightLabel'/>
-//           <ToggleSwitch isActive={toggles.meeting} onToggle={() => handleToggle("meeting")} rightLabel="Meeting" customRightLabel='toggleRightLabel'/>
-//           <ToggleSwitch isActive={toggles.qa} onToggle={() => handleToggle("qa")} rightLabel="QA" customRightLabel='toggleRightLabel' />
-//           <ToggleSwitch isActive={toggles.briefing} onToggle={() => handleToggle("briefing")} rightLabel="Briefing" customRightLabel='toggleRightLabel'/>
-//           <ToggleSwitch isActive={toggles.technical} onToggle={() => handleToggle("technical")} rightLabel="Technical" customRightLabel='toggleRightLabel'/>
-//           <ToggleSwitch isActive={toggles.unwell} onToggle={() => handleToggle("unWell")} rightLabel="Unwell" customRightLabel='toggleRightLabel' />
-
-
-//         </div>
-//       )}
-//     </div>
-//   )
-// }
-
-// export default Navbar
-
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { FiInbox } from "react-icons/fi";
 import logo from '../Assets/img/ev-notify-logo.png'
 import { PiBroadcastDuotone } from "react-icons/pi";
@@ -144,14 +15,27 @@ import { Modal } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 // import '../Style.css'
 import MoreDropDown from './MoreDropDown';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { AccessTimeIcon } from '../Icon';
 import ToggleSwitch from '../ToggleSwitch';
-import { useParams } from 'react-router-dom';
 
 const Navbar = () => {
   const location = useLocation();
-  const { authUser } = useParams();
+  const { authUser: routeAuthUser } = useParams();
+  
+  // Use authUser from route params directly, with fallback extraction
+  const authUser = useMemo(() => {
+    // First try to get from route params
+    if (routeAuthUser) {
+      return routeAuthUser;
+    }
+    
+    // Fallback: extract from pathname
+    const regex = /\/u\/([^/]+)/;
+    const match = location.pathname.match(regex);
+    return match ? match[1] : '0';
+  }, [routeAuthUser, location.pathname]);
+
   const [activeItem, setActiveItem] = useState('TeamInbox');
   const [breakTime, setBreakTime] = useState(false);
   
@@ -166,54 +50,51 @@ const Navbar = () => {
     unwell: false
   });
 
-  // Dynamically generate menu items with authUser
-  const menuItems = useMemo(() => {
-    const currentAuthUser = authUser || '0'; // fallback to '0' if authUser is not available
-    
-    return [
-      { 
-        path: `/u/${currentAuthUser}/Teaminbox`, 
-        label: 'Team Inbox', 
-        icon: <FiInbox /> 
-      },
-      { 
-        path: `/u/${currentAuthUser}/meetings`, 
-        label: 'Meetings', 
-        icon: <EventIcon /> 
-      },
-      { 
-        path: `/u/${currentAuthUser}/Broadcast`, 
-        label: 'Broadcast', 
-        icon: <PiBroadcastDuotone /> 
-      },
-      { 
-        path: `/u/${currentAuthUser}/contactus`, 
-        label: 'Contacts', 
-        icon: <RiContactsBook2Line /> 
-      },
-      { 
-        path: `/u/${currentAuthUser}/automations`, 
-        label: 'Automations', 
-        icon: <FiSettings size={20} /> 
-      },
-      { 
-        path: `/u/${currentAuthUser}/analytics`, 
-        label: 'Analytics', 
-        icon: <BiGridAlt /> 
-      },
-      { 
-        path: `/u/${currentAuthUser}/Reports`, 
-        label: 'Reports', 
-        icon: <SignalCellularAltIcon /> 
-      }
-    ];
-  }, [authUser]);
+  // Memoize menu items to prevent unnecessary re-renders
+  const menuItems = useMemo(() => [
+    { 
+      path: `/u/${authUser}/Teaminbox`, 
+      label: 'Team Inbox', 
+      icon: <FiInbox /> 
+    },
+    { 
+      path: `/u/${authUser}/meetings`, 
+      label: 'Meetings', 
+      icon: <EventIcon /> 
+    },
+    { 
+      path: `/u/${authUser}/Broadcast`, 
+      label: 'Broadcast', 
+      icon: <PiBroadcastDuotone /> 
+    },
+    { 
+      path: `/u/${authUser}/contactus`, 
+      label: 'Contacts', 
+      icon: <RiContactsBook2Line /> 
+    },
+    { 
+      path: `/u/${authUser}/automations`, 
+      label: 'Automations', 
+      icon: <FiSettings /> 
+    },
+    { 
+      path: `/u/${authUser}/analytics`, 
+      label: 'Analytics', 
+      icon: <BiGridAlt /> 
+    },
+    { 
+      path: `/u/${authUser}/Reports`, 
+      label: 'Reports', 
+      icon: <SignalCellularAltIcon /> 
+    }
+  ], [authUser]);
 
-  const handleClick = (item) => {
+  // Memoize handlers to prevent unnecessary re-renders
+  const handleClick = useCallback((item) => {
     setActiveItem(item);
-  };
+  }, []);
 
-  const handleToggle = (key) => {
+  const handleToggle = useCallback((key) => {
     setToggles((prev) => ({
       ...prev,
       [key]: !prev[key],
@@ -221,23 +102,43 @@ const Navbar = () => {
     sessionStorage.setItem('selectedToggle', key);
     sessionStorage.setItem('auth', 'false');
     window.location.reload();
-  };
+  }, []);
 
-  const handleBreakTime = () => {
+  const handleBreakTime = useCallback(() => {
     setBreakTime(!breakTime);
-  };
+  }, [breakTime]);
 
-  // Function to check if current path matches menu item path
-  const isActivePath = (itemPath) => {
+  // Memoize active path check
+  const isActivePath = useCallback((itemPath) => {
     return location.pathname === itemPath;
-  };
+  }, [location.pathname]);
+
+  // Set active item based on current path
+  useEffect(() => {
+    const currentMenuItem = menuItems.find(item => isActivePath(item.path));
+    if (currentMenuItem) {
+      setActiveItem(currentMenuItem.label);
+    }
+  }, [location.pathname, menuItems, isActivePath]);
+
+  // Memoize toggle switches to prevent re-rendering
+  const toggleSwitches = useMemo(() => [
+    { key: 'lunch', label: 'Lunch' },
+    { key: 'teaBreak', label: 'Tea Break' },
+    { key: 'bioBreak', label: 'Bio Break' },
+    { key: 'meeting', label: 'Meeting' },
+    { key: 'qa', label: 'QA' },
+    { key: 'briefing', label: 'Briefing' },
+    { key: 'technical', label: 'Technical' },
+    { key: 'unwell', label: 'Unwell' }
+  ], []);
 
   return (
     <div className='main-header'>
       <div className='nav bg-white'>
         <div className='lnav'>
           <img src={logo} alt='car' className="navImg" />
-          <span className='border'></span>
+          <span style={{marginRight:"10px"}} className='border'></span>
           {menuItems.map((item) => (
             <li
               key={item.path}
@@ -284,54 +185,15 @@ const Navbar = () => {
       
       {breakTime && (
         <div className='breaktime_modal'>
-          <ToggleSwitch 
-            isActive={toggles.lunch} 
-            onToggle={() => handleToggle("lunch")} 
-            rightLabel="Lunch"  
-            customRightLabel='toggleRightLabel' 
-          />
-          <ToggleSwitch 
-            isActive={toggles.teaBreak} 
-            onToggle={() => handleToggle("teaBreak")} 
-            rightLabel="Tea Break" 
-            customRightLabel='toggleRightLabel' 
-          />
-          <ToggleSwitch 
-            isActive={toggles.bioBreak} 
-            onToggle={() => handleToggle("bioBreak")} 
-            rightLabel="Bio Break" 
-            customRightLabel='toggleRightLabel'
-          />
-          <ToggleSwitch 
-            isActive={toggles.meeting} 
-            onToggle={() => handleToggle("meeting")} 
-            rightLabel="Meeting" 
-            customRightLabel='toggleRightLabel'
-          />
-          <ToggleSwitch 
-            isActive={toggles.qa} 
-            onToggle={() => handleToggle("qa")} 
-            rightLabel="QA" 
-            customRightLabel='toggleRightLabel' 
-          />
-          <ToggleSwitch 
-            isActive={toggles.briefing} 
-            onToggle={() => handleToggle("briefing")} 
-            rightLabel="Briefing" 
-            customRightLabel='toggleRightLabel'
-          />
-          <ToggleSwitch 
-            isActive={toggles.technical} 
-            onToggle={() => handleToggle("technical")} 
-            rightLabel="Technical" 
-            customRightLabel='toggleRightLabel'
-          />
-          <ToggleSwitch 
-            isActive={toggles.unwell} 
-            onToggle={() => handleToggle("unwell")} 
-            rightLabel="Unwell" 
-            customRightLabel='toggleRightLabel' 
-          />
+          {toggleSwitches.map(({ key, label }) => (
+            <ToggleSwitch 
+              key={key}
+              isActive={toggles[key]} 
+              onToggle={() => handleToggle(key)} 
+              rightLabel={label}
+              customRightLabel='toggleRightLabel' 
+            />
+          ))}
         </div>
       )}
     </div>
