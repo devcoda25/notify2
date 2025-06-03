@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React,{useState} from "react";
 import { Chip } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import AutocompleteComponent from '../../../AutocompleteComponent';
-import BaseModal from './BaseModal';
+import BaseModal from "./BaseModal";
 
-const initialOptions = ['Driver Concerns', 'Emergency-Urgent-help-needed', 'General Enquiry', 'Investor customers'];
+const initialOptions = ['EV_Zone_everyone', 'Call_center_Kampala', 'Driver_Liaison_officers', 'Ride_Agents_officers', 'Corporate_Liaison_officers'];
 
-const SetTagsModal = ({ show, onClose, onSave }) => {
+const AssignToTeamModal = ({ show, onClose, onSave }) => {
 
     const [selectedTags, setSelectedTags] = useState([]);
     const [options, setOptions] = useState(initialOptions);
@@ -23,27 +23,24 @@ const SetTagsModal = ({ show, onClose, onSave }) => {
         }
     };
 
-
     return (
       
-        <BaseModal show={show} onClose={onClose} onSave={onSave} title="Set Tags">
-        {selectedTags.map((tag) => (
-          <Chip
-            key={tag}
-            label={tag}
-            onDelete={() => handleTagDelete(tag)}
-            variant="outlined"
-            style={{ marginBottom: '15px' }}
-          />
-        ))}
-  
+        <BaseModal show={show} onClose={onClose} onSave={onSave} title="Assign To Team">
         <AutocompleteComponent
           options={options}
           value={selectedTags}
           onChange={handleTagChange}
-          placeholder="Select Tags"
+          placeholder="Select"
         />
+        {selectedTags.map(tag => (
+          <Chip
+            key={tag}
+            label={tag}
+            onDelete={() => handleTagDelete(tag)}
+            style={{ marginTop: '15px' }}
+          />
+        ))}
       </BaseModal>
     );
 };
-export default SetTagsModal;
+export default AssignToTeamModal;

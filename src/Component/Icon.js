@@ -150,12 +150,17 @@ FormatStrikethrough as FormatStrikethroughIcon,
 NoteAlt as NoteAltIcon,
 Headset as HeadsetIcon,
 Dashboard as DashboardIcon,
+Movie as MovieIcon,
+Audiotrack as AudiotrackIcon,
+DescriptionOutlined as DescriptionOutlinedIcon
 
    } from "@mui/icons-material";
   
   // Export all icons
   export {
     AddOutlinedIcon,
+    AudiotrackIcon,
+    DescriptionOutlinedIcon,
     ExpandMoreIcon,
     NavigateBeforeIcon,
     NavigateNextIcon,
@@ -305,5 +310,6 @@ Dashboard as DashboardIcon,
    FormatStrikethroughIcon,
    NoteAltIcon,
    HeadsetIcon,
-   DashboardIcon
+   DashboardIcon,
+   MovieIcon
 };

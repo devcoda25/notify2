@@ -15008,13 +15008,13 @@ fieldset:disabled .btn {
 }
 
 .choose_msg_btn {
-  min-width: auto;
-  max-width: 85px;
-  height: 36px;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  padding: 0.7rem 1.5rem;
+  min-width: auto !important;
+  max-width: 85px !important;
+  height: 36px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  padding: 0.7rem 1.5rem !important;
 }
 
 .condition_text {
@@ -15097,11 +15097,11 @@ fieldset:disabled .btn {
 }
 
 .image_upload {
-  width: 100%;
-  padding: 5px;
-  font-size: 12px;
-  height: 29px;
-  margin-top: 10px;
+  width: 100% !important;
+  padding: 5px !important;
+  font-size: 12px Im !important;
+  height: 29px !important;
+  margin-top: 10px !important;
 }
 
 .image_container {
@@ -15168,12 +15168,12 @@ fieldset:disabled .btn {
 }
 
 .condition_delete_btn {
-  width: 100%;
-  border: 1px solid rgb(255, 14, 14);
-  background: rgba(255, 42, 42, 0.05);
-  color: #ff0e0e;
-  height: 40px;
-  border-radius: 5px;
+  width: 100% !important;
+  border: 1px solid rgb(255, 14, 14) !important;
+  background: rgba(255, 42, 42, 0.05) !important;
+  color: #ff0e0e !important;
+  height: 40px !important;
+  border-radius: 5px !important;
 }
 
 .question_editor_container {
@@ -15357,12 +15357,12 @@ fieldset:disabled .btn {
 
 .variant_create_button {
 
-  width: 76px;
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  min-width: 88px;
-  height: 30px;
+  width: 76px !important;
+  position: absolute !important;
+  top: 4px !important;
+  right: 4px !important;
+  min-width: 88px !important;
+  height: 30px !important;
 
 }
 
@@ -15406,9 +15406,9 @@ fieldset:disabled .btn {
 }
 
 .fails_count_textbox {
-  height: 40px;
-  width: 54px;
-  margin-right: 15px;
+  height: 40px !important;
+  width: 54px !important;
+  margin-right: 15px !important;
 
 }
 
@@ -15433,7 +15433,7 @@ fieldset:disabled .btn {
 
 .section_text_box,
 .new_row_create_box {
-  background: white;
+  background: white !important;
 }
 
 .list_row {
@@ -15467,8 +15467,8 @@ fieldset:disabled .btn {
 }
 
 .add_sec_btn {
-  width: 100%;
-  margin-top: 15px
+  width: 100% !important;
+  margin-bottom: 15px !important
 }
 
 .list_row_delete {
@@ -15534,8 +15534,8 @@ fieldset:disabled .btn {
 }
 
 .url_input_box {
-  padding-left: 90px;
-  height: 42px;
+  padding-left: 90px !important;
+  height: 51px !important;
 }
 
 .url_set_variable {
@@ -19925,7 +19925,9 @@ gap:2px
   font-size: 18px;
   color: #888;
 }
-
+.chatbotcustomsearch{
+  border:none !important;
+}
 .scheduling_settings .scheduling_card {
   position: absolute;
   z-index: 1000;

@@ -155,6 +155,14 @@ const style = {
 
     },
   },
+ 
+  deleteIconHover: {
+    
+    "&:hover": {
+     color: "red",
+
+    },
+  },
   customTablePagination: {
     '.MuiTablePagination-displayedRows': {
       fontSize: '1.2rem',

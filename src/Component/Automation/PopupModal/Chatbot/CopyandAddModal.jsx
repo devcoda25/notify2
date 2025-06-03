@@ -51,12 +51,7 @@ const CopyandAddModal = ({
 }) => {
   const [chatbotName, setChatbotName] = useState(initialValue);
 
-  useEffect(() => {
-    if (!show) {
-      setChatbotName('');
-    }
-  }, [show]);
-
+ 
   const handleInputChange = (event) => {
     setChatbotName(event.target.value);
   };
@@ -67,6 +62,13 @@ const CopyandAddModal = ({
   };
 
   const isDisabled = !chatbotName;
+
+  useEffect(() => {
+    if (show) {
+      setChatbotName(initialValue);
+    }
+  }, [show, initialValue]);
+
 
   return (
     <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">

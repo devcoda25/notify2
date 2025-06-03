@@ -25,18 +25,24 @@ const style = {
         },
     },
 }
-const AutocompleteComponent = ({ options, value=[], onChange, placeholder,customStyles,disabled = false  }) => {
-    
+const AutocompleteComponent = ({ options, value = [], onChange, placeholder, customStyles, disabled = false, startAdornment = null,
+    endAdornment = null,open,onOpen,onClose }) => {
+
     return (
         <>
             <Autocomplete
-          
+
                 options={options}
                 // value={value}
                 value={Array.isArray(value) ? value : [value]}
                 disableClearable
                 onChange={onChange}
-                disabled ={disabled} 
+                disabled={disabled}
+                {...(typeof open !== 'undefined' && {
+                    open,
+                    onOpen,
+                    onClose,
+                  })}
                 renderInput={(params) => (
                     <TextField
                         {...params}
@@ -45,7 +51,9 @@ const AutocompleteComponent = ({ options, value=[], onChange, placeholder,custom
                         InputProps={{
                             ...params.InputProps,
                             disableUnderline: true,
-                            sx: {...style.autocompleteStyle,...customStyles}
+                            startAdornment: startAdornment || params.InputProps.startAdornment,
+                            endAdornment: endAdornment || params.InputProps.endAdornment,
+                            sx: { ...style.autocompleteStyle, ...customStyles }
                         }}
 
                     />

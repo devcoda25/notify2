@@ -6,24 +6,31 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { Autocomplete, TextField, Switch, Chip } from '@mui/material';
 import SetTagsModal from './Sidebar/SetTagsModal';
+import AssignToTeamModal from './Sidebar/AssignToTeamModal';
+import AssignToUserModal from './Sidebar/AssignToUserModal';
+import TriggerChatbotModal from './Sidebar/TriggerChatbotModal';
+import UpdateChatModal from './Sidebar/UpdateChatModal';
+import TemplatesModal from './Sidebar/TemplatesModal';
+import SetTimeDelayModal from './Sidebar/SetTimeDelayModal';
+import WebhookModal from './Sidebar/WebhookModal';
+import WhatsappFlowModal from './Sidebar/WhatsappFlowModal';
+import UpdateAttributesModal from './Sidebar/UpdateAttributesModal';
+import ButtonsModal from './Sidebar/ButtonsModal';
+import QuestionModal from './Sidebar/QuestionModal';
+import ListModal from './Sidebar/ListModal';
+import ConditionModal from './Sidebar/ConditionModal';
+import MessageOption from './Sidebar/MessageOption';
 import { Button, Modal, ModalBody } from 'react-bootstrap';
 
 
+
 import ReactFlow, { useNodesState, Position, ConnectionMode, ConnectionLineType, Handle, useEdgesState, addEdge, Background, MiniMap, Controls } from 'react-flow-renderer';
+import VariablesDropdown from './Sidebar/VariablesDropdown';
+import CopyandAddModal from '../PopupModal/Chatbot/CopyandAddModal';
 const emojis = [
     "😀", "😁", "😂", "😃", "😉", "😋", "😎", "😍", "😗", "🤗",
     "🤔", "😣", "😫", "😴", "😌", "🤓", "😛", "😜", "😠", "😇",
-    "😷", "😈", "👻", "😺", "😸", "😹", "😻", "😼", "😽", "🙀",
-    "🙈", "🙉", "🙊", "👼", "👮", "🕵", "💂", "👳", "🎅", "👸",
-    "👰", "👲", "🙍", "🙇", "🚶", "🏃", "💃", "⛷", "🏂", "🏌",
-    "🏄", "🚣", "🏊", "⛹", "🏋", "🚴", "👫", "💪", "👈", "👉",
-    "👆", "🖕", "👇", "🖖", "🤘", "🖐", "👌", "👍", "👎", "✊",
-    "👊", "👏", "🙌", "🙏", "🐵", "🐶", "🐇", "🐥", "🐸", "🐌",
-    "🐛", "🐜", "🐝", "🍉", "🍄", "🍔", "🍤", "🍨", "🍪", "🎂",
-    "🍰", "🍾", "🍷", "🍸", "🍺", "🌍", "🚑", "⏰", "🌙", "🌝",
-    "🌞", "⭐", "🌟", "🌠", "🌨", "🌩", "⛄", "🔥", "🎄", "🎈",
-    "🎉", "🎊", "🎁", "🎗", "🏀", "🏈", "🎲", "🔇", "🔈", "📣",
-    "🔔", "🎵", "🎷", "💰", "🖊", "📅", "✅", "❎", "💯"
+   
 ];
 const EditNavContent = ({ svg, title, subtitle, backgroundColor, background, onClick }) => {
     return (
@@ -147,2030 +154,2035 @@ const Card = ({ title, onTitleClick, content, width, height, headerBackgroundCol
     );
 };
 
-const EditChatNameModal = ({ show, onClose, onSave, initialName }) => {
-    const [chatbotName, setChatbotName] = useState('');
-
-    useEffect(() => {
-        setChatbotName(initialName);
-    }, [initialName]);
-
-    const handleInputChange = (event) => {
-        setChatbotName(event.target.value);
-    };
-
-    const isDisabled = !chatbotName;
-
-    const handleSave = () => {
-        onSave(chatbotName);
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">
-            <div className='keyword__delete__content copymodal_content'>
-                <Modal.Header className='keyword__delete__header' closeButton>
-                    <Modal.Title>Edit Chatbot</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='keyword__body__deletecontent'>
-                    <div className="delete__confirm__msg">Chatbot Name</div>
-                    <input
-                        type="text"
-                        placeholder="Chatbot Name"
-                        className='edit__text__input copymodal_text_input'
-                        value={chatbotName}
-                        onChange={handleInputChange}
-                    />
-                    <div className="keywordfooter__delete">
-                        <button
-                            className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`}
-                            disabled={isDisabled}
-                            onClick={handleSave}
-                        >
-                            Save
-                        </button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-
-const MessageOption = () => {
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-    const [textBoxVisibility, setTextBoxVisibility] = useState([]);
-    const [showTextbox, setShowTextbox] = useState(false);
-    const [inputValue, setInputValue] = useState('');
-    const [imageInputValue, setImageInputValue] = useState('');
-    const [isQuestionVisible, setIsQuestionVisible] = useState(false);
-    const [isImageBoxVisible, setImageBoxVisible] = useState(false);
-    const [showImageInput, setShowImageInput] = useState(true);
-    const [showImageContainer, setShowImageContainer] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imageContainers, setImageContainers] = useState([]);
-    const [videoContainers, setVideoContainers] = useState([]);
-    const [audioContainers, setAudioContainers] = useState([]);
-    const [documentContainers, setDocumentContainers] = useState([]);
-    const [isVisible, setIsVisible] = useState(false);
-    const [isVariablesVisible, setIsVariablesVisible] = useState(false);
-    const [isImageEmojiVisible, setIsImageEmojiVisible] = useState(false);
-    const [isImageVariablesVisible, setIsImageVariablesVisible] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const questionRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(null);
-    const activeInputRef = useRef(null);
-    const containerRef = useRef(null);
-    const handleInteraction = (e) => {
-        e.stopPropagation();
-
-    };
-
-
-    const formatText = (command) => {
-        document.execCommand(command, false, null);
-    };
-    const applyCurlyFormatting = (index) => {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            if (selectedText) {
-                const curlyText = `{${selectedText}}`;
-                const textNode = document.createTextNode(curlyText);
-                range.deleteContents();
-                range.insertNode(textNode);
-                selection.removeAllRanges();
-
-                // Save curly-formatted text in state
-                setTextBoxVisibility((prev) => {
-                    const newVisibility = [...prev];
-                    newVisibility[index].text = curlyText; // Save curly-formatted text
-                    return newVisibility;
-                });
-            }
-        }
-    };
-
-
-    // const handleMessageClick = () => {
-    //     // setShowTextbox(true);
-    //     setTextBoxVisibility((prev) => [...prev, { showTextContainer: true, isQuestionVisible: false }]);
-    // };
-    const handleMessageClick = () => {
-        setTextBoxVisibility((prev) => [
-            ...prev,
-            { showTextContainer: true, isQuestionVisible: false, text: '' }
-        ]);
-    };
-    // const handleInputClick = (index) => {
-    //     setTextBoxVisibility((prev) => {
-    //         const newVisibility = [...prev];
-
-
-    //         if (currentIndex === index) {
-    //             newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
-    //             newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible; // Toggle showTextContainer
-    //         } else {
-    //             // Hide the previously opened question and show the text container
-    //             if (currentIndex !== null) {
-    //                 newVisibility[currentIndex].isQuestionVisible = false; // Hide previous question
-    //                 newVisibility[currentIndex].showTextContainer = true; // Show previous text container
-    //             }
-
-    //             newVisibility[index].isQuestionVisible = true;
-    //             newVisibility[index].showTextContainer = false;
-    //             setCurrentIndex(index); // Update currentIndex to the new index
-    //         }
-
-    //         return newVisibility;
-    //     });
-    //     // setShowTextbox(false);
-    //     // setIsQuestionVisible(true);
-    //     setImageBoxVisible(false);
-    //     setShowImageInput(true);
-    // };
-    const handleInputClick = (index) => {
-        setTextBoxVisibility((prev) => {
-            const newVisibility = [...prev];
-            if (currentIndex === index) {
-                newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
-                newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible;
-            } else {
-                if (currentIndex !== null) {
-                    newVisibility[currentIndex].isQuestionVisible = false;
-                    newVisibility[currentIndex].showTextContainer = true;
-                }
-                newVisibility[index].isQuestionVisible = true;
-                newVisibility[index].showTextContainer = false;
-                setCurrentIndex(index);
-            }
-            return newVisibility;
-        });
-    };
-    const handleBlur = (index, e) => {
-        const newText = e.currentTarget.innerHTML; // Capture formatted HTML
-        setTextBoxVisibility((prev) => {
-            const newVisibility = [...prev];
-            newVisibility[index].text = newText; // Update text with HTML content on blur
-            return newVisibility;
-        });
-    };
-
-    const handleImageInputClick = () => {
-        setImageBoxVisible(true);
-        setShowImageInput(false);
-        setShowTextbox(true);
-        setIsQuestionVisible(false);
-    }
-    const toggleVariablesDropdown = () => {
-        setIsVariablesVisible((prev) => !prev);
-        setIsVisible(false);
-    };
-    const toggleImageVariableDropdown = () => {
-        setIsImageVariablesVisible((prev) => !prev);
-    }
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleEmojiPicker = () => {
-        setIsVisible((prev) => !prev);
-        setIsVariablesVisible(false);
-    };
-    const toggleImageEmojiPicker = () => {
-        setIsImageEmojiVisible((prev) => !prev);
-    }
-    // const handleEmojiClick = (emoji) => {
-    //     setInputValue(prev => prev + emoji);
-    //     setIsVisible(false);
-    // };
-    const handleEmojiClick = (emoji) => {
-        if (activeInputRef.current) {
-            const currentHTML = activeInputRef.current.innerHTML;
-            activeInputRef.current.innerHTML = currentHTML + emoji;
-            handleBlur(currentIndex, { currentTarget: activeInputRef.current }); // Update state with new HTML content
-        }
-        setIsVisible(false);
-    };
-    const handleImageEmojiClick = (emoji) => {
-        setImageInputValue(prev => prev + emoji);
-        setIsImageEmojiVisible(false);
-    }
-    const handleVariableClick = (variable) => {
-        if (activeInputRef.current) {
-            const currentHTML = activeInputRef.current.innerHTML;
-            activeInputRef.current.innerHTML = currentHTML + variable.value;
-            handleBlur(currentIndex, { currentTarget: activeInputRef.current }); // Update state with new HTML content
-        }
-        // setInputValue(prev => prev + variable.value);
-        setIsVariablesVisible(false);
-    };
-    const handleImageVariableClick = (variable) => {
-        setImageInputValue(prev => prev + variable.value);
-        setIsImageVariablesVisible(false);
-    }
-    const handleMessageDelete = (index) => {
-        //setShowTextbox(false);
-        setTextBoxVisibility((prev) => prev.filter((_, i) => i !== index));
-
-        if (currentIndex === index) {
-            setCurrentIndex(null);
-        }
-
-    }
-
-    const handleImageDelete = (index) => {
-        // setShowImageContainer(false);
-        setImageContainers(prev => prev.filter((_, i) => i !== index));
-    }
-
-    const handleImageUpload = (event, index) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImageContainers(prev => {
-                    const newContainers = [...prev];
-                    newContainers[index] = reader.result;
-                    return newContainers;
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    //video
-    const handleImageClick = () => {
-        setImageContainers(prev => [...prev, null]);
-    }
-    const handleVideoClick = () => {
-        setVideoContainers(prev => [...prev, null]);
-    };
-
-    const handleVideoUpload = (event, index) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setVideoContainers(prev => {
-                    const newContainers = [...prev];
-                    newContainers[index] = reader.result; // Update specific container
-                    return newContainers;
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleVideoDelete = (index) => {
-        setVideoContainers(prev => prev.filter((_, i) => i !== index));
-    };
-
-    //Audio
-    const handleAudioClick = () => {
-        setAudioContainers(prev => [...prev, null]);
-    };
-    const handleAudioUpload = (event, index) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setAudioContainers(prev => {
-                    const newContainers = [...prev];
-                    newContainers[index] = reader.result;
-                    return newContainers;
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    const handleAudioDelete = (index) => {
-        setAudioContainers(prev => prev.filter((_, i) => i !== index));
-    };
-
-    //Document
-    const handleDocumentClick = () => {
-        setDocumentContainers(prev => [...prev, { file: null, name: '' }]);
-    };
-    const handleDocumentUpload = (event, index) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setDocumentContainers(prev => {
-                    const newContainers = [...prev];
-                    newContainers[index] = { file: reader.result, name: file.name };
-                    return newContainers;
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleDocumentDelete = (index) => {
-        setDocumentContainers(prev => prev.filter((_, i) => i !== index));
-    };
-
-    // prevent the drag and drop functionality inside the inputbox
-    useEffect(() => {
-        // Function to prevent any movement inside the container
-        const preventDrag = (e) => {
-            if (questionRef.current && questionRef.current.contains(e.target)) {
-                e.stopPropagation();
-            }
-        };
-
-
-        // Attach listeners
-        document.addEventListener('mousemove', preventDrag, true);
-        document.addEventListener('mousedown', preventDrag, true);
-        document.addEventListener('mouseup', preventDrag, true);
-
-        // Cleanup function to remove listeners on component unmount
-        return () => {
-            document.removeEventListener('mousemove', preventDrag, true);
-            document.removeEventListener('mousedown', preventDrag, true);
-            document.removeEventListener('mouseup', preventDrag, true);
-
-        };
-    }, []);
-
-    // Close the question text container if the user clicks outside of it
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (containerRef.current && !containerRef.current.contains(event.target)) {
-                // Close question and show text container
-                if (currentIndex !== null) {
-                    setTextBoxVisibility((prev) => {
-                        const newVisibility = [...prev];
-                        newVisibility[currentIndex].isQuestionVisible = false;
-                        newVisibility[currentIndex].showTextContainer = true;
-                        return newVisibility;
-                    });
-                }
-            }
-        };
-
-        // Add event listener to detect clicks outside
-        document.addEventListener('mousedown', handleClickOutside);
-
-        // Cleanup event listener on unmount
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [currentIndex]);
-    return (
-        <>
-            {textBoxVisibility.map((item, index) => (
-                <>
-                    {item.showTextContainer && (
-                        <>
-                            <div style={{ position: 'relative' }} >
-
-                                <div
-                                    className='edit__text__input message_input_box'
-                                    contentEditable={false} // Prevent editing in `showTextContainer`
-                                    dangerouslySetInnerHTML={{ __html: item.text }} // Render stored HTML
-                                    onClick={() => handleInputClick(index)}
-                                    style={{ height: '35px' }}
-                                ></div>
-
-                                <button className='message_delete_icon' style={{ top: '0%' }} onClick={() => handleMessageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                            </div>
-
-                        </>
-                    )}
-                    {item.isQuestionVisible && (
-                        <div className='question_text_content' ref={(el) => {
-                            questionRef.current = el; // Attach ref for drag and drop
-                            containerRef.current = el; // Attach ref for outside click detection
-                        }}>
-
-                            <div className='question_editor_container' >
-
-
-                                <div
-                                    className='message_edit__text__input question_editor_text'
-                                    contentEditable={true}
-                                    suppressContentEditableWarning={true}
-                                    dangerouslySetInnerHTML={{ __html: item.text }} // Display stored HTML on edit
-                                    onBlur={(e) => handleBlur(index, e)}
-                                    onClick={(e) => {
-                                        activeInputRef.current = e.currentTarget; // Set the active input ref
-                                    }}
-                                ></div>
-                                <div className='question_editor_toolbar'>
-                                    <div className='inline_toolbar'>
-                                        <div className='option_toolbar' onClick={() => formatText('bold')}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={() => formatText('italic')}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={() => applyCurlyFormatting(index)}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={toggleEmojiPicker}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
-                                        </div>
-
-                                    </div>
-                                    <div className='question_variable_btn'>
-                                        <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
-                                    </div>
-                                </div>
-                            </div>
-                            {isVisible && (
-                                <div className="emoji_dropdown">
-                                    {emojis.map((emoji, index) => (
-                                        <span
-                                            key={index}
-                                            className="emoji_icon"
-                                            onClick={() => handleEmojiClick(emoji)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            {emoji}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-                            {isVariablesVisible && (
-                                <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                    <div className="variables_search_bar">
-                                        <div>
-                                            <input
-                                                className=" variables_search_input"
-                                                type="text"
-                                                placeholder="Search variables"
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='varibles_drop_content'>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                            {filteredVariables.map((variable, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
-                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                            {filterContactAttributes.map((contact, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
-                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </>
-            ))}
-            {imageContainers.map((image, index) => (
-                <div key={index} className='image_container'>
-                    <div className='message_image_content'>
-                        {image ? (
-                            <img src={image} alt="Uploaded" style={{ width: '100%', height: '100%' }} />
-                        ) : (
-                            <ImageIcon />
-                        )}
-                    </div>
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`image-input-${index}`).click()}>
-                        Upload image
-                    </button>
-                    <button className='message_delete_icon' onClick={() => handleImageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                    {
-                        showImageInput && (
-                            <div className='edit__text__input message_input_box image_text_input_field'
-                                contentEditable
-                                suppressContentEditableWarning={true}
-                                onInput={(e) => setImageInputValue(e.currentTarget.innerHTML)}
-                                dangerouslySetInnerHTML={{ __html: imageInputValue }} onClick={handleImageInputClick}></div>
-                        )
-                    }
-
-                    {isImageBoxVisible && (
-                        <div className='question_text_content image_text_input_field' ref={questionRef} >
-
-                            <div className='question_editor_container' onMouseDown={handleInteraction} onTouchStart={handleInteraction}>
-
-                                <div
-                                    className='message_edit__text__input question_editor_text'
-                                    contentEditable
-                                    suppressContentEditableWarning={true}
-                                    onInput={(e) => setImageInputValue(e.currentTarget.innerHTML)}
-                                    onFocus={() => setShowImageInput(false)}
-                                    dangerouslySetInnerHTML={{ __html: imageInputValue }}
-                                >
-
-                                </div>
-                                <div className='question_editor_toolbar'>
-                                    <div className='inline_toolbar'>
-                                        <div className='option_toolbar' onClick={() => formatText('bold')}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={() => formatText('italic')}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={applyCurlyFormatting}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
-                                        </div>
-                                        <div className='option_toolbar' onClick={toggleImageEmojiPicker}>
-                                            <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
-                                        </div>
-
-                                    </div>
-                                    <div className='question_variable_btn'>
-                                        <button className='btn btn-success variable_btn' onClick={toggleImageVariableDropdown} >Variables  </button>
-                                    </div>
-                                </div>
-                            </div>
-                            {isImageEmojiVisible && (
-                                <div className="emoji_dropdown">
-                                    {emojis.map((emoji, index) => (
-                                        <span
-                                            key={index}
-                                            className="emoji_icon"
-                                            onClick={() => handleImageEmojiClick(emoji)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            {emoji}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-                            {isImageVariablesVisible && (
-                                <div className="varibles_drop_container" aria-hidden={!isImageVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                    <div className="variables_search_bar">
-                                        <div>
-                                            <input
-                                                className=" variables_search_input"
-                                                type="text"
-                                                placeholder="Search variables"
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='varibles_drop_content'>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                            {filteredVariables.map((variable, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleImageVariableClick(variable)}>
-                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                            {filterContactAttributes.map((contact, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleImageVariableClick(contact)}>
-                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                    <input
-                        type='file'
-                        id={`image-input-${index}`}
-                        className='edt__text__input image_input_box'
-                        style={{ display: "none" }}
-                        onChange={(event) => handleImageUpload(event, index)}
-                    />
-
-                </div>
-            ))}
-
-            {videoContainers.map((video, index) => (
-                <div key={index} className='image_container'>
-                    <div className='message_image_content'>
-                        {video ? (
-                            <video controls style={{ width: '100%', height: '100%' }}>
-                                <source src={video} type="video/mp4" />
-                            </video>
-                        ) : (
-                            <MovieIcon />
-                        )}
-                    </div>
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`video-input-${index}`).click()}>
-                        Upload video
-                    </button>
-                    <button className='message_delete_icon' onClick={() => handleVideoDelete(index)}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                    <input
-                        type='file'
-                        id={`video-input-${index}`}
-                        className='edt__text__input image_input_box'
-                        style={{ display: "none" }}
-                        onChange={(event) => handleVideoUpload(event, index)}
-                    />
-                </div>
-            ))}
-
-            {audioContainers.map((audio, index) => (
-                <div key={index} className='image_container'>
-                    <div className='message_image_content'>
-                        {audio ? (
-                            <audio controls style={{ width: '100%' }}>
-                                <source src={audio} />
-                            </audio>
-                        ) : (
-                            <AudiotrackIcon />
-                        )}
-                    </div>
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`audio-input-${index}`).click()}>
-                        Upload audio
-                    </button>
-                    <button className='message_delete_icon' onClick={() => handleAudioDelete(index)}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                    <input
-                        type='file'
-                        id={`audio-input-${index}`}
-                        className='edt__text__input image_input_box'
-                        style={{ display: "none" }}
-                        onChange={(event) => handleAudioUpload(event, index)}
-                    />
-                </div>
-            ))}
-
-            {documentContainers.map((doc, index) => (
-                <div key={index} className='image_container'>
-                    <div className='message_image_content'>
-                        <DescriptionOutlinedIcon />
-                    </div>
-                    {doc.file && (
-                        <a href={doc.file} className='selecteddoc_link'>{doc.name}</a>
-                    )}
-                    <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`document-input-${index}`).click()}>
-                        Upload document
-                    </button>
-                    <button className='message_delete_icon' onClick={() => handleDocumentDelete(index)}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                    <input
-                        type='file'
-                        id={`document-input-${index}`}
-                        className='edt__text__input image_input_box'
-                        style={{ display: "none" }}
-                        onChange={(event) => handleDocumentUpload(event, index)}
-                    />
-                </div>
-            ))}
-            <div className='choose_msg_list'>
-                <button className='footer__cancel__btn choose_msg_btn' onClick={handleMessageClick}>Message</button>
-                <button className='footer__cancel__btn choose_msg_btn' onClick={handleImageClick}>Image</button>
-                <button className='footer__cancel__btn choose_msg_btn' onClick={handleVideoClick}>Video</button>
-                <button className='footer__cancel__btn choose_msg_btn' onClick={handleAudioClick}>Audio</button>
-                <button className='footer__cancel__btn choose_msg_btn' onClick={handleDocumentClick}>Document</button>
-            </div>
-        </>
-    )
-}
-
-const ConditionModal = ({ show, onClose, onSave }) => {
-    const [conditions, setConditions] = useState([{ id: Date.now() }]);
-    const [content, setContent] = useState('');
-    const [open, setOpen] = useState(false);
-    const options = ['Option 1', 'Option 2', 'Option 3'];
-    const dropOptions = ['Equal to', 'Not Equal to', 'Contains']
-    const [secondContent, setSecondContent] = useState('Equal to');
-    const dropValue = ['Option 1', 'Option 2', 'Option 3'];
-    const [thirdContent, setThirdContent] = useState('');
-    const [openDropdown, setOpenDropdown] = useState(false);
-
-    const addCondition = () => {
-        setConditions([...conditions, { id: Date.now() }]);
-    };
-
-    const deleteCondition = (id) => {
-        const updatedConditions = conditions.filter(condition => condition.id !== id);
-        setConditions(updatedConditions);
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_condition_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Set a Condition</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='edit__text__label'>Set the condition(s)</div>
-                    <div>
-                        {conditions.map((condition, index) => (
-                            <div key={condition.id} className='set_condition_container'>
-                                <Autocomplete
-                                    options={options}
-                                    value={content}
-                                    disableClearable
-                                    onChange={(event, newValue) => setContent(newValue)}
-                                    open={open}
-                                    onOpen={() => setOpen(true)}
-                                    onClose={() => setOpen(false)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            placeholder="Type or select a variable"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                disableUnderline: true,
-                                                startAdornment: (
-                                                    <div className="set_condition_field__icon" style={{ marginRight: '8px' }}>
-                                                        <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="HelpIcon" width="20px" height="20px">
-                                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"></path>
-                                                        </svg>
-                                                        <span>IF</span>
-                                                    </div>
-                                                ),
-                                                endAdornment: (
-                                                    <div className="">
-                                                        <button className='btn btn-success variable_btn'
-                                                            onClick={() => setOpen(!open)}
-                                                        >
-                                                            Variables
-                                                        </button>
-                                                    </div>
-                                                ),
-                                                sx: {
-                                                    border: 'none',
-                                                    fontSize: '12px',
-                                                    borderRadius: '4px',
-                                                    height: '3rem',
-                                                    paddingLeft: '50px',
-                                                    paddingRight: '50px',
-                                                    backgroundColor: 'white',
-                                                    '&:hover': {
-                                                        border: 'none',
-                                                    },
-                                                    '&.Mui-focused': {
-                                                        border: 'none',
-                                                        backgroundColor: 'white',
-                                                        outline: 'none',
-                                                    },
-                                                },
-                                            }}
-
-                                        />
-                                    )}
-
-                                />
-                                <Autocomplete
-                                    options={dropOptions}
-                                    value={secondContent}
-                                    disableClearable
-                                    onChange={(event, newValue) => setSecondContent(newValue)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            placeholder=""
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                disableUnderline: true,
-                                                sx: {
-                                                    border: '1px solid rgb(232, 234, 242)',
-                                                    borderRadius: '4px',
-                                                    height: '3rem',
-                                                    paddingLeft: '10px',
-                                                    backgroundColor: 'white',
-                                                    '&:hover': {
-                                                        border: '1px solid green',
-                                                    },
-                                                    '&.Mui-focused': {
-                                                        border: '1px solid green',
-                                                        backgroundColor: 'white',
-                                                        outline: 'none',
-                                                    },
-                                                },
-                                            }}
-
-                                        />
-                                    )}
-
-                                />
-                                <Autocomplete
-                                    options={dropValue}
-                                    value={thirdContent}
-                                    disableClearable
-                                    onChange={(event, newValue) => setThirdContent(newValue)}
-                                    open={openDropdown}
-                                    onOpen={() => setOpenDropdown(true)}
-                                    onClose={() => setOpenDropdown(false)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            placeholder="Type Value"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                disableUnderline: true,
-
-                                                endAdornment: (
-                                                    <div className="">
-                                                        <button className='btn btn-success variable_btn'
-                                                            onClick={() => setOpen(!openDropdown)}
-                                                        >
-                                                            Variables
-                                                        </button>
-                                                    </div>
-                                                ),
-                                                sx: {
-                                                    border: 'none',
-                                                    fontSize: '12px',
-                                                    borderRadius: '4px',
-                                                    height: '3rem',
-                                                    paddingLeft: '10px',
-                                                    backgroundColor: 'white',
-                                                    '&:hover': {
-                                                        border: 'none',
-                                                    },
-                                                    '&.Mui-focused': {
-                                                        border: 'none',
-                                                        backgroundColor: 'white',
-                                                        outline: 'none',
-                                                    },
-                                                },
-                                            }}
-
-                                        />
-                                    )}
-
-                                />
-
-                                {index > 0 && (
-                                    <button onClick={() => deleteCondition(condition.id)} className='condition_delete_btn'>
-                                        Delete
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-
-                        {conditions.length === 1 && (
-
-                            <button className='footer__cancel__btn condition__add' onClick={addCondition}>+ Add</button>
-                        )}
-                    </div>
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const QuestionModal = ({ show, onClose, onSave }) => {
-    const [inputValue, setInputValue] = useState("");
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-    const [isActive, setIsActive] = useState(false); //toggle
-    const handleToggle = () => {
-        setIsActive(!isActive);
-    };
-    const [isActiveAdvancedOption, setIsActiveAdvancedOption] = useState(false);
-    const handleToggleAdvancedOptions = () => {
-        setIsActiveAdvancedOption(!isActiveAdvancedOption)
-    }
-    const [isVisible, setIsVisible] = useState(false);
-    const [isVariablesVisible, setIsVariablesVisible] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-    const validationOptions = ["Number", "Date", 'Date + Time', "Time", "Pattern (regex)"]
-    const [validation, setValidation] = useState('');
-    const toggleVariablesDropdown = () => {
-        setIsVariablesVisible((prev) => !prev);
-    };
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleEmojiPicker = () => {
-        setIsVisible((prev) => !prev);
-    };
-    const handleEmojiClick = (emoji) => {
-        setInputValue(prev => prev + emoji);
-        setIsVisible(false);
-    };
-
-    const handleVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
-        setIsVariablesVisible(false);
-    };
-    const formatText = (command) => {
-        document.execCommand(command, false, null);
-    };
-    const applyCurlyFormatting = () => {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            if (selectedText) {
-                const curlyText = `{${selectedText}}`;
-                const textNode = document.createTextNode(curlyText);
-                range.deleteContents();
-                range.insertNode(textNode);
-                selection.removeAllRanges();
-            }
-        }
-    };
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Set a question</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-                        <div className='edit__text__label'>Question Text</div>
-                        <div className='question_editor_container'>
-                            {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} /> */}
-                            <div
-                                className='message_edit__text__input question_editor_text'
-                                contentEditable
-                                suppressContentEditableWarning={true}
-                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                dangerouslySetInnerHTML={{ __html: inputValue }}
-                            >
-
-                            </div>
-
-                            <div className='question_editor_toolbar'>
-                                <div className='inline_toolbar'>
-                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={applyCurlyFormatting}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={toggleEmojiPicker}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
-                                    </div>
-
-                                </div>
-                                <div className='question_variable_btn'>
-                                    <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
-                                </div>
-                            </div>
-                        </div>
-                        {isVisible && (
-                            <div className="emoji_dropdown">
-                                {emojis.map((emoji, index) => (
-                                    <span
-                                        key={index}
-                                        className="emoji_icon"
-                                        onClick={() => handleEmojiClick(emoji)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {emoji}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                        {isVariablesVisible && (
-                            <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                <div className="variables_search_bar">
-                                    <div>
-                                        <input
-                                            className=" variables_search_input"
-                                            type="text"
-                                            placeholder="Search variables"
-                                            value={searchTerm}
-                                            onChange={handleSearchChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className='varibles_drop_content'>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                        {filteredVariables.map((variable, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
-                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                        {filterContactAttributes.map((contact, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
-                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Add Answer variant</div>
-                        <div className='question_variant_item'>
-                            <input type="text" className='edit__text__input variant_text_box' placeholder='Hi!' />
-                            <button className='btn btn-success variant_create_button'>Create</button>
-                        </div>
-                    </div>
-
-                    <div className='question_text_container'>
-                        <div className='question_accept_container'>
-                            <div className='edit__text__label'>Accept a media response</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">Off</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isActive ? 'active' : ''}`}
-                                    onClick={handleToggle}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-                                <label className="toggle-label">On</label>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Save Answer in a Variable</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='@Value' />
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='question_accept_container'>
-                            <div className='edit__text__label'>Advanced options</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">Off</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isActiveAdvancedOption ? 'active' : ''}`}
-                                    onClick={handleToggleAdvancedOptions}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-                                <label className="toggle-label">On</label>
-                            </div>
-
-                        </div>
-                    </div>
-                    {
-                        isActiveAdvancedOption &&
-                        <>
-                            <div className='validation_container'>
-                                <div className='edit__text__label'>Validation</div>
-                                <Autocomplete
-                                    options={validationOptions}
-                                    value={validation}
-                                    disableClearable
-                                    onChange={(event, newValue) => setValidation(newValue)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            placeholder=""
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                disableUnderline: true,
-                                                sx: {
-                                                    border: '1px solid rgb(232, 234, 242)',
-                                                    borderRadius: '4px',
-                                                    height: '3rem',
-                                                    paddingLeft: '10px',
-                                                    backgroundColor: validation ? 'white' : 'rgb(245, 246, 250)',
-                                                    '&:hover': {
-                                                        border: '1px solid green',
-                                                    },
-                                                    '&.Mui-focused': {
-                                                        border: '1px solid green',
-                                                        backgroundColor: 'white',
-                                                        outline: 'none',
-                                                    },
-                                                },
-                                            }}
-
-                                        />
-                                    )}
-
-                                />
-                            </div>
-                            {validation === "Number" && (
-                                <div className='validation_container'>
-                                    <div className='edit__text__label'>Minimum Value</div>
-                                    <input type='number' className='edit__text__input validation_number_textbox' placeholder='0' />
-
-                                    <div className='edit__text__label'>Maximum Value</div>
-                                    <input type='number' className='edit__text__input validation_number_textbox' placeholder='9999' />
-                                </div>
-                            )}
-                            {validation === "Pattern (regex)" && (
-                                <div className='validation_container'>
-                                    <div className='edit__text__label'>Regex Pattern</div>
-                                    <input type='text' className='edit__text__input validation_number_textbox' placeholder='Examples:$,%' />
-
-                                </div>
-                            )}
-                            <div className='validation_container'>
-                                <div className='edit__text__label'>Validation error message</div>
-                                <textarea value="I'm afraid I didn't understand, could you try again, please?" class="edit__text__textarea validation_textarea"  ></textarea>
-                            </div>
-                            <div className='validation_container'>
-                                <div className='Validation_fails_count'>
-                                    Exit chatbot if validation failed more than
-                                    <input type="number" className='edit__text__input fails_count_textbox' />
-                                </div>
-                            </div>
-                        </>
-
-                    }
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-
-const ButtonsModal = ({ show, onClose, onSave }) => {
-    const [inputValue, setInputValue] = useState("");
-    const [HeaderValue, setHeaderValue] = useState('');
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-    const [isActive, setIsActive] = useState(false); //toggle
-    const handleToggle = () => {
-        setIsActive(!isActive);
-    };
-
-
-    const [isVisible, setIsVisible] = useState(false);
-    const [isVariablesVisible, setIsVariablesVisible] = useState(false);
-    const [isHeaderVariables, setIsHeaderVariables] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const toggleVariablesDropdown = () => {
-        setIsVariablesVisible((prev) => !prev);
-    };
-    const toggleHeaderVariablesDropdown = () => {
-        setIsHeaderVariables((prev) => !prev);
-    }
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleEmojiPicker = () => {
-        setIsVisible((prev) => !prev);
-    };
-    const handleEmojiClick = (emoji) => {
-        setInputValue(prev => prev + emoji);
-        setIsVisible(false);
-    };
-
-    const handleVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
-        setIsVariablesVisible(false);
-    };
-    const handleHeaderVariableClick = (variable) => {
-        setHeaderValue(prev => prev + variable.value);
-        setIsHeaderVariables(false);
-    };
-    const formatText = (command) => {
-        document.execCommand(command, false, null);
-    };
-    const applyCurlyFormatting = () => {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            if (selectedText) {
-                const curlyText = `{${selectedText}}`;
-                const textNode = document.createTextNode(curlyText);
-                range.deleteContents();
-                range.insertNode(textNode);
-                selection.removeAllRanges();
-            }
-        }
-    };
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Set Button</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-                        <div className='question_accept_container media_header_text'>
-                            <div className='edit__text__label'>Media Header</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">optional</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isActive ? 'active' : ''}`}
-                                    onClick={handleToggle}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-
-                            </div>
-
-                        </div>
-                    </div>
-                    {
-                        !isActive &&
-                        <div className='question_text_container'>
-                            <div className='edit__text__label'>Header Text</div>
-                            <div className='question_variant_item'>
-                                <input type="text" className='edit__text__input message_input_box' placeholder='inputvalue'
-                                    value={HeaderValue}
-                                    onChange={(e) => setHeaderValue(e.target.value)} />
-                                <button className='btn btn-success variant_create_button' onClick={toggleHeaderVariablesDropdown} >variables</button>
-                            </div>
-                            {isHeaderVariables && (
-                                <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                    <div className="variables_search_bar">
-                                        <div>
-                                            <input
-                                                className=" variables_search_input"
-                                                type="text"
-                                                placeholder="Search variables"
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='varibles_drop_content'>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                            {filteredVariables.map((variable, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
-                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                            {filterContactAttributes.map((contact, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
-                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    }
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Body Text</div>
-                        <div className='question_editor_container'>
-                            {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} /> */}
-                            <div
-                                className='message_edit__text__input question_editor_text'
-                                contentEditable
-                                suppressContentEditableWarning={true}
-                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                dangerouslySetInnerHTML={{ __html: inputValue }}
-                            >
-
-                            </div>
-
-                            <div className='question_editor_toolbar'>
-                                <div className='inline_toolbar'>
-                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={applyCurlyFormatting} >
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={toggleEmojiPicker}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
-                                    </div>
-
-                                </div>
-                                <div className='question_variable_btn'>
-                                    <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
-                                </div>
-                            </div>
-                        </div>
-                        {isVisible && (
-                            <div className="emoji_dropdown">
-                                {emojis.map((emoji, index) => (
-                                    <span
-                                        key={index}
-                                        className="emoji_icon"
-                                        onClick={() => handleEmojiClick(emoji)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {emoji}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                        {isVariablesVisible && (
-                            <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                <div className="variables_search_bar">
-                                    <div>
-                                        <input
-                                            className=" variables_search_input"
-                                            type="text"
-                                            placeholder="Search variables"
-                                            value={searchTerm}
-                                            onChange={handleSearchChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className='varibles_drop_content'>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                        {filteredVariables.map((variable, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
-                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                        {filterContactAttributes.map((contact, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
-                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Footer Text</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Button 1</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='Answer 1' />
-                        <div className='edit__text__label'>New Button</div>
-                        <div className='question_variant_item'>
-                            <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
-                            <button className='btn btn-success variant_create_button'>Create</button>
-                        </div>
-
-                    </div>
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Save Answer in a Variable</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='@Value' />
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const ListModal = ({ show, onClose, onSave }) => {
-    const [inputValue, setInputValue] = useState("");
-    const [HeaderValue, setHeaderValue] = useState('');
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-
-    //add description button
-
-
-    const [sections, setSections] = useState([
-        { title: 'Section 1 Title', showDescription: false, showNewRow: false }
-    ]);
-
-    const handleAddSection = () => {
-        const newSectionNumber = sections.length + 1;
-        const newSection = { title: `Section ${newSectionNumber} Title`, showDescription: false, showNewRow: false };
-        setSections([...sections, newSection]);
-    };
-
-    const handleDeleteSection = (index) => {
-        const newSections = sections.filter((_, i) => i !== index);
-        setSections(newSections);
-    };
-
-    const handleAddDescription = (index) => {
-        const newSections = sections.map((section, i) => (
-            i === index ? { ...section, showDescription: true } : section
-        ));
-        setSections(newSections);
-    };
-
-    const handleDeleteDescription = (index) => {
-        const newSections = sections.map((section, i) => (
-            i === index ? { ...section, showDescription: false } : section
-        ));
-        setSections(newSections);
-    };
-
-    const handleAddNewRow = (index) => {
-        const newSections = sections.map((section, i) => (
-            i === index ? { ...section, showNewRow: true } : section
-        ));
-        setSections(newSections);
-    };
-    const [isVisible, setIsVisible] = useState(false);
-    const [isVariablesVisible, setIsVariablesVisible] = useState(false);
-    const [isHeaderVariables, setIsHeaderVariables] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const toggleVariablesDropdown = () => {
-        setIsVariablesVisible((prev) => !prev);
-    };
-    const toggleHeaderVariablesDropdown = () => {
-        setIsHeaderVariables((prev) => !prev);
-    }
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleEmojiPicker = () => {
-        setIsVisible((prev) => !prev);
-    };
-    const handleEmojiClick = (emoji) => {
-        setInputValue(prev => prev + emoji);
-        setIsVisible(false);
-    };
-
-    const handleVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
-        setIsVariablesVisible(false);
-    };
-    const handleHeaderVariableClick = (variable) => {
-        setHeaderValue(prev => prev + variable.value);
-        setIsHeaderVariables(false);
-    };
-
-    const formatText = (command) => {
-        document.execCommand(command, false, null);
-    };
-    const applyCurlyFormatting = () => {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            if (selectedText) {
-                const curlyText = `{${selectedText}}`;
-                const textNode = document.createTextNode(curlyText);
-                range.deleteContents();
-                range.insertNode(textNode);
-                selection.removeAllRanges();
-            }
-        }
-    };
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Set List</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-
-                    <div className='question_text_content'>
-                        <div className='edit__text__label'>Header Text</div>
-                        <div className='question_variant_item'>
-                            <input type="text" className='edit__text__input message_input_box' placeholder='inputvalue'
-                                value={HeaderValue}
-                                onChange={(e) => setHeaderValue(e.target.value)} />
-                            <button className='btn btn-success variant_create_button' onClick={toggleHeaderVariablesDropdown} >variables</button>
-                        </div>
-                        {isHeaderVariables && (
-                            <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                <div className="variables_search_bar">
-                                    <div>
-                                        <input
-                                            className=" variables_search_input"
-                                            type="text"
-                                            placeholder="Search variables"
-                                            value={searchTerm}
-                                            onChange={handleSearchChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className='varibles_drop_content'>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                        {filteredVariables.map((variable, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
-                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                        {filterContactAttributes.map((contact, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
-                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Body Text</div>
-                        <div className='question_editor_container'>
-                            {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)} /> */}
-                            <div
-                                className='message_edit__text__input question_editor_text'
-                                contentEditable
-                                suppressContentEditableWarning={true}
-                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                dangerouslySetInnerHTML={{ __html: inputValue }}
-                            >
-
-                            </div>
-
-                            <div className='question_editor_toolbar'>
-                                <div className='inline_toolbar'>
-                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={applyCurlyFormatting}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={toggleEmojiPicker}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
-                                    </div>
-
-                                </div>
-                                <div className='question_variable_btn'>
-                                    <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
-                                </div>
-                            </div>
-                        </div>
-                        {isVisible && (
-                            <div className="emoji_dropdown">
-                                {emojis.map((emoji, index) => (
-                                    <span
-                                        key={index}
-                                        className="emoji_icon"
-                                        onClick={() => handleEmojiClick(emoji)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {emoji}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                        {isVariablesVisible && (
-                            <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                <div className="variables_search_bar">
-                                    <div>
-                                        <input
-                                            className=" variables_search_input"
-                                            type="text"
-                                            placeholder="Search variables"
-                                            value={searchTerm}
-                                            onChange={handleSearchChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className='varibles_drop_content'>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                        {filteredVariables.map((variable, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
-                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                        {filterContactAttributes.map((contact, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
-                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Footer Text</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
-                    </div>
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Button Text</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='Menu Here' />
-                    </div>
-
-                    <div className='question_text_container'>
-                        {sections.map((section, index) => (
-                            <div className='section_container' key={index} style={{ marginBottom: '20px' }}>
-                                <div>
-                                    <div className='edit__text__label'>{section.title}</div>
-                                    <input type="text" className='edit__text__input section_text_box' placeholder='input Value' />
-                                </div>
-                                <div>
-                                    <div className='list_row'>
-                                        <div>
-                                            <div className='list_row_header'>
-                                                <div className='edit__text__label'>Row 1</div>
-                                                {!section.showDescription && (
-                                                    <button className='list_add_description' onClick={() => handleAddDescription(index)}>
-                                                        Add Description
-                                                    </button>
-                                                )}
-                                            </div>
-                                            <input type="text" className='edit__text__input section_text_box' placeholder='input Value' />
-                                        </div>
-                                        {section.showDescription && (
-                                            <div>
-                                                <div className='edit__text__label'>How do you describe this Bot?</div>
-                                                <input type="text" className='edit__text__input section_text_box' placeholder='Input Value' />
-                                                <button className='list_row_delete' onClick={() => handleDeleteDescription(index)}>
-
-                                                    <svg style={{ stroke: 'red' }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path>
-                                                        <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                    {
-                                        section.showNewRow && (
-                                            <>
-                                                <div className='edit__text__label'>New Row</div>
-                                                <div className='question_variant_item'>
-                                                    <input type="text" className='edit__text__input new_row_create_box' placeholder='' />
-                                                    <button className='btn btn-success variant_create_button'>Create</button>
-                                                </div>
-                                            </>
-                                        )
-                                    }
-                                    {
-                                        !section.showNewRow && (
-                                            <button className='list_add_description list_new_row' onClick={() => handleAddNewRow(index)}>New Row</button>
-                                        )
-                                    }
-                                </div>
-                                <button className='condition_delete_btn' onClick={() => handleDeleteSection(index)}>Remove Section</button>
-                            </div>
-                        ))}
-                        <button className='footer__cancel__btn add_sec_btn' onClick={handleAddSection}>Add Section</button>
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Save Answers in a variable</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='@value' />
-                    </div>
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const UpdateAttributesModal = ({ show, onClose, onSave }) => {
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-    const [inputValue, setInputValue] = useState('');
-    const [secondInputValue, setsecondInputValue] = useState('');
-    const options = ['Variable', 'Custom Attribute']
-    const [content, setContent] = useState('');
-    const [isHeaderVariables, setIsHeaderVariables] = useState(false);
-    const [isSecondDropdown, setSecondDropdown] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleHeaderVariablesDropdown = () => {
-        setIsHeaderVariables((prev) => !prev);
-    }
-    const toggleSecondVariablesDropdown = () => {
-        setSecondDropdown((prev) => !prev);
-    }
-    const handleHeaderVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
-        setIsHeaderVariables(false);
-    };
-
-    const handleSecondVariableClick = (variable) => {
-        setSecondDropdown(false);
-        setsecondInputValue(prev => prev + variable.value);
-    }
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Update Attribute</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-                        <div className='edit__text__label'>Create/select a variable to modify</div>
-
-                        <Autocomplete
-                            options={options}
-                            value={content}
-                            disableClearable
-                            onChange={(event, newValue) => setContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder=""
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-                        <div>
-                            <div className='update_attributes_container'>
-                                <input type="text" className='edit__text__input message_input_box' placeholder='Type value or select a variable'
-                                    value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-                                <button className='btn btn-success variable_btn' onClick={toggleHeaderVariablesDropdown}>Variables</button>
-                            </div>
-                            {isHeaderVariables && (
-                                <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                    <div className="variables_search_bar">
-                                        <div>
-                                            <input
-                                                className=" variables_search_input"
-                                                type="text"
-                                                placeholder="Search variables"
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='varibles_drop_content'>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                            {filteredVariables.map((variable, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
-                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                            {filterContactAttributes.map((contact, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
-                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                        <div>
-                            <div className='update_attributes_container'>
-                                <input type="text" className='edit__text__input message_input_box' placeholder='Type value or select a variable'
-                                    value={secondInputValue} onChange={(e) => setsecondInputValue(e.target.value)} />
-                                <button className='btn btn-success variable_btn' onClick={toggleSecondVariablesDropdown}>Variables</button>
-                            </div>
-                            {isSecondDropdown && (
-                                <div className="varibles_drop_container" aria-hidden={!isSecondDropdown} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                    <div className="variables_search_bar">
-                                        <div>
-                                            <input
-                                                className=" variables_search_input"
-                                                type="text"
-                                                placeholder="Search variables"
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='varibles_drop_content'>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                            {filteredVariables.map((variable, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleSecondVariableClick(variable)}>
-                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                            {filterContactAttributes.map((contact, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleSecondVariableClick(contact)}>
-                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
+// const EditChatNameModal = ({ show, onClose, onSave, initialName }) => {
+//     const [chatbotName, setChatbotName] = useState('');
+
+//     useEffect(() => {
+//         setChatbotName(initialName);
+//     }, [initialName]);
+
+//     const handleInputChange = (event) => {
+//         setChatbotName(event.target.value);
+//     };
+
+//     const isDisabled = !chatbotName;
+
+//     const handleSave = () => {
+//         onSave(chatbotName);
+//     };
+
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="keyword__delete__modal">
+//             <div className='keyword__delete__content copymodal_content'>
+//                 <Modal.Header className='keyword__delete__header' closeButton>
+//                     <Modal.Title>Edit Chatbot</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='keyword__body__deletecontent'>
+//                     <div className="delete__confirm__msg">Chatbot Name</div>
+//                     <input
+//                         type="text"
+//                         placeholder="Chatbot Name"
+//                         className='edit__text__input copymodal_text_input'
+//                         value={chatbotName}
+//                         onChange={handleInputChange}
+//                     />
+//                     <div className="keywordfooter__delete">
+//                         <button
+//                             className={`btn copy_btn ${isDisabled ? 'copy_disabled' : 'btn-success'}`}
+//                             disabled={isDisabled}
+//                             onClick={handleSave}
+//                         >
+//                             Save
+//                         </button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
+// const MessageOption = () => {
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+//     const [textBoxVisibility, setTextBoxVisibility] = useState([]);
+//     const [showTextbox, setShowTextbox] = useState(false);
+//     const [inputValue, setInputValue] = useState('');
+//     const [imageInputValue, setImageInputValue] = useState('');
+//     const [isQuestionVisible, setIsQuestionVisible] = useState(false);
+//     const [isImageBoxVisible, setImageBoxVisible] = useState(false);
+//     const [showImageInput, setShowImageInput] = useState(true);
+//     const [showImageContainer, setShowImageContainer] = useState(false);
+//     const [selectedImage, setSelectedImage] = useState(null);
+//     const [imageContainers, setImageContainers] = useState([]);
+//     const [videoContainers, setVideoContainers] = useState([]);
+//     const [audioContainers, setAudioContainers] = useState([]);
+//     const [documentContainers, setDocumentContainers] = useState([]);
+//     const [isVisible, setIsVisible] = useState(false);
+//     const [isVariablesVisible, setIsVariablesVisible] = useState(false);
+//     const [isImageEmojiVisible, setIsImageEmojiVisible] = useState(false);
+//     const [isImageVariablesVisible, setIsImageVariablesVisible] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+//     const questionRef = useRef(null);
+//     const [currentIndex, setCurrentIndex] = useState(null);
+//     const activeInputRef = useRef(null);
+//     const containerRef = useRef(null);
+//     const handleInteraction = (e) => {
+//         e.stopPropagation();
+
+//     };
+
+
+//     const formatText = (command) => {
+//         document.execCommand(command, false, null);
+//     };
+//     const applyCurlyFormatting = (index) => {
+//         const selection = window.getSelection();
+//         if (selection.rangeCount > 0) {
+//             const range = selection.getRangeAt(0);
+//             const selectedText = range.toString();
+//             if (selectedText) {
+//                 const curlyText = `{${selectedText}}`;
+//                 const textNode = document.createTextNode(curlyText);
+//                 range.deleteContents();
+//                 range.insertNode(textNode);
+//                 selection.removeAllRanges();
+
+//                 // Save curly-formatted text in state
+//                 setTextBoxVisibility((prev) => {
+//                     const newVisibility = [...prev];
+//                     newVisibility[index].text = curlyText; // Save curly-formatted text
+//                     return newVisibility;
+//                 });
+//             }
+//         }
+//     };
+
+
+//     // const handleMessageClick = () => {
+//     //     // setShowTextbox(true);
+//     //     setTextBoxVisibility((prev) => [...prev, { showTextContainer: true, isQuestionVisible: false }]);
+//     // };
+//     const handleMessageClick = () => {
+//         setTextBoxVisibility((prev) => [
+//             ...prev,
+//             { showTextContainer: true, isQuestionVisible: false, text: '' }
+//         ]);
+//     };
+//     // const handleInputClick = (index) => {
+//     //     setTextBoxVisibility((prev) => {
+//     //         const newVisibility = [...prev];
+
+
+//     //         if (currentIndex === index) {
+//     //             newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
+//     //             newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible; // Toggle showTextContainer
+//     //         } else {
+//     //             // Hide the previously opened question and show the text container
+//     //             if (currentIndex !== null) {
+//     //                 newVisibility[currentIndex].isQuestionVisible = false; // Hide previous question
+//     //                 newVisibility[currentIndex].showTextContainer = true; // Show previous text container
+//     //             }
+
+//     //             newVisibility[index].isQuestionVisible = true;
+//     //             newVisibility[index].showTextContainer = false;
+//     //             setCurrentIndex(index); // Update currentIndex to the new index
+//     //         }
+
+//     //         return newVisibility;
+//     //     });
+//     //     // setShowTextbox(false);
+//     //     // setIsQuestionVisible(true);
+//     //     setImageBoxVisible(false);
+//     //     setShowImageInput(true);
+//     // };
+//     const handleInputClick = (index) => {
+//         setTextBoxVisibility((prev) => {
+//             const newVisibility = [...prev];
+//             if (currentIndex === index) {
+//                 newVisibility[index].isQuestionVisible = !newVisibility[index].isQuestionVisible;
+//                 newVisibility[index].showTextContainer = !newVisibility[index].isQuestionVisible;
+//             } else {
+//                 if (currentIndex !== null) {
+//                     newVisibility[currentIndex].isQuestionVisible = false;
+//                     newVisibility[currentIndex].showTextContainer = true;
+//                 }
+//                 newVisibility[index].isQuestionVisible = true;
+//                 newVisibility[index].showTextContainer = false;
+//                 setCurrentIndex(index);
+//             }
+//             return newVisibility;
+//         });
+//     };
+//     const handleBlur = (index, e) => {
+//         const newText = e.currentTarget.innerHTML; // Capture formatted HTML
+//         setTextBoxVisibility((prev) => {
+//             const newVisibility = [...prev];
+//             newVisibility[index].text = newText; // Update text with HTML content on blur
+//             return newVisibility;
+//         });
+//     };
+
+//     const handleImageInputClick = () => {
+//         setImageBoxVisible(true);
+//         setShowImageInput(false);
+//         setShowTextbox(true);
+//         setIsQuestionVisible(false);
+//     }
+//     const toggleVariablesDropdown = () => {
+//         setIsVariablesVisible((prev) => !prev);
+//         setIsVisible(false);
+//     };
+//     const toggleImageVariableDropdown = () => {
+//         setIsImageVariablesVisible((prev) => !prev);
+//     }
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleEmojiPicker = () => {
+//         setIsVisible((prev) => !prev);
+//         setIsVariablesVisible(false);
+//     };
+//     const toggleImageEmojiPicker = () => {
+//         setIsImageEmojiVisible((prev) => !prev);
+//     }
+//     // const handleEmojiClick = (emoji) => {
+//     //     setInputValue(prev => prev + emoji);
+//     //     setIsVisible(false);
+//     // };
+//     const handleEmojiClick = (emoji) => {
+//         if (activeInputRef.current) {
+//             const currentHTML = activeInputRef.current.innerHTML;
+//             activeInputRef.current.innerHTML = currentHTML + emoji;
+//             handleBlur(currentIndex, { currentTarget: activeInputRef.current }); // Update state with new HTML content
+//         }
+//         setIsVisible(false);
+//     };
+//     const handleImageEmojiClick = (emoji) => {
+//         setImageInputValue(prev => prev + emoji);
+//         setIsImageEmojiVisible(false);
+//     }
+//     const handleVariableClick = (variable) => {
+//         if (activeInputRef.current) {
+//             const currentHTML = activeInputRef.current.innerHTML;
+//             activeInputRef.current.innerHTML = currentHTML + variable.value;
+//             handleBlur(currentIndex, { currentTarget: activeInputRef.current }); // Update state with new HTML content
+//         }
+//         // setInputValue(prev => prev + variable.value);
+//         setIsVariablesVisible(false);
+//     };
+//     const handleImageVariableClick = (variable) => {
+//         setImageInputValue(prev => prev + variable.value);
+//         setIsImageVariablesVisible(false);
+//     }
+//     const handleMessageDelete = (index) => {
+//         //setShowTextbox(false);
+//         setTextBoxVisibility((prev) => prev.filter((_, i) => i !== index));
+
+//         if (currentIndex === index) {
+//             setCurrentIndex(null);
+//         }
+
+//     }
+
+//     const handleImageDelete = (index) => {
+//         // setShowImageContainer(false);
+//         setImageContainers(prev => prev.filter((_, i) => i !== index));
+//     }
+
+//     const handleImageUpload = (event, index) => {
+//         const file = event.target.files[0];
+//         if (file) {
+//             const reader = new FileReader();
+//             reader.onloadend = () => {
+//                 setImageContainers(prev => {
+//                     const newContainers = [...prev];
+//                     newContainers[index] = reader.result;
+//                     return newContainers;
+//                 });
+//             };
+//             reader.readAsDataURL(file);
+//         }
+//     };
+
+//     //video
+//     const handleImageClick = () => {
+//         setImageContainers(prev => [...prev, null]);
+//     }
+//     const handleVideoClick = () => {
+//         setVideoContainers(prev => [...prev, null]);
+//     };
+
+//     const handleVideoUpload = (event, index) => {
+//         const file = event.target.files[0];
+//         if (file) {
+//             const reader = new FileReader();
+//             reader.onloadend = () => {
+//                 setVideoContainers(prev => {
+//                     const newContainers = [...prev];
+//                     newContainers[index] = reader.result; // Update specific container
+//                     return newContainers;
+//                 });
+//             };
+//             reader.readAsDataURL(file);
+//         }
+//     };
+
+//     const handleVideoDelete = (index) => {
+//         setVideoContainers(prev => prev.filter((_, i) => i !== index));
+//     };
+
+//     //Audio
+//     const handleAudioClick = () => {
+//         setAudioContainers(prev => [...prev, null]);
+//     };
+//     const handleAudioUpload = (event, index) => {
+//         const file = event.target.files[0];
+//         if (file) {
+//             const reader = new FileReader();
+//             reader.onloadend = () => {
+//                 setAudioContainers(prev => {
+//                     const newContainers = [...prev];
+//                     newContainers[index] = reader.result;
+//                     return newContainers;
+//                 });
+//             };
+//             reader.readAsDataURL(file);
+//         }
+//     };
+//     const handleAudioDelete = (index) => {
+//         setAudioContainers(prev => prev.filter((_, i) => i !== index));
+//     };
+
+//     //Document
+//     const handleDocumentClick = () => {
+//         setDocumentContainers(prev => [...prev, { file: null, name: '' }]);
+//     };
+//     const handleDocumentUpload = (event, index) => {
+//         const file = event.target.files[0];
+//         if (file) {
+//             const reader = new FileReader();
+//             reader.onloadend = () => {
+//                 setDocumentContainers(prev => {
+//                     const newContainers = [...prev];
+//                     newContainers[index] = { file: reader.result, name: file.name };
+//                     return newContainers;
+//                 });
+//             };
+//             reader.readAsDataURL(file);
+//         }
+//     };
+
+//     const handleDocumentDelete = (index) => {
+//         setDocumentContainers(prev => prev.filter((_, i) => i !== index));
+//     };
+
+//     // prevent the drag and drop functionality inside the inputbox
+//     useEffect(() => {
+//         // Function to prevent any movement inside the container
+//         const preventDrag = (e) => {
+//             if (questionRef.current && questionRef.current.contains(e.target)) {
+//                 e.stopPropagation();
+//             }
+//         };
+
+
+//         // Attach listeners
+//         document.addEventListener('mousemove', preventDrag, true);
+//         document.addEventListener('mousedown', preventDrag, true);
+//         document.addEventListener('mouseup', preventDrag, true);
+
+//         // Cleanup function to remove listeners on component unmount
+//         return () => {
+//             document.removeEventListener('mousemove', preventDrag, true);
+//             document.removeEventListener('mousedown', preventDrag, true);
+//             document.removeEventListener('mouseup', preventDrag, true);
+
+//         };
+//     }, []);
+
+//     // Close the question text container if the user clicks outside of it
+//     useEffect(() => {
+//         const handleClickOutside = (event) => {
+//             if (containerRef.current && !containerRef.current.contains(event.target)) {
+//                 // Close question and show text container
+//                 if (currentIndex !== null) {
+//                     setTextBoxVisibility((prev) => {
+//                         const newVisibility = [...prev];
+//                         newVisibility[currentIndex].isQuestionVisible = false;
+//                         newVisibility[currentIndex].showTextContainer = true;
+//                         return newVisibility;
+//                     });
+//                 }
+//             }
+//         };
+
+//         // Add event listener to detect clicks outside
+//         document.addEventListener('mousedown', handleClickOutside);
+
+//         // Cleanup event listener on unmount
+//         return () => {
+//             document.removeEventListener('mousedown', handleClickOutside);
+//         };
+//     }, [currentIndex]);
+//     return (
+//         <>
+//             {textBoxVisibility.map((item, index) => (
+//                 <>
+//                     {item.showTextContainer && (
+//                         <>
+//                             <div style={{ position: 'relative' }} >
+
+//                                 <div
+//                                     className='edit__text__input message_input_box'
+//                                     contentEditable={false} // Prevent editing in `showTextContainer`
+//                                     dangerouslySetInnerHTML={{ __html: item.text }} // Render stored HTML
+//                                     onClick={() => handleInputClick(index)}
+//                                     style={{ height: '35px' }}
+//                                 ></div>
+
+//                                 <button className='message_delete_icon' style={{ top: '0%' }} onClick={() => handleMessageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+//                             </div>
+
+//                         </>
+//                     )}
+//                     {item.isQuestionVisible && (
+//                         <div className='question_text_content' ref={(el) => {
+//                             questionRef.current = el; // Attach ref for drag and drop
+//                             containerRef.current = el; // Attach ref for outside click detection
+//                         }}>
+
+//                             <div className='question_editor_container' >
+
+
+//                                 <div
+//                                     className='message_edit__text__input question_editor_text'
+//                                     contentEditable={true}
+//                                     suppressContentEditableWarning={true}
+//                                     dangerouslySetInnerHTML={{ __html: item.text }} // Display stored HTML on edit
+//                                     onBlur={(e) => handleBlur(index, e)}
+//                                     onClick={(e) => {
+//                                         activeInputRef.current = e.currentTarget; // Set the active input ref
+//                                     }}
+//                                 ></div>
+//                                 <div className='question_editor_toolbar'>
+//                                     <div className='inline_toolbar'>
+//                                         <div className='option_toolbar' onClick={() => formatText('bold')}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={() => formatText('italic')}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={() => applyCurlyFormatting(index)}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={toggleEmojiPicker}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+//                                         </div>
+
+//                                     </div>
+//                                     <div className='question_variable_btn'>
+//                                         <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                             {isVisible && (
+//                                 <div className="emoji_dropdown">
+//                                     {emojis.map((emoji, index) => (
+//                                         <span
+//                                             key={index}
+//                                             className="emoji_icon"
+//                                             onClick={() => handleEmojiClick(emoji)}
+//                                             style={{ cursor: 'pointer' }}
+//                                         >
+//                                             {emoji}
+//                                         </span>
+//                                     ))}
+//                                 </div>
+//                             )}
+//                             {isVariablesVisible && (
+//                                 <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                     <div className="variables_search_bar">
+//                                         <div>
+//                                             <input
+//                                                 className=" variables_search_input"
+//                                                 type="text"
+//                                                 placeholder="Search variables"
+//                                                 value={searchTerm}
+//                                                 onChange={handleSearchChange}
+//                                             />
+//                                         </div>
+//                                     </div>
+//                                     <div className='varibles_drop_content'>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                             {filteredVariables.map((variable, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
+//                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                             {filterContactAttributes.map((contact, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
+//                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             )}
+//                         </div>
+//                     )}
+//                 </>
+//             ))}
+//             {imageContainers.map((image, index) => (
+//                 <div key={index} className='image_container'>
+//                     <div className='message_image_content'>
+//                         {image ? (
+//                             <img src={image} alt="Uploaded" style={{ width: '100%', height: '100%' }} />
+//                         ) : (
+//                             <ImageIcon />
+//                         )}
+//                     </div>
+//                     <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`image-input-${index}`).click()}>
+//                         Upload image
+//                     </button>
+//                     <button className='message_delete_icon' onClick={() => handleImageDelete(index)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+//                     {
+//                         showImageInput && (
+//                             <div className='edit__text__input message_input_box image_text_input_field'
+//                                 contentEditable
+//                                 suppressContentEditableWarning={true}
+//                                 onInput={(e) => setImageInputValue(e.currentTarget.innerHTML)}
+//                                 dangerouslySetInnerHTML={{ __html: imageInputValue }} onClick={handleImageInputClick}></div>
+//                         )
+//                     }
+
+//                     {isImageBoxVisible && (
+//                         <div className='question_text_content image_text_input_field' ref={questionRef} >
+
+//                             <div className='question_editor_container' onMouseDown={handleInteraction} onTouchStart={handleInteraction}>
+
+//                                 <div
+//                                     className='message_edit__text__input question_editor_text'
+//                                     contentEditable
+//                                     suppressContentEditableWarning={true}
+//                                     onInput={(e) => setImageInputValue(e.currentTarget.innerHTML)}
+//                                     onFocus={() => setShowImageInput(false)}
+//                                     dangerouslySetInnerHTML={{ __html: imageInputValue }}
+//                                 >
+
+//                                 </div>
+//                                 <div className='question_editor_toolbar'>
+//                                     <div className='inline_toolbar'>
+//                                         <div className='option_toolbar' onClick={() => formatText('bold')}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={() => formatText('italic')}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={applyCurlyFormatting}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+//                                         </div>
+//                                         <div className='option_toolbar' onClick={toggleImageEmojiPicker}>
+//                                             <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+//                                         </div>
+
+//                                     </div>
+//                                     <div className='question_variable_btn'>
+//                                         <button className='btn btn-success variable_btn' onClick={toggleImageVariableDropdown} >Variables  </button>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                             {isImageEmojiVisible && (
+//                                 <div className="emoji_dropdown">
+//                                     {emojis.map((emoji, index) => (
+//                                         <span
+//                                             key={index}
+//                                             className="emoji_icon"
+//                                             onClick={() => handleImageEmojiClick(emoji)}
+//                                             style={{ cursor: 'pointer' }}
+//                                         >
+//                                             {emoji}
+//                                         </span>
+//                                     ))}
+//                                 </div>
+//                             )}
+//                             {isImageVariablesVisible && (
+//                                 <div className="varibles_drop_container" aria-hidden={!isImageVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                     <div className="variables_search_bar">
+//                                         <div>
+//                                             <input
+//                                                 className=" variables_search_input"
+//                                                 type="text"
+//                                                 placeholder="Search variables"
+//                                                 value={searchTerm}
+//                                                 onChange={handleSearchChange}
+//                                             />
+//                                         </div>
+//                                     </div>
+//                                     <div className='varibles_drop_content'>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                             {filteredVariables.map((variable, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleImageVariableClick(variable)}>
+//                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                             {filterContactAttributes.map((contact, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleImageVariableClick(contact)}>
+//                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             )}
+//                         </div>
+//                     )}
+//                     <input
+//                         type='file'
+//                         id={`image-input-${index}`}
+//                         className='edt__text__input image_input_box'
+//                         style={{ display: "none" }}
+//                         onChange={(event) => handleImageUpload(event, index)}
+//                     />
+
+//                 </div>
+//             ))}
+
+//             {videoContainers.map((video, index) => (
+//                 <div key={index} className='image_container'>
+//                     <div className='message_image_content'>
+//                         {video ? (
+//                             <video controls style={{ width: '100%', height: '100%' }}>
+//                                 <source src={video} type="video/mp4" />
+//                             </video>
+//                         ) : (
+//                             <MovieIcon />
+//                         )}
+//                     </div>
+//                     <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`video-input-${index}`).click()}>
+//                         Upload video
+//                     </button>
+//                     <button className='message_delete_icon' onClick={() => handleVideoDelete(index)}>
+//                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+//                     <input
+//                         type='file'
+//                         id={`video-input-${index}`}
+//                         className='edt__text__input image_input_box'
+//                         style={{ display: "none" }}
+//                         onChange={(event) => handleVideoUpload(event, index)}
+//                     />
+//                 </div>
+//             ))}
+
+//             {audioContainers.map((audio, index) => (
+//                 <div key={index} className='image_container'>
+//                     <div className='message_image_content'>
+//                         {audio ? (
+//                             <audio controls style={{ width: '100%' }}>
+//                                 <source src={audio} />
+//                             </audio>
+//                         ) : (
+//                             <AudiotrackIcon />
+//                         )}
+//                     </div>
+//                     <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`audio-input-${index}`).click()}>
+//                         Upload audio
+//                     </button>
+//                     <button className='message_delete_icon' onClick={() => handleAudioDelete(index)}>
+//                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+//                     <input
+//                         type='file'
+//                         id={`audio-input-${index}`}
+//                         className='edt__text__input image_input_box'
+//                         style={{ display: "none" }}
+//                         onChange={(event) => handleAudioUpload(event, index)}
+//                     />
+//                 </div>
+//             ))}
+
+//             {documentContainers.map((doc, index) => (
+//                 <div key={index} className='image_container'>
+//                     <div className='message_image_content'>
+//                         <DescriptionOutlinedIcon />
+//                     </div>
+//                     {doc.file && (
+//                         <a href={doc.file} className='selecteddoc_link'>{doc.name}</a>
+//                     )}
+//                     <button className='footer__cancel__btn image_upload' onClick={() => document.getElementById(`document-input-${index}`).click()}>
+//                         Upload document
+//                     </button>
+//                     <button className='message_delete_icon' onClick={() => handleDocumentDelete(index)}>
+//                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+//                     <input
+//                         type='file'
+//                         id={`document-input-${index}`}
+//                         className='edt__text__input image_input_box'
+//                         style={{ display: "none" }}
+//                         onChange={(event) => handleDocumentUpload(event, index)}
+//                     />
+//                 </div>
+//             ))}
+//             <div className='choose_msg_list'>
+//                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleMessageClick}>Message</button>
+//                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleImageClick}>Image</button>
+//                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleVideoClick}>Video</button>
+//                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleAudioClick}>Audio</button>
+//                 <button className='footer__cancel__btn choose_msg_btn' onClick={handleDocumentClick}>Document</button>
+//             </div>
+//         </>
+//     )
+// }
+
+// const ConditionModal = ({ show, onClose, onSave }) => {
+//     const [conditions, setConditions] = useState([{ id: Date.now() }]);
+//     const [content, setContent] = useState('');
+//     const [open, setOpen] = useState(false);
+//     const options = ['Option 1', 'Option 2', 'Option 3'];
+//     const dropOptions = ['Equal to', 'Not Equal to', 'Contains']
+//     const [secondContent, setSecondContent] = useState('Equal to');
+//     const dropValue = ['Option 1', 'Option 2', 'Option 3'];
+//     const [thirdContent, setThirdContent] = useState('');
+//     const [openDropdown, setOpenDropdown] = useState(false);
+
+//     const addCondition = () => {
+//         setConditions([...conditions, { id: Date.now() }]);
+//     };
+
+//     const deleteCondition = (id) => {
+//         const updatedConditions = conditions.filter(condition => condition.id !== id);
+//         setConditions(updatedConditions);
+//     };
+
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_condition_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Set a Condition</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='edit__text__label'>Set the condition(s)</div>
+//                     <div>
+//                         {conditions.map((condition, index) => (
+//                             <div key={condition.id} className='set_condition_container'>
+//                                 <Autocomplete
+//                                     options={options}
+//                                     value={content}
+//                                     disableClearable
+//                                     onChange={(event, newValue) => setContent(newValue)}
+//                                     open={open}
+//                                     onOpen={() => setOpen(true)}
+//                                     onClose={() => setOpen(false)}
+//                                     renderInput={(params) => (
+//                                         <TextField
+//                                             {...params}
+//                                             variant="standard"
+//                                             placeholder="Type or select a variable"
+//                                             InputProps={{
+//                                                 ...params.InputProps,
+//                                                 disableUnderline: true,
+//                                                 startAdornment: (
+//                                                     <div className="set_condition_field__icon" style={{ marginRight: '8px' }}>
+//                                                         <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="HelpIcon" width="20px" height="20px">
+//                                                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"></path>
+//                                                         </svg>
+//                                                         <span>IF</span>
+//                                                     </div>
+//                                                 ),
+//                                                 endAdornment: (
+//                                                     <div className="">
+//                                                         <button className='btn btn-success variable_btn'
+//                                                             onClick={() => setOpen(!open)}
+//                                                         >
+//                                                             Variables
+//                                                         </button>
+//                                                     </div>
+//                                                 ),
+//                                                 sx: {
+//                                                     border: 'none',
+//                                                     fontSize: '12px',
+//                                                     borderRadius: '4px',
+//                                                     height: '3rem',
+//                                                     paddingLeft: '50px',
+//                                                     paddingRight: '50px',
+//                                                     backgroundColor: 'white',
+//                                                     '&:hover': {
+//                                                         border: 'none',
+//                                                     },
+//                                                     '&.Mui-focused': {
+//                                                         border: 'none',
+//                                                         backgroundColor: 'white',
+//                                                         outline: 'none',
+//                                                     },
+//                                                 },
+//                                             }}
+
+//                                         />
+//                                     )}
+
+//                                 />
+//                                 <Autocomplete
+//                                     options={dropOptions}
+//                                     value={secondContent}
+//                                     disableClearable
+//                                     onChange={(event, newValue) => setSecondContent(newValue)}
+//                                     renderInput={(params) => (
+//                                         <TextField
+//                                             {...params}
+//                                             variant="standard"
+//                                             placeholder=""
+//                                             InputProps={{
+//                                                 ...params.InputProps,
+//                                                 disableUnderline: true,
+//                                                 sx: {
+//                                                     border: '1px solid rgb(232, 234, 242)',
+//                                                     borderRadius: '4px',
+//                                                     height: '3rem',
+//                                                     paddingLeft: '10px',
+//                                                     backgroundColor: 'white',
+//                                                     '&:hover': {
+//                                                         border: '1px solid green',
+//                                                     },
+//                                                     '&.Mui-focused': {
+//                                                         border: '1px solid green',
+//                                                         backgroundColor: 'white',
+//                                                         outline: 'none',
+//                                                     },
+//                                                 },
+//                                             }}
+
+//                                         />
+//                                     )}
+
+//                                 />
+//                                 <Autocomplete
+//                                     options={dropValue}
+//                                     value={thirdContent}
+//                                     disableClearable
+//                                     onChange={(event, newValue) => setThirdContent(newValue)}
+//                                     open={openDropdown}
+//                                     onOpen={() => setOpenDropdown(true)}
+//                                     onClose={() => setOpenDropdown(false)}
+//                                     renderInput={(params) => (
+//                                         <TextField
+//                                             {...params}
+//                                             variant="standard"
+//                                             placeholder="Type Value"
+//                                             InputProps={{
+//                                                 ...params.InputProps,
+//                                                 disableUnderline: true,
+
+//                                                 endAdornment: (
+//                                                     <div className="">
+//                                                         <button className='btn btn-success variable_btn'
+//                                                             onClick={() => setOpen(!openDropdown)}
+//                                                         >
+//                                                             Variables
+//                                                         </button>
+//                                                     </div>
+//                                                 ),
+//                                                 sx: {
+//                                                     border: 'none',
+//                                                     fontSize: '12px',
+//                                                     borderRadius: '4px',
+//                                                     height: '3rem',
+//                                                     paddingLeft: '10px',
+//                                                     backgroundColor: 'white',
+//                                                     '&:hover': {
+//                                                         border: 'none',
+//                                                     },
+//                                                     '&.Mui-focused': {
+//                                                         border: 'none',
+//                                                         backgroundColor: 'white',
+//                                                         outline: 'none',
+//                                                     },
+//                                                 },
+//                                             }}
+
+//                                         />
+//                                     )}
+
+//                                 />
+
+//                                 {index > 0 && (
+//                                     <button onClick={() => deleteCondition(condition.id)} className='condition_delete_btn'>
+//                                         Delete
+//                                     </button>
+//                                 )}
+//                             </div>
+//                         ))}
+
+//                         {conditions.length === 1 && (
+
+//                             <button className='footer__cancel__btn condition__add' onClick={addCondition}>+ Add</button>
+//                         )}
+//                     </div>
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
+
+
+// const QuestionModal = ({ show, onClose, onSave }) => {
+//     const [inputValue, setInputValue] = useState("");
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+//     const [isActive, setIsActive] = useState(false); //toggle
+//     const handleToggle = () => {
+//         setIsActive(!isActive);
+//     };
+//     const [isActiveAdvancedOption, setIsActiveAdvancedOption] = useState(false);
+//     const handleToggleAdvancedOptions = () => {
+//         setIsActiveAdvancedOption(!isActiveAdvancedOption)
+//     }
+//     const [isVisible, setIsVisible] = useState(false);
+//     const [isVariablesVisible, setIsVariablesVisible] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+//     const validationOptions = ["Number", "Date", 'Date + Time', "Time", "Pattern (regex)"]
+//     const [validation, setValidation] = useState('');
+//     const toggleVariablesDropdown = () => {
+//         setIsVariablesVisible((prev) => !prev);
+//     };
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleEmojiPicker = () => {
+//         setIsVisible((prev) => !prev);
+//     };
+//     const handleEmojiClick = (emoji) => {
+//         setInputValue(prev => prev + emoji);
+//         setIsVisible(false);
+//     };
+
+//     const handleVariableClick = (variable) => {
+//         setInputValue(prev => prev + variable.value);
+//         setIsVariablesVisible(false);
+//     };
+//     const formatText = (command) => {
+//         document.execCommand(command, false, null);
+//     };
+//     const applyCurlyFormatting = () => {
+//         const selection = window.getSelection();
+//         if (selection.rangeCount > 0) {
+//             const range = selection.getRangeAt(0);
+//             const selectedText = range.toString();
+//             if (selectedText) {
+//                 const curlyText = `{${selectedText}}`;
+//                 const textNode = document.createTextNode(curlyText);
+//                 range.deleteContents();
+//                 range.insertNode(textNode);
+//                 selection.removeAllRanges();
+//             }
+//         }
+//     };
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Set a question</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+//                         <div className='edit__text__label'>Question Text</div>
+//                         <div className='question_editor_container'>
+//                             {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
+//                                 onChange={(e) => setInputValue(e.target.value)} /> */}
+//                             <div
+//                                 className='message_edit__text__input question_editor_text'
+//                                 contentEditable
+//                                 suppressContentEditableWarning={true}
+//                                 onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+//                                 dangerouslySetInnerHTML={{ __html: inputValue }}
+//                             >
+
+//                             </div>
+
+//                             <div className='question_editor_toolbar'>
+//                                 <div className='inline_toolbar'>
+//                                     <div className='option_toolbar' onClick={() => formatText('bold')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('italic')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={applyCurlyFormatting}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+//                                     </div>
+
+//                                 </div>
+//                                 <div className='question_variable_btn'>
+//                                     <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                         {isVisible && (
+//                             <div className="emoji_dropdown">
+//                                 {emojis.map((emoji, index) => (
+//                                     <span
+//                                         key={index}
+//                                         className="emoji_icon"
+//                                         onClick={() => handleEmojiClick(emoji)}
+//                                         style={{ cursor: 'pointer' }}
+//                                     >
+//                                         {emoji}
+//                                     </span>
+//                                 ))}
+//                             </div>
+//                         )}
+//                         {isVariablesVisible && (
+//                             <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                 <div className="variables_search_bar">
+//                                     <div>
+//                                         <input
+//                                             className=" variables_search_input"
+//                                             type="text"
+//                                             placeholder="Search variables"
+//                                             value={searchTerm}
+//                                             onChange={handleSearchChange}
+//                                         />
+//                                     </div>
+//                                 </div>
+//                                 <div className='varibles_drop_content'>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                         {filteredVariables.map((variable, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
+//                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                         {filterContactAttributes.map((contact, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
+//                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Add Answer variant</div>
+//                         <div className='question_variant_item'>
+//                             <input type="text" className='edit__text__input variant_text_box' placeholder='Hi!' />
+//                             <button className='btn btn-success variant_create_button'>Create</button>
+//                         </div>
+//                     </div>
+
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container'>
+//                             <div className='edit__text__label'>Accept a media response</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">Off</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isActive ? 'active' : ''}`}
+//                                     onClick={handleToggle}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+//                                 <label className="toggle-label">On</label>
+//                             </div>
+
+//                         </div>
+//                     </div>
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Save Answer in a Variable</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='@Value' />
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container'>
+//                             <div className='edit__text__label'>Advanced options</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">Off</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isActiveAdvancedOption ? 'active' : ''}`}
+//                                     onClick={handleToggleAdvancedOptions}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+//                                 <label className="toggle-label">On</label>
+//                             </div>
+
+//                         </div>
+//                     </div>
+//                     {
+//                         isActiveAdvancedOption &&
+//                         <>
+//                             <div className='validation_container'>
+//                                 <div className='edit__text__label'>Validation</div>
+//                                 <Autocomplete
+//                                     options={validationOptions}
+//                                     value={validation}
+//                                     disableClearable
+//                                     onChange={(event, newValue) => setValidation(newValue)}
+//                                     renderInput={(params) => (
+//                                         <TextField
+//                                             {...params}
+//                                             variant="standard"
+//                                             placeholder=""
+//                                             InputProps={{
+//                                                 ...params.InputProps,
+//                                                 disableUnderline: true,
+//                                                 sx: {
+//                                                     border: '1px solid rgb(232, 234, 242)',
+//                                                     borderRadius: '4px',
+//                                                     height: '3rem',
+//                                                     paddingLeft: '10px',
+//                                                     backgroundColor: validation ? 'white' : 'rgb(245, 246, 250)',
+//                                                     '&:hover': {
+//                                                         border: '1px solid green',
+//                                                     },
+//                                                     '&.Mui-focused': {
+//                                                         border: '1px solid green',
+//                                                         backgroundColor: 'white',
+//                                                         outline: 'none',
+//                                                     },
+//                                                 },
+//                                             }}
+
+//                                         />
+//                                     )}
+
+//                                 />
+//                             </div>
+//                             {validation === "Number" && (
+//                                 <div className='validation_container'>
+//                                     <div className='edit__text__label'>Minimum Value</div>
+//                                     <input type='number' className='edit__text__input validation_number_textbox' placeholder='0' />
+
+//                                     <div className='edit__text__label'>Maximum Value</div>
+//                                     <input type='number' className='edit__text__input validation_number_textbox' placeholder='9999' />
+//                                 </div>
+//                             )}
+//                             {validation === "Pattern (regex)" && (
+//                                 <div className='validation_container'>
+//                                     <div className='edit__text__label'>Regex Pattern</div>
+//                                     <input type='text' className='edit__text__input validation_number_textbox' placeholder='Examples:$,%' />
+
+//                                 </div>
+//                             )}
+//                             <div className='validation_container'>
+//                                 <div className='edit__text__label'>Validation error message</div>
+//                                 <textarea value="I'm afraid I didn't understand, could you try again, please?" class="edit__text__textarea validation_textarea"  ></textarea>
+//                             </div>
+//                             <div className='validation_container'>
+//                                 <div className='Validation_fails_count'>
+//                                     Exit chatbot if validation failed more than
+//                                     <input type="number" className='edit__text__input fails_count_textbox' />
+//                                 </div>
+//                             </div>
+//                         </>
+
+//                     }
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
+// const ButtonsModal = ({ show, onClose, onSave }) => {
+//     const [inputValue, setInputValue] = useState("");
+//     const [HeaderValue, setHeaderValue] = useState('');
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+//     const [isActive, setIsActive] = useState(false); //toggle
+//     const handleToggle = () => {
+//         setIsActive(!isActive);
+//     };
+
+
+//     const [isVisible, setIsVisible] = useState(false);
+//     const [isVariablesVisible, setIsVariablesVisible] = useState(false);
+//     const [isHeaderVariables, setIsHeaderVariables] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+
+//     const toggleVariablesDropdown = () => {
+//         setIsVariablesVisible((prev) => !prev);
+//     };
+//     const toggleHeaderVariablesDropdown = () => {
+//         setIsHeaderVariables((prev) => !prev);
+//     }
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleEmojiPicker = () => {
+//         setIsVisible((prev) => !prev);
+//     };
+//     const handleEmojiClick = (emoji) => {
+//         setInputValue(prev => prev + emoji);
+//         setIsVisible(false);
+//     };
+
+//     const handleVariableClick = (variable) => {
+//         setInputValue(prev => prev + variable.value);
+//         setIsVariablesVisible(false);
+//     };
+//     const handleHeaderVariableClick = (variable) => {
+//         setHeaderValue(prev => prev + variable.value);
+//         setIsHeaderVariables(false);
+//     };
+//     const formatText = (command) => {
+//         document.execCommand(command, false, null);
+//     };
+//     const applyCurlyFormatting = () => {
+//         const selection = window.getSelection();
+//         if (selection.rangeCount > 0) {
+//             const range = selection.getRangeAt(0);
+//             const selectedText = range.toString();
+//             if (selectedText) {
+//                 const curlyText = `{${selectedText}}`;
+//                 const textNode = document.createTextNode(curlyText);
+//                 range.deleteContents();
+//                 range.insertNode(textNode);
+//                 selection.removeAllRanges();
+//             }
+//         }
+//     };
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Set Button</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+//                         <div className='question_accept_container media_header_text'>
+//                             <div className='edit__text__label'>Media Header</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">optional</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isActive ? 'active' : ''}`}
+//                                     onClick={handleToggle}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+
+//                             </div>
+
+//                         </div>
+//                     </div>
+//                     {
+//                         !isActive &&
+//                         <div className='question_text_container'>
+//                             <div className='edit__text__label'>Header Text</div>
+//                             <div className='question_variant_item'>
+//                                 <input type="text" className='edit__text__input message_input_box' placeholder='inputvalue'
+//                                     value={HeaderValue}
+//                                     onChange={(e) => setHeaderValue(e.target.value)} />
+//                                 <button className='btn btn-success variant_create_button' onClick={toggleHeaderVariablesDropdown} >variables</button>
+//                             </div>
+//                             {isHeaderVariables && (
+//                                 <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                     <div className="variables_search_bar">
+//                                         <div>
+//                                             <input
+//                                                 className=" variables_search_input"
+//                                                 type="text"
+//                                                 placeholder="Search variables"
+//                                                 value={searchTerm}
+//                                                 onChange={handleSearchChange}
+//                                             />
+//                                         </div>
+//                                     </div>
+//                                     <div className='varibles_drop_content'>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                             {filteredVariables.map((variable, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
+//                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                             {filterContactAttributes.map((contact, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
+//                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             )}
+//                         </div>
+//                     }
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Body Text</div>
+//                         <div className='question_editor_container'>
+//                             {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
+//                                 onChange={(e) => setInputValue(e.target.value)} /> */}
+//                             <div
+//                                 className='message_edit__text__input question_editor_text'
+//                                 contentEditable
+//                                 suppressContentEditableWarning={true}
+//                                 onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+//                                 dangerouslySetInnerHTML={{ __html: inputValue }}
+//                             >
+
+//                             </div>
+
+//                             <div className='question_editor_toolbar'>
+//                                 <div className='inline_toolbar'>
+//                                     <div className='option_toolbar' onClick={() => formatText('bold')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('italic')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={applyCurlyFormatting} >
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+//                                     </div>
+
+//                                 </div>
+//                                 <div className='question_variable_btn'>
+//                                     <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                         {isVisible && (
+//                             <div className="emoji_dropdown">
+//                                 {emojis.map((emoji, index) => (
+//                                     <span
+//                                         key={index}
+//                                         className="emoji_icon"
+//                                         onClick={() => handleEmojiClick(emoji)}
+//                                         style={{ cursor: 'pointer' }}
+//                                     >
+//                                         {emoji}
+//                                     </span>
+//                                 ))}
+//                             </div>
+//                         )}
+//                         {isVariablesVisible && (
+//                             <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                 <div className="variables_search_bar">
+//                                     <div>
+//                                         <input
+//                                             className=" variables_search_input"
+//                                             type="text"
+//                                             placeholder="Search variables"
+//                                             value={searchTerm}
+//                                             onChange={handleSearchChange}
+//                                         />
+//                                     </div>
+//                                 </div>
+//                                 <div className='varibles_drop_content'>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                         {filteredVariables.map((variable, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
+//                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                         {filterContactAttributes.map((contact, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
+//                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Footer Text</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Button 1</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='Answer 1' />
+//                         <div className='edit__text__label'>New Button</div>
+//                         <div className='question_variant_item'>
+//                             <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
+//                             <button className='btn btn-success variant_create_button'>Create</button>
+//                         </div>
+
+//                     </div>
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Save Answer in a Variable</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='@Value' />
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
+
+// const ListModal = ({ show, onClose, onSave }) => {
+//     const [inputValue, setInputValue] = useState("");
+//     const [HeaderValue, setHeaderValue] = useState('');
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+
+//     //add description button
+
+
+//     const [sections, setSections] = useState([
+//         { title: 'Section 1 Title', showDescription: false, showNewRow: false }
+//     ]);
+
+//     const handleAddSection = () => {
+//         const newSectionNumber = sections.length + 1;
+//         const newSection = { title: `Section ${newSectionNumber} Title`, showDescription: false, showNewRow: false };
+//         setSections([...sections, newSection]);
+//     };
+
+//     const handleDeleteSection = (index) => {
+//         const newSections = sections.filter((_, i) => i !== index);
+//         setSections(newSections);
+//     };
+
+//     const handleAddDescription = (index) => {
+//         const newSections = sections.map((section, i) => (
+//             i === index ? { ...section, showDescription: true } : section
+//         ));
+//         setSections(newSections);
+//     };
+
+//     const handleDeleteDescription = (index) => {
+//         const newSections = sections.map((section, i) => (
+//             i === index ? { ...section, showDescription: false } : section
+//         ));
+//         setSections(newSections);
+//     };
+
+//     const handleAddNewRow = (index) => {
+//         const newSections = sections.map((section, i) => (
+//             i === index ? { ...section, showNewRow: true } : section
+//         ));
+//         setSections(newSections);
+//     };
+//     const [isVisible, setIsVisible] = useState(false);
+//     const [isVariablesVisible, setIsVariablesVisible] = useState(false);
+//     const [isHeaderVariables, setIsHeaderVariables] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+
+//     const toggleVariablesDropdown = () => {
+//         setIsVariablesVisible((prev) => !prev);
+//     };
+//     const toggleHeaderVariablesDropdown = () => {
+//         setIsHeaderVariables((prev) => !prev);
+//     }
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleEmojiPicker = () => {
+//         setIsVisible((prev) => !prev);
+//     };
+//     const handleEmojiClick = (emoji) => {
+//         setInputValue(prev => prev + emoji);
+//         setIsVisible(false);
+//     };
+
+//     const handleVariableClick = (variable) => {
+//         setInputValue(prev => prev + variable.value);
+//         setIsVariablesVisible(false);
+//     };
+//     const handleHeaderVariableClick = (variable) => {
+//         setHeaderValue(prev => prev + variable.value);
+//         setIsHeaderVariables(false);
+//     };
+
+//     const formatText = (command) => {
+//         document.execCommand(command, false, null);
+//     };
+//     const applyCurlyFormatting = () => {
+//         const selection = window.getSelection();
+//         if (selection.rangeCount > 0) {
+//             const range = selection.getRangeAt(0);
+//             const selectedText = range.toString();
+//             if (selectedText) {
+//                 const curlyText = `{${selectedText}}`;
+//                 const textNode = document.createTextNode(curlyText);
+//                 range.deleteContents();
+//                 range.insertNode(textNode);
+//                 selection.removeAllRanges();
+//             }
+//         }
+//     };
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Set List</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+
+//                     <div className='question_text_content'>
+//                         <div className='edit__text__label'>Header Text</div>
+//                         <div className='question_variant_item'>
+//                             <input type="text" className='edit__text__input message_input_box' placeholder='inputvalue'
+//                                 value={HeaderValue}
+//                                 onChange={(e) => setHeaderValue(e.target.value)} />
+//                             <button className='btn btn-success variant_create_button' onClick={toggleHeaderVariablesDropdown} >variables</button>
+//                         </div>
+//                         {isHeaderVariables && (
+//                             <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                 <div className="variables_search_bar">
+//                                     <div>
+//                                         <input
+//                                             className=" variables_search_input"
+//                                             type="text"
+//                                             placeholder="Search variables"
+//                                             value={searchTerm}
+//                                             onChange={handleSearchChange}
+//                                         />
+//                                     </div>
+//                                 </div>
+//                                 <div className='varibles_drop_content'>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                         {filteredVariables.map((variable, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
+//                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                         {filterContactAttributes.map((contact, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
+//                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Body Text</div>
+//                         <div className='question_editor_container'>
+//                             {/* <input type="text" className='edit__text__input question_editor_text' value={inputValue}
+//                                 onChange={(e) => setInputValue(e.target.value)} /> */}
+//                             <div
+//                                 className='message_edit__text__input question_editor_text'
+//                                 contentEditable
+//                                 suppressContentEditableWarning={true}
+//                                 onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+//                                 dangerouslySetInnerHTML={{ __html: inputValue }}
+//                             >
+
+//                             </div>
+
+//                             <div className='question_editor_toolbar'>
+//                                 <div className='inline_toolbar'>
+//                                     <div className='option_toolbar' onClick={() => formatText('bold')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('italic')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={applyCurlyFormatting}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+//                                     </div>
+
+//                                 </div>
+//                                 <div className='question_variable_btn'>
+//                                     <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                         {isVisible && (
+//                             <div className="emoji_dropdown">
+//                                 {emojis.map((emoji, index) => (
+//                                     <span
+//                                         key={index}
+//                                         className="emoji_icon"
+//                                         onClick={() => handleEmojiClick(emoji)}
+//                                         style={{ cursor: 'pointer' }}
+//                                     >
+//                                         {emoji}
+//                                     </span>
+//                                 ))}
+//                             </div>
+//                         )}
+//                         {isVariablesVisible && (
+//                             <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                 <div className="variables_search_bar">
+//                                     <div>
+//                                         <input
+//                                             className=" variables_search_input"
+//                                             type="text"
+//                                             placeholder="Search variables"
+//                                             value={searchTerm}
+//                                             onChange={handleSearchChange}
+//                                         />
+//                                     </div>
+//                                 </div>
+//                                 <div className='varibles_drop_content'>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                         {filteredVariables.map((variable, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
+//                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                         {filterContactAttributes.map((contact, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
+//                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Footer Text</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
+//                     </div>
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Button Text</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='Menu Here' />
+//                     </div>
+
+//                     <div className='question_text_container'>
+//                         {sections.map((section, index) => (
+//                             <div className='section_container' key={index} style={{ marginBottom: '20px' }}>
+//                                 <div>
+//                                     <div className='edit__text__label'>{section.title}</div>
+//                                     <input type="text" className='edit__text__input section_text_box' placeholder='input Value' />
+//                                 </div>
+//                                 <div>
+//                                     <div className='list_row'>
+//                                         <div>
+//                                             <div className='list_row_header'>
+//                                                 <div className='edit__text__label'>Row 1</div>
+//                                                 {!section.showDescription && (
+//                                                     <button className='list_add_description' onClick={() => handleAddDescription(index)}>
+//                                                         Add Description
+//                                                     </button>
+//                                                 )}
+//                                             </div>
+//                                             <input type="text" className='edit__text__input section_text_box' placeholder='input Value' />
+//                                         </div>
+//                                         {section.showDescription && (
+//                                             <div>
+//                                                 <div className='edit__text__label'>How do you describe this Bot?</div>
+//                                                 <input type="text" className='edit__text__input section_text_box' placeholder='Input Value' />
+//                                                 <button className='list_row_delete' onClick={() => handleDeleteDescription(index)}>
+
+//                                                     <svg style={{ stroke: 'red' }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                                                         <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path>
+//                                                         <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round"></path>
+//                                                     </svg>
+//                                                 </button>
+//                                             </div>
+//                                         )}
+//                                     </div>
+//                                     {
+//                                         section.showNewRow && (
+//                                             <>
+//                                                 <div className='edit__text__label'>New Row</div>
+//                                                 <div className='question_variant_item'>
+//                                                     <input type="text" className='edit__text__input new_row_create_box' placeholder='' />
+//                                                     <button className='btn btn-success variant_create_button'>Create</button>
+//                                                 </div>
+//                                             </>
+//                                         )
+//                                     }
+//                                     {
+//                                         !section.showNewRow && (
+//                                             <button className='list_add_description list_new_row' onClick={() => handleAddNewRow(index)}>New Row</button>
+//                                         )
+//                                     }
+//                                 </div>
+//                                 <button className='condition_delete_btn' onClick={() => handleDeleteSection(index)}>Remove Section</button>
+//                             </div>
+//                         ))}
+//                         <button className='footer__cancel__btn add_sec_btn' onClick={handleAddSection}>Add Section</button>
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Save Answers in a variable</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='@value' />
+//                     </div>
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+// const UpdateAttributesModal = ({ show, onClose, onSave }) => {
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+//     const [inputValue, setInputValue] = useState('');
+//     const [secondInputValue, setsecondInputValue] = useState('');
+//     const options = ['Variable', 'Custom Attribute']
+//     const [content, setContent] = useState('');
+//     const [isHeaderVariables, setIsHeaderVariables] = useState(false);
+//     const [isSecondDropdown, setSecondDropdown] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleHeaderVariablesDropdown = () => {
+//         setIsHeaderVariables((prev) => !prev);
+//     }
+//     const toggleSecondVariablesDropdown = () => {
+//         setSecondDropdown((prev) => !prev);
+//     }
+//     const handleHeaderVariableClick = (variable) => {
+//         setInputValue(prev => prev + variable.value);
+//         setIsHeaderVariables(false);
+//     };
+
+//     const handleSecondVariableClick = (variable) => {
+//         setSecondDropdown(false);
+//         setsecondInputValue(prev => prev + variable.value);
+//     }
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Update Attribute</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+//                         <div className='edit__text__label'>Create/select a variable to modify</div>
+
+//                         <Autocomplete
+//                             options={options}
+//                             value={content}
+//                             disableClearable
+//                             onChange={(event, newValue) => setContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder=""
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+//                         <div>
+//                             <div className='update_attributes_container'>
+//                                 <input type="text" className='edit__text__input message_input_box' placeholder='Type value or select a variable'
+//                                     value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+//                                 <button className='btn btn-success variable_btn' onClick={toggleHeaderVariablesDropdown}>Variables</button>
+//                             </div>
+//                             {isHeaderVariables && (
+//                                 <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                     <div className="variables_search_bar">
+//                                         <div>
+//                                             <input
+//                                                 className=" variables_search_input"
+//                                                 type="text"
+//                                                 placeholder="Search variables"
+//                                                 value={searchTerm}
+//                                                 onChange={handleSearchChange}
+//                                             />
+//                                         </div>
+//                                     </div>
+//                                     <div className='varibles_drop_content'>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                             {filteredVariables.map((variable, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
+//                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                             {filterContactAttributes.map((contact, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
+//                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             )}
+//                         </div>
+//                         <div>
+//                             <div className='update_attributes_container'>
+//                                 <input type="text" className='edit__text__input message_input_box' placeholder='Type value or select a variable'
+//                                     value={secondInputValue} onChange={(e) => setsecondInputValue(e.target.value)} />
+//                                 <button className='btn btn-success variable_btn' onClick={toggleSecondVariablesDropdown}>Variables</button>
+//                             </div>
+//                             {isSecondDropdown && (
+//                                 <div className="varibles_drop_container" aria-hidden={!isSecondDropdown} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                     <div className="variables_search_bar">
+//                                         <div>
+//                                             <input
+//                                                 className=" variables_search_input"
+//                                                 type="text"
+//                                                 placeholder="Search variables"
+//                                                 value={searchTerm}
+//                                                 onChange={handleSearchChange}
+//                                             />
+//                                         </div>
+//                                     </div>
+//                                     <div className='varibles_drop_content'>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                             {filteredVariables.map((variable, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleSecondVariableClick(variable)}>
+//                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                         <div className="varibles_drop_list">
+//                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                             {filterContactAttributes.map((contact, index) => (
+//                                                 <>
+//                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleSecondVariableClick(contact)}>
+//                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                     </div>
+
+//                                                 </>
+//                                             ))}
+//                                         </div>
+//                                     </div>
+//                                 </div>
+//                             )}
+//                         </div>
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
 // const SetTagsModal = ({ show, onClose, onSave }) => {
 //     const initialOptions = ['Driver Concerns', 'Emergency-Urgent-help-needed', 'General Enquiry', 'Investor customers'];
 //     const [selectedTags, setSelectedTags] = useState([]);
@@ -2252,1322 +2264,1293 @@ const UpdateAttributesModal = ({ show, onClose, onSave }) => {
 //         </Modal>
 //     );
 // };
-const AssignToTeamModal = ({ show, onClose, onSave }) => {
-    const initialOptions = ['EV_Zone_everyone', 'Call_center_Kampala', 'Driver_Liaison_officers', 'Ride_Agents_officers', 'Corporate_Liaison_officers'];
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [options, setOptions] = useState(initialOptions);
-
-    const handleTagDelete = (tagToDelete) => {
-        setSelectedTags((prev) => prev.filter(tag => tag !== tagToDelete));
-        setOptions((prev) => [...prev, tagToDelete]);
-    };
-
-    const handleTagChange = (event, newValue) => {
-        if (newValue && !selectedTags.includes(newValue)) {
-            setSelectedTags((prev) => [...prev, newValue]);
-            setOptions((prev) => prev.filter(option => option !== newValue));
-        }
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Assign To Team</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-
-                        <Autocomplete
-                            options={options}
-                            disableClearable
-                            onChange={handleTagChange}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="Select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-                        {selectedTags.map((tag) => (
-                            <Chip
-                                key={tag}
-                                label={tag}
-                                onDelete={() => handleTagDelete(tag)}
-                                style={{ marginTop: '15px' }}
-                            />
-                        ))}
-
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-
-const AssignToUserModal = ({ show, onClose, onSave }) => {
-    const initialOptions = ['Thameem Hameed', 'Bot', 'EV zone', 'juliet _1'];
-    const [selectedTag, setSelectedTag] = useState(null);
-    const [options, setOptions] = useState(initialOptions);
-
-    const handleTagChange = (event, newValue) => {
-        if (newValue) {
-
-            setSelectedTag(newValue);
-        }
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Assign To User</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-                        <Autocomplete
-                            options={options.filter(option => option !== selectedTag)}
-                            disableClearable
-                            onChange={handleTagChange}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="Select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-                                />
-                            )}
-                        />
-                        {selectedTag && (
-                            <Chip
-                                key={selectedTag}
-                                label={selectedTag}
-                                onDelete={() => setSelectedTag(null)}
-                                style={{ marginTop: '15px' }}
-                            />
-                        )}
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const TriggerChatbotModal = ({ show, onClose, onSave }) => {
-    const options = ['ratings', 'cancel_order', 'reschdule_order', 'dispatch', 'payment_process']
-    const [content, setContent] = useState('');
-    const filteredOptions = options.filter(option => option !== content);
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Trigger Chatbot</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-
-                        <Autocomplete
-                            options={filteredOptions}
-                            value={content}
-                            disableClearable
-                            onChange={(event, newValue) => setContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="Select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-
-const UpdateChatModal = ({ show, onClose, onSave }) => {
-    const options = ['Open', 'Pending', 'Solved', 'Spam & Block']
-    const [content, setContent] = useState('');
-    const filteredOptions = options.filter(option => option !== content);
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Update Chat Status</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-
-                        <Autocomplete
-                            options={filteredOptions}
-                            value={content}
-                            disableClearable
-                            onChange={(event, newValue) => setContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="Select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const TemplatesModal = ({ show, onClose, onSave }) => {
-    const options = ["sell_ev_market", 'buy_ev_market', 'agent_signup', 'become_a_driver', 'charge_point_owner', 'agent_register', 'charging_point']
-    const messages = {
-        sell_ev_market: "You can sell Electric Vehicles, Charge Points and Accessories from our market",
-        buy_ev_market: "You can buy Electric Vehicles, Charge Points and Accessories from our market.",
-        agent_signup: "To become an EV zone Agent",
-        become_a_driver: "Register from website : https://www.evzoneride.com/#",
-        charge_point_owner: "Email on investors@evzoneafrica.com",
-        agent_register: "To become an EV zone Agent",
-        charging_point: "Book through Website https://www.evzoneride.com/#"
-    };
-    const [content, setContent] = useState('');
-    const filteredOptions = options.filter(option => option !== content);
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Message Template</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-
-                        <Autocomplete
-                            options={filteredOptions}
-                            value={content}
-                            disableClearable
-                            onChange={(event, newValue) => setContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="Select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-                        {content && (
-                            <div className='message_templates_body'>
-                                {messages[content]}
-                            </div>
-                        )}
-
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const SetTimeDelayModal = ({ show, onClose, onSave }) => {
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Set Time Delay</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-                    <div className='question_text_content'>
-                        <div className='edit__text__label'>Set a delay from 0:00 to 180:00 minutes</div>
-                        <div className='time_delay_container'>
-                            <input type="number" className='edit__text__input time_delay_inputbox' />
-                            <span>min</span>
-                            <input type="number" className='edit__text__input time_delay_inputbox' />
-                            <span>sec</span>
-                        </div>
-                    </div>
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const WhatsappFlowModal = ({ show, onClose, onSave }) => {
-    const [content, setContent] = useState('');
-    const [inputValue, setInputValue] = useState("");
-    const [HeaderValue, setHeaderValue] = useState('');
-    const fallbackOptions = [1, 2, 3]
-    const [fallbackContent, setFallbackContent] = useState('')
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-    const [isActive, setIsActive] = useState(false); //toggle
-    const handleToggle = () => {
-        setIsActive(!isActive);
-    };
-
-
-    const [isVisible, setIsVisible] = useState(false);
-    const [isVariablesVisible, setIsVariablesVisible] = useState(false);
-    const [isHeaderVariables, setIsHeaderVariables] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const toggleVariablesDropdown = () => {
-        setIsVariablesVisible((prev) => !prev);
-    };
-    const toggleHeaderVariablesDropdown = () => {
-        setIsHeaderVariables((prev) => !prev);
-    }
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleEmojiPicker = () => {
-        setIsVisible((prev) => !prev);
-    };
-    const handleEmojiClick = (emoji) => {
-        setInputValue(prev => prev + emoji);
-        setIsVisible(false);
-    };
-
-    const handleVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
-        setIsVariablesVisible(false);
-    };
-    const handleHeaderVariableClick = (variable) => {
-        setHeaderValue(prev => prev + variable.value);
-        setIsHeaderVariables(false);
-    };
-    const formatText = (command) => {
-        document.execCommand(command, false, null);
-    };
-    const applyCurlyFormatting = () => {
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            if (selectedText) {
-                const curlyText = `{${selectedText}}`;
-                const textNode = document.createTextNode(curlyText);
-                range.deleteContents();
-                range.insertNode(textNode);
-                selection.removeAllRanges();
-            }
-        }
-    };
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>WhatsApp Flow</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-
-                    <div className='question_text_content'>
-                        <div className='edit__text__label'>Header Text</div>
-                        <div className='question_variant_item'>
-                            <input type="text" className='edit__text__input message_input_box' placeholder='inputvalue'
-                                value={HeaderValue}
-                                onChange={(e) => setHeaderValue(e.target.value)} />
-                            <button className='btn btn-success variant_create_button' onClick={toggleHeaderVariablesDropdown} >variables</button>
-                        </div>
-                        {isHeaderVariables && (
-                            <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                <div className="variables_search_bar">
-                                    <div>
-                                        <input
-                                            className=" variables_search_input"
-                                            type="text"
-                                            placeholder="Search variables"
-                                            value={searchTerm}
-                                            onChange={handleSearchChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className='varibles_drop_content'>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                        {filteredVariables.map((variable, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
-                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                        {filterContactAttributes.map((contact, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
-                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Body Text</div>
-                        <div className='question_editor_container'>
-
-                            <div
-                                className='message_edit__text__input question_editor_text'
-                                contentEditable
-                                suppressContentEditableWarning={true}
-                                onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
-                                dangerouslySetInnerHTML={{ __html: inputValue }}
-                            ></div>
-                            <div className='question_editor_toolbar'>
-                                <div className='inline_toolbar'>
-                                    <div className='option_toolbar' onClick={() => formatText('bold')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('italic')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={applyCurlyFormatting}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
-                                    </div>
-                                    <div className='option_toolbar' onClick={toggleEmojiPicker}>
-                                        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
-                                    </div>
-
-                                </div>
-                                <div className='question_variable_btn'>
-                                    <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
-                                </div>
-                            </div>
-                        </div>
-                        {isVisible && (
-                            <div className="emoji_dropdown">
-                                {emojis.map((emoji, index) => (
-                                    <span
-                                        key={index}
-                                        className="emoji_icon"
-                                        onClick={() => handleEmojiClick(emoji)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {emoji}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                        {isVariablesVisible && (
-                            <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                <div className="variables_search_bar">
-                                    <div>
-                                        <input
-                                            className=" variables_search_input"
-                                            type="text"
-                                            placeholder="Search variables"
-                                            value={searchTerm}
-                                            onChange={handleSearchChange}
-                                        />
-                                    </div>
-                                </div>
-                                <div className='varibles_drop_content'>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                        {filteredVariables.map((variable, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
-                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                    <div className="varibles_drop_list">
-                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                        {filterContactAttributes.map((contact, index) => (
-                                            <>
-                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
-                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                </div>
-
-                                            </>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Footer Text</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
-                    </div>
-
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Button</div>
-                        <input type="text" className='edit__text__input message_input_box' placeholder='Menu Here' />
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='edit__text__label'>Select Flow</div>
-
-                        <Autocomplete
-                            options=''
-                            value={content}
-                            disableClearable
-                            onChange={(event, newValue) => setContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='question_accept_container media_header_text'>
-                            <div className='edit__text__label'>Fallback Message</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isActive ? 'active' : ''}`}
-                                    style={{ marginLeft: '57px' }}
-                                    onClick={handleToggle}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-
-                            </div>
-
-                        </div>
-                        <div className='fallback_subtext'>Set a fallback message for when the customer doesn’t engage with the WhatsApp flow.</div>
-                        <div className='message_templates_body'>
-                            Help us by completing the above form to continue.
-                        </div>
-                        <div className='edit__text__label'>How many times should the fallback get triggered?</div>
-                        <Autocomplete
-                            options={fallbackOptions}
-                            value={fallbackContent}
-                            disableClearable
-                            onChange={(event, newValue) => setFallbackContent(newValue)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    placeholder="select"
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        disableUnderline: true,
-                                        sx: {
-                                            border: '1px solid rgb(232, 234, 242)',
-                                            borderRadius: '4px',
-                                            height: '3rem',
-                                            paddingLeft: '10px',
-                                            backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                            '&:hover': {
-                                                border: '1px solid green',
-                                            },
-                                            '&.Mui-focused': {
-                                                border: '1px solid green',
-                                                backgroundColor: 'white',
-                                                outline: 'none',
-                                            },
-                                        },
-                                    }}
-
-                                />
-                            )}
-
-                        />
-                    </div>
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
-const WebhookModal = ({ show, onClose, onSave }) => {
-
-    const urlOptions = ['GET', 'POST'];
-    const [urlContent, setUrlContent] = useState('');
-
-    const variables = [
-        { title: "first_incoming_message", value: "@first_incoming_message" },
-
-    ];
-    const contactAttributes = [
-        { title: "actual_fare", value: '{{actual_fare}}' },
-        { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
-        { title: 'additional_items', value: '{{additional_items}}' }
-    ]
-    const [inputValue, setInputValue] = useState('');
-    const [customizeHeaderValue, setCustomizeHeaderValue] = useState('')
-    const [requestValue, setRequestValue] = useState('')
-    const [responseValue, setResponseValue] = useState('');
-    const options = ['Variable', 'Custom Attribute']
-    const [content, setContent] = useState('')
-
-    const [isHeaderVariables, setIsHeaderVariables] = useState(false);
-    const [isCustomizeHeaderVariables, setIsCustomizeHeaderVariables] = useState(false);
-    const [isRequestVariables, setIsRequestVariables] = useState(false);
-    const [isResponseVariables, setIsResponseVariables] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-    const filteredVariables = variables.filter(variable =>
-        variable.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    const filterContactAttributes = contactAttributes.filter(contact =>
-        contact.title.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    const toggleHeaderVariablesDropdown = () => {
-        setIsHeaderVariables((prev) => !prev);
-    }
-    const toggleCustomizeVariablesDropdown = () => {
-        setIsCustomizeHeaderVariables((prev) => !prev);
-    }
-    const toggleRequestVariablesDropdown = () => {
-        setIsRequestVariables((prev) => !prev);
-    }
-    const toggleResponseVariablesDropdown = () => {
-        setIsResponseVariables((prev) => !prev);
-    }
-    const handleHeaderVariableClick = (variable) => {
-        setInputValue(prev => prev + variable.value);
-        setIsHeaderVariables(false);
-    };
-    const handleCustomizeVariableClick = (variable) => {
-        setCustomizeHeaderValue(prev => prev + variable.value);
-        setIsCustomizeHeaderVariables(false);
-    }
-    const handleRequestVariableClick = (variable) => {
-        setRequestValue(prev => prev + variable.value);
-        setIsRequestVariables(false);
-    }
-    const handleResponseVariableClick = (variable) => {
-        setResponseValue(prev => prev + variable.value);
-        setIsResponseVariables(false);
-    }
-
-    const [isActive, setIsActive] = useState(false);
-    const handleToggle = () => {
-        setIsActive(!isActive);
-    }
-
-    const [isRequestActive, setIsRequestActive] = useState(false);
-    const handleToggleRequest = () => {
-        setIsRequestActive(!isRequestActive)
-    }
-    const [isResponseActive, setIsResponseActive] = useState(false);
-    const handleToggleResponse = () => {
-        setIsResponseActive(!isResponseActive)
-    }
-    const [isRoutingActive, setIsRoutingActive] = useState(false);
-    const handleToggleRouting = () => {
-        setIsRoutingActive(!isRoutingActive)
-    }
-
-    const [headers, setHeaders] = useState([{ id: Date.now() }]);
-    const addHeader = () => {
-        setHeaders([...headers, { id: Date.now() }]);
-    };
-
-    const deleteHeader = (id) => {
-        setHeaders(headers.filter(header => header.id !== id));
-    };
-    const [request, setRequest] = useState([{ id: Date.now() }]);
-    const addTestRequest = () => {
-        setRequest([...request, { id: Date.now() }]);
-    };
-
-    const deleteTestRequest = (id) => {
-        setRequest(request.filter(req => req.id !== id));
-    };
-    const [response, setResponse] = useState([{ id: Date.now() }]);
-    const addTestResponse = () => {
-        setResponse([...response, { id: Date.now() }]);
-    };
-
-    const deleteTestResponse = (id) => {
-        setResponse(response.filter(req => req.id !== id));
-    };
-
-    const [routing, setRouting] = useState([{ id: Date.now() }]);
-    const addTestRouting = () => {
-        setRouting([...routing, { id: Date.now() }]);
-    };
-
-    const deleteTestRouting = (id) => {
-        setRouting(routing.filter(req => req.id !== id));
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
-            <div className='chatbot_question_content'>
-                <Modal.Header className='edit_text_material_header' closeButton>
-                    <Modal.Title className='edit_text_style'>Webhook</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='edittext__body__content'>
-
-                    <div className='question_text_content'>
-                        <div className='edit__text__label'>Url & Method</div>
-                        <div className='url_set_container'>
-                            <div className='url_set_left'>
-                                <div className='url_set_method'>
-                                    <Autocomplete
-                                        options={urlOptions}
-                                        value={urlContent}
-                                        disableClearable
-                                        onChange={(event, newValue) => setUrlContent(newValue)}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                variant="standard"
-                                                placeholder=""
-                                                InputProps={{
-                                                    ...params.InputProps,
-                                                    disableUnderline: true,
-                                                    sx: {
-                                                        border: '1px solid rgb(232, 234, 242)',
-                                                        borderRadius: '4px',
-                                                        height: '3rem',
-                                                        paddingLeft: '10px',
-                                                        fontSize: '12px',
-                                                        width: '80px',
-                                                        height: '30px',
-                                                        backgroundColor: 'white',
-                                                        '&:hover': {
-                                                            border: '1px solid green',
-                                                        },
-                                                        '&.Mui-focused': {
-                                                            border: '1px solid green',
-                                                            backgroundColor: 'white',
-                                                            outline: 'none',
-                                                        },
-                                                    },
-                                                }}
-
-                                            />
-                                        )}
-
-
-                                    />
-                                </div>
-                                <input type="text" className='edit__text__input url_input_box' value={`http ${inputValue}`}
-                                    onChange={(e) => setInputValue(e.target.value)} />
-                            </div>
-                            <div className='url_set_variable'>
-
-                                <button className='btn btn-success variable_btn' onClick={toggleHeaderVariablesDropdown}>Variables</button>
-                            </div>
-                            {isHeaderVariables && (
-                                <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                    <div className="variables_search_bar">
-                                        <div>
-                                            <input
-                                                className=" variables_search_input"
-                                                type="text"
-                                                placeholder="Search variables"
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className='varibles_drop_content'>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                            {filteredVariables.map((variable, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
-                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                        <div className="varibles_drop_list">
-                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                            {filterContactAttributes.map((contact, index) => (
-                                                <>
-                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
-                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                    </div>
-
-                                                </>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                        </div>
-
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='question_accept_container media_header_text'>
-                            <div className='edit__text__label'>Customize Headers</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">optional</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isActive ? 'active' : ''}`}
-                                    onClick={handleToggle}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-
-                            </div>
-                        </div>
-                        <div className='webhook_customize_text'>Add headers to your request (example: Content-Type: application/json)</div>
-                        <div className='customize_sub_text'>(User-Agent is not sent as a header by default. make sure you include it if necessary.)</div>
-                        {
-                            isActive && (
-                                <div>
-                                    <div className='edit__text__label'>Edit Headers</div>
-                                    {headers.map((header) => (
-                                        <>
-                                            <div key={header.id} className='set_header_and_value'>
-                                                <div className='set_header_value_field'>
-                                                    <div className='header_value_label'>Key</div>
-                                                    <input type="text" className='edit__text__input message_input_box' placeholder='Content-Type' />
-                                                </div>
-                                                <div className='set_header_value_field'>
-                                                    <div className='header_value_label'>Value</div>
-                                                    <input type="text" className='edit__text__input message_input_box' placeholder='application/json' value={customizeHeaderValue}
-                                                        onChange={(e) => setCustomizeHeaderValue(e.target.value)} />
-                                                    <button className='btn btn-success variable_btn' onClick={toggleCustomizeVariablesDropdown}>Variables</button>
-                                                </div>
-
-                                                <button type="button" className='customize_header_delete' onClick={() => deleteHeader(header.id)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-                                            </div>
-                                            {isCustomizeHeaderVariables && (
-                                                <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                                    <div className="variables_search_bar">
-                                                        <div>
-                                                            <input
-                                                                className=" variables_search_input"
-                                                                type="text"
-                                                                placeholder="Search variables"
-                                                                value={searchTerm}
-                                                                onChange={handleSearchChange}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className='varibles_drop_content'>
-                                                        <div className="varibles_drop_list">
-                                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                                            {filteredVariables.map((variable, index) => (
-                                                                <>
-                                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleCustomizeVariableClick(variable)}>
-                                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                                    </div>
-
-                                                                </>
-                                                            ))}
-                                                        </div>
-                                                        <div className="varibles_drop_list">
-                                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                                            {filterContactAttributes.map((contact, index) => (
-                                                                <>
-                                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleCustomizeVariableClick(contact)}>
-                                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                                    </div>
-
-                                                                </>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </>
-                                    ))}
-                                    <button className='footer__cancel__btn condition__add ' onClick={addHeader} >Add Header</button>
-                                </div>
-
-                            )
-                        }
-
-
-
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='question_accept_container media_header_text'>
-                            <div className='edit__text__label'>Test Your Request</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">optional</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isRequestActive ? 'active' : ''}`}
-                                    onClick={handleToggleRequest}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-
-                            </div>
-                        </div>
-                        <div className='webhook_customize_text'>Manually set values for test variables</div>
-                        <div className='customize_sub_text'>(If your request contains variables, you can manually set their values for testing purposes.)</div>
-                        <button className='btn btn-success'>Test the Request</button>
-                        {
-                            isRequestActive && (
-                                <div>
-                                    <div className='edit__text__label'>Edit Test Variables</div>
-                                    {request.map((req) => (
-                                        <>
-                                            <div key={req.id} className='set_header_and_value'>
-                                                <div className='set_header_value_field'>
-                                                    <div className='header_value_label'>Variable Name</div>
-                                                    <input type="text" className='edit__text__input message_input_box' placeholder='Search Variables' value={requestValue}
-                                                        onChange={(e) => setRequestValue(e.target.value)} />
-                                                </div>
-                                                <div className='set_header_value_field'>
-                                                    <div className='header_value_label'>Test Value</div>
-                                                    <input type="text" className='edit__text__input message_input_box' placeholder='application/json'
-                                                    />
-
-                                                </div>
-
-                                                <button type="button" className='customize_header_delete' onClick={() => deleteTestRequest(req.id)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-
-                                            </div>
-                                            <div> <button className='btn btn-success variable_btn' onClick={toggleRequestVariablesDropdown}>Variables</button></div>
-                                            {isRequestVariables && (
-                                                <div className="varibles_drop_container" aria-hidden={!isRequestVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                                    <div className="variables_search_bar">
-                                                        <div>
-                                                            <input
-                                                                className=" variables_search_input"
-                                                                type="text"
-                                                                placeholder="Search variables"
-                                                                value={searchTerm}
-                                                                onChange={handleSearchChange}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div className='varibles_drop_content'>
-                                                        <div className="varibles_drop_list">
-                                                            <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                                            {filteredVariables.map((variable, index) => (
-                                                                <>
-                                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleRequestVariableClick(variable)}>
-                                                                        <span className="variable_list_item_title">{variable.title}</span>
-                                                                        <span className="variable_list_item_value">{variable.value}</span>
-                                                                    </div>
-
-                                                                </>
-                                                            ))}
-                                                        </div>
-                                                        <div className="varibles_drop_list">
-                                                            <div className="varibles_drop_list_header">Contact Attributes</div>
-                                                            {filterContactAttributes.map((contact, index) => (
-                                                                <>
-                                                                    <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleRequestVariableClick(contact)}>
-                                                                        <span className="variable_list_item_title">{contact.title}</span>
-                                                                        <span className="variable_list_item_value">{contact.value}</span>
-                                                                    </div>
-
-                                                                </>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </>
-                                    ))}
-                                    <div className='test_variables_add'>
-                                        <button className='footer__cancel__btn condition__add ' onClick={addTestRequest} >Add Test Variables</button></div>
-                                </div>
-
-                            )
-                        }
-
-
-
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='question_accept_container media_header_text'>
-                            <div className='edit__text__label'>Save Responses as Variables</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">optional</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isResponseActive ? 'active' : ''}`}
-                                    onClick={handleToggleResponse}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-
-                            </div>
-                        </div>
-                        {
-                            isResponseActive &&
-                            <>
-                                <div className='customize_sub_text'><b>Select from the dropdown below</b> to save a specific part of the response as a variable (you must test the request first).</div>
-                                <div className='customize_sub_text'>  Useful for displaying dynamic data from external sources as buttons or messages.</div>
-                                <div className='edit__text__label'>Edit Response Variables</div>
-                                <Autocomplete
-                                    options={options}
-                                    value={content}
-                                    disableClearable
-                                    onChange={(event, newValue) => setContent(newValue)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            placeholder="Input value & Please enter to search"
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                disableUnderline: true,
-                                                sx: {
-                                                    border: '1px solid rgb(232, 234, 242)',
-                                                    borderRadius: '4px',
-                                                    height: '3rem',
-                                                    paddingLeft: '10px',
-                                                    fontSize: '12px',
-                                                    marginBottom: '10px',
-                                                    backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
-                                                    '&:hover': {
-                                                        border: '1px solid green',
-                                                    },
-                                                    '&.Mui-focused': {
-                                                        border: '1px solid green',
-                                                        backgroundColor: 'white',
-                                                        outline: 'none',
-                                                    },
-                                                },
-                                            }}
-
-                                        />
-                                    )}
-
-                                />
-                                {response.map((res) => (
-                                    <>
-                                        <div key={res.id} className='set_header_and_value'>
-                                            <div className='set_header_value_field'>
-                                                <div className='header_value_label'>Variable Name</div>
-                                                <input type="text" className='edit__text__input message_input_box' placeholder='Type value or select' value={responseValue}
-                                                    onChange={(e) => setResponseValue(e.target.value)}
-                                                />
-                                            </div>
-                                            <div className='set_header_value_field'>
-                                                <div className='header_value_label'>Entire Response Body</div>
-                                                <input type="text" className='edit__text__input message_input_box'
-                                                />
-
-                                            </div>
-
-                                            <button type="button" className='customize_header_delete' onClick={() => deleteTestResponse(res.id)} ><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
-
-                                        </div>
-                                        <div> <button className='btn btn-success variable_btn' onClick={toggleResponseVariablesDropdown}>Variables</button></div>
-                                        {isResponseVariables && (
-                                            <div className="varibles_drop_container" aria-hidden={!isResponseVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
-                                                <div className="variables_search_bar">
-                                                    <div>
-                                                        <input
-                                                            className=" variables_search_input"
-                                                            type="text"
-                                                            placeholder="Search variables"
-                                                            value={searchTerm}
-                                                            onChange={handleSearchChange}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className='varibles_drop_content'>
-                                                    <div className="varibles_drop_list">
-                                                        <div className="varibles_drop_list_header">Chatbot Input Variables</div>
-                                                        {filteredVariables.map((variable, index) => (
-                                                            <>
-                                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleResponseVariableClick(variable)}>
-                                                                    <span className="variable_list_item_title">{variable.title}</span>
-                                                                    <span className="variable_list_item_value">{variable.value}</span>
-                                                                </div>
-
-                                                            </>
-                                                        ))}
-                                                    </div>
-                                                    <div className="varibles_drop_list">
-                                                        <div className="varibles_drop_list_header">Contact Attributes</div>
-                                                        {filterContactAttributes.map((contact, index) => (
-                                                            <>
-                                                                <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleResponseVariableClick(contact)}>
-                                                                    <span className="variable_list_item_title">{contact.title}</span>
-                                                                    <span className="variable_list_item_value">{contact.value}</span>
-                                                                </div>
-
-                                                            </>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </>
-                                ))}
-                                <div className='test_variables_add'>
-                                    <button className='footer__cancel__btn condition__add ' onClick={addTestResponse} >Add Response Variables</button></div>
-
-                            </>
-                        }
-                    </div>
-                    <div className='question_text_container'>
-                        <div className='question_accept_container media_header_text'>
-                            <div className='edit__text__label'>Response Routing</div>
-
-                            <div className='holidaytoggle' style={{ width: '100px' }}>
-                                <label className="toggle-label">optional</label>
-                                <button
-                                    type="button"
-                                    className={`toggle__control ${isRoutingActive ? 'active' : ''}`}
-                                    onClick={handleToggleRouting}
-                                    aria-label="Toggle"
-
-                                >
-                                    <div className='toggle-indicator'></div>
-                                </button>
-
-                            </div>
-                        </div>
-                        <div className='webhook_customize_text'>Split your chatbot based on response status codes (200, 400, 500, etc).</div>
-                        {
-                            isRoutingActive &&
-
-                            <>
-                                <div>
-                                    <div class="edit__text__label">Expected Status</div>
-                                    {routing.map((data) => (
-                                        <div key={data.id}>
-                                            <input type="text" class="edit__text__input section_text_box" placeholder="200" style={{ background: 'rgb(245, 246, 250)' }} />
-                                            <button class="list_row_delete">
-                                                <svg
-                                                    width="20"
-                                                    height="20"
-                                                    viewBox="0 0 20 20"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    style={{ stroke: 'red' }}
-                                                    onClick={() => deleteTestRouting(data.id)}
-
-                                                >
-                                                    <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path>
-                                                    <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    ))}
-
-                                </div>
-                                <div className='test_variables_add'>
-                                    <button className='footer__cancel__btn condition__add ' onClick={addTestRouting} >Add Expected Status</button></div>
-                            </>
-
-                        }
-
-                    </div>
-
-
-                    <div className='edit__text__save'>
-                        <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
-                        <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
-                    </div>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-};
+
+// const AssignToTeamModal = ({ show, onClose, onSave }) => {
+//     const initialOptions = ['EV_Zone_everyone', 'Call_center_Kampala', 'Driver_Liaison_officers', 'Ride_Agents_officers', 'Corporate_Liaison_officers'];
+//     const [selectedTags, setSelectedTags] = useState([]);
+//     const [options, setOptions] = useState(initialOptions);
+
+//     const handleTagDelete = (tagToDelete) => {
+//         setSelectedTags((prev) => prev.filter(tag => tag !== tagToDelete));
+//         setOptions((prev) => [...prev, tagToDelete]);
+//     };
+
+//     const handleTagChange = (event, newValue) => {
+//         if (newValue && !selectedTags.includes(newValue)) {
+//             setSelectedTags((prev) => [...prev, newValue]);
+//             setOptions((prev) => prev.filter(option => option !== newValue));
+//         }
+//     };
+
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Assign To Team</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+
+//                         <Autocomplete
+//                             options={options}
+//                             disableClearable
+//                             onChange={handleTagChange}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="Select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+//                         {selectedTags.map((tag) => (
+//                             <Chip
+//                                 key={tag}
+//                                 label={tag}
+//                                 onDelete={() => handleTagDelete(tag)}
+//                                 style={{ marginTop: '15px' }}
+//                             />
+//                         ))}
+
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
+// const AssignToUserModal = ({ show, onClose, onSave }) => {
+//     const initialOptions = ['Thameem Hameed', 'Bot', 'EV zone', 'juliet _1'];
+//     const [selectedTag, setSelectedTag] = useState(null);
+//     const [options, setOptions] = useState(initialOptions);
+
+//     const handleTagChange = (event, newValue) => {
+//         if (newValue) {
+
+//             setSelectedTag(newValue);
+//         }
+//     };
+
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Assign To User</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+//                         <Autocomplete
+//                             options={options.filter(option => option !== selectedTag)}
+//                             disableClearable
+//                             onChange={handleTagChange}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="Select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+//                                 />
+//                             )}
+//                         />
+//                         {selectedTag && (
+//                             <Chip
+//                                 key={selectedTag}
+//                                 label={selectedTag}
+//                                 onDelete={() => setSelectedTag(null)}
+//                                 style={{ marginTop: '15px' }}
+//                             />
+//                         )}
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+// const TriggerChatbotModal = ({ show, onClose, onSave }) => {
+//     const options = ['ratings', 'cancel_order', 'reschdule_order', 'dispatch', 'payment_process']
+//     const [content, setContent] = useState('');
+//     const filteredOptions = options.filter(option => option !== content);
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Trigger Chatbot</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+
+//                         <Autocomplete
+//                             options={filteredOptions}
+//                             value={content}
+//                             disableClearable
+//                             onChange={(event, newValue) => setContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="Select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
+// const UpdateChatModal = ({ show, onClose, onSave }) => {
+//     const options = ['Open', 'Pending', 'Solved', 'Spam & Block']
+//     const [content, setContent] = useState('');
+//     const filteredOptions = options.filter(option => option !== content);
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Update Chat Status</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+
+//                         <Autocomplete
+//                             options={filteredOptions}
+//                             value={content}
+//                             disableClearable
+//                             onChange={(event, newValue) => setContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="Select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+// const TemplatesModal = ({ show, onClose, onSave }) => {
+//     const options = ["sell_ev_market", 'buy_ev_market', 'agent_signup', 'become_a_driver', 'charge_point_owner', 'agent_register', 'charging_point']
+//     const messages = {
+//         sell_ev_market: "You can sell Electric Vehicles, Charge Points and Accessories from our market",
+//         buy_ev_market: "You can buy Electric Vehicles, Charge Points and Accessories from our market.",
+//         agent_signup: "To become an EV zone Agent",
+//         become_a_driver: "Register from website : https://www.evzoneride.com/#",
+//         charge_point_owner: "Email on investors@evzoneafrica.com",
+//         agent_register: "To become an EV zone Agent",
+//         charging_point: "Book through Website https://www.evzoneride.com/#"
+//     };
+//     const [content, setContent] = useState('');
+//     const filteredOptions = options.filter(option => option !== content);
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Message Template</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+
+//                         <Autocomplete
+//                             options={filteredOptions}
+//                             value={content}
+//                             disableClearable
+//                             onChange={(event, newValue) => setContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="Select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+//                         {content && (
+//                             <div className='message_templates_body'>
+//                                 {messages[content]}
+//                             </div>
+//                         )}
+
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+// const SetTimeDelayModal = ({ show, onClose, onSave }) => {
+
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Set Time Delay</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+//                     <div className='question_text_content'>
+//                         <div className='edit__text__label'>Set a delay from 0:00 to 180:00 minutes</div>
+//                         <div className='time_delay_container'>
+//                             <input type="number" className='edit__text__input time_delay_inputbox' />
+//                             <span>min</span>
+//                             <input type="number" className='edit__text__input time_delay_inputbox' />
+//                             <span>sec</span>
+//                         </div>
+//                     </div>
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave}>Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+// const WhatsappFlowModal = ({ show, onClose, onSave }) => {
+//     const [content, setContent] = useState('');
+//     const [inputValue, setInputValue] = useState("");
+//     const [HeaderValue, setHeaderValue] = useState('');
+//     const fallbackOptions = [1, 2, 3]
+//     const [fallbackContent, setFallbackContent] = useState('')
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+//     const [isActive, setIsActive] = useState(false); //toggle
+//     const handleToggle = () => {
+//         setIsActive(!isActive);
+//     };
+
+
+//     const [isVisible, setIsVisible] = useState(false);
+//     const [isVariablesVisible, setIsVariablesVisible] = useState(false);
+//     const [isHeaderVariables, setIsHeaderVariables] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+
+//     const toggleVariablesDropdown = () => {
+//         setIsVariablesVisible((prev) => !prev);
+//     };
+//     const toggleHeaderVariablesDropdown = () => {
+//         setIsHeaderVariables((prev) => !prev);
+//     }
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleEmojiPicker = () => {
+//         setIsVisible((prev) => !prev);
+//     };
+//     const handleEmojiClick = (emoji) => {
+//         setInputValue(prev => prev + emoji);
+//         setIsVisible(false);
+//     };
+
+//     const handleVariableClick = (variable) => {
+//         setInputValue(prev => prev + variable.value);
+//         setIsVariablesVisible(false);
+//     };
+//     const handleHeaderVariableClick = (variable) => {
+//         setHeaderValue(prev => prev + variable.value);
+//         setIsHeaderVariables(false);
+//     };
+//     const formatText = (command) => {
+//         document.execCommand(command, false, null);
+//     };
+//     const applyCurlyFormatting = () => {
+//         const selection = window.getSelection();
+//         if (selection.rangeCount > 0) {
+//             const range = selection.getRangeAt(0);
+//             const selectedText = range.toString();
+//             if (selectedText) {
+//                 const curlyText = `{${selectedText}}`;
+//                 const textNode = document.createTextNode(curlyText);
+//                 range.deleteContents();
+//                 range.insertNode(textNode);
+//                 selection.removeAllRanges();
+//             }
+//         }
+//     };
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>WhatsApp Flow</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+
+//                     <div className='question_text_content'>
+//                         <div className='edit__text__label'>Header Text</div>
+//                         <div className='question_variant_item'>
+//                             <input type="text" className='edit__text__input message_input_box' placeholder='inputvalue'
+//                                 value={HeaderValue}
+//                                 onChange={(e) => setHeaderValue(e.target.value)} />
+//                             <button className='btn btn-success variant_create_button' onClick={toggleHeaderVariablesDropdown} >variables</button>
+//                         </div>
+//                         {isHeaderVariables && (
+//                             <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                 <div className="variables_search_bar">
+//                                     <div>
+//                                         <input
+//                                             className=" variables_search_input"
+//                                             type="text"
+//                                             placeholder="Search variables"
+//                                             value={searchTerm}
+//                                             onChange={handleSearchChange}
+//                                         />
+//                                     </div>
+//                                 </div>
+//                                 <div className='varibles_drop_content'>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                         {filteredVariables.map((variable, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(variable)}>
+//                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                         {filterContactAttributes.map((contact, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleHeaderVariableClick(contact)}>
+//                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Body Text</div>
+//                         <div className='question_editor_container'>
+
+//                             <div
+//                                 className='message_edit__text__input question_editor_text'
+//                                 contentEditable
+//                                 suppressContentEditableWarning={true}
+//                                 onInput={(e) => setInputValue(e.currentTarget.innerHTML)}
+//                                 dangerouslySetInnerHTML={{ __html: inputValue }}
+//                             ></div>
+//                             <div className='question_editor_toolbar'>
+//                                 <div className='inline_toolbar'>
+//                                     <div className='option_toolbar' onClick={() => formatText('bold')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYuMjM2IDBjMS42NTIgMCAyLjk0LjI5OCAzLjg2Ni44OTMuOTI1LjU5NSAxLjM4OCAxLjQ4NSAxLjM4OCAyLjY2OSAwIC42MDEtLjE3MyAxLjEzOS0uNTE2IDEuNjEtLjM0My40NzQtLjg0NC44My0xLjQ5OSAxLjA2OC44NDMuMTY3IDEuNDc0LjUyMyAxLjg5NSAxLjA3MS40MTkuNTUuNjMgMS4xODMuNjMgMS45MDMgMCAxLjI0NS0uNDQ0IDIuMTg3LTEuMzMgMi44MjUtLjg4Ni42NDEtMi4xNDQuOTYxLTMuNzY5Ljk2MUgwdi0yLjE2N2gxLjQ5NFYyLjE2N0gwVjBoNi4yMzZ6TTQuMzA4IDUuNDQ2aDIuMDI0Yy43NTIgMCAxLjMzLS4xNDMgMS43MzQtLjQzLjQwNS0uMjg1LjYwOC0uNzAxLjYwOC0xLjI1IDAtLjYtLjIwNC0xLjA0NC0uNjEyLTEuMzMtLjQwOC0uMjg2LTEuMDE2LS40MjctMS44MjYtLjQyN0g0LjMwOHYzLjQzN3ptMCAxLjgwNFYxMWgyLjU5M2MuNzQ3IDAgMS4zMTQtLjE1MiAxLjcwNy0uNDUyLjM5LS4zLjU4OC0uNzQ1LjU4OC0xLjMzNCAwLS42MzYtLjE2OC0xLjEyNC0uNS0xLjQ2LS4zMzYtLjMzNS0uODY0LS41MDQtMS41ODItLjUwNEg0LjMwOHoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('italic')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTcgM1YyaDR2MUg5Ljc1M2wtMyAxMEg4djFINHYtMWgxLjI0N2wzLTEwSDd6Ii8+PC9zdmc+' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={() => formatText('strikeThrough')}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNNC4wNCA1Ljk1NGg2LjIxNWE3LjQxMiA3LjQxMiAwIDAgMC0uNzk1LS40MzggMTEuOTA3IDExLjkwNyAwIDAgMC0xLjQ0Ny0uNTU3Yy0xLjE4OC0uMzQ4LTEuOTY2LS43MTEtMi4zMzQtMS4wODgtLjM2OC0uMzc3LS41NTItLjc3LS41NTItMS4xODEgMC0uNDk1LjE4Ny0uOTA2LjU2LTEuMjMyLjM4LS4zMzEuODg3LS40OTcgMS41MjMtLjQ5Ny42OCAwIDEuMjY2LjI1NSAxLjc1Ny43NjcuMjk1LjMxNS41ODIuODkxLjg2MSAxLjczbC4xMTcuMDE2LjcwMy4wNS4xLS4wMjRjLjAyOC0uMTUyLjA0Mi0uMjc5LjA0Mi0uMzggMC0uMzM3LS4wMzktLjg1Mi0uMTE3LTEuNTQ0YTkuMzc0IDkuMzc0IDAgMCAwLS4xNzYtLjk5NUM5Ljg4LjM3OSA5LjM4NS4yNDQgOS4wMTcuMTc2IDguMzY1LjA3IDcuODk5LjAxNiA3LjYyLjAxNmMtMS40NSAwLTIuNTQ1LjM1Ny0zLjI4NyAxLjA3MS0uNzQ3LjcyLTEuMTIgMS41ODktMS4xMiAyLjYwNyAwIC41MTEuMTMzIDEuMDQuNCAxLjU4Ni4xMjkuMjUzLjI3LjQ3OC40MjcuNjc0ek04LjI4IDguMTE0Yy41NzUuMjM2Ljk1Ny40MzYgMS4xNDcuNTk5LjQ1MS40MS42NzcuODUyLjY3NyAxLjMyNCAwIC4zODMtLjEzLjc0NS0uMzkzIDEuMDg4LS4yNS4zMzgtLjU5LjU4LTEuMDIuNzI2YTMuNDE2IDMuNDE2IDAgMCAxLTEuMTYzLjIyOGMtLjQwNyAwLS43NzUtLjA2Mi0xLjEwNC0uMTg2YTIuNjk2IDIuNjk2IDAgMCAxLS44NzgtLjQ4IDMuMTMzIDMuMTMzIDAgMCAxLS42Ny0uNzk0IDEuNTI3IDEuNTI3IDAgMCAxLS4xMDQtLjIyNyA1Ny41MjMgNTcuNTIzIDAgMCAwLS4xODgtLjQ3MyAyMS4zNzEgMjEuMzcxIDAgMCAwLS4yNTEtLjU5OWwtLjg1My4wMTd2LjM3MWwtLjAxNy4zMTNhOS45MiA5LjkyIDAgMCAwIDAgLjU3M2MuMDExLjI3LjAxNy43MDkuMDE3IDEuMzE2di4xMWMwIC4wNzkuMDIyLjE0LjA2Ny4xODUuMDgzLjA2OC4yODQuMTQ3LjYwMi4yMzdsMS4xNy4zMzdjLjQ1Mi4xMy45OTYuMTk0IDEuNjMyLjE5NC42ODYgMCAxLjI1Mi0uMDU5IDEuNjk4LS4xNzdhNC42OTQgNC42OTQgMCAwIDAgMS4yOC0uNTU3Yy40MDEtLjI1OS43MDUtLjQ4Ni45MTEtLjY4My4yNjgtLjI3Ni40NjYtLjU2OC41OTQtLjg3OGE0Ljc0IDQuNzQgMCAwIDAgLjM0My0xLjc4OGMwLS4yOTgtLjAyLS41NTctLjA1OC0uNzc2SDguMjgxek0xNC45MTQgNi41N2EuMjYuMjYgMCAwIDAtLjE5My0uMDc2SC4yNjhhLjI2LjI2IDAgMCAwLS4xOTMuMDc2LjI2NC4yNjQgMCAwIDAtLjA3NS4xOTR2LjU0YzAgLjA3OS4wMjUuMTQzLjA3NS4xOTRhLjI2LjI2IDAgMCAwIC4xOTMuMDc2SDE0LjcyYS4yNi4yNiAwIDAgMCAuMTkzLS4wNzYuMjY0LjI2NCAwIDAgMCAuMDc1LS4xOTR2LS41NGEuMjY0LjI2NCAwIDAgMC0uMDc1LS4xOTR6Ii8+PC9nPjwvc3ZnPg==' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={applyCurlyFormatting}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzQ0NCIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMS4wMjEgMi45MDZjLjE4NiAxLjIxOS4zNzIgMS41LjM3MiAyLjcxOUMxLjM5MyA2LjM3NSAwIDcuMDMxIDAgNy4wMzF2LjkzOHMxLjM5My42NTYgMS4zOTMgMS40MDZjMCAxLjIxOS0uMTg2IDEuNS0uMzcyIDIuNzE5Qy43NDMgMTQuMDYzIDEuNzY0IDE1IDIuNjkzIDE1aDEuOTV2LTEuODc1cy0xLjY3Mi4xODgtMS42NzItLjkzOGMwLS44NDMuMTg2LS44NDMuMzcyLTIuNzE4LjA5My0uODQ0LS40NjQtMS41LTEuMDIyLTEuOTY5LjU1OC0uNDY5IDEuMTE1LTEuMDMxIDEuMDIyLTEuODc1QzMuMDY0IDMuNzUgMi45NyAzLjc1IDIuOTcgMi45MDZjMC0xLjEyNSAxLjY3Mi0xLjAzMSAxLjY3Mi0xLjAzMVYwaC0xLjk1QzEuNjcgMCAuNzQzLjkzOCAxLjAyIDIuOTA2ek0xMS45NzkgMi45MDZjLS4xODYgMS4yMTktLjM3MiAxLjUtLjM3MiAyLjcxOSAwIC43NSAxLjM5MyAxLjQwNiAxLjM5MyAxLjQwNnYuOTM4cy0xLjM5My42NTYtMS4zOTMgMS40MDZjMCAxLjIxOS4xODYgMS41LjM3MiAyLjcxOS4yNzggMS45NjktLjc0MyAyLjkwNi0xLjY3MiAyLjkwNmgtMS45NXYtMS44NzVzMS42NzIuMTg4IDEuNjcyLS45MzhjMC0uODQzLS4xODYtLjg0My0uMzcyLTIuNzE4LS4wOTMtLjg0NC40NjQtMS41IDEuMDIyLTEuOTY5LS41NTgtLjQ2OS0xLjExNS0xLjAzMS0xLjAyMi0xLjg3NS4xODYtMS44NzUuMzcyLTEuODc1LjM3Mi0yLjcxOSAwLTEuMTI1LTEuNjcyLTEuMDMxLTEuNjcyLTEuMDMxVjBoMS45NWMxLjAyMiAwIDEuOTUuOTM4IDEuNjcyIDIuOTA2eiIvPjwvZz48L3N2Zz4=' />
+//                                     </div>
+//                                     <div className='option_toolbar' onClick={toggleEmojiPicker}>
+//                                         <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTciIHZpZXdCb3g9IjE1LjcyOSAyMi4wODIgMTcgMTciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTI5LjcwOCAyNS4xMDRjLTMuMDIxLTMuMDIyLTcuOTM3LTMuMDIyLTEwLjk1OCAwLTMuMDIxIDMuMDItMy4wMiA3LjkzNiAwIDEwLjk1OCAzLjAyMSAzLjAyIDcuOTM3IDMuMDIgMTAuOTU4LS4wMDEgMy4wMi0zLjAyMSAzLjAyLTcuOTM2IDAtMTAuOTU3em0tLjg0NSAxMC4xMTJhNi41NiA2LjU2IDAgMCAxLTkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAtOS4yNjcgNi41NiA2LjU2IDAgMCAxIDkuMjY4IDAgNi41NiA2LjU2IDAgMCAxIDAgOS4yNjd6bS03LjUyNC02LjczYS45MDYuOTA2IDAgMSAxIDEuODExIDAgLjkwNi45MDYgMCAwIDEtMS44MTEgMHptNC4xMDYgMGEuOTA2LjkwNiAwIDEgMSAxLjgxMiAwIC45MDYuOTA2IDAgMCAxLTEuODEyIDB6bTIuMTQxIDMuNzA4Yy0uNTYxIDEuMjk4LTEuODc1IDIuMTM3LTMuMzQ4IDIuMTM3LTEuNTA1IDAtMi44MjctLjg0My0zLjM2OS0yLjE0N2EuNDM4LjQzOCAwIDAgMSAuODEtLjMzNmMuNDA1Ljk3NiAxLjQxIDEuNjA3IDIuNTU5IDEuNjA3IDEuMTIzIDAgMi4xMjEtLjYzMSAyLjU0NC0xLjYwOGEuNDM4LjQzOCAwIDAgMSAuODA0LjM0N3oiLz48L3N2Zz4=' />
+//                                     </div>
+
+//                                 </div>
+//                                 <div className='question_variable_btn'>
+//                                     <button className='btn btn-success variable_btn' onClick={toggleVariablesDropdown} >Variables  </button>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                         {isVisible && (
+//                             <div className="emoji_dropdown">
+//                                 {emojis.map((emoji, index) => (
+//                                     <span
+//                                         key={index}
+//                                         className="emoji_icon"
+//                                         onClick={() => handleEmojiClick(emoji)}
+//                                         style={{ cursor: 'pointer' }}
+//                                     >
+//                                         {emoji}
+//                                     </span>
+//                                 ))}
+//                             </div>
+//                         )}
+//                         {isVariablesVisible && (
+//                             <div className="varibles_drop_container" aria-hidden={!isVariablesVisible} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                 <div className="variables_search_bar">
+//                                     <div>
+//                                         <input
+//                                             className=" variables_search_input"
+//                                             type="text"
+//                                             placeholder="Search variables"
+//                                             value={searchTerm}
+//                                             onChange={handleSearchChange}
+//                                         />
+//                                     </div>
+//                                 </div>
+//                                 <div className='varibles_drop_content'>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                         {filteredVariables.map((variable, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(variable)}>
+//                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                     <div className="varibles_drop_list">
+//                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                         {filterContactAttributes.map((contact, index) => (
+//                                             <>
+//                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleVariableClick(contact)}>
+//                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                 </div>
+
+//                                             </>
+//                                         ))}
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Footer Text</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='input value' />
+//                     </div>
+
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Button</div>
+//                         <input type="text" className='edit__text__input message_input_box' placeholder='Menu Here' />
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='edit__text__label'>Select Flow</div>
+
+//                         <Autocomplete
+//                             options=''
+//                             value={content}
+//                             disableClearable
+//                             onChange={(event, newValue) => setContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container media_header_text'>
+//                             <div className='edit__text__label'>Fallback Message</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isActive ? 'active' : ''}`}
+//                                     style={{ marginLeft: '57px' }}
+//                                     onClick={handleToggle}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+
+//                             </div>
+
+//                         </div>
+//                         <div className='fallback_subtext'>Set a fallback message for when the customer doesn’t engage with the WhatsApp flow.</div>
+//                         <div className='message_templates_body'>
+//                             Help us by completing the above form to continue.
+//                         </div>
+//                         <div className='edit__text__label'>How many times should the fallback get triggered?</div>
+//                         <Autocomplete
+//                             options={fallbackOptions}
+//                             value={fallbackContent}
+//                             disableClearable
+//                             onChange={(event, newValue) => setFallbackContent(newValue)}
+//                             renderInput={(params) => (
+//                                 <TextField
+//                                     {...params}
+//                                     variant="standard"
+//                                     placeholder="select"
+//                                     InputProps={{
+//                                         ...params.InputProps,
+//                                         disableUnderline: true,
+//                                         sx: {
+//                                             border: '1px solid rgb(232, 234, 242)',
+//                                             borderRadius: '4px',
+//                                             height: '3rem',
+//                                             paddingLeft: '10px',
+//                                             backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                             '&:hover': {
+//                                                 border: '1px solid green',
+//                                             },
+//                                             '&.Mui-focused': {
+//                                                 border: '1px solid green',
+//                                                 backgroundColor: 'white',
+//                                                 outline: 'none',
+//                                             },
+//                                         },
+//                                     }}
+
+//                                 />
+//                             )}
+
+//                         />
+//                     </div>
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+// const WebhookModal = ({ show, onClose, onSave }) => {
+
+//     const urlOptions = ['GET', 'POST'];
+//     const [urlContent, setUrlContent] = useState('');
+
+//     const variables = [
+//         { title: "first_incoming_message", value: "@first_incoming_message" },
+
+//     ];
+//     const contactAttributes = [
+//         { title: "actual_fare", value: '{{actual_fare}}' },
+//         { title: 'actuall_estimate', value: '{{actuall_estimate}}' },
+//         { title: 'additional_items', value: '{{additional_items}}' }
+//     ]
+//     const [inputValue, setInputValue] = useState('');
+//     const [customizeHeaderValue, setCustomizeHeaderValue] = useState('')
+//     const [requestValue, setRequestValue] = useState('')
+//     const [responseValue, setResponseValue] = useState('');
+//     const options = ['Variable', 'Custom Attribute']
+//     const [content, setContent] = useState('')
+
+//     const [isHeaderVariables, setIsHeaderVariables] = useState(false);
+//     const [isCustomizeHeaderVariables, setIsCustomizeHeaderVariables] = useState(false);
+//     const [isRequestVariables, setIsRequestVariables] = useState(false);
+//     const [isResponseVariables, setIsResponseVariables] = useState(false);
+//     const [searchTerm, setSearchTerm] = useState("");
+
+//     const handleSearchChange = (e) => {
+//         setSearchTerm(e.target.value);
+//     };
+//     const filteredVariables = variables.filter(variable =>
+//         variable.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//     const filterContactAttributes = contactAttributes.filter(contact =>
+//         contact.title.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     const toggleHeaderVariablesDropdown = () => {
+//         setIsHeaderVariables((prev) => !prev);
+//     }
+//     const toggleCustomizeVariablesDropdown = () => {
+//         setIsCustomizeHeaderVariables((prev) => !prev);
+//     }
+//     const toggleRequestVariablesDropdown = () => {
+//         setIsRequestVariables((prev) => !prev);
+//     }
+//     const toggleResponseVariablesDropdown = () => {
+//         setIsResponseVariables((prev) => !prev);
+//     }
+//     const handleHeaderVariableClick = (variable) => {
+//         setInputValue(prev => prev + variable.value);
+//         setIsHeaderVariables(false);
+//     };
+//     const handleCustomizeVariableClick = (variable) => {
+//         setCustomizeHeaderValue(prev => prev + variable.value);
+//         setIsCustomizeHeaderVariables(false);
+//     }
+//     const handleRequestVariableClick = (variable) => {
+//         setRequestValue(prev => prev + variable.value);
+//         setIsRequestVariables(false);
+//     }
+//     const handleResponseVariableClick = (variable) => {
+//         setResponseValue(prev => prev + variable.value);
+//         setIsResponseVariables(false);
+//     }
+
+//     const [isActive, setIsActive] = useState(false);
+//     const handleToggle = () => {
+//         setIsActive(!isActive);
+//     }
+
+//     const [isRequestActive, setIsRequestActive] = useState(false);
+//     const handleToggleRequest = () => {
+//         setIsRequestActive(!isRequestActive)
+//     }
+//     const [isResponseActive, setIsResponseActive] = useState(false);
+//     const handleToggleResponse = () => {
+//         setIsResponseActive(!isResponseActive)
+//     }
+//     const [isRoutingActive, setIsRoutingActive] = useState(false);
+//     const handleToggleRouting = () => {
+//         setIsRoutingActive(!isRoutingActive)
+//     }
+
+//     const [headers, setHeaders] = useState([{ id: Date.now() }]);
+//     const addHeader = () => {
+//         setHeaders([...headers, { id: Date.now() }]);
+//     };
+
+//     const deleteHeader = (id) => {
+//         setHeaders(headers.filter(header => header.id !== id));
+//     };
+//     const [request, setRequest] = useState([{ id: Date.now() }]);
+//     const addTestRequest = () => {
+//         setRequest([...request, { id: Date.now() }]);
+//     };
+
+//     const deleteTestRequest = (id) => {
+//         setRequest(request.filter(req => req.id !== id));
+//     };
+//     const [response, setResponse] = useState([{ id: Date.now() }]);
+//     const addTestResponse = () => {
+//         setResponse([...response, { id: Date.now() }]);
+//     };
+
+//     const deleteTestResponse = (id) => {
+//         setResponse(response.filter(req => req.id !== id));
+//     };
+
+//     const [routing, setRouting] = useState([{ id: Date.now() }]);
+//     const addTestRouting = () => {
+//         setRouting([...routing, { id: Date.now() }]);
+//     };
+
+//     const deleteTestRouting = (id) => {
+//         setRouting(routing.filter(req => req.id !== id));
+//     };
+
+//     return (
+//         <Modal show={show} onHide={onClose} dialogClassName="chatbot_condition_modal">
+//             <div className='chatbot_question_content'>
+//                 <Modal.Header className='edit_text_material_header' closeButton>
+//                     <Modal.Title className='edit_text_style'>Webhook</Modal.Title>
+//                 </Modal.Header>
+//                 <Modal.Body className='edittext__body__content'>
+
+//                     <div className='question_text_content'>
+//                         <div className='edit__text__label'>Url & Method</div>
+//                         <div className='url_set_container'>
+//                             <div className='url_set_left'>
+//                                 <div className='url_set_method'>
+//                                     <Autocomplete
+//                                         options={urlOptions}
+//                                         value={urlContent}
+//                                         disableClearable
+//                                         onChange={(event, newValue) => setUrlContent(newValue)}
+//                                         renderInput={(params) => (
+//                                             <TextField
+//                                                 {...params}
+//                                                 variant="standard"
+//                                                 placeholder=""
+//                                                 InputProps={{
+//                                                     ...params.InputProps,
+//                                                     disableUnderline: true,
+//                                                     sx: {
+//                                                         border: '1px solid rgb(232, 234, 242)',
+//                                                         borderRadius: '4px',
+//                                                         height: '3rem',
+//                                                         paddingLeft: '10px',
+//                                                         fontSize: '12px',
+//                                                         width: '80px',
+//                                                         height: '30px',
+//                                                         backgroundColor: 'white',
+//                                                         '&:hover': {
+//                                                             border: '1px solid green',
+//                                                         },
+//                                                         '&.Mui-focused': {
+//                                                             border: '1px solid green',
+//                                                             backgroundColor: 'white',
+//                                                             outline: 'none',
+//                                                         },
+//                                                     },
+//                                                 }}
+
+//                                             />
+//                                         )}
+
+
+//                                     />
+//                                 </div>
+//                                 <input type="text" className='edit__text__input url_input_box' value={`http ${inputValue}`}
+//                                     onChange={(e) => setInputValue(e.target.value)} />
+//                             </div>
+//                             <div className='url_set_variable'>
+
+//                                 <button className='btn btn-success variable_btn' onClick={toggleHeaderVariablesDropdown}>Variables</button>
+//                             </div>
+//                             {isHeaderVariables && (
+//                                 <VariablesDropdown
+//                                 variables={variables}
+//                                 contactAttributes={contactAttributes}
+//                                 searchTerm={searchTerm}
+//                                 handleSearchChange={handleSearchChange}
+//                                 handleHeaderVariableClick={handleHeaderVariableClick}
+//                               />
+
+//                             )}
+
+//                         </div>
+
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container media_header_text'>
+//                             <div className='edit__text__label'>Customize Headers</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">optional</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isActive ? 'active' : ''}`}
+//                                     onClick={handleToggle}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+
+//                             </div>
+//                         </div>
+//                         <div className='webhook_customize_text'>Add headers to your request (example: Content-Type: application/json)</div>
+//                         <div className='customize_sub_text'>(User-Agent is not sent as a header by default. make sure you include it if necessary.)</div>
+//                         {
+//                             isActive && (
+//                                 <div>
+//                                     <div className='edit__text__label'>Edit Headers</div>
+//                                     {headers.map((header) => (
+//                                         <>
+//                                             <div key={header.id} className='set_header_and_value'>
+//                                                 <div className='set_header_value_field'>
+//                                                     <div className='header_value_label'>Key</div>
+//                                                     <input type="text" className='edit__text__input message_input_box' placeholder='Content-Type' />
+//                                                 </div>
+//                                                 <div className='set_header_value_field'>
+//                                                     <div className='header_value_label'>Value</div>
+//                                                     <input type="text" className='edit__text__input message_input_box' placeholder='application/json' value={customizeHeaderValue}
+//                                                         onChange={(e) => setCustomizeHeaderValue(e.target.value)} />
+//                                                     <button className='btn btn-success variable_btn' onClick={toggleCustomizeVariablesDropdown}>Variables</button>
+//                                                 </div>
+
+//                                                 <button type="button" className='customize_header_delete' onClick={() => deleteHeader(header.id)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+//                                             </div>
+//                                             {isCustomizeHeaderVariables && (
+//                                                 <div className="varibles_drop_container" aria-hidden={!isHeaderVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                                     <div className="variables_search_bar">
+//                                                         <div>
+//                                                             <input
+//                                                                 className=" variables_search_input"
+//                                                                 type="text"
+//                                                                 placeholder="Search variables"
+//                                                                 value={searchTerm}
+//                                                                 onChange={handleSearchChange}
+//                                                             />
+//                                                         </div>
+//                                                     </div>
+//                                                     <div className='varibles_drop_content'>
+//                                                         <div className="varibles_drop_list">
+//                                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                                             {filteredVariables.map((variable, index) => (
+//                                                                 <>
+//                                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleCustomizeVariableClick(variable)}>
+//                                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                                     </div>
+
+//                                                                 </>
+//                                                             ))}
+//                                                         </div>
+//                                                         <div className="varibles_drop_list">
+//                                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                                             {filterContactAttributes.map((contact, index) => (
+//                                                                 <>
+//                                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleCustomizeVariableClick(contact)}>
+//                                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                                     </div>
+
+//                                                                 </>
+//                                                             ))}
+//                                                         </div>
+//                                                     </div>
+//                                                 </div>
+//                                             )}
+//                                         </>
+//                                     ))}
+//                                     <button className='footer__cancel__btn condition__add ' onClick={addHeader} >Add Header</button>
+//                                 </div>
+
+//                             )
+//                         }
+
+
+
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container media_header_text'>
+//                             <div className='edit__text__label'>Test Your Request</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">optional</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isRequestActive ? 'active' : ''}`}
+//                                     onClick={handleToggleRequest}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+
+//                             </div>
+//                         </div>
+//                         <div className='webhook_customize_text'>Manually set values for test variables</div>
+//                         <div className='customize_sub_text'>(If your request contains variables, you can manually set their values for testing purposes.)</div>
+//                         <button className='btn btn-success'>Test the Request</button>
+//                         {
+//                             isRequestActive && (
+//                                 <div>
+//                                     <div className='edit__text__label'>Edit Test Variables</div>
+//                                     {request.map((req) => (
+//                                         <>
+//                                             <div key={req.id} className='set_header_and_value'>
+//                                                 <div className='set_header_value_field'>
+//                                                     <div className='header_value_label'>Variable Name</div>
+//                                                     <input type="text" className='edit__text__input message_input_box' placeholder='Search Variables' value={requestValue}
+//                                                         onChange={(e) => setRequestValue(e.target.value)} />
+//                                                 </div>
+//                                                 <div className='set_header_value_field'>
+//                                                     <div className='header_value_label'>Test Value</div>
+//                                                     <input type="text" className='edit__text__input message_input_box' placeholder='application/json'
+//                                                     />
+
+//                                                 </div>
+
+//                                                 <button type="button" className='customize_header_delete' onClick={() => deleteTestRequest(req.id)}><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+
+//                                             </div>
+//                                             <div> <button className='btn btn-success variable_btn' onClick={toggleRequestVariablesDropdown}>Variables</button></div>
+//                                             {isRequestVariables && (
+//                                                 <div className="varibles_drop_container" aria-hidden={!isRequestVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                                     <div className="variables_search_bar">
+//                                                         <div>
+//                                                             <input
+//                                                                 className=" variables_search_input"
+//                                                                 type="text"
+//                                                                 placeholder="Search variables"
+//                                                                 value={searchTerm}
+//                                                                 onChange={handleSearchChange}
+//                                                             />
+//                                                         </div>
+//                                                     </div>
+//                                                     <div className='varibles_drop_content'>
+//                                                         <div className="varibles_drop_list">
+//                                                             <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                                             {filteredVariables.map((variable, index) => (
+//                                                                 <>
+//                                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleRequestVariableClick(variable)}>
+//                                                                         <span className="variable_list_item_title">{variable.title}</span>
+//                                                                         <span className="variable_list_item_value">{variable.value}</span>
+//                                                                     </div>
+
+//                                                                 </>
+//                                                             ))}
+//                                                         </div>
+//                                                         <div className="varibles_drop_list">
+//                                                             <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                                             {filterContactAttributes.map((contact, index) => (
+//                                                                 <>
+//                                                                     <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleRequestVariableClick(contact)}>
+//                                                                         <span className="variable_list_item_title">{contact.title}</span>
+//                                                                         <span className="variable_list_item_value">{contact.value}</span>
+//                                                                     </div>
+
+//                                                                 </>
+//                                                             ))}
+//                                                         </div>
+//                                                     </div>
+//                                                 </div>
+//                                             )}
+//                                         </>
+//                                     ))}
+//                                     <div className='test_variables_add'>
+//                                         <button className='footer__cancel__btn condition__add ' onClick={addTestRequest} >Add Test Variables</button></div>
+//                                 </div>
+
+//                             )
+//                         }
+
+
+
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container media_header_text'>
+//                             <div className='edit__text__label'>Save Responses as Variables</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">optional</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isResponseActive ? 'active' : ''}`}
+//                                     onClick={handleToggleResponse}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+
+//                             </div>
+//                         </div>
+//                         {
+//                             isResponseActive &&
+//                             <>
+//                                 <div className='customize_sub_text'><b>Select from the dropdown below</b> to save a specific part of the response as a variable (you must test the request first).</div>
+//                                 <div className='customize_sub_text'>  Useful for displaying dynamic data from external sources as buttons or messages.</div>
+//                                 <div className='edit__text__label'>Edit Response Variables</div>
+//                                 <Autocomplete
+//                                     options={options}
+//                                     value={content}
+//                                     disableClearable
+//                                     onChange={(event, newValue) => setContent(newValue)}
+//                                     renderInput={(params) => (
+//                                         <TextField
+//                                             {...params}
+//                                             variant="standard"
+//                                             placeholder="Input value & Please enter to search"
+//                                             InputProps={{
+//                                                 ...params.InputProps,
+//                                                 disableUnderline: true,
+//                                                 sx: {
+//                                                     border: '1px solid rgb(232, 234, 242)',
+//                                                     borderRadius: '4px',
+//                                                     height: '3rem',
+//                                                     paddingLeft: '10px',
+//                                                     fontSize: '12px',
+//                                                     marginBottom: '10px',
+//                                                     backgroundColor: content ? 'white' : 'rgb(245, 246, 250)',
+//                                                     '&:hover': {
+//                                                         border: '1px solid green',
+//                                                     },
+//                                                     '&.Mui-focused': {
+//                                                         border: '1px solid green',
+//                                                         backgroundColor: 'white',
+//                                                         outline: 'none',
+//                                                     },
+//                                                 },
+//                                             }}
+
+//                                         />
+//                                     )}
+
+//                                 />
+//                                 {response.map((res) => (
+//                                     <>
+//                                         <div key={res.id} className='set_header_and_value'>
+//                                             <div className='set_header_value_field'>
+//                                                 <div className='header_value_label'>Variable Name</div>
+//                                                 <input type="text" className='edit__text__input message_input_box' placeholder='Type value or select' value={responseValue}
+//                                                     onChange={(e) => setResponseValue(e.target.value)}
+//                                                 />
+//                                             </div>
+//                                             <div className='set_header_value_field'>
+//                                                 <div className='header_value_label'>Entire Response Body</div>
+//                                                 <input type="text" className='edit__text__input message_input_box'
+//                                                 />
+
+//                                             </div>
+
+//                                             <button type="button" className='customize_header_delete' onClick={() => deleteTestResponse(res.id)} ><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path><path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" stroke-width="1.25" stroke-linecap="round"></path></svg></button>
+
+//                                         </div>
+//                                         <div> <button className='btn btn-success variable_btn' onClick={toggleResponseVariablesDropdown}>Variables</button></div>
+//                                         {isResponseVariables && (
+//                                             <div className="varibles_drop_container" aria-hidden={!isResponseVariables} aria-label="Dropdown" style={{ right: '-10px', left: 'auto' }}>
+//                                                 <div className="variables_search_bar">
+//                                                     <div>
+//                                                         <input
+//                                                             className=" variables_search_input"
+//                                                             type="text"
+//                                                             placeholder="Search variables"
+//                                                             value={searchTerm}
+//                                                             onChange={handleSearchChange}
+//                                                         />
+//                                                     </div>
+//                                                 </div>
+//                                                 <div className='varibles_drop_content'>
+//                                                     <div className="varibles_drop_list">
+//                                                         <div className="varibles_drop_list_header">Chatbot Input Variables</div>
+//                                                         {filteredVariables.map((variable, index) => (
+//                                                             <>
+//                                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleResponseVariableClick(variable)}>
+//                                                                     <span className="variable_list_item_title">{variable.title}</span>
+//                                                                     <span className="variable_list_item_value">{variable.value}</span>
+//                                                                 </div>
+
+//                                                             </>
+//                                                         ))}
+//                                                     </div>
+//                                                     <div className="varibles_drop_list">
+//                                                         <div className="varibles_drop_list_header">Contact Attributes</div>
+//                                                         {filterContactAttributes.map((contact, index) => (
+//                                                             <>
+//                                                                 <div key={index} className="varibles_drop_list_item" aria-hidden="true" onClick={() => handleResponseVariableClick(contact)}>
+//                                                                     <span className="variable_list_item_title">{contact.title}</span>
+//                                                                     <span className="variable_list_item_value">{contact.value}</span>
+//                                                                 </div>
+
+//                                                             </>
+//                                                         ))}
+//                                                     </div>
+//                                                 </div>
+//                                             </div>
+//                                         )}
+//                                     </>
+//                                 ))}
+//                                 <div className='test_variables_add'>
+//                                     <button className='footer__cancel__btn condition__add ' onClick={addTestResponse} >Add Response Variables</button></div>
+
+//                             </>
+//                         }
+//                     </div>
+//                     <div className='question_text_container'>
+//                         <div className='question_accept_container media_header_text'>
+//                             <div className='edit__text__label'>Response Routing</div>
+
+//                             <div className='holidaytoggle' style={{ width: '100px' }}>
+//                                 <label className="toggle-label">optional</label>
+//                                 <button
+//                                     type="button"
+//                                     className={`toggle__control ${isRoutingActive ? 'active' : ''}`}
+//                                     onClick={handleToggleRouting}
+//                                     aria-label="Toggle"
+
+//                                 >
+//                                     <div className='toggle-indicator'></div>
+//                                 </button>
+
+//                             </div>
+//                         </div>
+//                         <div className='webhook_customize_text'>Split your chatbot based on response status codes (200, 400, 500, etc).</div>
+//                         {
+//                             isRoutingActive &&
+
+//                             <>
+//                                 <div>
+//                                     <div class="edit__text__label">Expected Status</div>
+//                                     {routing.map((data) => (
+//                                         <div key={data.id}>
+//                                             <input type="text" class="edit__text__input section_text_box" placeholder="200" style={{ background: 'rgb(245, 246, 250)' }} />
+//                                             <button class="list_row_delete">
+//                                                 <svg
+//                                                     width="20"
+//                                                     height="20"
+//                                                     viewBox="0 0 20 20"
+//                                                     fill="none"
+//                                                     xmlns="http://www.w3.org/2000/svg"
+//                                                     style={{ stroke: 'red' }}
+//                                                     onClick={() => deleteTestRouting(data.id)}
+
+//                                                 >
+//                                                     <path d="M2.5 5.2355C2.15482 5.2355 1.875 5.51532 1.875 5.8605C1.875 6.20567 2.15482 6.4855 2.5 6.4855V5.2355ZM17.5 6.4855C17.8452 6.4855 18.125 6.20567 18.125 5.8605C18.125 5.51532 17.8452 5.2355 17.5 5.2355V6.4855ZM4.16667 5.8605V5.2355H3.54167V5.8605H4.16667ZM15.8333 5.8605H16.4583V5.2355H15.8333V5.8605ZM15.2849 14.0253L15.8853 14.1986L15.2849 14.0253ZM11.4366 17.3795L11.5408 17.9957L11.4366 17.3795ZM8.56334 17.3795L8.66748 16.7632L8.66748 16.7632L8.56334 17.3795ZM8.43189 17.3572L8.32775 17.9735H8.32775L8.43189 17.3572ZM4.71512 14.0252L4.11464 14.1986L4.71512 14.0252ZM11.5681 17.3572L11.464 16.741L11.5681 17.3572ZM6.53545 4.57449L7.10278 4.83672L6.53545 4.57449ZM7.34835 3.48427L6.93124 3.01881V3.01881L7.34835 3.48427ZM8.56494 2.7558L8.78243 3.34174L8.56494 2.7558ZM11.4351 2.7558L11.6526 2.16987V2.16987L11.4351 2.7558ZM13.4645 4.57449L14.0319 4.31226L13.4645 4.57449ZM2.5 6.4855H17.5V5.2355H2.5V6.4855ZM11.464 16.741L11.3325 16.7632L11.5408 17.9957L11.6722 17.9735L11.464 16.741ZM8.66748 16.7632L8.53603 16.741L8.32775 17.9735L8.4592 17.9957L8.66748 16.7632ZM15.2083 5.8605V10.1465H16.4583V5.8605H15.2083ZM4.79167 10.1465V5.8605H3.54167V10.1465H4.79167ZM15.2083 10.1465C15.2083 11.4005 15.0319 12.648 14.6844 13.8519L15.8853 14.1986C16.2654 12.882 16.4583 11.5177 16.4583 10.1465H15.2083ZM11.3325 16.7632C10.4503 16.9123 9.54967 16.9123 8.66748 16.7632L8.4592 17.9957C9.47927 18.1681 10.5207 18.1681 11.5408 17.9957L11.3325 16.7632ZM8.53603 16.741C7.00436 16.4821 5.75131 15.3612 5.3156 13.8519L4.11464 14.1986C4.68231 16.1651 6.31805 17.6339 8.32775 17.9735L8.53603 16.741ZM5.3156 13.8519C4.96808 12.648 4.79167 11.4005 4.79167 10.1465H3.54167C3.54167 11.5177 3.73457 12.8819 4.11464 14.1986L5.3156 13.8519ZM11.6722 17.9735C13.6819 17.6339 15.3177 16.1651 15.8853 14.1986L14.6844 13.8519C14.2487 15.3612 12.9956 16.4821 11.464 16.741L11.6722 17.9735ZM6.875 5.86049C6.875 5.51139 6.95162 5.16374 7.10278 4.83672L5.96813 4.31226C5.74237 4.80066 5.625 5.32698 5.625 5.86049H6.875ZM7.10278 4.83672C7.25406 4.50944 7.47797 4.20734 7.76546 3.94972L6.93124 3.01881C6.52229 3.38529 6.19376 3.82411 5.96813 4.31226L7.10278 4.83672ZM7.76546 3.94972C8.05308 3.69197 8.39813 3.48439 8.78243 3.34174L8.34744 2.16987C7.8218 2.36498 7.34006 2.65246 6.93124 3.01881L7.76546 3.94972ZM8.78243 3.34174C9.16676 3.19908 9.58067 3.125 10 3.125V1.875C9.43442 1.875 8.87306 1.97476 8.34744 2.16987L8.78243 3.34174ZM10 3.125C10.4193 3.125 10.8332 3.19908 11.2176 3.34174L11.6526 2.16987C11.1269 1.97476 10.5656 1.875 10 1.875V3.125ZM11.2176 3.34174C11.6019 3.48439 11.9469 3.69198 12.2345 3.94972L13.0688 3.01881C12.6599 2.65246 12.1782 2.36498 11.6526 2.16987L11.2176 3.34174ZM12.2345 3.94972C12.522 4.20735 12.7459 4.50944 12.8972 4.83672L14.0319 4.31226C13.8062 3.82411 13.4777 3.38529 13.0688 3.01881L12.2345 3.94972ZM12.8972 4.83672C13.0484 5.16374 13.125 5.51139 13.125 5.8605H14.375C14.375 5.32698 14.2576 4.80066 14.0319 4.31226L12.8972 4.83672ZM4.16667 6.4855H15.8333V5.2355H4.16667V6.4855Z" fill="#333333"></path>
+//                                                     <path d="M8.33203 10V13.3333M11.6654 10V13.3333" stroke="#333333" strokeWidth="1.25" strokeLinecap="round"></path>
+//                                                 </svg>
+//                                             </button>
+//                                         </div>
+//                                     ))}
+
+//                                 </div>
+//                                 <div className='test_variables_add'>
+//                                     <button className='footer__cancel__btn condition__add ' onClick={addTestRouting} >Add Expected Status</button></div>
+//                             </>
+
+//                         }
+
+//                     </div>
+
+
+//                     <div className='edit__text__save'>
+//                         <button className='footer__cancel__btn' onClick={onClose}>Cancel</button>
+//                         <button className='btn btn-success condition__save' onClick={onSave} >Save</button>
+//                     </div>
+//                 </Modal.Body>
+//             </div>
+//         </Modal>
+//     );
+// };
+
 const GridBackground = ({ scale }) => (
     <svg
         style={{
@@ -3923,9 +3906,18 @@ const EditChatbotPage = ({ chatbotName }) => {
     return (
         <>
 
+           
             {
                 EditChatbotModal &&
-                <EditChatNameModal initialName={currentChatbotName} show={EditChatbotModal} onClose={handleCloseEditchatbotModal} onSave={handleSaveEditchatbot} />
+                <CopyandAddModal
+                    show={EditChatbotModal}
+                    onClose={handleCloseEditchatbotModal}
+                    onSave={handleSaveEditchatbot}
+                    placeholder="Chatbot Name"
+                    buttonLabel="Save"
+                    modalTitle="Edit Chatbot"
+                    initialValue={currentChatbotName}
+                />
             }
             {
                 showModal &&
