@@ -23,14 +23,11 @@ const Navbar = () => {
   const location = useLocation();
   const { authUser: routeAuthUser } = useParams();
   
-  // Use authUser from route params directly, with fallback extraction
   const authUser = useMemo(() => {
-    // First try to get from route params
     if (routeAuthUser) {
       return routeAuthUser;
     }
     
-    // Fallback: extract from pathname
     const regex = /\/u\/([^/]+)/;
     const match = location.pathname.match(regex);
     return match ? match[1] : '0';
@@ -156,7 +153,7 @@ const Navbar = () => {
             </li>
           ))}
           
-          <li><MoreDropDown /></li>
+          <li><MoreDropDown authUser= {authUser} /></li>
         </div>
         
         <div className='rnav'>

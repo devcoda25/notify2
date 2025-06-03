@@ -7,8 +7,7 @@ const Login = ({ onLogin }) => {
   const [showPasscode, setShowPasscode] = useState(false);
   const [passcode, setPasscode] = useState("");
   const [selectedToggle, setSelectedToggle] = useState(null);
-//   const [authUserId, setAuthUserId] = useState(null);
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   // const redirect_url = "http://localhost:3000/Teaminbox";
   const redirect_url = "https://notify.dev.evzone.app/Teaminbox";
@@ -29,8 +28,6 @@ const Login = ({ onLogin }) => {
       onLogin();
       return;
     }
-    // setAuthUserId(null);
-    // setIsLoggedIn(false);
   };
 
   useEffect(() => {
@@ -48,19 +45,19 @@ const Login = ({ onLogin }) => {
   };
 
   const handleInputChange = (index, value) => {
-    const numeric = value.replace(/\D/, ""); // Only digits
+    const numeric = value.replace(/\D/, ""); 
     const updated = passcode.split("");
     updated[index] = numeric;
     const newPasscode = updated.join("");
     setPasscode(newPasscode);
 
-    // move to next input
+    
     if (numeric && index < 5) {
       const nextInput = document.getElementById(`pass-${index + 1}`);
       nextInput?.focus();
     }
 
-    // check passcode
+    
     if (newPasscode.length === 6) {
       if (newPasscode === "123456") {
         setTimeout(() => {
@@ -176,7 +173,6 @@ const Login = ({ onLogin }) => {
               Continue
             </button>
           </div>
-          x
           <h4>
             <a style={{ color: "#f77f00" }}>
               <span style={{ color: "black" }}>Not you?</span> Log in with a

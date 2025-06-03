@@ -9,9 +9,9 @@ import { Prev } from 'react-bootstrap/esm/PageItem';
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-function MoreDropDown() {
+function MoreDropDown(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const {authUser} = useParams();
+  const authUser = props.authUser
   const currentAuthUser = authUser || 0;
   const toggleDropdown = () => {
     setIsOpen((prevState) => !prevState);
