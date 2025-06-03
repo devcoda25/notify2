@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Select, MenuItem,ListItemText } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import style from "../MuiStyles/muiStyle";
 

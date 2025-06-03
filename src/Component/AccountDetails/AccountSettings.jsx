@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Grid, Autocomplete, TextField } from '@mui/material';
 import ButtonComponent from '../ButtonComponent';
 import AutocompleteComponent from '../AutocompleteComponent';
+
 const AccountSettings = () => {
     const timeZoneOptions = ['(GMT-11:00)Midway island,samoa', '(GMT-10:00)Hawaii', '(GMT:09:00)Alaska'];
     const languagesOptions = ['English', 'Chinese', 'Spanish', 'Portuguese'];

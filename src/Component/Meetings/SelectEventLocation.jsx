@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ExpandMoreIcon, LinkOutlinedIcon, SettingsOutlinedIcon, VideocamOutlinedIcon, LocalPhoneOutlinedIcon, LocationOnOutlinedIcon } from '../Icon';
+import { ExpandMoreIcon,VideocamOutlinedIcon, LocalPhoneOutlinedIcon, LocationOnOutlinedIcon } from '../Icon';
 
 const eventOptions = [
     { icon: <VideocamOutlinedIcon />, selectIcon: '/assets/images/zoom.svg', label: "Zoom", value: 'zoom' },

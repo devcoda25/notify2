@@ -2,8 +2,8 @@ import React,{useState,useEffect} from "react";
 import AutocompleteComponent from "../../../AutocompleteComponent";
 import TextfieldComponent from "../../../TextfieldComponent";
 import ButtonComponent from "../../../ButtonComponent";
+import KeywordBaseModal from "./KeywordBaseModal";
 import { Table, TableBody, TableCell, TableRow} from '@mui/material';
-import { Modal, ModalBody } from 'react-bootstrap';
 import {DeleteOutlineIcon} from '../../../Icon';
 import style from "../../../MuiStyles/muiStyle";
 
@@ -40,12 +40,8 @@ const EditContactAttributesModal = ({ show, onClose, onSave, initialTitle, initi
 
     return (
         <>
-            <Modal show={show} onHide={onClose} dialogClassName="edit__text__modal">
-                <div className='edit_text_material_content'>
-                    <Modal.Header className='edit_text_material_header' closeButton>
-                        <Modal.Title className='edit_text_style'>Contact Attributes Material</Modal.Title>
-                    </Modal.Header>
-                    <ModalBody className='edittext__body__content'>
+            
+                    <KeywordBaseModal show={show} onClose={onClose} onSave={handleEditSave} title='Contact Attributes Material'>
                         <div>
                             <div className='edit__text__label'>Material name</div>
                             <TextfieldComponent type='text' placeholder="Please input" customStyle='custom_textfield' value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -101,13 +97,9 @@ const EditContactAttributesModal = ({ show, onClose, onSave, initialTitle, initi
 
                             </div>
                         </div>
-                        <div className='edit__text__save'>
-                            <ButtonComponent label='Save' onClick={handleEditSave} />
-
-                        </div>
-                    </ModalBody>
-                </div>
-            </Modal>
+                        
+                        </KeywordBaseModal>
+                 
         </>
     );
 };

@@ -1,17 +1,17 @@
 import React from "react";
-import { AddIcon, ReplayOutlinedIcon,RefreshOutlinedIcon,FormatBoldIcon,FormatItalicIcon,InsertLinkIcon } from '../Icon';
+import { AddIcon, ReplayOutlinedIcon, RefreshOutlinedIcon, FormatBoldIcon, FormatItalicIcon, InsertLinkIcon } from '../Icon';
 import CustomButton from "./CustomButton";
 
-const VariableBox = ({ children,showTextFormatIcons = false  }) => {
+const VariableBox = ({ children, showTextFormatIcons = false }) => {
     return (
         <div className="variable_box_container">
 
             <div className="variable_box_header">
-            {showTextFormatIcons && (
+                {showTextFormatIcons && (
                     <>
-                        <FormatBoldIcon  />
-                        <FormatItalicIcon  />
-                        <InsertLinkIcon/>
+                        <FormatBoldIcon />
+                        <FormatItalicIcon />
+                        <InsertLinkIcon />
                     </>
                 )}
                 <ReplayOutlinedIcon />

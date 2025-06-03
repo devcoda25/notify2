@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Grid, Slider } from '@mui/material';
-import { Modal, ModalBody } from 'react-bootstrap';
 import NewTemplate from '../Broadcast/NewTemplate';
+import AddKeywordModalComponent from './PopupModal/KeywordAction/AddKeywordModalComponent';
 import Nextstep from './Nextstep';
 import ButtonComponent from '../ButtonComponent';
 import SearchboxComponent from '../SearchboxComponent';
@@ -10,7 +10,7 @@ import TableComponent from '../TableComponent';
 import DeleteModal from '../DeleteModal'
 import { ArrowBackIcon } from '../Icon';
 import style from '../MuiStyles/muiStyle';
-import TextfieldComponent from '../TextfieldComponent';
+
 
 const columns = [
   { id: "keywords", label: "Keyword" },
@@ -338,38 +338,7 @@ const buttonData = [
     value: 'Catalog'
   }
 ]
-const AddKeywordModalComponent = ({
-  show,
-  onClose,
-  inputValue,
-  onInputChange,
-  onAddClick,
-}) => {
-  return (
-    <Modal show={show} onHide={onClose} dialogClassName="keyword__add__modal">
-      <div className="keyword__add__content">
-        <Modal.Header className="keyword__add__header" closeButton>
-          <Modal.Title>Add Keyword</Modal.Title>
-        </Modal.Header>
-        <ModalBody className="keyword__body__addcontent">
-          <TextfieldComponent
-            placeholder="Please input a keyword."
-            value={inputValue}
-            onChange={onInputChange}
-          />
-          <div className="keywordfooter__add">
-            <ButtonComponent
-              label="Add"
-              onClick={onAddClick}
-              customBtn={!inputValue.trim() ? "keyword__add_disabled" : ""}
-              disabled={!inputValue.trim()}
-            />
-          </div>
-        </ModalBody>
-      </div>
-    </Modal>
-  );
-};
+
 const InitialLoadingData = 'Text'
 const KeywordAction = () => {
 

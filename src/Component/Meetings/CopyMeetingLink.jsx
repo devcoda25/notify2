@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import CustomButton from '../Meetings/CustomButton';
 import TimeZoneMenu from "./TimeZoneMenu";
 import TextfieldComponent from "../TextfieldComponent";
-import { Typography, Grid, List, ListItem, ListItemButton, Box, IconButton, Button, Switch, FormControlLabel, RadioGroup, Radio, Tooltip } from "@mui/material";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import { Typography, Grid, List, ListItem, Box, IconButton, Button, Switch, FormControlLabel, RadioGroup, Radio, Tooltip } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -26,9 +25,7 @@ import {
     BuildOutlinedIcon,
     CalendarTodayOutlinedIcon,
     ArrowBackOutlinedIcon,
-    KeyboardArrowDownOutlinedIcon,
-    LinkOutlinedIcon,
-
+    
 } from '../Icon';
 
 dayjs.extend(weekday);
@@ -43,95 +40,7 @@ const baseTimeSlots = [
     "8:00 pm", "8:30 pm", "9:00 pm", "9:30 pm", "10:00 pm", "10:30 pm", "11:00 pm", "11:30 pm"
 ];
 
-const CustomCalendarHeader = ({ currentMonth, onMonthChange }) => {
-    const minMonth = dayjs(); // Disable going back before current month
-    const isPrevDisabled = currentMonth.isSame(minMonth, 'month');
 
-    const handlePrev = () => {
-        if (!isPrevDisabled) {
-            onMonthChange(currentMonth.subtract(1, 'month'));
-        }
-    };
-
-    const handleNext = () => {
-        onMonthChange(currentMonth.add(1, 'month'));
-    };
-
-    const weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-
-    const iconButtonStyle = (isDisabled) => ({
-        backgroundColor: isDisabled ? 'transparent' : '#E3F2FD',
-        color: isDisabled ? '#ccc' : '#007FFF',
-        borderRadius: '50%', // 👈 Fully rounded
-        padding: '6px',
-        width: '32px',
-        height: '32px',
-        transition: 'all 0.2s',
-        '&:hover': {
-            backgroundColor: isDisabled ? 'transparent' : '#BBDEFB',
-        },
-    });
-
-    return (
-        <Box>
-            {/* Month + Arrows */}
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: '6px 6px 15px',
-                    gap: '32px',
-                }}
-            >
-                <IconButton
-                    onClick={handlePrev}
-                    size="small"
-                    disabled={isPrevDisabled}
-                    sx={iconButtonStyle(isPrevDisabled)}
-                >
-                    <ChevronLeft />
-                </IconButton>
-                <Typography sx={{ fontSize: '16px', fontWeight: 500 }}>
-                    {currentMonth.format('MMMM YYYY')}
-                </Typography>
-                <IconButton
-                    onClick={handleNext}
-                    size="small"
-                    sx={iconButtonStyle(false)}
-                >
-                    <ChevronRight />
-                </IconButton>
-            </Box>
-
-            {/* Weekday Labels */}
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    paddingRight: '16px',
-                    mb: 1,
-                }}
-            >
-                {weekDays.map((day) => (
-                    <Box
-                        key={day}
-                        sx={{
-                            fontWeight: 400,
-                            fontSize: '12px',
-                            lineHeight: 1,
-                            textTransform: 'uppercase',
-                            width: '100%',
-                            textAlign: 'center',
-                        }}
-                    >
-                        {day}
-                    </Box>
-                ))}
-            </Box>
-        </Box>
-    );
-};
 
 const CopyMeetingLink = () => {
     const [state, setState] = useState({
@@ -385,80 +294,7 @@ const CopyMeetingLink = () => {
                                                                                 onChange={handleDateChange}
                                                                                 disablePastDates={disablePastDates}
                                                                             />
-                                                                            {/* <StaticDatePicker
-                                                                                displayStaticWrapperAs="desktop"
-                                                                                value={state.selectedDate}
-                                                                                onChange={handleDateChange}
-                                                                                shouldDisableDate={disablePastDates}
-                                                                                slots={{
-                                                                                    toolbar: false,
-                                                                                    calendarHeader: CustomCalendarHeader,
-                                                                                }}
-                                                                                slotProps={{
-
-                                                                                    day: {
-                                                                                        sx: {
-                                                                                            margin: '0px 4px 0px 4px',
-
-                                                                                            '&.Mui-disabled': {
-                                                                                                color: '#9e9e9e',
-                                                                                                fontSize: '14px',
-                                                                                                display: 'flex',
-                                                                                                alignItems: 'center',
-                                                                                                padding: '1px 0 0',
-                                                                                                width: '44px',
-                                                                                                height: '44px',
-                                                                                                marginTop: '2px'
-                                                                                            },
-                                                                                            '&.Mui-selected': {
-                                                                                                backgroundColor: 'rgb(0 105 255 / 7%)',
-                                                                                                color: 'white',
-                                                                                                width: '44px',
-                                                                                                height: '44px',
-                                                                                                textAlign: 'center',
-                                                                                                marginTop: '2px',
-                                                                                                padding: '1px 0 0',
-                                                                                                fontWeight: 'bold',
-                                                                                                fontSize: '14px',
-                                                                                            },
-                                                                                            '&:not(.Mui-selected):not(.Mui-disabled)': {
-                                                                                                backgroundColor: 'rgb(0 105 255 / 7%)',
-                                                                                                color: ' #0060e6',
-                                                                                                fontWeight: 'bold',
-                                                                                                fontSize: '14px',
-                                                                                                width: '44px',
-                                                                                                height: '44px',
-                                                                                                display: 'flex',
-                                                                                                alignItems: 'center',
-                                                                                                marginTop: '2px',
-                                                                                                padding: '1px 0 0',
-                                                                                            },
-                                                                                            '&.MuiPickersDay-today': {
-                                                                                                border: 'none !important',
-                                                                                                position: 'relative',
-                                                                                                '&::after': {
-                                                                                                    content: '""',
-                                                                                                    position: 'absolute',
-                                                                                                    bottom: 6,
-                                                                                                    left: '50%',
-                                                                                                    transform: 'translateX(-50%)',
-                                                                                                    width: 4,
-                                                                                                    height: 4,
-                                                                                                    borderRadius: '50%',
-                                                                                                    backgroundColor: '#007FFF',
-                                                                                                },
-                                                                                            },
-                                                                                        },
-                                                                                    },
-                                                                                    // Optional customization of weekday header
-                                                                                    dayOfWeekLabel: {
-                                                                                        sx: {
-                                                                                            display: 'none',
-                                                                                        },
-                                                                                    },
-
-                                                                                }}
-                                                                            /> */}
+                                       
                                                                         </div>
                                                                     </div>
                                                                 </LocalizationProvider>
@@ -486,15 +322,7 @@ const CopyMeetingLink = () => {
                                                                                 </div>
                                                                             </div>
                                                                         )}
-                                                                        {/* <div className="select_timezone">
-                                                        <div
-                                                            onClick={handleTimeZoneClick} className="timezone"
-
-                                                        >
-                                                            <PublicOutlinedIcon /> {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
-                                                        </div>
-                                                        <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} onSelect={handleTimeZoneSelect} />
-                                                    </div> */}
+                                                                    
                                                                     </div>
 
                                                                     <div className="troubleshoot_content">

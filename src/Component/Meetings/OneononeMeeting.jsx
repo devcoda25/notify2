@@ -643,8 +643,9 @@ const OneononeMeeting = () => {
                                 <Link to="/edit-eventtype" style={{ textDecoration: 'none' }}>
                                     <CustomButton variant="contained" sx={{ margin: '0px', width: '100px' }}>
                                         Continue
-                                    </CustomButton></Link>
-                                {/* <CustomButton variant="contained" sx={{ margin: '0px', width: '100px' }}>Continue</CustomButton> */}
+                                    </CustomButton>
+                                </Link>
+                               
                             </div>
                         </div>
                     </div>

@@ -3,13 +3,12 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import TimePickerComponent from '../TimePickerComponent'
 import AutocompleteComponent from "../AutocompleteComponent";
 import TextfieldComponent from "../TextfieldComponent";
 import TimezoneDropdown from "./TimeZoneMenu";
 import DataSpecificHoursModal from "./DataSpecificHoursComponent";
 import EventTypeMenu from "./EventTypeMenu";
-import { CalendarMonthIcon, AddCircleOutlineIcon, ViewListIcon, ContentCopyIcon, CloseIcon, ExpandMoreIcon, AddOutlinedIcon } from "../Icon";
+import { CalendarMonthIcon,ViewListIcon,CloseIcon, ExpandMoreIcon, AddOutlinedIcon } from "../Icon";
 import { Tabs, Tab, Box, Typography, Button, ToggleButton, ToggleButtonGroup, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import CustomButton from "./CustomButton";
 import WeeklyHours from "./WeeklyHours";
@@ -194,78 +193,11 @@ const Availability = () => {
     updateState({ selectedhoursDate: newDate, showSelectedTimeSlots: true });
 
 };
-  // const handleOpen = () => updateState({ open: true });
-  // const handleClose = () => updateState({ open: false });
+ 
 
-
-  // const [tabIndex, setTabIndex] = useState(0);
-  // const [view, setView] = useState("calendar");
-  //holiday_settings 
-  //  const [holidayOpen, setHolidayOpen] = useState(false);
-  //  const [holidayDropdown, setHolidayDropdown] = useState('Others');
-  //new schedule
-  //  const [newScheduleOpen, setNewScheduleOpen] = useState(false);
-  //  const [scheduleName, setScheduleName] = useState("");
-
-  //activeon 
-  //  const [eventAnchor, setEventAnchor] = useState(null);
-  //  const [timeZoneAnchor, setTimeZoneAnchor] = useState(null);
-  //  const [selected, setSelected] = useState(true); 
-
-  //  const [open, setOpen] = useState(false);
-  //  const handleEventClick = (event) => {
-  //   setEventAnchor(event.currentTarget);
-  // };
-  // const handleTimeZoneClick = (event) => {
-  //   setTimeZoneAnchor(event.currentTarget);
-  // };
-
-  // const handleCalendarClose = () => {
-  //   setEventAnchor(null);
-  //   setTimeZoneAnchor(null);
-  // };
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-  // const handleChange = (event, newIndex) => {
-  //   setTabIndex(newIndex);
-  // }
-
-
-
-  // const handleChange = (event, newIndex) => {
-  //   setTabIndex(newIndex);
-  // }
-
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-
-  // //holiday_settings 
-  // const [holidayOpen, setHolidayOpen] = useState(false);
-  // const [holidayDropdown, setHolidayDropdown] = useState('Others');
-  // //new schedule
-  // const [newScheduleOpen, setNewScheduleOpen] = useState(false);
-  // const [scheduleName, setScheduleName] = useState("");
-
-  // //activeon 
-  // const [eventAnchor, setEventAnchor] = useState(null);
-  // const [timeZoneAnchor, setTimeZoneAnchor] = useState(null);
-  // const [selected, setSelected] = useState(true); 
-
-  // const handleEventClick = (event) => {
-  //   setEventAnchor(event.currentTarget);
-  // };
-  // const handleTimeZoneClick = (event) => {
-  //   setTimeZoneAnchor(event.currentTarget);
-  // };
-
-  // const handleCalendarClose = () => {
-  //   setEventAnchor(null);
-  //   setTimeZoneAnchor(null);
-  // };
   return (
     <div className="calendar_availability">
-      {/* <DatePickerModal open={open} onClose={handleClose} /> */}
+    
       <DataSpecificHoursModal open={state.showOpenDataHours}
         onClose={handleCloseAddHours}
         onDataChange={handleDateHoursChange}
@@ -345,14 +277,7 @@ const Availability = () => {
                       <Typography variant="body2" style={{ fontWeight: "bold", color: "#333" }}>
                         Time zone
                       </Typography>
-                      {/* <div
-                        onClick={handleTimeZoneClick}
-                        style={{ color: "#007bff", cursor: "pointer", display: "flex", alignItems: "center" }}
-                      >
-                        Eastern Time - US & Canada <ExpandMoreIcon fontSize="small" />
-                      </div>
-                      <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => updateState({ timeZoneAnchor: null })} />
-                         */}
+                      
                       <TimezoneDropdown
                         options={timezones}
                         selectedValue={state.timeZoneAnchor}
@@ -398,60 +323,11 @@ const Availability = () => {
                     <div className="calendar_list_container">
                       <div className="leftcontainer">
                         <h3>Weekly hours</h3>
-                        {/* <div>
-                          {
-                            Object.entries(meetingHours).map(([day, slots], dayIndex) => (
-                              <div key={dayIndex} className='setmeeting_hours_container'>
-                                <div className="day">
-                                  <input type="checkbox" checked={true} />
-                                  <div>{day.slice(0, 3)}</div>
-                                </div>
-                                <div className="set_time_container">
-                                  {
-                                    slots.length > 0 && slots[0].available ? (
-                                      slots.map((slot, index) => (
-                                        <div key={index} className='set_time'>
-
-                                          <TimePickerComponent
-                                            initialValue={slot.from}
-                                            disabled={false}
-                                            customStyles={styles.timePickerStyles}
-
-
-                                          />
-                                          <span style={{ margin: "0 5px" }}>—</span>
-                                          <TimePickerComponent
-                                            initialValue={slot.from}
-                                            disabled={false}
-                                            customStyles={styles.timePickerStyles}
-
-                                          />
-                                          <CloseIcon onClick={() => handleRemoveSlot(day, index)} style={styles.iconStyle} />
-
-                                          {index === 0 && (
-                                            <>
-                                              <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={styles.iconStyle} />
-                                              <ContentCopyIcon style={styles.iconStyle} />
-                                            </>
-                                          )}
-
-                                        </div>
-                                      ))
-                                    ) : (
-                                      <> <span style={{ color: "gray" }}>Unavailable
-                                        <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={styles.iconStyle} /></span>
-                                      </>
-                                    )
-                                  }
-                                </div>
-                              </div>
-                            ))
-                          }
-                        </div> */}
+                  
                         <WeeklyHours meetingHours={meetingHours} setMeetingHours={setMeetingHours} />
                       </div>
                       <div className="right_container">
-                        {/* <DataSpecificHoursComponent /> */}
+                      
                         <div className="data_specific_hours">
                           <h4>Data Specific Hours</h4>
                           <p>Override your availability for specific dates when your hours differ from your regular weekly hours.</p>

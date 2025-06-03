@@ -141,89 +141,6 @@ const CreateNewMeetingComponent = () => {
 
 
 
-    //     const [timeZoneAnchor, setTimeZoneAnchor] = useState(null);
-    //     const [selectedTimeZone, setSelectedTimeZone] = useState("Eastern Time - US & Canada");
-    //    const [durationContent, setDurationContent] = useState(durationOptions[1]);
-    //     const [currentDate, setCurrentDate] = useState(dayjs());
-    //     const [selectedSlots, setSelectedSlots] = useState([]);
-    //     const [daySlots, setDaySlots] = useState({});
-    //     const [showEditor, setShowEditor] = useState(false);
-    //     const [showOptions, setShowOptions] = useState(false);
-    //     const [isFocused, setIsFocused] = useState(false);
-    //     const [newmeetNext, setNewMeetNext] = useState(false);
-
-
-
-    // const handleNextClick = () => {
-    //     setNewMeetNext(true)
-    // }
-
-    // const handleTimeZoneClick = (event) => {
-    //     setTimeZoneAnchor(event.currentTarget);
-    // };
-
-    // const handleTimeZoneSelect = (zone) => {
-    //     setSelectedTimeZone(zone);
-    //     setTimeZoneAnchor(null);
-    // };
-    // const getWeekDays = (date) => {
-    //     let startOfWeek = date.startOf("week"); // Start of week (Sunday)
-    //     return Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, "day"));
-    // };
-
-
-    // const timeSlots = Array.from({ length: 24 }, (_, i) =>
-    //     dayjs().hour(i).minute(0).format("hA")
-    // );
-
-    //  const handleSlotClick = (day, hour, isSecondHalf) => {
-    //     const slotTime = isSecondHalf ? hour.clone().add(30, "minute") : hour;
-
-    //     if (
-    //         day.isBefore(currentTime, "day") ||
-    //         (day.isSame(currentTime, "day") && slotTime.isBefore(currentTime))
-    //     ) {
-    //         return;
-    //     }
-
-    //     const slot = {
-    //         day: day.format("YYYY-MM-DD"),
-    //         time: `${slotTime.format("h:mm A")} - ${slotTime.clone().add(30, "minute").format("h:mm A")}`,
-    //     };
-
-    //     setSelectedSlots((prev) => [...prev, slot]);
-    //     setDaySlots((prev) => ({ ...prev, [day.format("YYYY-MM-DD")]: true }));
-    // };
-    // const handleAddItem = (day) => {
-    //     if (day.isBefore(currentTime, "day")) return;
-
-    //     const slots = [];
-    //     for (let i = 0; i < 24; i++) {
-    //         const hour = day.clone().hour(i).minute(0);
-    //         if (day.isSame(currentTime, "day") && hour.isBefore(currentTime)) {
-    //             continue;
-    //         }
-    //         slots.push({
-    //             day: day.format("YYYY-MM-DD"),
-    //             time: `${hour.format("h:mm A")} - ${hour.clone().add(30, "minute").format("h:mm A")}`
-    //         });
-    //         slots.push({
-    //             day: day.format("YYYY-MM-DD"),
-    //             time: `${hour.clone().add(30, "minute").format("h:mm A")} - ${hour.clone().add(1, "hour").format("h:mm A")}`
-    //         });
-    //     }
-
-    //     setSelectedSlots((prev) => [...prev, ...slots]);
-    //     setDaySlots((prev) => ({ ...prev, [day.format("YYYY-MM-DD")]: true }));
-    // };
-
-    // const handleClearItem = (day) => {
-    //     if (day.isBefore(currentTime, "day")) return;
-    //     setSelectedSlots((prev) => prev.filter(slot => slot.day !== day.format("YYYY-MM-DD")));
-    //     setDaySlots((prev) => ({ ...prev, [day.format("YYYY-MM-DD")]: false }));
-    // };
-
-
 
     return (
         <>
@@ -295,14 +212,7 @@ const CreateNewMeetingComponent = () => {
                                         <label>
                                             Time zone
                                         </label>
-                                        {/* <div
-                                            onClick={handleTimeZoneClick} className="timezone"
-
-                                        >
-                                            {state.selectedTimeZone}  <ExpandMoreIcon fontSize="small" />
-                                        </div>
-                                        <TimeZoneMenu anchorEl={state.timeZoneAnchor} open={Boolean(state.timeZoneAnchor)} onClose={() => setState(prev => ({ ...prev, timeZoneAnchor: null }))} onSelect={handleTimeZoneSelect} />
-                                  */}
+                                       
                                         <TimezoneDropdown
                                             options={timezones}
                                             selectedValue={state.timeZoneAnchor}

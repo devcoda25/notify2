@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Table, TableBody, TableCell, TableRow, TableHead } from '@mui/material';
 import TextComponent from './NextSteps/TextComponent';
 import EditTextModal from './NextSteps/Modal/EditTextModal';
 import DocumentComponent from './NextSteps/DocumentComponent';

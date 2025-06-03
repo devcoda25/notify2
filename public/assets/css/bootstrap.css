@@ -14874,6 +14874,7 @@ fieldset:disabled .btn {
   display: flex;
   align-items: center;
   color: rgb(0, 0, 0);
+  cursor: pointer;
 }
 
 .editchatbot_right_container .chatbotbackbtn {

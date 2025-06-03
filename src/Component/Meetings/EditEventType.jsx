@@ -69,6 +69,8 @@ const weeklyHours = [{ day: 'SUN', hours: ['Unavailable'] },
 { day: 'THU', hours: ['9:00AM-5:00PM'] },
 { day: 'FRI', hours: ['9:00AM-5:00PM'] },
 { day: 'SAT', hours: ['9:00AM-5:00PM'] }]
+
+
 const EditEventType = () => {
 
     const [state, setState] = useState({
@@ -282,7 +284,7 @@ const EditEventType = () => {
                     </DialogTitle>
 
                     <DialogContent className="modal_content">
-                        {/* Question Input */}
+                       
                         <div>
                             <p>Make it easy for your invitee to schedule recurring events by adding a link to this booking page.</p>
                             <label>Link name</label>
@@ -312,7 +314,7 @@ const EditEventType = () => {
                     </DialogTitle>
 
                     <DialogContent className="modal_content">
-                        {/* Question Input */}
+
                         <div>
                             <label>Name Input</label>
                             <AutocompleteComponent
@@ -323,7 +325,7 @@ const EditEventType = () => {
                             />
                         </div>
 
-                        {/* Required Checkbox */}
+                     
                         <div>
                             <input type="checkbox" /> <span>Autofill Invitee Name, Email, and Text Reminder Phone Number (when applicable) from prior bookings</span>
                         </div>

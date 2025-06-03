@@ -1,7 +1,7 @@
 import React,{useState} from "react";
-import { Modal, ModalBody } from 'react-bootstrap';
-import ButtonComponent from "../../ButtonComponent";
+import UserBaseModal from "./UserBaseModal";
 import TextfieldComponent from "../../TextfieldComponent";
+
 
 const AddTeamModal = ({ show, onClose, onAddTeam, initialData }) => {
     const [teamName, setTeamName] = useState(initialData?.teamName || '');
@@ -22,12 +22,8 @@ const AddTeamModal = ({ show, onClose, onAddTeam, initialData }) => {
     };
     return (
         <>
-            <Modal show={show} onHide={onClose} dialogClassName="user__modal">
-                <div className='userrule_main_content'>
-                    <Modal.Header className='userrule_header' closeButton>
-                        <Modal.Title >Add User</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className='userrule_modal_bodycontent'>
+          
+                    <UserBaseModal show={show} onClose={onClose} onSave={handleSaveTeam} title="Add Team">
                         <div >
                             <TextfieldComponent type="text" placeholder="Team Name" value={teamName}
                                 onChange={(e) => setTeamName(e.target.value)} />
@@ -40,14 +36,9 @@ const AddTeamModal = ({ show, onClose, onAddTeam, initialData }) => {
                                 <span className='edit__text__label'>Default Team</span>
                             </div>
                         </div>
-                        <div className='savebtn'>
-                            <ButtonComponent onClick={handleSaveTeam} label='Add Team' />
-                            
-                        </div>
-                    </Modal.Body>
-
-                </div>
-            </Modal>
+                       
+                        </UserBaseModal>
+                  
         </>
     )
 }

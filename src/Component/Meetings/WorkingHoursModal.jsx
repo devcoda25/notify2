@@ -331,7 +331,7 @@ const WorkingHoursModal = ({ open, onClose }) => {
                                                 const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                                         
                                                 if (day < today) {
-                                                    // Past dates: gray background
+                                                 
                                                     return {
                                                         style: {
                                                             backgroundColor: '#f0f0f0', 
@@ -339,14 +339,14 @@ const WorkingHoursModal = ({ open, onClose }) => {
                                                         },
                                                     };
                                                 } else if (day.getTime() === today.getTime()) {
-                                                    // Today: no background color
+                                                
                                                     return {
                                                         style: {
                                                             backgroundColor: 'transparent'
                                                         },
                                                     };
                                                 }
-                                                return {}; // Default styling for future dates
+                                                return {}; 
                                             }}
                                          
 
