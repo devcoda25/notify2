@@ -341,7 +341,7 @@ const Meeting = () => {
                                                         <div className="event_control">
                                                             <CustomButton variant="outlined" sx={{ width: '130px' }}>Reschedule</CustomButton>
                                                             <CustomButton variant="outlined" sx={{ width: '130px' }}>Cancel</CustomButton>
-                                                            <CustomButton variant="outlined" sx={{ width: '130px' }} onClick={() => navigate(`/u/${currentAuthUser}/MeetingHistory`)}
+                                                            <CustomButton variant="outlined" sx={{ width: '130px' }} onClick={() => navigate(`/u/${currentAuthUser}/meetinghistory`)}
                                                             >Meeting History</CustomButton>
                                                         </div>
                                                         <div className="event_control">

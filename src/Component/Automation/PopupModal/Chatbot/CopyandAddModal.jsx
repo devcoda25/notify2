@@ -44,6 +44,7 @@ import TextfieldComponent from "../../../TextfieldComponent";
 const CopyandAddModal = ({
   show,
   onClose,
+  onEdit,
   onSave,
   placeholder,
   buttonLabel,
@@ -60,6 +61,9 @@ const CopyandAddModal = ({
     onSave(chatbotName);
     setChatbotName('');
   };
+  const handleEdit=()=>{
+    onEdit();
+  }
 
   const isDisabled = !chatbotName;
 
@@ -82,7 +86,7 @@ const CopyandAddModal = ({
           <div class="keywordfooter__delete">
                            <ButtonComponent
                                 label={buttonLabel}
-                                onClick={handleSave}
+                                onClick={handleEdit}
                                 disabled={isDisabled}
                                 customBtn={isDisabled && 'copy_disabled'}
                             />

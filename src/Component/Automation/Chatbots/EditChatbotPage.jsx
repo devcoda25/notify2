@@ -50,7 +50,7 @@ const EditChatbotPage = ({ chatbotName }) => {
     const [whatsappFlowModal, setWhatsappFlowModal] = useState(false);
     const [webhookModal, setWebhookModal] = useState(false);
     const [EditChatbotModal, setEditChatbotModal] = useState(false);
-    const [currentChatbotName, setCurrentChatbotName] = useState(chatbotName);
+    const [currentChatbotName, setCurrentChatbotName] = useState("New User");
 
     const onConnect = useCallback(
         (params) =>
@@ -426,7 +426,8 @@ const EditChatbotPage = ({ chatbotName }) => {
                 webhookModal &&
                 <WebhookModal show={webhookModal} onClose={handleCloseWebhook} onSave={handleSaveWebhook} />
             }
-            <div className='editchatbot_container'>
+            {/* <div className={`editchatbot_container ${!currentChatbotName ? "maincontent": ""}`}> */}
+            <div className="editchatbot_container maincontent">
 
                 <div className='editchatbot_left_container' style={{ marginLeft: isLeftContainerVisible ? '0' : '-260px' }}
                 >
@@ -749,7 +750,7 @@ const EditChatbotPage = ({ chatbotName }) => {
                     <div className='header_content'>
                         <div className='header_name'>
                             <a className='chatbotbackbtn'><svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 5L1.5 5M1.5 5L6.08824 9M1.5 5L6.08824 1" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
-                            {currentChatbotName}
+                            {currentChatbotName} 
                             <EditIcon onClick={handleEditClick} />
                         </div>
                         <div className='header_savebtn'>

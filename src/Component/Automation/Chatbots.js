@@ -9,6 +9,9 @@ import CustomPagination from '../CustomPagination';
 import SearchboxComponent from '../SearchboxComponent';
 import ButtonComponent from '../ButtonComponent';
 import TableComponent from '../TableComponent';
+import { useNavigate } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 
 const initialTableData = [
     {
@@ -94,6 +97,21 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
         isOpenTemplatePage: false,
         isOpenNotificationModal: false,
     });
+    const navigate = useNavigate();
+
+     const location = useLocation();
+      const { authUser: routeAuthUser } = useParams();
+      
+      const authUser = useMemo(() => {
+        if (routeAuthUser) {
+          return routeAuthUser;
+        }
+        
+        const regex = /\/u\/([^/]+)/;
+        const match = location.pathname.match(regex);
+        return match ? match[1] : '0';
+      }, [routeAuthUser, location.pathname]);
+   
 
    const updateState = (updatedValues) => {
         setState((prev) => ({ ...prev, ...updatedValues }));
@@ -135,6 +153,7 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
     //     state.page * state.rowsPerPage + state.rowsPerPage
     // );
     //addchatbot --> template
+    
     const handleTemplatePage = () => {
         updateState({ isOpenTemplatePage: true });
     };
@@ -214,6 +233,10 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
     const handleSave = (chatbotName) => {
         onSave(chatbotName);
     };
+
+    const handleEdit = ()=>{
+        navigate(`/u/${authUser}/editchatbotpage`)
+    }
    
    const chatbotColumn = [
         {
@@ -275,11 +298,12 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
             }
             {
                 state.isOpenTemplatePage ?
-                    <FlowTemplates handleNotificationModal={handleNotificationModal} handleEditChatbotbutton={handleEditChatbotbutton} onSave={handleSave} /> :
+                    <FlowTemplates onEdit={handleEdit} handleNotificationModal={handleNotificationModal} handleEditChatbotbutton={handleEditChatbotbutton} onSave={handleSave} /> :
 
                     <div className='chatbots_container'>
-                        <div className='chatbots_header'>
-                            <h3 class="header__title">Chatbots<p class="header__title_count">(22/20)</p></h3>
+                          <div className='chatbots_header'>
+                             <div className='chatbots_header_div1'>
+                                 <h3 class="header__title">Chatbots<p class="header__title_count">(22/20)</p></h3>
                             <div className='header__search'>
                                 <div className='search__input'>
                                     <SearchboxComponent value={state.searchChatbots} onChange={(e) => updateState({ searchChatbots: e.target.value })} customSearch='custom__search_box' placeholder='Search...' />
@@ -290,18 +314,23 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
                             <ButtonComponent label='Fallback Message' onClick={handleFallbackMessage} customBtn='cancel_button_style chatbot_header_btn' />
                             <ButtonComponent label='Chatbot Timer' onClick={handleChatbotTimer} customBtn='cancel_button_style chatbot_header_btn' />
                             <button className='header_import_btn'><svg className="importicon" viewBox="-0.5 -3.2 16 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 3.828V15H7V3.828L3.757 7.071L2.343 5.657L8 0L13.657 5.657L12.243 7.071L9 3.828ZM0 14H2V18H14V14H16V18C16 19.1 15.1 20 14 20H2C0.9 20 0 19.037 0 18V14Z" fill="#666666"></path></svg></button>
-                            <ButtonComponent label='Add Chatbot' onClick={handleTemplatePage} />
+                                </div>
+                        <div className='chatbots_header_div2'>
+                            <ButtonComponent customBtn={"add_chatbot_button"} label='Add Chatbot' onClick={handleTemplatePage} />
+                        </div>
 
                         </div>
                         <div className='chatbots__body__content'>
                             <div className='chatbots__list__table'>
                       
                                  <TableComponent
+                                 authUser = {authUser}
                                 columns={chatbotColumn}
                                 data={state.chatbotData}
                                 customRenderCell={customRenderCell}
                                 onDelete={handleDeleteOpenModal}
                                 showCopy={true}
+                                onEdit={handleEdit}
                                 onCopy={handleOpenCopyModal}
                                 actionHeaderLabel="Actions"
                                 />

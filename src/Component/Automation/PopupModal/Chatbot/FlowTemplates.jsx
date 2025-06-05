@@ -34,7 +34,7 @@ const initialTemplateData = [
 
 ]
 
-const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSave }) => {
+const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSave, onEdit }) => {
     const [content, setContent] = useState('All');
     const [showAddChatbotModal, setShowAddChatbotModal] = useState(false);
 
@@ -55,6 +55,10 @@ const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSav
         handleEditChatbotbutton();
         onSave(chatbotName);
     };
+
+    const handleEdit=()=>{
+        onEdit();
+    }
     return (
         <>
             <div className='chatbots_template_container'>
@@ -127,7 +131,7 @@ const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSav
 
                 </div>
             </div>
-            <CopyandAddModal show={showAddChatbotModal} onClose={handleCloseChatbotModal} onSave={handleSave} placeholder="Chatbot Name"
+            <CopyandAddModal show={showAddChatbotModal} onClose={handleCloseChatbotModal} onEdit={handleEdit} onSave={handleSave} placeholder="Chatbot Name"
                 buttonLabel="Add" />
         </>
     )

@@ -13066,6 +13066,14 @@ fieldset:disabled .btn {
   /* box-shadow: rgb(220, 240, 228) 5px 5px 25px 0px; */
 }
 
+.add_chatbot_button{
+  width: 30px;
+  text-wrap-mode: nowrap;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
 .cancel_button_style {
   border: 1px solid rgb(35, 164, 85) !important;
   color: rgb(35, 164, 85) !important;
@@ -14373,7 +14381,7 @@ fieldset:disabled .btn {
   flex: 1 1 auto;
 }
 
-.chatbots_container .chatbots_header,
+
 .template__header,
 .sequence_container .sequence_header,
 .rule_container .rule_header,
@@ -14385,6 +14393,28 @@ fieldset:disabled .btn {
   justify-content: space-between;
   background-color: rgb(245, 246, 250);
 
+}
+.chatbots_container .chatbots_header{
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: nowrap; */
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(245, 246, 250);
+}
+
+.chatbots_container .chatbots_header_div1{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-left: 10px;
+  gap: 10px;
+  align-items: center;
+}
+.chatbots_container .chatbots_header_div2{
+ width: 100%;
+ /* margin-left: 80px; */
 }
 
 .chatbots_container .header__title,

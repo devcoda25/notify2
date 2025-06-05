@@ -50,7 +50,7 @@ const Navbar = () => {
   // Memoize menu items to prevent unnecessary re-renders
   const menuItems = useMemo(() => [
     { 
-      path: `/u/${authUser}/Teaminbox`, 
+      path: `/u/${authUser}/teaminbox`, 
       label: 'Team Inbox', 
       icon: <FiInbox /> 
     },
@@ -60,7 +60,7 @@ const Navbar = () => {
       icon: <EventIcon /> 
     },
     { 
-      path: `/u/${authUser}/Broadcast`, 
+      path: `/u/${authUser}/broadcast`, 
       label: 'Broadcast', 
       icon: <PiBroadcastDuotone /> 
     },
@@ -80,7 +80,7 @@ const Navbar = () => {
       icon: <BiGridAlt /> 
     },
     { 
-      path: `/u/${authUser}/Reports`, 
+      path: `/u/${authUser}/reports`, 
       label: 'Reports', 
       icon: <SignalCellularAltIcon /> 
     }

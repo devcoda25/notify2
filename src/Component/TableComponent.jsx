@@ -64,7 +64,7 @@ const TableComponent = ({ columns, data,onCopy, onEdit, onDelete, showActions = 
                     </IconButton>
                   )}
                   <IconButton
-                    onClick={() => onEdit(index)}
+                    onClick={() => onEdit()}
                     sx={[style.tableIconBtn, style.tableeditHover]} >
                     <EditIcon />
                   </IconButton>

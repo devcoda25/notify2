@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
+// import Dropdown from 'react-bootstrap/Dropdown';
 import { LuUsers2 } from "react-icons/lu";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { MdOutlineWebhook } from "react-icons/md";
 import { TiLink } from "react-icons/ti";
 import { TbListDetails } from "react-icons/tb";
-import { Prev } from 'react-bootstrap/esm/PageItem';
+import { ImMenu } from "react-icons/im";
+// import { Prev } from 'react-bootstrap/esm/PageItem';
 import { NavLink } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 function MoreDropDown(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +23,9 @@ function MoreDropDown(props) {
   return (
     <>
       <button onClick={toggleDropdown} className='header_more_btn' >
-        <i className="fa fa-ellipsis-h mr-10" aria-hidden="true"></i> More
+        {/* <i className="fa fa-ellipsis-h mr-10" aria-hidden="true"></i>  */}
+        <ImMenu   className='mr-10' />
+        More
       </button>
       {
         isOpen && (

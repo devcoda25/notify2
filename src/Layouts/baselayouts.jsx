@@ -28,6 +28,7 @@ import OneononeMeeting from '../Component/Meetings/OneononeMeeting';
 import EditEvent from '../Component/Meetings/EditEvent';
 import Login from '../Pages/Login';
 import MeetingHistory from "../Component/Meetings/MeetingHistory";
+import EditChatbotPage from "../Component/Automation/Chatbots/EditChatbotPage";
 
 const AuthUserRoute = ({ children }) => {
   const { authUser } = useParams();
@@ -85,7 +86,7 @@ const AppRoutes = () => {
           </AuthUserRoute>
         } />
         
-        <Route path="/u/:authUser/Teaminbox" element={
+        <Route path="/u/:authUser/teaminbox" element={
           <AuthUserRoute>
             <TeamInbox />
           </AuthUserRoute>
@@ -107,7 +108,7 @@ const AppRoutes = () => {
           </AuthUserRoute>
         } />
         
-        <Route path="/u/:authUser/Broadcast" element={
+        <Route path="/u/:authUser/broadcast" element={
           <AuthUserRoute>
             <Broadcast />
           </AuthUserRoute>
@@ -121,7 +122,7 @@ const AppRoutes = () => {
         
         <Route path="/u/:authUser/automations" element={
           <AuthUserRoute>
-            <Automations />
+            <Automations authUser ={authUser} />
           </AuthUserRoute>
         } />
         
@@ -131,29 +132,36 @@ const AppRoutes = () => {
           </AuthUserRoute>
         } />
         
-        <Route path="/u/:authUser/Reports" element={
+        <Route path="/u/:authUser/reports" element={
           <AuthUserRoute>
             <Reports />
           </AuthUserRoute>
         } />
         
-        <Route path="/u/:authUser/UserManagement" element={
+        <Route path="/u/:authUser/userManagement" element={
           <AuthUserRoute>
             <UserManagement />
           </AuthUserRoute>
         } />
         
-        <Route path="/u/:authUser/AccountDetails" element={
+        <Route path="/u/:authUser/accountdetails" element={
           <AuthUserRoute>
             <AccountDetails />
           </AuthUserRoute>
         } />
 
-        <Route path="/u/:authUser/MeetingHistory" element={
+        <Route path="/u/:authUser/meetinghistory" element={
           <AuthUserRoute>
             <MeetingHistory />
           </AuthUserRoute>
         } />
+
+        <Route path="/u/:authUser/editchatbotpage" element={
+          <AuthUserRoute>
+            <EditChatbotPage />
+          </AuthUserRoute>
+        } />
+
         
         {/* Meeting-related routes that might not need auth user in URL */}
         <Route path="/hepto" element={<CopyMeetingLink />} />
