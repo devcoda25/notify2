@@ -521,7 +521,7 @@ const style = {
     gap: 2 
   },
   meetinghistory_comment:{
-    maxHeight: 150, 
+    maxHeight: 320, 
     overflowY: 'auto',
     pr: 1
   },

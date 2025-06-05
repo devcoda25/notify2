@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Typography, Modal, Avatar, AvatarGroup, Tabs, Tab, Paper, IconButton, Button,List, ListItem, ListItemAvatar, ListItemText,Link } from '@mui/material';
+import {
+    Box, Typography, Modal, Avatar, AvatarGroup, Tabs, Tab, Paper, IconButton, Button, List, ListItem, ListItemAvatar, ListItemText, Link,
+    Popover
+} from '@mui/material';
 import style from '../MuiStyles/muiStyle';
-import TextfieldComponent from '../TextfieldComponent';
 import CustomButton from './CustomButton';
 import AutocompleteComponent from '../AutocompleteComponent';
 import CheckboxComponent from '../CheckboxComponent';
@@ -12,16 +14,23 @@ import {
     SendIcon, CloseIcon, ThumbUpIcon, ReplyIcon, CommentIcon, DeleteIcon, PersonIcon, FavoriteIcon, PictureAsPdfIcon, ImageIcon, FolderIcon, DescriptionIcon,
     NoteAltIcon, FormatBoldIcon, FormatItalicIcon, FormatUnderlinedIcon, StrikethroughSIcon, InsertLinkIcon, FormatListBulletedIcon, FormatListNumberedIcon
 } from '../Icon';
+import { Pointer } from 'highcharts';
 
+// const participants = [
+//     { name: 'Alice Johnson', avatar: 'https://i.pravatar.cc/150?img=1' },
+//     { name: 'Bob Smith', avatar: 'https://i.pravatar.cc/150?img=2' },
+//     { name: 'Carol Lee', avatar: 'https://i.pravatar.cc/150?img=3' },
+//     { name: 'David Kim', avatar: 'https://i.pravatar.cc/150?img=4' },
+//     { name: 'Emma Wang', avatar: 'https://i.pravatar.cc/150?img=5' },
+// ];
 const participants = [
-    { name: 'Alice Johnson', avatar: 'https://i.pravatar.cc/150?img=1' },
-    { name: 'Bob Smith', avatar: 'https://i.pravatar.cc/150?img=2' },
-    { name: 'Carol Lee', avatar: 'https://i.pravatar.cc/150?img=3' },
-    { name: 'David Kim', avatar: 'https://i.pravatar.cc/150?img=4' },
-    { name: 'Emma Wang', avatar: 'https://i.pravatar.cc/150?img=5' },
+    { name: 'Alice Johnson', avatar: 'https://i.pravatar.cc/150?img=1', joined: '10:00 AM', left: '11:00 AM' },
+    { name: 'Bob Smith', avatar: 'https://i.pravatar.cc/150?img=2', joined: '10:05 AM', left: '11:10 AM' },
+    { name: 'Carol Lee', avatar: 'https://i.pravatar.cc/150?img=3', joined: '10:10 AM', left: '11:05 AM' },
+    { name: 'David Kim', avatar: 'https://i.pravatar.cc/150?img=4', joined: '10:15 AM', left: '11:15 AM' },
+    { name: 'Emma Wang', avatar: 'https://i.pravatar.cc/150?img=5', joined: '10:20 AM', left: '11:20 AM' },
 ];
 const playbackOptions = ['0.5x', '0.75xx', '1x', '1.25x', '1.75x', '2x']
-
 
 const comments = [
     {
@@ -39,6 +48,30 @@ const comments = [
         avatar: "https://i.pravatar.cc/40?img=2",
         likes: 2,
         hearts: 1
+    },
+    {
+        name: "Carol Lee",
+        text: "Don't forget we also need to fix the accessibility issues.",
+        time: "15:42",
+        avatar: "https://i.pravatar.cc/40?img=3",
+        likes: 4,
+        hearts: 3
+    },
+    {
+        name: "David Kim",
+        text: "Let's schedule a review meeting by tomorrow EOD.",
+        time: "15:45",
+        avatar: "https://i.pravatar.cc/40?img=4",
+        likes: 1,
+        hearts: 0
+    },
+    {
+        name: "Emma Wang",
+        text: "I've started working on the mobile responsiveness fixes.",
+        time: "15:47",
+        avatar: "https://i.pravatar.cc/40?img=5",
+        likes: 5,
+        hearts: 2
     }
 ];
 
@@ -49,7 +82,7 @@ const files = [
     { name: 'notes.docx', icon: <DescriptionIcon sx={{ color: '#6d4c41' }} /> },
 ];
 
-export default function MeetingHistory() {
+const MeetingHistory = () => {
     const [tabIndex, setTabIndex] = useState(0);
     // const [commentText, setCommentText] = useState("");
     const [playbackData, setPlaybackData] = useState(playbackOptions[2]);
@@ -57,6 +90,7 @@ export default function MeetingHistory() {
     const [open, setOpen] = useState(false);
     const [note, setNote] = useState('');
     const [content, setContent] = useState('');
+    const [participantsModal, setParticipantsModal] = useState(null);
     const editorRef = useRef(null);
     const imageInputRef = useRef(null);
     const videoInputRef = useRef(null);
@@ -156,6 +190,18 @@ export default function MeetingHistory() {
             editorRef.current.innerHTML = '';
         }
     }, []);
+
+
+    const handleParticipantsModal = (event) => {
+        setParticipantsModal(event.currentTarget);
+    };
+
+    const handleCloseParticipantsModal = () => {
+        setParticipantsModal(null);
+    };
+
+    const participantsOpen = Boolean(participantsModal);
+   
     return (
         <div className='meeting_history_container'>
             <Box sx={style.meetinghistory_content}>
@@ -270,7 +316,8 @@ export default function MeetingHistory() {
                             </Box>
 
                             {/* PARTICIPANTS */}
-                            <Box sx={{ ...style.meetingheader_date, minWidth: 150 }}>
+                            <Box sx={{ ...style.meetingheader_date, minWidth: 150, cursor: 'pointer' }}
+                                onClick={handleParticipantsModal}>
                                 <GroupIcon sx={{ color: '#1976d2', mr: 1 }} />
                                 <AvatarGroup max={4}>
                                     {participants.map((p, i) => (
@@ -278,6 +325,27 @@ export default function MeetingHistory() {
                                     ))}
                                 </AvatarGroup>
                             </Box>
+                            <Popover
+                                open={participantsOpen}
+                                anchorEl={participantsModal}
+                                onClose={handleCloseParticipantsModal}
+                                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            >
+                                <Box sx={{ p: 2, minWidth: 250 }}>
+
+                                    {participants.map((p, i) => (
+                                        <Box key={i} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                            <Avatar src={p.avatar} alt={p.name} sx={{ width: 40, height: 40, mr: 1 }} />
+                                            <Box>
+                                                <Typography variant="subtitle2">{p.name}</Typography>
+                                                <Typography variant="caption">Joined: {p.joined}</Typography><br />
+                                                <Typography variant="caption">Left: {p.left}</Typography>
+                                            </Box>
+                                        </Box>
+                                    ))}
+                                </Box>
+                            </Popover>
                         </Box>
                     </Paper>
 
@@ -387,7 +455,7 @@ export default function MeetingHistory() {
                 <Box sx={style.meetinghistory_rightcontent}>
                     {/* Comments */}
 
-                    <Paper elevation={2} sx={{ ...style.meetinghistory_paper, height: 350, display: 'flex', flexDirection: 'column' }}>
+                    <Paper elevation={2} sx={{ ...style.meetinghistory_paper, height: 550, display: 'flex', flexDirection: 'column' }}>
                         {/* Header */}
                         <Box display="flex" alignItems="center" mb={1} gap={1}>
                             <CommentIcon sx={{ color: '#2979ff' }} />
@@ -453,7 +521,7 @@ export default function MeetingHistory() {
                         {/* Comment Input */}
                         <Box mt={2} position="relative">
                             <textarea placeholder='Write a comment...' className='comment_input'></textarea>
-                        <Box
+                            <Box
 
                                 display="flex"
                                 alignItems="center"
@@ -514,7 +582,7 @@ export default function MeetingHistory() {
                             ))}
                         </List>
                     </Paper>
-                    <Paper elevation={2} sx={style.meetinghistory_paper}>
+                    {/* <Paper elevation={2} sx={style.meetinghistory_paper}>
                         <Box sx={style.meetinghistory_options}>
 
                             <Box display="flex" alignItems="center" gap={1}>
@@ -547,13 +615,12 @@ export default function MeetingHistory() {
 
 
                         </Box>
-                    </Paper>
+                    </Paper> */}
                     <Box>
-
-
                     </Box>
                 </Box>
             </Box>
         </div>
     );
 }
+export default MeetingHistory;

@@ -487,6 +487,10 @@ const NewTemplate = () => {
                                 <TextfieldComponent placeholder='Template Name' customStyle='template_input' />
                             </div>
                             <div className="name_block_field">
+                                <div className="name_block_title">Template Code</div>
+                                <TextfieldComponent placeholder='Template Code' customStyle='template_input' />
+                            </div>
+                            <div className="name_block_field">
                                 <div className="name_block_title">Channel</div>
                                 <AutocompleteComponent
                                     options={categoryOptions}
