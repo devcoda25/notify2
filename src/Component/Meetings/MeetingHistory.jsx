@@ -16,13 +16,7 @@ import {
 } from '../Icon';
 import { Pointer } from 'highcharts';
 
-// const participants = [
-//     { name: 'Alice Johnson', avatar: 'https://i.pravatar.cc/150?img=1' },
-//     { name: 'Bob Smith', avatar: 'https://i.pravatar.cc/150?img=2' },
-//     { name: 'Carol Lee', avatar: 'https://i.pravatar.cc/150?img=3' },
-//     { name: 'David Kim', avatar: 'https://i.pravatar.cc/150?img=4' },
-//     { name: 'Emma Wang', avatar: 'https://i.pravatar.cc/150?img=5' },
-// ];
+
 const participants = [
     { name: 'Alice Johnson', avatar: 'https://i.pravatar.cc/150?img=1', joined: '10:00 AM', left: '11:00 AM' },
     { name: 'Bob Smith', avatar: 'https://i.pravatar.cc/150?img=2', joined: '10:05 AM', left: '11:10 AM' },
@@ -543,7 +537,7 @@ const MeetingHistory = () => {
 
 
 
-                    <Paper elevation={2} sx={style.meetinghistory_paper}>
+                    <Paper elevation={2} sx={{...style.meetinghistory_paper,height:'250px'}}>
                         {/* Header */}
                         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                             <Box display="flex" alignItems="center" gap={1}>

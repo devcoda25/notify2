@@ -15,7 +15,7 @@ import ToggleSwitch from "../ToggleSwitch";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/xml/xml";
 import "codemirror/theme/material.css";
-import {StayCurrentPortraitRoundedIcon,CheckIcon,ExpandMoreIcon,FormatUnderlinedRoundedIcon,DesktopWindowsRoundedIcon, ArrowBackIcon, DeleteOutlineIcon,AddCircleOutlineIcon,TagFacesIcon,FormatBoldIcon,FormatItalicIcon,StrikethroughSIcon } from "../Icon";
+import { StayCurrentPortraitRoundedIcon, CheckIcon, ExpandMoreIcon, FormatUnderlinedRoundedIcon, DesktopWindowsRoundedIcon, ArrowBackIcon, DeleteOutlineIcon, AddCircleOutlineIcon, TagFacesIcon, FormatBoldIcon, FormatItalicIcon, StrikethroughSIcon } from "../Icon";
 
 
 const mobileBackgroundImages = {
@@ -85,8 +85,8 @@ const NewTemplate = () => {
         code: '',
         isFocused: false
     });
- 
-  
+
+
 
     const [selectedColors, setSelectedColors] = useState({
         background: colors.background[0],
@@ -111,12 +111,12 @@ const NewTemplate = () => {
         document.execCommand(command, false, null);
     };
     //select broadcast title
-    
+
     const handleRadioChange = (event) => {
         updateState({ selectedValue: event.target.value });
     };
     //text
-  
+
     const handleInputChange = (event) => {
         updateState({ text: event.target.value });
     };
@@ -126,7 +126,7 @@ const NewTemplate = () => {
         setSelectedColors((prev) => ({ ...prev, [type]: color }));
     };
     //toggle for addvariable button
-   
+
 
     const handleAddvarToggle = () => {
         updateState({ isAddvarModalVisible: !state.isAddvarModalVisible });
@@ -136,8 +136,8 @@ const NewTemplate = () => {
         updateState({ isHtmlAddvarVisible: !state.isHtmlAddvarVisible });
     };
     //second add and delete reply button
-   
-   
+
+
     const handleSecondAddContent = () => {
         if (state.secondAddButtonContent.length < 3) {
             updateState({ secondAddButtonContent: [...state.secondAddButtonContent, {}] });
@@ -149,7 +149,7 @@ const NewTemplate = () => {
             updateState({ firstAddButtonContent: [...state.firstAddButtonContent, {}] });
         }
     };
-   
+
     const handleDeletesecondAdd = (index) => {
         updateState({
             secondAddButtonContent: state.secondAddButtonContent.filter((_, i) => i !== index),
@@ -183,7 +183,7 @@ const NewTemplate = () => {
 
     //preview image
 
-    
+
     const handleImageFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -196,7 +196,7 @@ const NewTemplate = () => {
         document.getElementById('image-button-file').click();
     };
     //preview video
-   
+
     const handleVideoFileChange = (event) => {
         const file = event.target.files[0];
         if (file?.type.startsWith('video')) {
@@ -209,7 +209,7 @@ const NewTemplate = () => {
     };
     //preview document
 
-   
+
     const handleDocumentFileChange = (event) => {
         const file = event.target.files[0];
         if (file?.type === 'application/pdf') {
@@ -223,31 +223,31 @@ const NewTemplate = () => {
         document.getElementById('document-button-file').click();
     };
     // body content textarea
-   
+
     const handleTextareaTextChange = (event) => {
         updateState({ textareaContent: event.target.value });
     };
-   
+
     const handleTextareaFocus = () => {
         updateState({ isFocused: true, showEmojiPicker: false });
     };
 
     //footer text
-   
+
     const handleFooterInputChange = (event) => {
         updateState({ footerText: event.target.value });
     };
     //subject text
-  
+
     const handleSubjectChange = (event) => {
         updateState({ subjectText: event.target.value });
     };
     //toggle
-   
+
     const handleToggle = () => {
         updateState({ isActive: !state.isActive });
     };
-   
+
     const handlePreviewToggle = () => {
         updateState({ isPreviewMessage: !state.isPreviewMessage });
     };
@@ -259,11 +259,11 @@ const NewTemplate = () => {
     const handleFooterToggle = () => {
         updateState({ isFooterMessage: !state.isFooterMessage });
     };
- 
+
     const handleHtmlPreviewToggle = () => {
         updateState({ isHtmlPreview: !state.isHtmlPreview });
     };
-   
+
     const handleEmojiClick = (emojiObject) => {
         updateState({ textareaContent: state.textareaContent + emojiObject.emoji });
     };
@@ -294,7 +294,7 @@ const NewTemplate = () => {
 
 
     //Add variable popup modal
-   
+
     const handleAddVariableButton = () => {
         updateState({ isShowAddvariableModal: true });
     };
@@ -302,7 +302,7 @@ const NewTemplate = () => {
     const handleCloseAddVariable = () => {
         updateState({ isShowAddvariableModal: false });
     };
-   
+
 
     const handleSelectAttribute = (attribute) => {
         updateState({ textareaContent: state.textareaContent + attribute });
@@ -310,7 +310,7 @@ const NewTemplate = () => {
 
 
     //image Add variable popup modal 
-   
+
     const handleImageSelectAttribute = () => {
         updateState({ isShowImageSelectAttribute: true });
     };
@@ -318,7 +318,88 @@ const NewTemplate = () => {
     const handleCloseSelectAttribute = () => {
         updateState({ isShowImageSelectAttribute: false });
     };
-    //preview time
+    const saveSelection = () => {
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+            updateState({ savedRange: selection.getRangeAt(0) });
+        }
+    };
+   
+    const handleInsertLink = () => {
+        const url = prompt("Enter the URL:");
+        if (!url) return;
+    
+        const formattedUrl = url.startsWith("http") ? url : `https://${url}`;
+    
+        const editable = editableRef.current;
+        editable.focus(); 
+    
+        const selection = window.getSelection();
+        const range = document.createRange();
+       range.selectNodeContents(editable);
+        range.collapse(false); //end
+    
+        selection.removeAllRanges();
+        selection.addRange(range);
+    
+        // Create anchor element
+        const anchor = document.createElement("a");
+        anchor.href = formattedUrl;
+        anchor.textContent = formattedUrl;
+        anchor.style.color = "blue";
+        anchor.style.textDecoration = "underline";
+        anchor.style.cursor = "pointer";
+        anchor.style.fontSize = "13px";
+    
+        anchor.onclick = (e) => {
+            e.preventDefault();
+            window.open(formattedUrl, "_blank");
+        };
+    
+        // Insert the anchor
+        range.insertNode(document.createTextNode(" ")); 
+        range.insertNode(anchor);
+    
+        
+        range.setStartAfter(anchor);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    
+        updateState({ savedRange: null });
+    };
+    
+    const handleTemplateInsertLink = () => {
+        const url = prompt("Enter the URL:");
+        if (!url) return;
+      
+        const formattedUrl = url.startsWith("http") ? url : `https://${url}`;
+      
+        const textarea = document.querySelector(".body_textarea_content");
+      
+        if (!textarea) return;
+      
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+      
+        const linkText = selectedText || formattedUrl;
+      
+        const linked = `<a href="${formattedUrl}" target="_blank" style="color:blue; text-decoration:underline; font-size:13px">${linkText}</a>`;
+      
+        const newText =
+          textarea.value.substring(0, start) +
+          linked +
+          textarea.value.substring(end);
+      
+        setState(prev => ({
+          ...prev,
+          textareaContent: newText,
+        }));
+      
+      };
+      
+   
     useEffect(() => {
         // get the current time
         const getCurrentTime = () => {
@@ -638,7 +719,8 @@ const NewTemplate = () => {
                                                                             suppressContentEditableWarning={true}
                                                                             className="accordion_content"
                                                                             onInput={handleInput}
-
+                                                                            onMouseUp={saveSelection}
+                                                                            onKeyUp={saveSelection}
 
                                                                         >
                                                                             <h1>Hi,</h1>
@@ -653,7 +735,7 @@ const NewTemplate = () => {
                                                                             <FormatItalicIcon onClick={() => handleFormat('italic')} />
                                                                             <FormatUnderlinedRoundedIcon onClick={() => handleFormat('underline')} />
                                                                             <StrikethroughSIcon onClick={() => handleFormat('strikeThrough')} />
-                                                                            <div className="url_icon"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
+                                                                            <div className="url_icon" onClick={handleInsertLink}><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
                                                                         </div>
                                                                         <div className="add_var_btn" onClick={handleAddvarToggle}>+ Add Variable</div>
                                                                         {
@@ -945,7 +1027,7 @@ const NewTemplate = () => {
                                                     <FormatBoldIcon className="none_bold_icon" onClick={handleBoldIconClick} />
                                                     <FormatItalicIcon onClick={handleItalicIconClick} />
                                                     <StrikethroughSIcon onClick={handleStrikeIconClick} />
-                                                    <div className="url_icon"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
+                                                    <div className="url_icon" onClick={handleTemplateInsertLink} ><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
                                                     <div className="toolbar_counter">{state.textareaContent.length}/1024</div>
                                                 </div>
                                             </div>
@@ -1079,7 +1161,7 @@ const NewTemplate = () => {
                                                                             sx={[style.tableIconBtn, style.tabledeleteHover]} >
                                                                             <DeleteOutlineIcon />
                                                                         </IconButton>
-                                                                      
+
                                                                     </div>
                                                                 ))
 
@@ -1104,7 +1186,7 @@ const NewTemplate = () => {
                                             state.isFocused && (
                                                 <div className="none_sample_content">
                                                     <div className="name_block_title">Sample Content</div>
-                                                    <div className="none_sample_comments">Just enter sample content here (it doesn’t need to be exact!)</div>
+                                                    <div className="none_sample_comments">Just enter sample content here (it doesn't need to be exact!)</div>
                                                     <div className="none_sample_content_textbox">
                                                         <TextfieldComponent placeholder='Enter content for {{name}}' customStyle='template_input' />
                                                         <div className="none_sample_text_count">0/200</div>

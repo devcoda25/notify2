@@ -533,7 +533,7 @@ const style = {
   position: 'relative'
   },
   meetinghistory_filesupload:{
-    maxHeight: 120, 
+    maxHeight: '135px', 
     overflowY: 'auto', 
     pr: 1 
   },
