@@ -240,7 +240,7 @@ const YourTemplate = () => {
                     isOpenTemplateMessage ? (
                         <>
                        
-                            <NewTemplate/>
+                            <NewTemplate isOpenTemplateMessage={isOpenTemplateMessage} setIsOpenTemplateMessage={setIsOpenTemplateMessage} />
                         </>
                     )
                         : (

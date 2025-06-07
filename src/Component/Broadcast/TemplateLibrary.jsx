@@ -51,6 +51,7 @@ const TemplateLibrary = () => {
     setIsOpenTemplateMessage(true);
   }
 
+  
   const filteredTemplates =
     selectedCategory === "All"
       ? templates
@@ -64,8 +65,7 @@ const TemplateLibrary = () => {
         {
           isOpenTemplateMessage ? (
             <>
-
-              <NewTemplate />
+              <NewTemplate isOpenTemplateMessage={isOpenTemplateMessage} setIsOpenTemplateMessage={setIsOpenTemplateMessage}  />
             </>
           ) : (
             <div className='Template_librabry-Container'>

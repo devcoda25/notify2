@@ -1,4 +1,3 @@
-// BaseLayouts.js - Updated version
 import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
@@ -67,6 +66,7 @@ const AppRoutes = () => {
     checkAuthStatus();
   }, [location.search]); // Re-run when URL search params change
 
+
   const hideNavbarPaths = ["/hepto"];
   const shouldHideNavbar = hideNavbarPaths.some(path => 
     location.pathname.startsWith(path)
@@ -110,7 +110,7 @@ const AppRoutes = () => {
         
         <Route path="/u/:authUser/broadcast" element={
           <AuthUserRoute>
-            <Broadcast />
+            <Broadcast authUser = {authUser} />
           </AuthUserRoute>
         } />
         

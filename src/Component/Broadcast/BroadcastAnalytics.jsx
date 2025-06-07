@@ -400,7 +400,7 @@ const BroadcastAnalytics=()=>{
               isOpenTemplateMessage ? (
                   <>
                  
-                      <NewBroadcastTemplate/>
+                      <NewBroadcastTemplate isOpenTemplateMessage={isOpenTemplateMessage} setIsOpenTemplateMessage={setIsOpenTemplateMessage}/>
                   </>
               )
               :

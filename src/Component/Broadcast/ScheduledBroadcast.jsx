@@ -135,7 +135,7 @@ const ScheduledBroadcast = () => {
                 isOpenTemplateMessage ? (
                     <>
 
-                        <NewBroadcastTemplate />
+                        <NewBroadcastTemplate isOpenTemplateMessage={isOpenTemplateMessage} setIsOpenTemplateMessage={setIsOpenTemplateMessage} />
                     </>
                 )
                     :

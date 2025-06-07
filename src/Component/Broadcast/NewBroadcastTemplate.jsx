@@ -29,7 +29,7 @@ const templateMessageOptions = ['to_airport_for_someone_later', 'from_airport_ri
 const attributeOptions = ['AllowBroadcast', 'AllowSMS', 'Source'];
 const operationOptions = ['Contains', 'Does not contain', 'Exist'];
 
-const NewBroadcastTemplate = () => {
+const NewBroadcastTemplate = ({isOpenTemplateMessage, setIsOpenTemplateMessage}) => {
 
     const valueOptions = [''];
     const [state, setState] = useState({
@@ -79,6 +79,10 @@ const NewBroadcastTemplate = () => {
             page: 0
         });
     };
+
+    const handleBackBroadcast =()=>{
+        setIsOpenTemplateMessage(false);
+    }
 
     const handleFilterBtn = () => {
         updateState({ showFilterContent: !state.showFilterContent });
@@ -165,7 +169,7 @@ const NewBroadcastTemplate = () => {
             <div className="new_broadcast_template">
                 <div className="new_template_container">
                     <div className="new_template_header">
-                        <div className="new_template_left">
+                        <div onClick={()=>handleBackBroadcast()} className="new_template_left">
                             <ArrowBackIcon />
                             <span className="new_template_title">New Broadcast</span>
                         </div>

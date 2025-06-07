@@ -48,7 +48,7 @@ const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Cal
 const secondbuttonOptions = ['Quick replies'];
 const teamOptions = ['Support Heroes(Default team)']
 
-const NewTemplate = () => {
+const NewTemplate = ({setIsOpenTemplateMessage}) => {
     const [state, setState] = useState({
         categoryData: categoryOptions[0],
         ticketTypeData: ticketTypeOptions[0],
@@ -105,6 +105,11 @@ const NewTemplate = () => {
             ...updates,
         }));
     };
+
+
+    const handleBack=()=>{
+        setIsOpenTemplateMessage(false);
+    }
 
     // email template format text
     const handleFormat = (command) => {
@@ -549,7 +554,7 @@ const NewTemplate = () => {
             }
             <div className="new_template_container">
                 <div className="new_template_header">
-                    <div className="new_template_left">
+                    <div onClick={handleBack} className="new_template_left">
 
                         <ArrowBackIcon />
                         <span className="new_template_title">New Templates</span>

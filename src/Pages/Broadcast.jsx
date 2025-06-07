@@ -4,12 +4,17 @@ import TemplateLibrary from "../Component/Broadcast/TemplateLibrary";
 import BroadcastAnalytics from "../Component/Broadcast/BroadcastAnalytics";
 import ScheduledBroadcast from "../Component/Broadcast/ScheduledBroadcast";
 
-const Broadcast = () => {
+const Broadcast = (authUser) => {
     const [activeContent, setActiveContent] = useState('AccountSettings');
+    const [state, setState] = useState("default")
+
     const handleNavigationClick = (e, content) => {
         e.preventDefault();
+        console.log("authUser", authUser)
         setActiveContent(content);
     };
+
+    
     const renderContent = () => {
         switch (activeContent) {
             case 'YourTemplate':
@@ -28,10 +33,7 @@ const Broadcast = () => {
     return (
         <>
             <div className='maincontent'>
-
-
                 <div className='msgCont'>
-
                     <div className='msgContL analytics__left__content'>
                         <li className={`solo ${activeContent === 'YourTemplate' ? 'active' : ''}`}>
                             <a onClick={(e) => handleNavigationClick(e, 'YourTemplate')}>
@@ -59,13 +61,10 @@ const Broadcast = () => {
 
                     </div>
                     <div className='msgContR'>
-
                         {renderContent()}
                     </div>
                 </div>
-
             </div>
-
         </>
     );
 }
