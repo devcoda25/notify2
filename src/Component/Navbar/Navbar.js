@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { FiInbox } from "react-icons/fi";
-import logo from '../Assets/img/ev-notify-logo.png'
+import logo from '../Assets/img/Notify_login_logo.svg'
 import { PiBroadcastDuotone } from "react-icons/pi";
 import { RiContactsBook2Line } from "react-icons/ri";
 import { FiSettings } from "react-icons/fi";
@@ -18,6 +18,18 @@ import MoreDropDown from './MoreDropDown';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { AccessTimeIcon } from '../Icon';
 import ToggleSwitch from '../ToggleSwitch';
+import TeaminboxImg from "../Assets/img/Team-inbox.png"
+import MeetingImg from "../Assets/img/Meeting.png"
+import BroadcastImg from "../Assets/img/Broadcast.png"
+import ContactImg from "../Assets/img/Contacts.png"
+import AutomationImg from "../Assets/img/Automations.png"
+import AnalyticsImg from "../Assets/img/Analytics.png"
+import ReportsImg from "../Assets/img/Reports.png"
+import WalletImg from "../Assets/img/Wallet.png"
+import ClockImg from "../Assets/img/clock-square.png"
+
+
+
 
 const Navbar = () => {
   const location = useLocation();
@@ -52,37 +64,44 @@ const Navbar = () => {
     { 
       path: `/u/${authUser}/teaminbox`, 
       label: 'Team Inbox', 
-      icon: <FiInbox /> 
+      // icon: <FiInbox /> 
+      icons:TeaminboxImg
     },
     { 
       path: `/u/${authUser}/meetings`, 
       label: 'Meetings', 
-      icon: <EventIcon /> 
+      icons:MeetingImg
+      // icon: <EventIcon /> 
     },
     { 
       path: `/u/${authUser}/broadcast`, 
       label: 'Broadcast', 
-      icon: <PiBroadcastDuotone /> 
+      icons:BroadcastImg
+      // icon: <PiBroadcastDuotone /> 
     },
     { 
       path: `/u/${authUser}/contactus`, 
       label: 'Contacts', 
-      icon: <RiContactsBook2Line /> 
+      icons:ContactImg
+      // icon: <RiContactsBook2Line /> 
     },
     { 
       path: `/u/${authUser}/automations`, 
       label: 'Automations', 
-      icon: <FiSettings /> 
+      icons:AutomationImg
+      // icon: <FiSettings /> 
     },
     { 
       path: `/u/${authUser}/analytics`, 
       label: 'Analytics', 
-      icon: <BiGridAlt /> 
+      icons:AnalyticsImg
+      // icon: <BiGridAlt /> 
     },
     { 
       path: `/u/${authUser}/reports`, 
       label: 'Reports', 
-      icon: <SignalCellularAltIcon /> 
+      icons:ReportsImg
+      // icon: <SignalCellularAltIcon /> 
     }
   ], [authUser]);
 
@@ -135,7 +154,8 @@ const Navbar = () => {
       <div className='nav bg-white'>
         <div className='lnav'>
           <img src={logo} alt='car' className="navImg" />
-          <span style={{marginRight:"10px"}} className='border'></span>
+          <span className='logo_name'>Notify</span>
+          {/* <span style={{marginRight:"10px"}} className='border'></span> */}
           {menuItems.map((item) => (
             <li
               key={item.path}
@@ -146,7 +166,7 @@ const Navbar = () => {
                 className='header_nav_link'
                 onClick={() => handleClick(item.label)}
               >
-                {item.icon}
+                <img src={item.icons} height={"15px"} width={"15px"} alt="image" />
                 {item.label}
                 <span className='beta'>{item.content}</span>
               </NavLink>
@@ -157,8 +177,8 @@ const Navbar = () => {
         </div>
         
         <div className='rnav'>
-          <li className='navicon1'><BiLogoMeta /></li>
-          <span className='border'></span>
+          {/* <li className='navicon1'><BiLogoMeta /></li> */}
+          {/* <span className='border'></span> */}
           <li className='navicon2'>
             <a 
               href="https://wallet.evzone.app/" 
@@ -166,16 +186,18 @@ const Navbar = () => {
               rel="noopener noreferrer" 
               className="wallet-icon"
             >
-              <LiaWalletSolid />
-            </a>
+              {/* <LiaWalletSolid /> */}
+          <img src={WalletImg} height={"15px"} width={"15px"} alt="image" />            </a>
           </li>
-          <span className='border'></span>
-          <li className='navicon3'><GoBellFill /></li>
-          <span className='border'></span>
+          {/* <span className='border'></span> */}
+          {/* <li className='navicon3'><GoBellFill /></li> */}
+          {/* <span className='border'></span> */}
           <li className='navicon3' onClick={handleBreakTime}>
-            <AccessTimeIcon />
+            <a href="">
+            {/* <AccessTimeIcon /> */}
+          <img src={ClockImg} height={"15px"} width={"15px"} alt="image" />            </a>
           </li>
-          <span className='border'></span>
+          {/* <span className='border'></span> */}
           <li className='navicon3'><IoMdPerson /></li>
         </div>
       </div>

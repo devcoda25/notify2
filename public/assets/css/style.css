@@ -106,6 +106,7 @@
     font-size: 14px !important;
     /* width: 122px; */
     font-weight: 600 !important;
+    margin-left: 20px;
     text-wrap-mode: nowrap;
 }
 
@@ -290,6 +291,7 @@
     .nav {
         display: flex;
         justify-content: space-between;
+        flex-wrap: nowrap;
         padding-bottom: 5px;
         padding-top: 5px;
         height:60px;
@@ -302,7 +304,7 @@
         justify-content: space-around;
         align-items: center;
         text-align: center;
-        width: 75%;
+        min-width: 80%;
         padding-left: .5rem;
     }
 
@@ -311,17 +313,23 @@
         align-items: center;
         text-align: center;
         justify-content: space-around;
-        width: 21%;
+        width: 15%;
         margin-top: .5rem;
         padding-right: .5rem;
 
     }
 
     .nav .lnav .navImg {
-        /* width: 8%;*/
-        margin-right: 10px;
-        width: 120px;
+        width: 8%;
+        height: 40px;
+        margin-right: 20px;
     }
+    .logo_name{
+        font-weight: 700;
+        color: #5D3FD3;
+        font-size: large;
+    }
+
 
     .nav .lnav li {
         list-style-type: none;
@@ -350,9 +358,12 @@
         gap: .5rem;
     }
     .nav .lnav .active a{
-        color: #23a455;
+        color: #5D3FD3;
         border:none;
         
+    }
+    .nav .lnav .active img{
+             filter: invert(31%) sepia(94%) saturate(647%) hue-rotate(216deg) brightness(93%) contrast(94%);
     }
     /* .nav .lnav .solo a {
         color: #23a455;
@@ -363,7 +374,7 @@
     } */
 
     .nav .lnav a:hover {
-        color: #23a455;
+        color: #5D3FD3;
     }
 
     .msgCont .msgContL a:hover {
@@ -415,6 +426,10 @@
         border-radius: 50%;
         position: relative;
     }
+
+    .header_nav_link:hover img {
+  filter: invert(31%) sepia(94%) saturate(647%) hue-rotate(216deg) brightness(93%) contrast(94%);
+}
 
     .border {
         border: solid rgb(229 233 233 / 46%);
@@ -3512,7 +3527,7 @@
 
     .nav .rnav {
         /* width: 23%; */
-        width: 21%;
+        width: 15%;
     }
 
     .input-icon-wrapper1 {
@@ -4112,7 +4127,7 @@
 
     .nav .rnav {
         /* width: 26%; */
-        width: 21%;
+        width: 15%;
     }
 
     .footerCount {
@@ -4304,12 +4319,19 @@
 
     .nav .rnav {
         /* width: 28%; */
-        width: 21%;
+        width: 15%;
     }
 
     .nav .lnav .navImg {
-        width: 10%;
+        width: 8%;
+        height: 40px;
         margin-right: 10px;
+    }
+
+    .logo_name{
+        font-weight: 700;
+        color: #5D3FD3;
+        font-size: large;
     }
 
     .nav a {

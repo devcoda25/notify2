@@ -8,6 +8,7 @@ import { TbListDetails } from "react-icons/tb";
 import { ImMenu } from "react-icons/im";
 // import { Prev } from 'react-bootstrap/esm/PageItem';
 import { NavLink } from 'react-router-dom';
+import MoreImg from "../Assets/img/More.png"
 // import { useParams } from 'react-router-dom';
 
 function MoreDropDown(props) {
@@ -24,7 +25,8 @@ function MoreDropDown(props) {
     <>
       <button onClick={toggleDropdown} className='header_more_btn' >
         {/* <i className="fa fa-ellipsis-h mr-10" aria-hidden="true"></i>  */}
-        <ImMenu   className='mr-10' />
+        {/* <ImMenu   className='mr-10' /> */}
+        <img src={MoreImg} height={"15px"} width={"15px"} alt="image" />
         More
       </button>
       {

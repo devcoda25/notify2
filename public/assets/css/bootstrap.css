@@ -4487,7 +4487,7 @@ fieldset:disabled .btn {
 
 .nav {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding-left: 0;
   margin-bottom: 0;
   list-style: none
@@ -17595,6 +17595,9 @@ fieldset:disabled .btn {
   border: none;
   background: transparent;
   width: 71px;
+  display: flex;
+  padding-top: 2px;
+  gap: 10px;
   font-size: 14px !important;
   font-weight: 600 !important;
   color: rgb(102, 102, 102);
