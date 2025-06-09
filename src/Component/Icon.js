@@ -152,7 +152,8 @@ Headset as HeadsetIcon,
 Dashboard as DashboardIcon,
 Movie as MovieIcon,
 Audiotrack as AudiotrackIcon,
-DescriptionOutlined as DescriptionOutlinedIcon
+DescriptionOutlined as DescriptionOutlinedIcon,
+FilterAlt as FilterAltIcon
 
    } from "@mui/icons-material";
   
@@ -311,5 +312,6 @@ DescriptionOutlined as DescriptionOutlinedIcon
    NoteAltIcon,
    HeadsetIcon,
    DashboardIcon,
-   MovieIcon
+   MovieIcon,
+   FilterAltIcon
 };

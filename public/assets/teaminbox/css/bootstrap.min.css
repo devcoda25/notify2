@@ -12210,3 +12210,10 @@ width:112px;
   box-shadow: #0069d9 0px 1px 2px 0px !important;
   border:none !important
 }
+/* update teaminbox */
+.new_teaminbox_button{
+background:#5D3FD3;
+}
+.new_teaminbox_search:hover,.new_teaminbox_search:focus{
+border: 2px solid #5D3FD3 !important;
+}

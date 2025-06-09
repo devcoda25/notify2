@@ -552,6 +552,28 @@ const style = {
    justifyContent: 'flex-end', 
    gap: 2,
    marginTop:'15px',
+  },
+  new_teaminbox_container:{
+   display: 'flex', 
+   position: 'absolute', 
+   top: '57px', 
+   width: '100%' 
+  },
+  teaminbox_search_container:{
+  display: 'flex', 
+  alignItems: 'center', 
+  px: 2, 
+  py: 1 
+  },
+  teaminbox_sidebar_header:{
+    pl: 2, pt: 1, color: 'gray' 
+  },
+  new_teaminbox_filter:{
+   border:'1px solid #ccc',
+    borderRadius:'4px',
+    width:'38px',
+    height:'43px',
+    
   }
 
 }
