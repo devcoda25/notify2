@@ -320,9 +320,10 @@
     }
 
     .nav .lnav .navImg {
-        width: 8%;
+        /* width: 8%; */
+        width: 40px;
         height: 40px;
-        margin-right: 20px;
+        /* margin-right: 10px; */
     }
     .logo_name{
         font-weight: 700;
@@ -4323,7 +4324,8 @@
     }
 
     .nav .lnav .navImg {
-        width: 8%;
+        /* width: 8%; */
+        width: 40px;
         height: 40px;
         margin-right: 10px;
     }
