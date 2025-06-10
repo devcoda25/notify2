@@ -12114,10 +12114,14 @@ border-radius:4px;
 .new_tickets_container{
   background: white;
   height: 100vh;
+  position: absolute;
+  top:57px;
+  width:100%
 }
 .new_tickets_container .new_tickets_header{
   border:1px solid rgb(232, 234, 242);
   padding: 20px;
+  cursor: pointer;
 }
 .new_tickets_container .new_tickets_title{
   padding-left:10px;

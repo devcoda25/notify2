@@ -1,17 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-// import { Grid, Chip } from "@mui/material";
-import ButtonComponent from "../Component/ButtonComponent";
-import TextfieldComponent from "../Component/TextfieldComponent";
-import CustomAccordion from "../Component/TeamInbox/CustomAccordion";
-import AutocompleteComponent from "../Component/AutocompleteComponent";
-import Accordion from "react-bootstrap/Accordion";
-import style from "../Component/MuiStyles/muiStyle";
+// import React, { useState, useRef, useEffect } from "react";
+// import { Grid,Chip } from "@mui/material";
+// import ButtonComponent from "../Component/ButtonComponent";
+// import TextfieldComponent from "../Component/TextfieldComponent";
+// import CustomAccordion from "../Component/TeamInbox/CustomAccordion";
+// import AutocompleteComponent from "../Component/AutocompleteComponent";
+// import Accordion from "react-bootstrap/Accordion";
+// import style from "../Component/MuiStyles/muiStyle";
 import ReporterType from "../Component/Reporter";
-import Editorbox from "../Component/TeamInbox/Editorbox";
-import Select from "react-select";
-import SearchboxComponent from "../Component/SearchboxComponent";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+// import Editorbox from "../Component/TeamInbox/Editorbox";
+// import Select from "react-select";
+// import SearchboxComponent from "../Component/SearchboxComponent";
+// import { Link } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 // import {
 //   AccessTimeOutlinedIcon,
 //   ErrorOutlineOutlinedIcon,
@@ -1371,39 +1371,15 @@ import { useParams } from "react-router-dom";
 // };
 // export default TeamInbox;
 
-// import React from "react";
-// const TeamInbox=()=>{
-//   return(
-// <div className="new_teaminbox_container">
-// </div>
-//   )
-// }
-// export default TeamInbox;
 
-
-
-
-
-import {
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  InputBase,
-  Box,
-  Chip,
-  Avatar,
-  Typography,
-  Paper,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import SendIcon from '@mui/icons-material/Send';
-import ForumIcon from '@mui/icons-material/Forum';
-import GroupIcon from '@mui/icons-material/Group';
-import HomeIcon from '@mui/icons-material/Home';
+import React, { useState, useRef } from "react";
+import {Drawer,IconButton,List,ListItem,ListItemIcon,ListItemText,Box,Chip,Typography,Paper,Tooltip} from '@mui/material';
+import TicketsCard from '../../src/Component/TeamInbox/TicketsCard';
+import SearchboxComponent from "../Component/SearchboxComponent";
+import ButtonComponent from "../Component/ButtonComponent";
+import TextfieldComponent from "../Component/TextfieldComponent";
+import style from "../Component/MuiStyles/muiStyle";
+import Select from "react-select";
 import intiated from '../../src/Component/Assets/img/Intiated.png';
 import broadcast from '../../src/Component/Assets/img/Broadcast.png';
 import groups from '../../src/Component/Assets/img/Groups.png';
@@ -1415,11 +1391,13 @@ import myteam from '../../src/Component/Assets/img/My Team.png';
 import privateIcon from '../../src/Component/Assets/img/PrivateIcon.png';
 import teamLeads from '../../src/Component/Assets/img/Team Leads.png';
 import technical from '../../src/Component/Assets/img/Technical.png';
-import { FilterAltIcon } from "../Component/Icon";
+import boy from '../../src/Component/Assets/img/boy.png';
+import { FilterAltIcon,MenuIcon} from "../Component/Icon";
+
+
 
 const drawerWidth = 240;
 const collapsedWidth = 70;
-
 
 const ticketData = [
   { text: 'Initiated', icon: intiated, count: '02' },
@@ -1438,124 +1416,438 @@ const insiderData = [
   { text: 'Technical', icon: technical, count: '10' },
 ];
 
-
-
+const cardData = [
+  {
+    title: 'Application Approval Is Pending',
+    checkboxLabel: 'APPS-120',
+    status: 'Active',
+    subStatus: 'Sent',
+    statusBgColor: '#2EEAAE',
+    statusColor: '#17CE7B',
+    subStatusColor: '#17CE7B',
+    flagColor: '#F64C35',
+    flagBgColor: '#FFA397',
+    avatars: [boy],
+    count: 2,
+    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
+    createdDate: '31 May 2025',
+    updatedDate: '06 June 2025',
+    createdAgo: '6 Days Ago',
+    updatedAgo: '2 Days Ago',
+    users: [
+      { name: 'Joshua', role: 'Evzone', avatar: boy },
+      { name: 'John', role: 'Handler', avatar: boy }
+    ]
+  },
+  {
+    title: 'Application Approval Is Pending',
+    checkboxLabel: 'APPS-120',
+    status: 'Ended',
+    subStatus: 'Failed',
+    statusBgColor: '#FFB6B6',
+    statusColor: '#F64C35',
+    subStatusColor: '#F64C35',
+    flagColor: '#FFF157',
+    flagBgColor: '#FEFFE0',
+    avatars: [boy, boy],
+    count: 2,
+    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
+    createdDate: '31 May 2025',
+    updatedDate: '06 June 2025',
+    createdAgo: '6 Days Ago',
+    updatedAgo: '2 Days Ago',
+    users: [
+      { name: 'Joshua', role: 'Evzone', avatar: boy },
+      { name: 'John', role: 'Handler', avatar: boy }
+    ]
+  },
+  {
+    title: 'Application Approval Is Pending',
+    checkboxLabel: 'APPS-120',
+    status: 'Pending',
+    subStatus: 'Received',
+    statusBgColor: '#A0D8FF',
+    statusColor: '#1976d2',
+    subStatusColor: '#1976d2',
+    flagColor: '#2EEAAE',
+    flagBgColor: '#BCFFE9',
+    avatars: [boy, boy],
+    count: 5,
+    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
+    createdDate: '31 May 2025',
+    updatedDate: '06 June 2025',
+    createdAgo: '6 Days Ago',
+    updatedAgo: '2 Days Ago',
+    users: [
+      { name: 'Joshua', role: 'Evzone', avatar: boy },
+      { name: 'John', role: 'Handler', avatar: boy }
+    ]
+  },
+  {
+    title: 'Application Approval Is Pending',
+    checkboxLabel: 'APPS-120',
+    status: 'Initiated',
+    subStatus: 'Read',
+    statusBgColor: '#FFF0DF',
+    statusColor: '#F7941F',
+    subStatusColor: '#F7941F',
+    flagColor: '#0897FF',
+    flagBgColor: '#84CBFF',
+    avatars: [boy, boy],
+    count: 5,
+    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
+    createdDate: '31 May 2025',
+    updatedDate: '06 June 2025',
+    createdAgo: '6 Days Ago',
+    updatedAgo: '2 Days Ago',
+    users: [
+      { name: 'Joshua', role: 'Evzone', avatar: boy },
+      { name: 'John', role: 'Handler', avatar: boy }
+    ]
+  }
+];
+const sidOptions = [
+  { value: "user 1", label: "user 1" },
+  { value: "user 2", label: "user 2" },
+  { value: "user 3", label: "user 3" },
+];
 const TeamInbox = () => {
-  const [open, setOpen] = useState(false);
 
+
+  const [state, setState] = useState({
+    open: false,
+    openNewTicketsModal: false,
+    selectedFileName: '',
+
+  });
+  const fileInputRef = useRef(null);
   const toggleDrawer = () => {
-    setOpen(!open);
+    setState(prev => ({ ...prev, open: !prev.open }));
+  };
+  const handleOpenNewTicketsModal = () => {
+    setState(prev => ({ ...prev, openNewTicketsModal: true }));
   };
 
+  const handleCloseNewTicketsModal = () => {
+    setState(prev => ({ ...prev, openNewTicketsModal: false }));
+  };
+  const handleUploadExcelClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setState(prev => ({
+        ...prev,
+        selectedFileName: file.name
+      }));
+      console.log("Selected file:", file.name);
+    }
+  };
   return (
+    <>
+      {state.openNewTicketsModal ? (
+        <div className="new_tickets_container">
+          <div className="new_tickets_header" onClick={handleCloseNewTicketsModal}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+            >
+              <path
+                stroke="currentcolor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 12h14M5 12l4 4m-4-4 4-4"
+              ></path>
+            </svg>
+            <span className="new_tickets_title">New ticket</span>
+          </div>
+          <div className="new_tickets_main">
+            <div className="textbox_container">
+              <label>Subject</label>
+              <TextfieldComponent
+                placeholder="Enter subject"
+                customStyle="custom_textfield_box"
+              />
+            </div>
+            <div className="requester_name_email">
+              <div className="textbox_container" style={{ width: "50%" }}>
+                <label>Requester name</label>
+                <TextfieldComponent
+                  placeholder="Enter requester name"
+                  customStyle="custom_textfield_box"
+                />
+              </div>
+              <div className="textbox_container" style={{ width: "50%" }}>
+                <label>Requester email</label>
+                <TextfieldComponent
+                  placeholder="Enter requester email"
+                  customStyle="custom_textfield_box"
+                />
+              </div>
+            </div>
+            <div className="textbox_container">
+              <label>User SID</label>
+              <Select
+                isMulti
+                options={sidOptions}
+                placeholder="Select the SID"
+              />
 
-    <Box sx={style.new_teaminbox_container}>
-      {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: open ? drawerWidth : collapsedWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: open ? drawerWidth : collapsedWidth,
-            transition: 'width 0.3s',
-            overflowX: 'hidden',
-            top: '60px'
-          },
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: open ? 'space-between' : 'center',
-            padding: '8px',
-          }}
-        >
-          <IconButton onClick={toggleDrawer}>
-            <MenuIcon />
-          </IconButton>
-        </Box>
 
-
-        {open && (
-          <Box sx={style.teaminbox_search_container}>
-
-            <SearchboxComponent placeholder='Search...' customSearch='new_teaminbox_search' />
-          </Box>
-
-        )}
-
-        <List>
-          {open && (
-            <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
-              TICKETS
-            </Typography>
-          )}
-          {ticketData.map(({ text, icon, count }) => (
-            <ListItem key={text} sx={{ display: 'flex', justifyContent: open ? 'space-between' : 'center', pt: open ? '4px' : '8px', pb: open ? '4px' : '8px' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ListItemIcon sx={{ minWidth: 0, mr: open ? 1 : 0 }}>
-                  <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
-                </ListItemIcon>
-                {open && <ListItemText primary={text} />}
-              </Box>
-              {open && <Chip label={count} size="small" />}
-            </ListItem>
-          ))}
-          {open && (
-            <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
-              INSIDER
-            </Typography>
-          )}
-          {insiderData.map(({ text, icon, count }) => (
-            <ListItem key={text} sx={{ display: 'flex', justifyContent: open ? 'space-between' : 'center', pt: open ? '4px' : '8px', pb: open ? '4px' : '8px' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ListItemIcon sx={{ minWidth: 0, mr: open ? 1 : 0 }}>
-                  <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
-                </ListItemIcon>
-                {open && <ListItemText primary={text} />}
-              </Box>
-              {open && <Chip label={count} size="small" />}
-            </ListItem>
-          ))}
-        </List>
-
-      </Drawer>
-
-      {/* Right Content */}
-     
-      <Box sx={{ flexGrow: 1, p: 3 }}>
-        {/* Header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>My Tickets</Typography>
-          <Box>
-            <ButtonComponent label='New Ticket' customBtn='new_teaminbox_button' />
-          </Box>
-        </Box>
-
-        {/* Tickets container */}
-        <Paper elevation={1} sx={{ p: 2 }}>
-          {/* Header Row */}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6" fontWeight="bold">Tickets</Typography>
-
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <SearchboxComponent placeholder='search tickets' customSearch='new_teaminbox_search' />
-              <IconButton sx={style.new_teaminbox_filter}>
-                <FilterAltIcon />
+            </div>
+            <div className="upload_excelfile_container">
+              {state.selectedFileName && <p> {state.selectedFileName}</p>}
+              <input
+                type="file"
+                accept=".xls,.xlsx"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+              <ButtonComponent
+                label="upload Excel file"
+                onClick={handleUploadExcelClick}
+                customBtn='new_teaminbox_button'
+              />
+              <ButtonComponent
+                label="submit"
+                onClick={handleCloseNewTicketsModal}
+                customBtn='new_teaminbox_button'
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Box sx={style.new_teaminbox_container}>
+          {/* Sidebar */}
+          <Drawer
+            variant="permanent"
+            sx={{
+              width: state.open ? drawerWidth : collapsedWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: state.open ? drawerWidth : collapsedWidth,
+                transition: 'width 0.3s',
+                overflowX: 'hidden',
+                top: '60px'
+              },
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: state.open ? 'space-between' : 'center',
+                padding: '8px',
+              }}
+            >
+              <IconButton onClick={toggleDrawer}>
+                <MenuIcon />
               </IconButton>
-
-
             </Box>
+
+
+            {state.open && (
+              <Box sx={style.teaminbox_search_container}>
+
+                <SearchboxComponent placeholder='Search...' customSearch='new_teaminbox_search' />
+              </Box>
+
+            )}
+
+            <List>
+              <Box>
+                {state.open && (
+                  <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
+                    TICKETS
+                  </Typography>
+                )}
+                {ticketData.map(({ text, icon, count }) => (
+                  <Tooltip
+                    key={text}
+                    title={!state.open ? <Typography sx={{ fontSize: 11, color: '#fff' }}>{text}</Typography> : ''}
+                    placement="right"
+                    arrow
+                    disableHoverListener={state.open}
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          backgroundColor: '#5D3FD3',
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        display: 'flex',
+                        justifyContent: state.open ? 'space-between' : 'center',
+                        pt: state.open ? '4px' : '10px',
+                        pb: state.open ? '4px' : '10px',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        '&:hover, &:focus': {
+                          backgroundColor: '#f0f0f0',
+                          '& .MuiTypography-root': {
+                            color: '#5D3FD3',
+                          },
+                          '& .MuiChip-root': {
+                            backgroundColor: '#5D3FD3',
+                            color: '#fff',
+                          },
+                        },
+                      }}
+
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <ListItemIcon sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}>
+                          <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
+                        </ListItemIcon>
+                        {state.open && (
+                          <ListItemText
+                            primary={
+                              <Typography>
+                                {text}
+                              </Typography>
+                            }
+                          />
+                        )}
+                      </Box>
+                      {state.open && (
+                        <Chip
+                          label={count}
+                          size="small"
+
+                        />
+                      )}
+                    </ListItem>
+                  </Tooltip>
+
+                ))}
+              </Box>
+              <Box>
+                {state.open && (
+                  <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
+                    INSIDER
+                  </Typography>
+                )}
+                {insiderData.map(({ text, icon, count }) => (
+
+                  <Tooltip
+                    key={text}
+                    title={!state.open ? <Typography sx={{ fontSize: 11, color: '#fff' }}>{text}</Typography> : ''}
+                    placement="right"
+                    arrow
+                    disableHoverListener={state.open}
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          backgroundColor: '#5D3FD3',
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        display: 'flex',
+                        justifyContent: state.open ? 'space-between' : 'center',
+                        pt: state.open ? '4px' : '10px',
+                        pb: state.open ? '4px' : '10px',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        '&:hover, &:focus': {
+                          backgroundColor: '#f0f0f0',
+                          '& .MuiTypography-root': {
+                            color: '#5D3FD3',
+                          },
+                          '& .MuiChip-root': {
+                            backgroundColor: '#5D3FD3',
+                            color: '#fff',
+                          },
+                        },
+                      }}
+
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <ListItemIcon sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}>
+                          <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
+                        </ListItemIcon>
+                        {state.open && (
+                          <ListItemText
+                            primary={
+                              <Typography>
+                                {text}
+                              </Typography>
+                            }
+                          />
+                        )}
+                      </Box>
+                      {state.open && (
+                        <Chip
+                          label={count}
+                          size="small"
+
+                        />
+                      )}
+                    </ListItem>
+                  </Tooltip>
+                ))}
+              </Box>
+            </List>
+
+          </Drawer>
+
+          {/* Right Content */}
+
+          <Box sx={{ flexGrow: 1, p: 3 }}>
+            {/* Header */}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h5" fontWeight="bold" mb={2}>My Tickets</Typography>
+              <Box>
+                <ButtonComponent label='New Ticket' onClick={handleOpenNewTicketsModal} customBtn='new_teaminbox_button' />
+              </Box>
+            </Box>
+
+            {/* Tickets container */}
+            <Paper elevation={1} sx={{ p: 2 }}>
+              {/* Header Row */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <Typography variant="h6" fontWeight="bold">Tickets</Typography>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <SearchboxComponent placeholder='search tickets' customSearch='new_teaminbox_search' />
+                  <IconButton sx={style.new_teaminbox_filter}>
+                    <FilterAltIcon />
+                  </IconButton>
+
+
+                </Box>
+
+              </Box>
+
+              {cardData.map((data, idx) => (
+                <TicketsCard key={idx} {...data} />
+              ))}
+            </Paper>
           </Box>
 
-        </Paper>
-      </Box>
-
-    </Box>
+        </Box>
+      )}
+    </>
 
   );
+
 };
 
 export default TeamInbox;

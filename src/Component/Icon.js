@@ -153,9 +153,9 @@ Dashboard as DashboardIcon,
 Movie as MovieIcon,
 Audiotrack as AudiotrackIcon,
 DescriptionOutlined as DescriptionOutlinedIcon,
-FilterAlt as FilterAltIcon
-
-   } from "@mui/icons-material";
+FilterAlt as FilterAltIcon,
+Flag as FlagIcon
+} from "@mui/icons-material";
   
   // Export all icons
   export {
@@ -313,5 +313,6 @@ FilterAlt as FilterAltIcon
    HeadsetIcon,
    DashboardIcon,
    MovieIcon,
-   FilterAltIcon
+   FilterAltIcon,
+   FlagIcon
 };

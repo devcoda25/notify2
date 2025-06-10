@@ -9,8 +9,8 @@ const Login = ({ onLogin }) => {
   const [selectedToggle, setSelectedToggle] = useState(null);
 
 
-  // const redirect_url = "http://localhost:3000/Teaminbox";
-  const redirect_url = "https://notify.dev.evzone.app/Teaminbox";
+  const redirect_url = "http://localhost:3000/Teaminbox";
+  //const redirect_url = "https://notify.dev.evzone.app/Teaminbox";
   const handleContinue = () => {
     setShowPasscode(true);
   };

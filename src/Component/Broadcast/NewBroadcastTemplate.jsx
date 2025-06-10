@@ -175,7 +175,7 @@ const NewBroadcastTemplate = ({isOpenTemplateMessage, setIsOpenTemplateMessage})
                         </div>
                         <div className="new_template_right">
                             <ButtonComponent label='Discard' customBtn='discard_btn' />
-                            <ButtonComponent label='Add Boradcast' />
+                            <ButtonComponent label='Add Broadcast' />
                         </div>
                     </div>
                     <div className="new_template_content">
