@@ -106,8 +106,14 @@
     font-size: 14px !important;
     /* width: 122px; */
     font-weight: 600 !important;
-    margin-left: 20px;
+    /* margin-left: 20px; */
+    margin-right: 8px;
     text-wrap-mode: nowrap;
+}
+.logo_div{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
 }
 
 .poppupInputLabel label {
@@ -184,7 +190,7 @@
     font-size: 2rem;
 }
 
-.search-input {}
+/* .search-input {} */
 
 .search-input li {
     display: inline-flex;
@@ -304,8 +310,8 @@
         justify-content: space-around;
         align-items: center;
         text-align: center;
-        min-width: 80%;
-        padding-left: .5rem;
+        min-width: 70%;
+        /* padding-left: .5rem; */
     }
 
     .nav .rnav {
@@ -313,17 +319,17 @@
         align-items: center;
         text-align: center;
         justify-content: space-around;
-        width: 15%;
-        margin-top: .5rem;
-        padding-right: .5rem;
-
+        width: 13%;
+        margin-right: 8px;
+        /* margin-top: .5rem; */
+        /* padding-right: .5rem; */
     }
 
     .nav .lnav .navImg {
         /* width: 8%; */
         width: 40px;
         height: 40px;
-        /* margin-right: 10px; */
+        margin-right: 2px;
     }
     .logo_name{
         font-weight: 700;
@@ -894,11 +900,11 @@
         text-align: center;
     }
 
-    .table th {
+    /* .table th { */
         /* font-size: 1.2rem;
         font-weight: 500;
         padding-bottom: 1rem; */
-    }
+    /* } */
 
     .table {
         padding: 0px 2rem;
@@ -1074,9 +1080,9 @@
         align-items: center;
     }
 
-    .bodyPoppup {
+    /* .bodyPoppup { */
         /* display: flex; */
-    }
+    /* } */
 
     .bodyPoppupL {
         height: 600px;
@@ -3175,9 +3181,9 @@
         font-size: .4rem;
     }
 
-    .DeskScreen .previewBodyStyle {
+    /* .DeskScreen .previewBodyStyle { */
         /* font-size: .5rem; */
-    }
+    /* } */
 
     .DeskScreen .previewFooterStyle {
         font-size: .3rem;
@@ -3214,9 +3220,9 @@
         letter-spacing: 2px;
     }
 
-    .previewPlatformContDesk .previewBodyStyle {
+    /* .previewPlatformContDesk .previewBodyStyle { */
         /* font-size: .5rem; */
-    }
+    /* } */
 
     .previewPlatformContDesk .previewFooterStyle {
         font-size: 10px;
@@ -3528,7 +3534,7 @@
 
     .nav .rnav {
         /* width: 23%; */
-        width: 15%;
+        width: 13%;
     }
 
     .input-icon-wrapper1 {
@@ -3544,9 +3550,9 @@
         left: 0.5rem;
     }
 
-    .dropInput2 {
+    /* .dropInput2 { */
         /* width: 60%;*/
-    }
+    /* } */
 
     .textareaSms {
         margin-left: 30rem;
@@ -3664,16 +3670,16 @@
         font-weight: 100;
         padding-bottom: 1rem;
     } */
-    .modal-content {
+    /* .modal-content { */
         /*width: 65%;
          height: 85%; */
-    }
+    /* } */
 
 
 
-    .MobileScrollWpMobile {
+    /* .MobileScrollWpMobile { */
         /* left: 7.8rem; */
-    }
+    /* } */
 
     .poppupBodyInput input {
         width: 14%;
@@ -3856,10 +3862,10 @@
         left: 58rem;
     }
 
-    .modal-content {
+    /* .modal-content { */
         /*width: 70%;
          height: 85%; */
-    }
+    /* } */
 
     .byYReU {
         display: flex;
@@ -3958,10 +3964,10 @@
         left: 7rem;
     }
 
-    .modal-content {
+    /* .modal-content { */
         /* width: 70%;
          height: 85%; */
-    }
+    /* } */
 
     .poppupBodyInput input {
         width: 9%;
@@ -4128,7 +4134,7 @@
 
     .nav .rnav {
         /* width: 26%; */
-        width: 15%;
+        width: 13%;
     }
 
     .footerCount {
@@ -4173,10 +4179,10 @@
         left: 54.5rem;
     }
 
-    .modal-content {
+    /* .modal-content { */
         /* width: 75%;
          height: 85%; */
-    }
+    /* } */
 
     .DeskScreenSms .previewEmailTitle {
         top: -18rem;
@@ -4320,14 +4326,14 @@
 
     .nav .rnav {
         /* width: 28%; */
-        width: 15%;
+        width: 13%;
     }
 
     .nav .lnav .navImg {
         /* width: 8%; */
         width: 40px;
         height: 40px;
-        margin-right: 10px;
+        /* margin-right: 10px; */
     }
 
     .logo_name{
@@ -4415,10 +4421,10 @@
         width: 22%;
     }
 
-    .msgContRLeft {
+    /* .msgContRLeft { */
         /*width: 90%;
         margin-bottom: 2rem;*/
-    }
+    /* } */
 
     .poppupSubmit {
         left: 51rem;

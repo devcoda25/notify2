@@ -153,8 +153,11 @@ const Navbar = () => {
     <div className='main-header'>
       <div className='nav bg-white'>
         <div className='lnav'>
+          <div className='logo_div'>
           <img src={logo} alt='car' className="navImg" />
           <span className='logo_name'>Notify</span>
+          <span className='border'></span>
+          </div>
           {/* <span style={{marginRight:"10px"}} className='border'></span> */}
           {menuItems.map((item) => (
             <li
@@ -166,9 +169,9 @@ const Navbar = () => {
                 className='header_nav_link'
                 onClick={() => handleClick(item.label)}
               >
-                <img src={item.icons} height={"15px"} width={"15px"} alt="image" />
+                <img src={item.icons} height={"12px"} width={"12px"} alt="image" />
                 {item.label}
-                <span className='beta'>{item.content}</span>
+                {/* <span className='beta'>{item.content}</span> */}
               </NavLink>
             </li>
           ))}
@@ -187,7 +190,8 @@ const Navbar = () => {
               className="wallet-icon"
             >
               {/* <LiaWalletSolid /> */}
-          <img src={WalletImg} height={"15px"} width={"15px"} alt="image" />            </a>
+          <img src={WalletImg} height={"12px"} width={"12px"} alt="image" />
+          </a>
           </li>
           {/* <span className='border'></span> */}
           {/* <li className='navicon3'><GoBellFill /></li> */}
@@ -195,7 +199,7 @@ const Navbar = () => {
           <li className='navicon3' onClick={handleBreakTime}>
             <a href="">
             {/* <AccessTimeIcon /> */}
-          <img src={ClockImg} height={"15px"} width={"15px"} alt="image" />            </a>
+          <img src={ClockImg} height={"12px"} width={"12px"} alt="image" />            </a>
           </li>
           {/* <span className='border'></span> */}
           <li className='navicon3'><IoMdPerson /></li>

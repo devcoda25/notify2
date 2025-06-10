@@ -26,7 +26,7 @@ function MoreDropDown(props) {
       <button onClick={toggleDropdown} className='header_more_btn' >
         {/* <i className="fa fa-ellipsis-h mr-10" aria-hidden="true"></i>  */}
         {/* <ImMenu   className='mr-10' /> */}
-        <img src={MoreImg} height={"15px"} width={"15px"} alt="image" />
+        <img src={MoreImg} height={"12px"} width={"12px"} alt="image" />
         More
       </button>
       {
