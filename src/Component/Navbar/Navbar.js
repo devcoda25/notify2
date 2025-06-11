@@ -28,7 +28,7 @@ import ReportsImg from "../Assets/img/Reports.png"
 import WalletImg from "../Assets/img/Wallet.png"
 import ClockImg from "../Assets/img/clock-square.png"
 import ClickImg from "../Assets/img/click.png"
-import UserImg from "../Assets/img/user.png"
+import UserImg from "../Assets/img/friends.png"
 
 
 const Navbar = () => {
@@ -106,15 +106,15 @@ const Navbar = () => {
       // icon: <SignalCellularAltIcon /> 
     },
     { 
-      path: `/u/${authUser}/usermanagement`, 
-      label: 'User Management', 
-      icons:UserImg
-      // icon: <SignalCellularAltIcon /> 
-    },
-    { 
       path: `/u/${authUser}/ads`, 
       label: 'Ads', 
       icons:ClickImg
+      // icon: <SignalCellularAltIcon /> 
+    },
+    { 
+      path: `/u/${authUser}/usermanagement`, 
+      label: 'User Management', 
+      icons:UserImg
       // icon: <SignalCellularAltIcon /> 
     }
   ], [authUser]);
