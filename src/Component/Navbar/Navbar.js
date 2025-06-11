@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { FiInbox } from "react-icons/fi";
 import logo from '../Assets/img/Notify_login_logo.svg'
 import { PiBroadcastDuotone } from "react-icons/pi";
@@ -29,8 +29,6 @@ import WalletImg from "../Assets/img/Wallet.png"
 import ClockImg from "../Assets/img/clock-square.png"
 
 
-
-
 const Navbar = () => {
   const location = useLocation();
   const { authUser: routeAuthUser } = useParams();
@@ -59,7 +57,9 @@ const Navbar = () => {
     unwell: false
   });
 
-  // Memoize menu items to prevent unnecessary re-renders
+  // Ref for breaktime modal
+  const breakTimeRef = useRef(null);
+
   const menuItems = useMemo(() => [
     { 
       path: `/u/${authUser}/teaminbox`, 
@@ -105,7 +105,6 @@ const Navbar = () => {
     }
   ], [authUser]);
 
-  // Memoize handlers to prevent unnecessary re-renders
   const handleClick = useCallback((item) => {
     setActiveItem(item);
   }, []);
@@ -124,12 +123,10 @@ const Navbar = () => {
     setBreakTime(!breakTime);
   }, [breakTime]);
 
-  // Memoize active path check
   const isActivePath = useCallback((itemPath) => {
     return location.pathname === itemPath;
   }, [location.pathname]);
 
-  // Set active item based on current path
   useEffect(() => {
     const currentMenuItem = menuItems.find(item => isActivePath(item.path));
     if (currentMenuItem) {
@@ -137,7 +134,23 @@ const Navbar = () => {
     }
   }, [location.pathname, menuItems, isActivePath]);
 
-  // Memoize toggle switches to prevent re-rendering
+  // Outside click effect for breaktime modal
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (breakTimeRef.current && !breakTimeRef.current.contains(event.target)) {
+        setBreakTime(false);
+      }
+    };
+
+    if (breakTime) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [breakTime]);
+
   const toggleSwitches = useMemo(() => [
     { key: 'lunch', label: 'Lunch' },
     { key: 'teaBreak', label: 'Tea Break' },
@@ -199,7 +212,7 @@ const Navbar = () => {
           <li className='navicon3' onClick={handleBreakTime}>
             <a href="">
             {/* <AccessTimeIcon /> */}
-          <img src={ClockImg} height={"12px"} width={"12px"} alt="image" />            </a>
+          <img src={ClockImg} height={"12px"} width={"12px"} alt="image" />       </a>
           </li>
           {/* <span className='border'></span> */}
           <li className='navicon3'><IoMdPerson /></li>
@@ -207,7 +220,7 @@ const Navbar = () => {
       </div>
       
       {breakTime && (
-        <div className='breaktime_modal'>
+        <div className='breaktime_modal' ref={breakTimeRef}>
           {toggleSwitches.map(({ key, label }) => (
             <ToggleSwitch 
               key={key}
