@@ -53,7 +53,7 @@ function MoreDropDown(props) {
       {
         isOpen && (
           <ul className='header_moreoption_menu'>
-            <li className='header_menu_item'>
+            {/* <li className='header_menu_item'>
               <NavLink
                 to="/ads"
                 className={({ isActive }) => `moredropdown_link ${isActive ? 'active' : ''}`}
@@ -69,7 +69,7 @@ function MoreDropDown(props) {
                 onClick={handleTabClick}>
                 <LuUsers2 /> User Management
               </NavLink>
-            </li>
+            </li> */}
 
             <li className='header_menu_item'>
               <NavLink

@@ -27,6 +27,8 @@ import AnalyticsImg from "../Assets/img/Analytics.png"
 import ReportsImg from "../Assets/img/Reports.png"
 import WalletImg from "../Assets/img/Wallet.png"
 import ClockImg from "../Assets/img/clock-square.png"
+import ClickImg from "../Assets/img/click.png"
+import UserImg from "../Assets/img/user.png"
 
 
 const Navbar = () => {
@@ -101,6 +103,18 @@ const Navbar = () => {
       path: `/u/${authUser}/reports`, 
       label: 'Reports', 
       icons:ReportsImg
+      // icon: <SignalCellularAltIcon /> 
+    },
+    { 
+      path: `/u/${authUser}/usermanagement`, 
+      label: 'User Management', 
+      icons:UserImg
+      // icon: <SignalCellularAltIcon /> 
+    },
+    { 
+      path: `/u/${authUser}/ads`, 
+      label: 'Ads', 
+      icons:ClickImg
       // icon: <SignalCellularAltIcon /> 
     }
   ], [authUser]);
@@ -182,7 +196,7 @@ const Navbar = () => {
                 className='header_nav_link'
                 onClick={() => handleClick(item.label)}
               >
-                <img src={item.icons} height={"12px"} width={"12px"} alt="image" />
+                <img src={item.icons} height={"15px"} width={"15px"} alt="image" />
                 {item.label}
                 {/* <span className='beta'>{item.content}</span> */}
               </NavLink>
@@ -203,7 +217,7 @@ const Navbar = () => {
               className="wallet-icon"
             >
               {/* <LiaWalletSolid /> */}
-          <img src={WalletImg} height={"12px"} width={"12px"} alt="image" />
+          <img src={WalletImg} height={"15px"} width={"15px"} alt="image" />
           </a>
           </li>
           {/* <span className='border'></span> */}
@@ -212,7 +226,7 @@ const Navbar = () => {
           <li className='navicon3' onClick={handleBreakTime}>
             <a href="">
             {/* <AccessTimeIcon /> */}
-          <img src={ClockImg} height={"12px"} width={"12px"} alt="image" />       </a>
+          <img src={ClockImg} height={"15px"} width={"15px"} alt="image" />       </a>
           </li>
           {/* <span className='border'></span> */}
           <li className='navicon3'><IoMdPerson /></li>
