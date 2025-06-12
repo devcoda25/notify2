@@ -6,7 +6,7 @@
 // import AutocompleteComponent from "../Component/AutocompleteComponent";
 // import Accordion from "react-bootstrap/Accordion";
 // import style from "../Component/MuiStyles/muiStyle";
-import ReporterType from "../Component/Reporter";
+// import ReporterType from "../Component/Reporter";
 // import Editorbox from "../Component/TeamInbox/Editorbox";
 // import Select from "react-select";
 // import SearchboxComponent from "../Component/SearchboxComponent";
@@ -1373,7 +1373,7 @@ import ReporterType from "../Component/Reporter";
 
 
 import React, { useState, useRef } from "react";
-import {Drawer,IconButton,List,ListItem,ListItemIcon,ListItemText,Box,Chip,Typography,Paper,Tooltip} from '@mui/material';
+import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Box, Chip, Typography, Paper, Tooltip } from '@mui/material';
 import TicketsCard from '../../src/Component/TeamInbox/TicketsCard';
 import SearchboxComponent from "../Component/SearchboxComponent";
 import ButtonComponent from "../Component/ButtonComponent";
@@ -1392,7 +1392,8 @@ import privateIcon from '../../src/Component/Assets/img/PrivateIcon.png';
 import teamLeads from '../../src/Component/Assets/img/Team Leads.png';
 import technical from '../../src/Component/Assets/img/Technical.png';
 import boy from '../../src/Component/Assets/img/boy.png';
-import { FilterAltIcon,MenuIcon} from "../Component/Icon";
+import 'semantic-ui-css/semantic.min.css'
+import { FilterAltIcon, MenuIcon } from "../Component/Icon";
 
 
 
@@ -1427,7 +1428,9 @@ const cardData = [
     subStatusColor: '#17CE7B',
     flagColor: '#F64C35',
     flagBgColor: '#FFA397',
-    avatars: [boy],
+    avatars: [
+      { src: boy, name: 'Josh' }
+    ],
     count: 2,
     description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
     createdDate: '31 May 2025',
@@ -1449,7 +1452,12 @@ const cardData = [
     subStatusColor: '#F64C35',
     flagColor: '#FFF157',
     flagBgColor: '#FEFFE0',
-    avatars: [boy, boy],
+    avatars: [
+      { src: boy, name: 'Joshua' },
+      { src: boy, name: 'Carol lee' },
+      { src: boy, name: 'Bob Smith' }
+     
+    ],
     count: 2,
     description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
     createdDate: '31 May 2025',
@@ -1471,7 +1479,11 @@ const cardData = [
     subStatusColor: '#1976d2',
     flagColor: '#2EEAAE',
     flagBgColor: '#BCFFE9',
-    avatars: [boy, boy],
+    avatars: [
+      { src: boy, name: 'Jonny' },
+      { src: boy, name: 'Emma' },
+      { src: boy, name: 'Michael' }
+    ],
     count: 5,
     description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
     createdDate: '31 May 2025',
@@ -1493,7 +1505,11 @@ const cardData = [
     subStatusColor: '#F7941F',
     flagColor: '#0897FF',
     flagBgColor: '#84CBFF',
-    avatars: [boy, boy],
+    avatars: [
+      { src: boy, name: 'Josh' },
+      { src: boy, name: 'Alice' },
+      { src: boy, name: 'Michael' }
+    ],
     count: 5,
     description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
     createdDate: '31 May 2025',
@@ -1515,7 +1531,7 @@ const TeamInbox = () => {
 
 
   const [state, setState] = useState({
-    open: false,
+    open: true,
     openNewTicketsModal: false,
     selectedFileName: '',
 
@@ -1631,9 +1647,13 @@ const TeamInbox = () => {
             sx={{
               width: state.open ? drawerWidth : collapsedWidth,
               flexShrink: 0,
+              whiteSpace: 'nowrap',
+              boxSizing: 'border-box',
+              overflow: 'hidden',
+              transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
               '& .MuiDrawer-paper': {
                 width: state.open ? drawerWidth : collapsedWidth,
-                transition: 'width 0.3s',
+                transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                 overflowX: 'hidden',
                 top: '60px'
               },
@@ -1662,75 +1682,85 @@ const TeamInbox = () => {
             )}
 
             <List>
-              <Box>
+              <Box sx={{borderBottom:'1px solid #ccc',mb:'5px',pb:'5px'}}>
                 {state.open && (
                   <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
                     TICKETS
                   </Typography>
                 )}
                 {ticketData.map(({ text, icon, count }) => (
-                  <Tooltip
-                    key={text}
-                    title={!state.open ? <Typography sx={{ fontSize: 11, color: '#fff' }}>{text}</Typography> : ''}
-                    placement="right"
-                    arrow
-                    disableHoverListener={state.open}
-                    componentsProps={{
-                      tooltip: {
-                        sx: {
-                          backgroundColor: '#5D3FD3',
-                          borderRadius: 1,
-                          px: 1,
-                          py: 0.5,
-                        },
-                      },
-                    }}
-                  >
-                    <ListItem
-                      sx={{
-                        display: 'flex',
-                        justifyContent: state.open ? 'space-between' : 'center',
-                        pt: state.open ? '4px' : '10px',
-                        pb: state.open ? '4px' : '10px',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        '&:hover, &:focus': {
-                          backgroundColor: '#f0f0f0',
-                          '& .MuiTypography-root': {
-                            color: '#5D3FD3',
-                          },
-                          '& .MuiChip-root': {
+              
+                    <Tooltip
+                      key={text}
+                      title={!state.open ? <Typography sx={{ fontSize: 11, color: '#fff' }}>{text}</Typography> : ''}
+                      placement="right"
+                      arrow
+                      disableHoverListener={state.open}
+                      componentsProps={{
+                        tooltip: {
+                          sx: {
                             backgroundColor: '#5D3FD3',
-                            color: '#fff',
+                            borderRadius: 1,
+                            px: 1,
+                            py: 0.5,
                           },
                         },
                       }}
-
                     >
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <ListItemIcon sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}>
-                          <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
-                        </ListItemIcon>
+                      <ListItem
+                        sx={{
+                          display: 'flex',
+                          justifyContent: state.open ? 'space-between' : 'center',
+                          pt: state.open ? '4px' : '10px',
+                          pb: state.open ? '4px' : '10px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          '&:hover, &:focus': {
+                            backgroundColor: '#f0f0f0',
+                            '& .MuiTypography-root': {
+                              color: '#5D3FD3',
+                            },
+                            '& .MuiChip-root': {
+                              backgroundColor: '#5D3FD3',
+                              color: '#fff',
+                            },
+                          },
+                        }}
+
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <ListItemIcon sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}>
+                            <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
+                          </ListItemIcon>
+                          {state.open && (
+                            <ListItemText
+                              primary={
+                                <Typography>
+                                  {text}
+                                </Typography>
+                              }
+                            />
+                          )}
+                        </Box>
                         {state.open && (
-                          <ListItemText
-                            primary={
-                              <Typography>
-                                {text}
-                              </Typography>
-                            }
+                          <Chip
+                            label={count}
+                            size="small"
+                            sx={{
+                              fontSize: '12px',
+                              width: '30px',
+                              height: '28px',
+                              borderRadius: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              p: 0
+                            }}
                           />
                         )}
-                      </Box>
-                      {state.open && (
-                        <Chip
-                          label={count}
-                          size="small"
-
-                        />
-                      )}
-                    </ListItem>
-                  </Tooltip>
-
+                      </ListItem>
+                    </Tooltip>
+                
                 ))}
               </Box>
               <Box>
@@ -1797,6 +1827,16 @@ const TeamInbox = () => {
                         <Chip
                           label={count}
                           size="small"
+                          sx={{
+                            fontSize: '12px',
+                            width: '30px',
+                            height: '28px',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            p: 0
+                          }}
 
                         />
                       )}
@@ -1815,7 +1855,7 @@ const TeamInbox = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
               <Typography variant="h5" fontWeight="bold" mb={2}>My Tickets</Typography>
               <Box>
-                <ButtonComponent label='New Ticket' onClick={handleOpenNewTicketsModal} customBtn='new_teaminbox_button' />
+                <ButtonComponent label='+ New Ticket' onClick={handleOpenNewTicketsModal} customBtn='new_teaminbox_button' />
               </Box>
             </Box>
 

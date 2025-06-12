@@ -12119,6 +12119,8 @@ border-radius:4px;
   width:100%
 }
 .new_tickets_container .new_tickets_header{
+  display: flex;
+  align-items: center;
   border:1px solid rgb(232, 234, 242);
   padding: 20px;
   cursor: pointer;
