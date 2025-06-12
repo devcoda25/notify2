@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconButton, Box, Chip, Avatar, AvatarGroup, Typography, Checkbox, Tooltip } from '@mui/material';
+import React, { useState } from 'react';
+import { IconButton, Box, Chip, Avatar, AvatarGroup, Typography, Checkbox, Tooltip, List, ListItem, Popover, ListItemAvatar, ListItemText } from '@mui/material';
 import { FlagIcon } from '../Icon';
 
 const TicketsCard = ({
@@ -21,8 +21,43 @@ const TicketsCard = ({
     updatedAgo,
     users
 }) => {
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
     return (
         <Box sx={{ background: '#F8F8F8', border: '1px solid #ccc', borderRadius: '8px', padding: '10px 20px', margin: '10px 0px' }}>
+            <Popover
+
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            >
+                <Box sx={{ padding: '2px 10px' }}>
+                    <List sx={{ p: 0 }}>
+                        {avatars.map((avatar, idx) => (
+                            <ListItem key={idx}>
+                                <ListItemAvatar>
+                                    <Avatar src={avatar.src}></Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={avatar.name} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
+            </Popover>
             <Box display="flex" justifyContent="space-between" alignItems="flex-start" flexWrap="wrap">
                 <Box display="flex" flexDirection="column" gap={0.5}>
                     <Box display="flex" alignItems="center" gap={1}>
@@ -44,26 +79,28 @@ const TicketsCard = ({
                         <FlagIcon fontSize="small" />
                     </IconButton>
                     <Chip label={subStatus} size="small" sx={{ backgroundColor: subStatusColor, color: '#fff', p: '4px 6px' }} />
-                    <Box display="flex" alignItems="center" sx={{ pl: '4px' }}>
-                        {avatars.map((avatar, idx) => (
-                            <Tooltip key={idx} title={avatar.name}>
-                                <Avatar
-                                    src={avatar.src}
-                                    sx={{
-                                        width: 36,
-                                        height: 36,
-                                        zIndex: avatars.length - idx,
-                                        ml: idx === 0 ? 0 : '-12px',
-                                        border: '2px solid white',
-                                        transition: 'transform 0.2s',
-                                        '&:hover': {
-                                            transform: 'scale(1.05)',
-                                            zIndex: 100
-                                        }
-                                    }}
-                                />
-                            </Tooltip>
-                        ))}
+                    <Box display="flex" alignItems="center" sx={{ pl: '4px' }} onClick={handleClick}>
+                        <AvatarGroup max={3}>
+                            {avatars.map((avatar, idx) => (
+                                <Tooltip key={idx} title={avatar.name}>
+                                    <Avatar
+                                        src={avatar.src}
+                                        sx={{
+                                            width: 36,
+                                            height: 36,
+                                            zIndex: avatars.length - idx,
+                                            ml: idx === 0 ? 0 : '-12px',
+                                            border: '2px solid white',
+                                            transition: 'transform 0.2s',
+                                            '&:hover': {
+                                                transform: 'scale(1.05)',
+                                                zIndex: 100
+                                            }
+                                        }}
+                                    />
+                                </Tooltip>
+                            ))}
+                        </AvatarGroup>
                     </Box>
                     <Avatar
                         sx={{

@@ -1529,12 +1529,10 @@ const sidOptions = [
 ];
 const TeamInbox = () => {
 
-
   const [state, setState] = useState({
     open: true,
     openNewTicketsModal: false,
     selectedFileName: '',
-
   });
   const fileInputRef = useRef(null);
   const toggleDrawer = () => {
@@ -1543,7 +1541,6 @@ const TeamInbox = () => {
   const handleOpenNewTicketsModal = () => {
     setState(prev => ({ ...prev, openNewTicketsModal: true }));
   };
-
   const handleCloseNewTicketsModal = () => {
     setState(prev => ({ ...prev, openNewTicketsModal: false }));
   };
@@ -1682,7 +1679,7 @@ const TeamInbox = () => {
             )}
 
             <List>
-              <Box sx={{borderBottom:'1px solid #ccc',mb:'5px',pb:'5px'}}>
+              <Box sx={{borderBottom:state.open? '1px solid #ccc':'none',mb:'5px',pb:'5px'}}>
                 {state.open && (
                   <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
                     TICKETS
