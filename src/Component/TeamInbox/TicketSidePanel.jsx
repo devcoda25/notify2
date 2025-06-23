@@ -82,7 +82,7 @@ const TicketSidePanel = ({ onClose }) => {
               ]}
             > */}
               <DemoItem label="Date">
-                <DesktopDatePicker defaultValue={dayjs('2022-04-17')} />
+                <DesktopDatePicker sx={{padding:"10px 10px"}} defaultValue={dayjs('2022-04-17')} />
               </DemoItem>
             
             {/* </DemoContainer> */}

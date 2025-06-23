@@ -64,7 +64,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         opacity: 1,
         border: 0,
         ...theme.applyStyles?.("dark", {
-          backgroundColor: "#2ECA45",
+          backgroundColor: "#02CD8D",
         }),
       },
       "&.Mui-disabled + .MuiSwitch-track": {
@@ -92,7 +92,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     boxSizing: "border-box",
     width: 18,
     height: 16,
-    backgroundColor: "#2ECA45",
+    backgroundColor: "#02CD8D",
   },
   "& .MuiSwitch-track": {
     borderRadius: 26 / 2,
