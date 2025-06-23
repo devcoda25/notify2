@@ -852,7 +852,6 @@
 //                 />
 //               </div>
 
-
 //               <div className="mytickets_filter_search_container">
 //                 <ButtonComponent
 //                   label="+ Add Filter"
@@ -971,7 +970,6 @@
 //                                         <div>Allie Harmon</div>
 //                                         <div className='tickets_usersubname'>To Name Name@gmail.com</div>
 //                                       </div>
-
 
 //                                     </div>
 //                                     <div className='timeline_content'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
@@ -1371,156 +1369,174 @@
 // };
 // export default TeamInbox;
 
-
 import React, { useState, useRef } from "react";
-import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Box, Chip, Typography, Paper, Tooltip } from '@mui/material';
-import TicketsCard from '../../src/Component/TeamInbox/TicketsCard';
+import {
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Chip,
+  Typography,
+  Paper,
+  Tooltip,
+} from "@mui/material";
+import TicketsCard from "../../src/Component/TeamInbox/TicketsCard";
 import SearchboxComponent from "../Component/SearchboxComponent";
 import ButtonComponent from "../Component/ButtonComponent";
 import TextfieldComponent from "../Component/TextfieldComponent";
 import style from "../Component/MuiStyles/muiStyle";
 import Select from "react-select";
-import intiated from '../../src/Component/Assets/img/Intiated.png';
-import broadcast from '../../src/Component/Assets/img/Broadcast.png';
-import groups from '../../src/Component/Assets/img/Groups.png';
-import chatbots from '../../src/Component/Assets/img/Chatbots.png';
-import extracted from '../../src/Component/Assets/img/Extracted.png';
-import call from '../../src/Component/Assets/img/Call Interaction.png';
-import house from '../../src/Component/Assets/img/House.png';
-import myteam from '../../src/Component/Assets/img/My Team.png';
-import privateIcon from '../../src/Component/Assets/img/PrivateIcon.png';
-import teamLeads from '../../src/Component/Assets/img/Team Leads.png';
-import technical from '../../src/Component/Assets/img/Technical.png';
-import boy from '../../src/Component/Assets/img/boy.png';
-import 'semantic-ui-css/semantic.min.css'
+import intiated from "../../src/Component/Assets/img/Intiated.png";
+import broadcast from "../../src/Component/Assets/img/Broadcast.png";
+import groups from "../../src/Component/Assets/img/Groups.png";
+import chatbots from "../../src/Component/Assets/img/Chatbots.png";
+import extracted from "../../src/Component/Assets/img/Extracted.png";
+import call from "../../src/Component/Assets/img/Call Interaction.png";
+import house from "../../src/Component/Assets/img/House.png";
+import myteam from "../../src/Component/Assets/img/My Team.png";
+import privateIcon from "../../src/Component/Assets/img/PrivateIcon.png";
+import teamLeads from "../../src/Component/Assets/img/Team Leads.png";
+import technical from "../../src/Component/Assets/img/Technical.png";
+import boy from "../../src/Component/Assets/img/boy.png";
+import wp_logo from "../../src/Component/Assets/img/TeamInbox/Whatsapp_logo.svg"
+import mail_logo from "../../src/Component/Assets/img/TeamInbox/Mail_logo.svg"
+import "semantic-ui-css/semantic.min.css";
 import { FilterAltIcon, MenuIcon } from "../Component/Icon";
+import TicketsChat from "../Component/TeamInbox/TicketsChat";
+import TicketSidePanel from "../Component/TeamInbox/TicketSidePanel";
 
-
-
-const drawerWidth = 240;
+const drawerWidth = 220;
 const collapsedWidth = 70;
 
 const ticketData = [
-  { text: 'Initiated', icon: intiated, count: '02' },
-  { text: 'Broadcast', icon: broadcast, count: '04' },
-  { text: 'Groups', icon: groups, count: '04' },
-  { text: 'Extracted', icon: extracted, count: '24' },
-  { text: 'Chatbots', icon: chatbots, count: '18' },
-  { text: 'Call Interactions', icon: call, count: '10' },
+  { text: "Initiated", icon: intiated, count: "02" },
+  { text: "Broadcast", icon: broadcast, count: "04" },
+  { text: "Groups", icon: groups, count: "04" },
+  { text: "Extracted", icon: extracted, count: "24" },
+  { text: "Chatbots", icon: chatbots, count: "18" },
+  { text: "Call Interactions", icon: call, count: "10" },
 ];
 
 const insiderData = [
-  { text: 'Private', icon: privateIcon, count: '04' },
-  { text: 'Team Leads', icon: teamLeads, count: '04' },
-  { text: 'My Team', icon: myteam, count: '24' },
-  { text: 'House', icon: house, count: '18' },
-  { text: 'Technical', icon: technical, count: '10' },
+  { text: "Private", icon: privateIcon, count: "04" },
+  { text: "Team Leads", icon: teamLeads, count: "04" },
+  { text: "My Team", icon: myteam, count: "24" },
+  { text: "House", icon: house, count: "18" },
+  { text: "Technical", icon: technical, count: "10" },
 ];
 
 const cardData = [
   {
-    title: 'Application Approval Is Pending',
-    checkboxLabel: 'APPS-120',
-    status: 'Active',
-    subStatus: 'Sent',
-    statusBgColor: '#2EEAAE',
-    statusColor: '#17CE7B',
-    subStatusColor: '#17CE7B',
-    flagColor: '#F64C35',
-    flagBgColor: '#FFA397',
-    avatars: [
-      { src: boy, name: 'Josh' }
-    ],
+    title: "Application Approval Is Pending",
+    checkboxLabel: "APPS-120",
+    status: "Active",
+    subStatus: "Sent",
+    statusBgColor: "#2EEAAE",
+    statusColor: "#17CE7B",
+    subStatusColor: "#17CE7B",
+    flagColor: "#F64C35",
+    flagBgColor: "#FFA397",
+    avatars: [{ src: boy, name: "Josh" }],
+    logo: [{src: wp_logo, logo_name: "WhatsApp"}],
     count: 2,
-    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
-    createdDate: '31 May 2025',
-    updatedDate: '06 June 2025',
-    createdAgo: '6 Days Ago',
-    updatedAgo: '2 Days Ago',
+    description:
+      "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
+    createdDate: "31 May 2025",
+    updatedDate: "06 June 2025",
+    createdAgo: "6 Days Ago",
+    updatedAgo: "2 Days Ago",
     users: [
-      { name: 'Joshua', role: 'Evzone', avatar: boy },
-      { name: 'John', role: 'Handler', avatar: boy }
-    ]
+      { name: "Joshua", role: "Evzone", avatar: boy },
+      { name: "John", role: "Handler", avatar: boy },
+    ],
   },
   {
-    title: 'Application Approval Is Pending',
-    checkboxLabel: 'APPS-120',
-    status: 'Ended',
-    subStatus: 'Failed',
-    statusBgColor: '#FFB6B6',
-    statusColor: '#F64C35',
-    subStatusColor: '#F64C35',
-    flagColor: '#FFF157',
-    flagBgColor: '#FEFFE0',
+    title: "Application Approval Is Pending",
+    checkboxLabel: "APPS-120",
+    status: "Ended",
+    subStatus: "Failed",
+    statusBgColor: "#FFB6B6",
+    statusColor: "#F64C35",
+    subStatusColor: "#F64C35",
+    flagColor: "#FFF157",
+    flagBgColor: "#FEFFE0",
     avatars: [
-      { src: boy, name: 'Joshua' },
-      { src: boy, name: 'Carol lee' },
-      { src: boy, name: 'Bob Smith' }
-     
+      { src: boy, name: "Joshua" },
+      { src: boy, name: "Carol lee" },
+      { src: boy, name: "Bob Smith" },
     ],
+    logo: [{src: mail_logo, logo_name: "Email"}],
     count: 2,
-    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
-    createdDate: '31 May 2025',
-    updatedDate: '06 June 2025',
-    createdAgo: '6 Days Ago',
-    updatedAgo: '2 Days Ago',
+    description:
+      "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
+    createdDate: "31 May 2025",
+    updatedDate: "06 June 2025",
+    createdAgo: "6 Days Ago",
+    updatedAgo: "2 Days Ago",
     users: [
-      { name: 'Joshua', role: 'Evzone', avatar: boy },
-      { name: 'John', role: 'Handler', avatar: boy }
-    ]
+      { name: "Joshua", role: "Evzone", avatar: boy },
+      { name: "John", role: "Handler", avatar: boy },
+    ],
   },
   {
-    title: 'Application Approval Is Pending',
-    checkboxLabel: 'APPS-120',
-    status: 'Pending',
-    subStatus: 'Received',
-    statusBgColor: '#A0D8FF',
-    statusColor: '#1976d2',
-    subStatusColor: '#1976d2',
-    flagColor: '#2EEAAE',
-    flagBgColor: '#BCFFE9',
+    title: "Application Approval Is Pending",
+    checkboxLabel: "APPS-120",
+    status: "Pending",
+    subStatus: "Received",
+    statusBgColor: "#A0D8FF",
+    statusColor: "#1976d2",
+    subStatusColor: "#1976d2",
+    flagColor: "#2EEAAE",
+    flagBgColor: "#BCFFE9",
     avatars: [
-      { src: boy, name: 'Jonny' },
-      { src: boy, name: 'Emma' },
-      { src: boy, name: 'Michael' }
+      { src: boy, name: "Jonny" },
+      { src: boy, name: "Emma" },
+      { src: boy, name: "Michael" },
     ],
+    logo: [{src: mail_logo, logo_name: "Email"}],
     count: 5,
-    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
-    createdDate: '31 May 2025',
-    updatedDate: '06 June 2025',
-    createdAgo: '6 Days Ago',
-    updatedAgo: '2 Days Ago',
+    description:
+      "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
+    createdDate: "31 May 2025",
+    updatedDate: "06 June 2025",
+    createdAgo: "6 Days Ago",
+    updatedAgo: "2 Days Ago",
     users: [
-      { name: 'Joshua', role: 'Evzone', avatar: boy },
-      { name: 'John', role: 'Handler', avatar: boy }
-    ]
+      { name: "Joshua", role: "Evzone", avatar: boy },
+      { name: "John", role: "Handler", avatar: boy },
+    ],
   },
   {
-    title: 'Application Approval Is Pending',
-    checkboxLabel: 'APPS-120',
-    status: 'Initiated',
-    subStatus: 'Read',
-    statusBgColor: '#FFF0DF',
-    statusColor: '#F7941F',
-    subStatusColor: '#F7941F',
-    flagColor: '#0897FF',
-    flagBgColor: '#84CBFF',
+    title: "Application Approval Is Pending",
+    checkboxLabel: "APPS-120",
+    status: "Initiated",
+    subStatus: "Read",
+    statusBgColor: "#FFF0DF",
+    statusColor: "#F7941F",
+    subStatusColor: "#F7941F",
+    flagColor: "#0897FF",
+    flagBgColor: "#84CBFF",
     avatars: [
-      { src: boy, name: 'Josh' },
-      { src: boy, name: 'Alice' },
-      { src: boy, name: 'Michael' }
+      { src: boy, name: "Josh" },
+      { src: boy, name: "Alice" },
+      { src: boy, name: "Michael" },
     ],
+    logo: [{src: wp_logo, logo_name: "WhatsApp"}],
     count: 5,
-    description: 'Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.',
-    createdDate: '31 May 2025',
-    updatedDate: '06 June 2025',
-    createdAgo: '6 Days Ago',
-    updatedAgo: '2 Days Ago',
+    description:
+      "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
+    createdDate: "31 May 2025",
+    updatedDate: "06 June 2025",
+    createdAgo: "6 Days Ago",
+    updatedAgo: "2 Days Ago",
     users: [
-      { name: 'Joshua', role: 'Evzone', avatar: boy },
-      { name: 'John', role: 'Handler', avatar: boy }
-    ]
-  }
+      { name: "Joshua", role: "Evzone", avatar: boy },
+      { name: "John", role: "Handler", avatar: boy },
+    ],
+  },
 ];
 const sidOptions = [
   { value: "user 1", label: "user 1" },
@@ -1528,32 +1544,41 @@ const sidOptions = [
   { value: "user 3", label: "user 3" },
 ];
 const TeamInbox = () => {
-
   const [state, setState] = useState({
     open: true,
+    openChat: false,
+    openSidePanel: false,
     openNewTicketsModal: false,
-    selectedFileName: '',
+    selectedFileName: "",
   });
   const fileInputRef = useRef(null);
   const toggleDrawer = () => {
-    setState(prev => ({ ...prev, open: !prev.open }));
+    setState((prev) => ({ ...prev, open: !prev.open }));
   };
   const handleOpenNewTicketsModal = () => {
-    setState(prev => ({ ...prev, openNewTicketsModal: true }));
+    setState((prev) => ({ ...prev, openNewTicketsModal: true }));
   };
   const handleCloseNewTicketsModal = () => {
-    setState(prev => ({ ...prev, openNewTicketsModal: false }));
+    setState((prev) => ({ ...prev, openNewTicketsModal: false }));
   };
   const handleUploadExcelClick = () => {
     fileInputRef.current.click();
   };
 
+  const handleOpenChat = () => {
+    setState((prev) => ({ ...prev, openChat: true }));
+  };
+  const handleOpenSidePanel = () => {
+    setState((prev) => ({ ...prev, openSidePanel: true }));
+  };
+
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        selectedFileName: file.name
+        selectedFileName: file.name,
       }));
       console.log("Selected file:", file.name);
     }
@@ -1562,7 +1587,10 @@ const TeamInbox = () => {
     <>
       {state.openNewTicketsModal ? (
         <div className="new_tickets_container">
-          <div className="new_tickets_header" onClick={handleCloseNewTicketsModal}>
+          <div
+            className="new_tickets_header"
+            onClick={handleCloseNewTicketsModal}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -1611,8 +1639,6 @@ const TeamInbox = () => {
                 options={sidOptions}
                 placeholder="Select the SID"
               />
-
-
             </div>
             <div className="upload_excelfile_container">
               {state.selectedFileName && <p> {state.selectedFileName}</p>}
@@ -1626,12 +1652,12 @@ const TeamInbox = () => {
               <ButtonComponent
                 label="upload Excel file"
                 onClick={handleUploadExcelClick}
-                customBtn='new_teaminbox_button'
+                customBtn="new_teaminbox_button"
               />
               <ButtonComponent
                 label="submit"
                 onClick={handleCloseNewTicketsModal}
-                customBtn='new_teaminbox_button'
+                customBtn="new_teaminbox_button"
               />
             </div>
           </div>
@@ -1644,24 +1670,24 @@ const TeamInbox = () => {
             sx={{
               width: state.open ? drawerWidth : collapsedWidth,
               flexShrink: 0,
-              whiteSpace: 'nowrap',
-              boxSizing: 'border-box',
-              overflow: 'hidden',
-              transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-              '& .MuiDrawer-paper': {
+              whiteSpace: "nowrap",
+              boxSizing: "border-box",
+              overflow: "hidden",
+              transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+              "& .MuiDrawer-paper": {
                 width: state.open ? drawerWidth : collapsedWidth,
-                transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                overflowX: 'hidden',
-                top: '60px'
+                transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                overflowX: "hidden",
+                top: "60px",
               },
             }}
           >
             <Box
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: state.open ? 'space-between' : 'center',
-                padding: '8px',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: state.open ? "space-between" : "center",
+                padding: "4px",
               }}
             >
               <IconButton onClick={toggleDrawer}>
@@ -1669,115 +1695,50 @@ const TeamInbox = () => {
               </IconButton>
             </Box>
 
-
             {state.open && (
               <Box sx={style.teaminbox_search_container}>
-
-                <SearchboxComponent placeholder='Search...' customSearch='new_teaminbox_search' />
+                <SearchboxComponent
+                  placeholder="Search..."
+                  customSearch="new_teaminbox_search"
+                />
               </Box>
-
             )}
 
             <List>
-              <Box sx={{borderBottom:state.open? '1px solid #ccc':'none',mb:'5px',pb:'5px'}}>
+              <Box
+                sx={{
+                  borderBottom: state.open ? "1px solid #ccc" : "none",
+                  mb: "5px",
+                  pb: "5px",
+                }}
+              >
                 {state.open && (
-                  <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
+                  <Typography
+                    variant="caption"
+                    sx={style.teaminbox_sidebar_header}
+                  >
                     TICKETS
                   </Typography>
                 )}
                 {ticketData.map(({ text, icon, count }) => (
-              
-                    <Tooltip
-                      key={text}
-                      title={!state.open ? <Typography sx={{ fontSize: 11, color: '#fff' }}>{text}</Typography> : ''}
-                      placement="right"
-                      arrow
-                      disableHoverListener={state.open}
-                      componentsProps={{
-                        tooltip: {
-                          sx: {
-                            backgroundColor: '#5D3FD3',
-                            borderRadius: 1,
-                            px: 1,
-                            py: 0.5,
-                          },
-                        },
-                      }}
-                    >
-                      <ListItem
-                        sx={{
-                          display: 'flex',
-                          justifyContent: state.open ? 'space-between' : 'center',
-                          pt: state.open ? '4px' : '10px',
-                          pb: state.open ? '4px' : '10px',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          '&:hover, &:focus': {
-                            backgroundColor: '#f0f0f0',
-                            '& .MuiTypography-root': {
-                              color: '#5D3FD3',
-                            },
-                            '& .MuiChip-root': {
-                              backgroundColor: '#5D3FD3',
-                              color: '#fff',
-                            },
-                          },
-                        }}
-
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <ListItemIcon sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}>
-                            <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
-                          </ListItemIcon>
-                          {state.open && (
-                            <ListItemText
-                              primary={
-                                <Typography>
-                                  {text}
-                                </Typography>
-                              }
-                            />
-                          )}
-                        </Box>
-                        {state.open && (
-                          <Chip
-                            label={count}
-                            size="small"
-                            sx={{
-                              fontSize: '12px',
-                              width: '30px',
-                              height: '28px',
-                              borderRadius: '6px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              p: 0
-                            }}
-                          />
-                        )}
-                      </ListItem>
-                    </Tooltip>
-                
-                ))}
-              </Box>
-              <Box>
-                {state.open && (
-                  <Typography variant="caption" sx={style.teaminbox_sidebar_header}>
-                    INSIDER
-                  </Typography>
-                )}
-                {insiderData.map(({ text, icon, count }) => (
-
                   <Tooltip
                     key={text}
-                    title={!state.open ? <Typography sx={{ fontSize: 11, color: '#fff' }}>{text}</Typography> : ''}
+                    title={
+                      !state.open ? (
+                        <Typography sx={{ fontSize: 11, color: "#fff" }}>
+                          {text}
+                        </Typography>
+                      ) : (
+                        ""
+                      )
+                    }
                     placement="right"
                     arrow
                     disableHoverListener={state.open}
                     componentsProps={{
                       tooltip: {
                         sx: {
-                          backgroundColor: '#5D3FD3',
+                          backgroundColor: "#5D3FD3",
                           borderRadius: 1,
                           px: 1,
                           py: 0.5,
@@ -1787,36 +1748,37 @@ const TeamInbox = () => {
                   >
                     <ListItem
                       sx={{
-                        display: 'flex',
-                        justifyContent: state.open ? 'space-between' : 'center',
-                        pt: state.open ? '4px' : '10px',
-                        pb: state.open ? '4px' : '10px',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        '&:hover, &:focus': {
-                          backgroundColor: '#f0f0f0',
-                          '& .MuiTypography-root': {
-                            color: '#5D3FD3',
+                        display: "flex",
+                        justifyContent: state.open ? "space-between" : "center",
+                        pt: state.open ? "4px" : "10px",
+                        pb: state.open ? "4px" : "10px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover, &:focus": {
+                          backgroundColor: "#f0f0f0",
+                          "& .MuiTypography-root": {
+                            color: "#5D3FD3",
                           },
-                          '& .MuiChip-root': {
-                            backgroundColor: '#5D3FD3',
-                            color: '#fff',
+                          "& .MuiChip-root": {
+                            backgroundColor: "#5D3FD3",
+                            color: "#fff",
                           },
                         },
                       }}
-
                     >
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <ListItemIcon sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}>
-                          <img src={icon} alt={text} style={{ width: 20, height: 20 }} />
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <ListItemIcon
+                          sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
+                        >
+                          <img
+                            src={icon}
+                            alt={text}
+                            style={{ width: 20, height: 20 }}
+                          />
                         </ListItemIcon>
                         {state.open && (
                           <ListItemText
-                            primary={
-                              <Typography>
-                                {text}
-                              </Typography>
-                            }
+                            primary={<Typography>{text}</Typography>}
                           />
                         )}
                       </Box>
@@ -1825,16 +1787,106 @@ const TeamInbox = () => {
                           label={count}
                           size="small"
                           sx={{
-                            fontSize: '12px',
-                            width: '30px',
-                            height: '28px',
-                            borderRadius: '6px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            p: 0
+                            fontSize: "12px",
+                            width: "30px",
+                            height: "28px",
+                            borderRadius: "6px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            p: 0,
                           }}
-
+                        />
+                      )}
+                    </ListItem>
+                  </Tooltip>
+                ))}
+              </Box>
+              <Box>
+                {state.open && (
+                  <Typography
+                    variant="caption"
+                    sx={style.teaminbox_sidebar_header}
+                  >
+                    INSIDER
+                  </Typography>
+                )}
+                {insiderData.map(({ text, icon, count }) => (
+                  <Tooltip
+                    key={text}
+                    title={
+                      !state.open ? (
+                        <Typography sx={{ fontSize: 11, color: "#fff" }}>
+                          {text}
+                        </Typography>
+                      ) : (
+                        ""
+                      )
+                    }
+                    placement="right"
+                    arrow
+                    disableHoverListener={state.open}
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          backgroundColor: "#5D3FD3",
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        display: "flex",
+                        justifyContent: state.open ? "space-between" : "center",
+                        pt: state.open ? "4px" : "10px",
+                        pb: state.open ? "4px" : "10px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover, &:focus": {
+                          backgroundColor: "#f0f0f0",
+                          "& .MuiTypography-root": {
+                            color: "#5D3FD3",
+                          },
+                          "& .MuiChip-root": {
+                            backgroundColor: "#5D3FD3",
+                            color: "#fff",
+                          },
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <ListItemIcon
+                          sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
+                        >
+                          <img
+                            src={icon}
+                            alt={text}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        </ListItemIcon>
+                        {state.open && (
+                          <ListItemText
+                            primary={<Typography>{text}</Typography>}
+                          />
+                        )}
+                      </Box>
+                      {state.open && (
+                        <Chip
+                          label={count}
+                          size="small"
+                          sx={{
+                            fontSize: "12px",
+                            width: "30px",
+                            height: "28px",
+                            borderRadius: "6px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            p: 0,
+                          }}
                         />
                       )}
                     </ListItem>
@@ -1842,49 +1894,110 @@ const TeamInbox = () => {
                 ))}
               </Box>
             </List>
-
           </Drawer>
 
           {/* Right Content */}
+        <Box sx={{ flexGrow: 1, padding:"12px" }}>
+          {/* Header */}
+          <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+            <Typography variant="h5" fontWeight="bold" mb={2}>
+              My Tickets
+            </Typography>
+            <ButtonComponent
+              label="+ New Ticket"
+              onClick={handleOpenNewTicketsModal}
+              customBtn="new_teaminbox_button"
+            />
+          </Box>
 
-          <Box sx={{ flexGrow: 1, p: 3 }}>
-            {/* Header */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="h5" fontWeight="bold" mb={2}>My Tickets</Typography>
-              <Box>
-                <ButtonComponent label='+ New Ticket' onClick={handleOpenNewTicketsModal} customBtn='new_teaminbox_button' />
-              </Box>
+          {/* Tickets Container with smooth transition */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 1,
+              transition: "all 0.4s ease-in-out",
+            }}
+          >
+            {/* Left Panel - Tickets List */}
+            <Box
+              sx={{
+                // flexBasis: state.openChat ? (state.openSidePanel ? "30%" : "40%") : "100%",
+                width: state.openChat ? '320px' : '100%' ,
+                flexShrink: 0,
+                transition: "all 0.4s ease-in-out",
+              }}
+            >
+              <Paper elevation={1} sx={{p:1, height: "100%" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2, flexDirection: state.openChat ? "column" : ""}}>
+                  <Typography variant="h6" fontWeight="bold">Tickets</Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <SearchboxComponent
+                      placeholder="search tickets"
+                      customSearch="new_teaminbox_search"
+                    />
+                    <IconButton sx={style.new_teaminbox_filter}>
+                      <FilterAltIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              <Box sx={{ width: state.openChat ? '300px' : 'auto' }}>
+
+
+                {cardData.map((data, idx) => (
+                  <TicketsCard
+                  key={idx}
+                  {...data}
+                  handleOpenChat={handleOpenChat}
+                  />
+                ))}
+                </Box>
+              </Paper>
             </Box>
 
-            {/* Tickets container */}
-            <Paper elevation={1} sx={{ p: 2 }}>
-              {/* Header Row */}
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h6" fontWeight="bold">Tickets</Typography>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <SearchboxComponent placeholder='search tickets' customSearch='new_teaminbox_search' />
-                  <IconButton sx={style.new_teaminbox_filter}>
-                    <FilterAltIcon />
-                  </IconButton>
-
-
-                </Box>
-
+            {/* Middle Panel - Chat */}
+            {state.openChat && (
+              <Box
+                sx={{
+                  // flexBasis: state.openSidePanel ? "40%" : "60%",
+                width: state.openSidePanel ? '500px' : '690px' ,
+                  flexShrink: 0,
+                  transition: "all 0.4s ease-in-out",
+                }}
+              >
+                <Paper elevation={1} sx={{ height: "100%" }}>
+                  <TicketsChat handleOpenSidePanel={handleOpenSidePanel} />
+                </Paper>
               </Box>
+            )}
 
-              {cardData.map((data, idx) => (
-                <TicketsCard key={idx} {...data} />
-              ))}
-            </Paper>
+            {/* Right Panel - Side Panel */}
+            {state.openSidePanel && (
+              <Box
+                sx={{
+                  // flexBasis: "30%",
+                  minWidth:"200px",
+                  maxWidth:"220px",
+                  flexShrink: 0,
+                  transition: "all 0.4s ease-in-out",
+                }}
+              >
+                <Paper elevation={0} sx={{  height: "100%" }}>
+                  <TicketSidePanel
+                    onClose={() =>
+                      setState({ ...state, openSidePanel: false })
+                    }
+                  />
+                </Paper>
+              </Box>
+            )}
           </Box>
+        </Box>
 
         </Box>
       )}
     </>
-
   );
-
 };
 
 export default TeamInbox;
