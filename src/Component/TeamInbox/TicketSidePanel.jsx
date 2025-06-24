@@ -9,25 +9,17 @@ import {
   MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import dayjs from 'dayjs';
-import {  DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const options = ["Option 1", "Option 2", "Option 3"];
 
-const labels = [
-  "Channel",
-  "Priority",
-  "Assigned To",
-  "Module",
-  "Ticket Type",
-];
+const labels = ["Channel", "Priority", "Assigned To", "Module", "Ticket Type"];
 
 const TicketSidePanel = ({ onClose }) => {
   return (
-    <Paper elevation={3} sx={{ maxWidth: "200px", p: 0, height:"100%" }}>
+    <Paper elevation={3} sx={{ maxWidth: "200px", p: 0, height: "100%" }}>
       {/* Top Header: Only Bottom Border */}
       <Box
         sx={{
@@ -54,39 +46,44 @@ const TicketSidePanel = ({ onClose }) => {
             sx={{ mb: 2 }}
             variant="outlined"
           >
-            <Typography
-              variant="body2"
-              fontWeight="medium"
-              sx={{ mb: 0.5 }}
-            >
+            <Typography variant="body2" fontWeight="medium" sx={{ mb: 0.5 }}>
               {label}
             </Typography>
-            
-            <Select sx={{backgroundColor:"#F5F5F5"}} defaultValue="">
+
+            <Select sx={{ backgroundColor: "#F5F5F5" }} defaultValue="">
               {options.map((opt, idx) => (
                 <MenuItem key={idx} value={opt}>
                   {opt}
                 </MenuItem>
-                
               ))}
             </Select>
           </FormControl>
         ))}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-            {/* <DemoContainer
-              components={[
-                'DatePicker',
-                'MobileDatePicker',
-                'DesktopDatePicker',
-                'StaticDatePicker',
-              ]}
-            > */}
-              <DemoItem label="Date">
-                <DesktopDatePicker sx={{padding:"10px 10px"}} defaultValue={dayjs('2022-04-17')} />
-              </DemoItem>
-            
-            {/* </DemoContainer> */}
-          </LocalizationProvider>
+       <LocalizationProvider dateAdapter={AdapterDayjs}>
+  <Box sx={{ mb: 2 }}>
+    <Typography variant="body2" fontWeight="medium" sx={{ mb: 0.5 }}>
+      Date
+    </Typography>
+    <DatePicker
+      format="MMMM D, YYYY"
+      slotProps={{
+        textField: {
+          fullWidth: true,
+          size: "small",
+          variant: "outlined",
+          label: "", // remove internal label
+          sx: {
+            backgroundColor: "#F5F5F5",
+            '& .MuiInputBase-root': {
+              height: 40,
+            },
+          },
+        },
+      }}
+    />
+  </Box>
+</LocalizationProvider>
+
       </Box>
     </Paper>
   );

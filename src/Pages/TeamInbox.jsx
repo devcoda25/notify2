@@ -1400,6 +1400,10 @@ import myteam from "../../src/Component/Assets/img/My Team.png";
 import privateIcon from "../../src/Component/Assets/img/PrivateIcon.png";
 import teamLeads from "../../src/Component/Assets/img/Team Leads.png";
 import technical from "../../src/Component/Assets/img/Technical.png";
+import IVR from "../../src/Component/Assets/img/TeamInbox/IVRImg.svg"
+import PushToModule from "../../src/Component/Assets/img/TeamInbox/BellImg.svg"
+import Custom from "../../src/Component/Assets/img/TeamInbox/NutImg.svg"
+import AngleRight from "../../src/Component/Assets/img/TeamInbox/angle-right.svg"
 import boy from "../../src/Component/Assets/img/boy.png";
 import wp_logo from "../../src/Component/Assets/img/TeamInbox/Whatsapp_logo.svg"
 import mail_logo from "../../src/Component/Assets/img/TeamInbox/Mail_logo.svg"
@@ -1418,6 +1422,9 @@ const ticketData = [
   { text: "Extracted", icon: extracted, count: "24" },
   { text: "Chatbots", icon: chatbots, count: "18" },
   { text: "Call Interactions", icon: call, count: "10" },
+  { text: "IVR", icon: IVR, count: "18" },
+  { text: "Push To Module", icon: PushToModule, count: "12" },
+  { text: "Custom", icon: Custom, sideIcon: AngleRight },
 ];
 
 const insiderData = [
@@ -1720,7 +1727,7 @@ const TeamInbox = () => {
                     TICKETS
                   </Typography>
                 )}
-                {ticketData.map(({ text, icon, count }) => (
+                {ticketData.map(({ text, icon, count, sideIcon }) => (
                   <Tooltip
                     key={text}
                     title={
@@ -1783,6 +1790,7 @@ const TeamInbox = () => {
                         )}
                       </Box>
                       {state.open && (
+                        ( sideIcon ?( <img style={{marginRight:"10px"}} src={AngleRight} alt="AngleRight" />):(
                         <Chip
                           label={count}
                           size="small"
@@ -1796,7 +1804,7 @@ const TeamInbox = () => {
                             justifyContent: "center",
                             p: 0,
                           }}
-                        />
+                        />))
                       )}
                     </ListItem>
                   </Tooltip>
