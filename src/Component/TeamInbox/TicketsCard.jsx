@@ -62,7 +62,7 @@ const TicketsCard = ({
         padding: "8px",
         margin: "8px 0",
         // minWidth: { xs: '100%', sm: '260px' },
-        minWidth: "280px",
+        minWidth: { xs: '100%', sm: '280px', md:'280px', lg:'280px', xl:'400px' },
         maxWidth: "100%",
         transition: "all 0.3s ease-in-out",
         boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
@@ -227,7 +227,7 @@ const TicketsCard = ({
           ))}
         </Box>
 
-        <Box textAlign="right" mt={{ xs: 1, sm: 0 }}>
+        <Box textAlign="left" mt={{ xs: 1, sm: 0 }}>
           <Typography variant="caption" fontSize={10}>
             Created: <strong>{createdDate}</strong> ({createdAgo})
           </Typography>
