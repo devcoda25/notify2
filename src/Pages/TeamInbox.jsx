@@ -1955,7 +1955,7 @@ const TeamInbox = () => {
         (state.openSidePanel ? "300px" : "350px") : 
         "100%", 
       flexShrink: 0,
-      height:"calc(100vh - 150px)",
+      height:"calc(100vh - 100px)",
       transition: "width 0.4s ease-in-out",
       display: {
         xs: (state.openChat && state.openSidePanel) ? "none" : "block",
@@ -2016,7 +2016,7 @@ const TeamInbox = () => {
     {/* Right Panel - Side Panel */}
     {state.openSidePanel && (
       <Box sx={{
-        width: "220px",
+        width: "200px",
         flexShrink: 0,
         transition: "all 0.4s ease-in-out"
       }}>

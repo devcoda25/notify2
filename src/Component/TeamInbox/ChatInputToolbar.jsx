@@ -25,6 +25,14 @@ import alignLeftImg from "../Assets/img/TeamInbox/menu-left.svg";
 import alignRightImg from "../Assets/img/TeamInbox/menu-right.svg";
 import alignCenterImg from "../Assets/img/TeamInbox/centerImg.svg";
 import centerImg1 from "../Assets/img/TeamInbox/center.svg";
+import boldImg from "../Assets/img/TeamInbox/boldImg.svg"
+import italicImg from "../Assets/img/TeamInbox/italicImg.svg"
+import underImg from "../Assets/img/TeamInbox/underImg.svg"
+import hashImg from "../Assets/img/TeamInbox/hashImg.svg"
+import recorderImg from "../Assets/img/TeamInbox/recorderImg.svg"
+import textImg from "../Assets/img/TeamInbox/textImg.svg"
+import atImg from "../Assets/img/TeamInbox/atImg.svg"
+import attachImg from "../Assets/img/TeamInbox/attachImg.svg"
 
 export default function ChatInputToolbar() {
   return (
@@ -53,16 +61,15 @@ export default function ChatInputToolbar() {
       <Box sx={{ display: "flex", alignItems: "center", justifyContent:"space-around" }}>
         <Box sx={{borderRight:"1px solid #E4E4E4", justifyContent:"between", paddingRight:"15px"}}>
 
-        <IconButton size="small"><FormatBoldIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatItalicIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatUnderlinedIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><TagIcon fontSize="small" /></IconButton>
-        {/* <IconButton size="small"><EmojiEmotionsIcon fontSize="small" /></IconButton> */}
-        <IconButton size="small"><AttachmentIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><RadioButtonCheckedIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatColorTextIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><AlternateEmailIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><img alt="icon" src={scanImg} height={"16px"} width={"16px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={boldImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={italicImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={underImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={hashImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={attachImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={recorderImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={textImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={atImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={scanImg} height={"12px"} width={"12px"} /></IconButton>
         </Box>
 
         {/* <IconButton size="small"><FormatAlignLeftIcon fontSize="small" /></IconButton>
@@ -71,12 +78,12 @@ export default function ChatInputToolbar() {
         <IconButton size="small"><FormatAlignRightIcon fontSize="small" /></IconButton>
         <IconButton size="small"><FormatAlignRightIcon fontSize="small" /></IconButton> */}
         <Box sx={{marginRight:"20px"}}>
-        <IconButton size="small"><img alt="icon" src={orderImg} height={"16px"} width={"16px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={unOrderImg} height={"16px"} width={"16px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={alignCenterImg} height={"16px"} width={"16px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={alignLeftImg} height={"16px"} width={"16px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={alignRightImg} height={"16px"} width={"16px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={centerImg1} height={"16px"} width={"16px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={orderImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={unOrderImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={alignCenterImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={alignLeftImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={alignRightImg} height={"12px"} width={"12px"} /></IconButton>
+        <IconButton size="small"><img alt="icon" src={centerImg1} height={"12px"} width={"12px"} /></IconButton>
         </Box>
 
       </Box>

@@ -1097,16 +1097,17 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         },
         padding: {
           xs: "6px 12px",
-          sm: "8px 16px"
+          sm: "6px 12px"
         },
         marginBottom: {
           xs: "0px",
-          sm: "16px"
+          sm: "10px"
         }, 
         marginRight: {
           xs: "0px",
           sm: "4px"
         },
+        marginTop:"10px",
         alignSelf: {
           xs: "flex-end",
           sm: "flex-start"
