@@ -1965,8 +1965,8 @@ const TeamInbox = () => {
       <Paper elevation={1} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
         {/* Tickets Header */}
         <Box sx={{ p: 2, borderBottom: "1px solid #e0e0e0" }}>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-            <Typography variant="h6" fontWeight="bold">Tickets</Typography>
+          <Box sx={{ display: "flex", flexDirection: state.openChat ? "column": "row", justifyContent: "space-between", alignItems: "left" }}>
+            <Typography sx={{textAlign:"left", marginBottom:"10px"}} variant="h6" fontWeight="bold">Tickets</Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <SearchboxComponent
                 placeholder="search tickets"
