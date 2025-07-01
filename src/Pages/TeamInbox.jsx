@@ -1701,6 +1701,7 @@ const TeamInbox = () => {
               alignItems: "center",
               justifyContent: state.open ? "space-between" : "center",
               padding: "4px",
+              marginLeft: state.open ? "12px": "0px"
             }}
           >
             <IconButton onClick={toggleDrawer}>

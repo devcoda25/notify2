@@ -1,23 +1,5 @@
 import React from "react";
 import { Box, IconButton, InputBase, Paper } from "@mui/material";
-import FormatBoldIcon from "@mui/icons-material/FormatBold";
-import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
-// import StrikethroughSIcon from "@mui/icons-material/StrikethroughS";
-// import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-// import AttachFileIcon from "@mui/icons-material/AttachFile";
-import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-// import LinkIcon from "@mui/icons-material/Link";
-// import SubjectIcon from "@mui/icons-material/Subject";
-// import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
-// import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
-// import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
-import TagIcon from '@mui/icons-material/Tag';
-import AttachmentIcon from '@mui/icons-material/Attachment';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
-// import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-// import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import scanImg from "../Assets/img/TeamInbox/scanImg.svg";
 import orderImg from "../Assets/img/TeamInbox/orderImg.svg";
 import unOrderImg from "../Assets/img/TeamInbox/unorderImg.svg";
@@ -58,35 +40,167 @@ export default function ChatInputToolbar() {
 
       <Box sx={{ borderTop: "1px solid #C4C4C4" }} />
 
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent:"space-around" }}>
-        <Box sx={{borderRight:"1px solid #E4E4E4", justifyContent:"between", paddingRight:"15px"}}>
-
-        <IconButton size="small"><img alt="icon" src={boldImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={italicImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={underImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={hashImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={attachImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={recorderImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={textImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={atImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={scanImg} height={"12px"} width={"12px"} /></IconButton>
+      {/* <Box sx={{ 
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "space-between",
+        py: 0.5,
+        minHeight: "40px",
+        position: "relative"
+      }}>
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+          pr: 2,
+          
+        }}>
+          <IconButton size="small">
+            <img alt="bold" src={boldImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="italic" src={italicImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="underline" src={underImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="hash" src={hashImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="attach" src={attachImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="recorder" src={recorderImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="text" src={textImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="at" src={atImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="scan" src={scanImg} height={"12px"} width={"12px"} />
+          </IconButton>
         </Box>
 
-        {/* <IconButton size="small"><FormatAlignLeftIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatAlignCenterIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatAlignRightIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatAlignRightIcon fontSize="small" /></IconButton>
-        <IconButton size="small"><FormatAlignRightIcon fontSize="small" /></IconButton> */}
-        <Box sx={{marginRight:"20px"}}>
-        <IconButton size="small"><img alt="icon" src={orderImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={unOrderImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={alignCenterImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={alignLeftImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={alignRightImg} height={"12px"} width={"12px"} /></IconButton>
-        <IconButton size="small"><img alt="icon" src={centerImg1} height={"12px"} width={"12px"} /></IconButton>
+        <Box sx={{
+          position: "absolute",
+          left: "55%",
+          transform: "translateX(-50%)",
+          width: "1px",
+          height: "100%",
+          backgroundColor: "#E4E4E4",
+          top: 0,
+          bottom: 0
+        }} />
+
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+          pr: 1
+        }}>
+          <IconButton size="small">
+            <img alt="ordered list" src={orderImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="unordered list" src={unOrderImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="align center" src={alignCenterImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="align left" src={alignLeftImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="align right" src={alignRightImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="center" src={centerImg1} height={"12px"} width={"12px"} />
+          </IconButton>
+        </Box>
+      </Box> */}
+
+      <Box sx={{ 
+        display: "flex", 
+        alignItems: "center",
+        // paddingY:"2px",
+        minHeight: "40px",
+        gap: 2
+      }}>
+        {/* Text Formatting Tools - Fixed Width */}
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+          flexShrink: 0, // Prevent shrinking
+          minWidth: "fit-content" // Ensure it takes only needed space
+        }}>
+          <IconButton size="small">
+            <img alt="bold" src={boldImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="italic" src={italicImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="underline" src={underImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="hash" src={hashImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="attach" src={attachImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="recorder" src={recorderImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="text" src={textImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="at" src={atImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="scan" src={scanImg} height={"12px"} width={"12px"} />
+          </IconButton>
         </Box>
 
+        {/* Vertical Divider */}
+        <Box sx={{
+          width: "0.5px",
+          alignSelf: "stretch", // Stretch to full height of parent
+          backgroundColor: "#C4C4C4",
+          flexShrink: 0
+        }} />
+
+        {/* Alignment Tools - Flexible Width with Left Alignment */}
+        <Box sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+          flex: 1, // Take remaining space
+          justifyContent: "flex-start" // Left align the alignment tools
+        }}>
+          <IconButton size="small">
+            <img alt="ordered list" src={orderImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="unordered list" src={unOrderImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="align center" src={alignCenterImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="align left" src={alignLeftImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="align right" src={alignRightImg} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="center" src={centerImg1} height={"12px"} width={"12px"} />
+          </IconButton>
+        </Box>
       </Box>
+      
     </Paper>
   );
 }

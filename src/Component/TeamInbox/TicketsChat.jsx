@@ -1086,7 +1086,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
       endIcon={<KeyboardArrowDownIcon />}
       sx={{ 
         textTransform: "none", 
-        bgcolor: "#9747FF", 
+        bgcolor: "#5D3FD3", 
         minWidth: {
           xs: "70px",
           sm: "80px"
