@@ -62,7 +62,7 @@ const TicketsCard = ({
         padding: "8px",
         margin: "8px 0",
         // minWidth: { xs: '100%', sm: '260px' },
-        minWidth: { xs: '100%', sm: '280px', md:'280px', lg:'280px', xl:'400px' },
+        minWidth: { xs: '100%', sm: '280px', md:'280px', lg:'280px', xl:'280px' },
         maxWidth: "100%",
         transition: "all 0.3s ease-in-out",
         boxShadow: "0 2px 6px rgba(0,0,0,0.05)",

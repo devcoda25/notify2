@@ -1953,7 +1953,7 @@ const TeamInbox = () => {
     {/* Left Panel - Tickets List */}
     <Box sx={{
       width: state.openChat ? 
-        (state.openSidePanel ? "300px" : "350px") : 
+        (state.openSidePanel ? "310px" : "350px") : 
         "100%", 
       flexShrink: 0,
       height:"calc(100vh - 100px)",

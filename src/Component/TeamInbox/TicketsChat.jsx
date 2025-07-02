@@ -23,6 +23,7 @@ import carimg from "../Assets/img/TeamInbox/car.svg";
 import flagimg from "../Assets/img/TeamInbox/flag-triangle.svg";
 import smslogo from "../Assets/img/TeamInbox/SMS_Logo.svg";
 import Wp_logo from "../Assets/img/TeamInbox/Whatsapp_logo.svg";
+import arrowImg from "../Assets/img/TeamInbox/angle-down-small.svg"
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { styled } from "@mui/material/styles";
@@ -36,8 +37,8 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     {...props}
   />
    ))(({ theme }) => ({
-  width: 38,
-  height: 20,
+  width: 34,
+  height: 16,
   padding: 0,
   "& .MuiSwitch-switchBase": {
     padding: 0,
@@ -90,8 +91,8 @@ export default function TicketsChat({ handleOpenSidePanel }) {
   },
   "& .MuiSwitch-thumb": {
     boxSizing: "border-box",
-    width: 18,
-    height: 16,
+    width: 14,
+    height: 12,
     backgroundColor: "#02CD8D",
   },
   "& .MuiSwitch-track": {
@@ -1006,8 +1007,8 @@ export default function TicketsChat({ handleOpenSidePanel }) {
           marginLeft: "0px",
           "& .MuiFormControlLabel-label": {
             fontSize: {
-              xs: "0.75rem",
-              sm: "0.875rem"
+              xs: "10px",
+              sm: "10px"
             }
           }
         }}
@@ -1021,7 +1022,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         sx={{
           display: "flex",
           flexDirection: "row",
-          gap: 0.5,
+          gap: "0px",
           overflowX: {
             xs: "auto",
             sm: "visible"
@@ -1042,42 +1043,62 @@ export default function TicketsChat({ handleOpenSidePanel }) {
           }
         }}
       >
-        {["Bots", "Quick Replies", "Templates", "Email"].map((label, index) => (
-          <FormControl key={label} size="small">
-            <Select
-              sx={{
-                m: 0.5,
-                width: {
-                  xs: "80px",
-                  sm: "60px"
-                },
-                minWidth: "60px",
-                fontSize: {
-                  xs: "0.7rem",
-                  sm: "0.75rem"
-                },
-                height: "30px",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                backgroundColor: "#F3F3F3",
-                "& .MuiSelect-select": {
-                  padding: "4px 8px"
-                }
-              }}
-              displayEmpty
-              inputProps={{ "aria-label": "Without label" }}
-              placeholder={label}
-            >
-              <MenuItem value="">
-                <em>{label}</em>
-              </MenuItem>
-              <MenuItem value={10}>Option 1</MenuItem>
-              <MenuItem value={20}>Option 2</MenuItem>
-              <MenuItem value={30}>Option 3</MenuItem>
-            </Select>
-          </FormControl>
-        ))}
+
+{["Bots", "Quick Replies", "Templates", "Email"].map((label) => (
+  <FormControl key={label} size="small" variant="standard">
+    <Select
+      value=""
+      displayEmpty
+      disableUnderline
+      IconComponent={() => null}
+      inputProps={{ "aria-label": "Without label" }}
+      sx={{
+        position: "relative",
+        m: 0.5,
+        width: "auto",
+        borderRadius:"1%",
+        fontSize: {
+          xs: "0.7rem",
+          sm: "0.75rem",
+        },
+        height: "30px",
+        backgroundColor: "#F3F3F3",
+
+        "& .MuiSelect-select.MuiInputBase-input.MuiInput-input": {
+          padding: "4px 4px !important",
+          minWidth: "10px !important",   
+        },
+
+        "&::after": {
+          content: '""',
+          position: "absolute",
+          top: "60%",
+          right: "4px",
+          transform: "translateY(-50%)",
+          width: "8px",
+          height: "8px",
+          backgroundImage: `url(${arrowImg})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          pointerEvents: "none",
+        },
+      }}
+    >
+      <MenuItem value="">
+        <em>{label}</em>
+      </MenuItem>
+      <MenuItem value={10}>Option 1</MenuItem>
+      <MenuItem value={20}>Option 2</MenuItem>
+      <MenuItem value={30}>Option 3</MenuItem>
+    </Select>
+  </FormControl>
+))}
+
+
+
+
+
+
       </Box>
     </Box>
     
@@ -1088,16 +1109,17 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         textTransform: "none", 
         bgcolor: "#5D3FD3", 
         minWidth: {
-          xs: "70px",
-          sm: "80px"
+          xs: "60px",
+          sm: "60px"
         },
         fontSize: {
-          xs: "0.75rem",
-          sm: "0.875rem"
+          xs: "10px",
+          sm: "10px"
         },
+        borderRadius:"1%",
         padding: {
-          xs: "6px 12px",
-          sm: "6px 12px"
+          xs: "2px 6px",
+          sm: "2px 6px"
         },
         marginBottom: {
           xs: "0px",
@@ -1105,9 +1127,9 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         }, 
         marginRight: {
           xs: "0px",
-          sm: "4px"
+          sm: "0px"
         },
-        marginTop:"10px",
+        marginTop:"14px",
         alignSelf: {
           xs: "flex-end",
           sm: "flex-start"
