@@ -1400,17 +1400,18 @@ import myteam from "../../src/Component/Assets/img/My Team.png";
 import privateIcon from "../../src/Component/Assets/img/PrivateIcon.png";
 import teamLeads from "../../src/Component/Assets/img/Team Leads.png";
 import technical from "../../src/Component/Assets/img/Technical.png";
-import IVR from "../../src/Component/Assets/img/TeamInbox/IVRImg.svg"
-import PushToModule from "../../src/Component/Assets/img/TeamInbox/BellImg.svg"
-import Custom from "../../src/Component/Assets/img/TeamInbox/NutImg.svg"
-import AngleRight from "../../src/Component/Assets/img/TeamInbox/angle-right.svg"
+import IVR from "../../src/Component/Assets/img/TeamInbox/IVRImg.svg";
+import PushToModule from "../../src/Component/Assets/img/TeamInbox/BellImg.svg";
+import Custom from "../../src/Component/Assets/img/TeamInbox/NutImg.svg";
+import AngleRight from "../../src/Component/Assets/img/TeamInbox/angle-right.svg";
 import boy from "../../src/Component/Assets/img/boy.png";
-import wp_logo from "../../src/Component/Assets/img/TeamInbox/Whatsapp_logo.svg"
-import mail_logo from "../../src/Component/Assets/img/TeamInbox/Mail_logo.svg"
+import wp_logo from "../../src/Component/Assets/img/TeamInbox/Whatsapp_logo.svg";
+import mail_logo from "../../src/Component/Assets/img/TeamInbox/Mail_logo.svg";
 import "semantic-ui-css/semantic.min.css";
 import { FilterAltIcon, MenuIcon } from "../Component/Icon";
 import TicketsChat from "../Component/TeamInbox/TicketsChat";
 import TicketSidePanel from "../Component/TeamInbox/TicketSidePanel";
+import closeIconPath from "../Component/Assets/img/TeamInbox/times-circle.svg";
 
 const drawerWidth = 220;
 const collapsedWidth = 60;
@@ -1447,7 +1448,7 @@ const cardData = [
     flagColor: "#F64C35",
     flagBgColor: "#FFA397",
     avatars: [{ src: boy, name: "Josh" }],
-    logo: [{src: wp_logo, logo_name: "WhatsApp"}],
+    logo: [{ src: wp_logo, logo_name: "WhatsApp" }],
     count: 2,
     description:
       "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
@@ -1475,7 +1476,7 @@ const cardData = [
       { src: boy, name: "Carol lee" },
       { src: boy, name: "Bob Smith" },
     ],
-    logo: [{src: mail_logo, logo_name: "Email"}],
+    logo: [{ src: mail_logo, logo_name: "Email" }],
     count: 2,
     description:
       "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
@@ -1503,7 +1504,7 @@ const cardData = [
       { src: boy, name: "Emma" },
       { src: boy, name: "Michael" },
     ],
-    logo: [{src: mail_logo, logo_name: "Email"}],
+    logo: [{ src: mail_logo, logo_name: "Email" }],
     count: 5,
     description:
       "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
@@ -1531,7 +1532,7 @@ const cardData = [
       { src: boy, name: "Alice" },
       { src: boy, name: "Michael" },
     ],
-    logo: [{src: wp_logo, logo_name: "WhatsApp"}],
+    logo: [{ src: wp_logo, logo_name: "WhatsApp" }],
     count: 5,
     description:
       "Charging Stations Are Often Installed In Remote, Poorly Lit, Or Hard-To-Access Areas, Making Users Feel Unsafe—Especially At Night. Inconvenient Placement Also Disrupts Travel Plans, Adding Unnecessary Detours Or Long Walks From Key Destinations.",
@@ -1559,6 +1560,7 @@ const TeamInbox = () => {
     openNewTicketsModal: false,
     selectedFileName: "",
   });
+
   const fileInputRef = useRef(null);
   const toggleDrawer = () => {
     setState((prev) => ({ ...prev, open: !prev.open }));
@@ -1580,7 +1582,6 @@ const TeamInbox = () => {
     setState((prev) => ({ ...prev, openSidePanel: true }));
   };
 
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -1591,464 +1592,649 @@ const TeamInbox = () => {
       console.log("Selected file:", file.name);
     }
   };
+
+  // for teaminbox modalbox
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [recipient, setRecipient] = useState("");
+  // const fileInputRef = useRef(null);
+
+  const handleFileChange1 = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleClose = () => {
+    // if (onClose) {
+    //   onClose();
+    // }
+    console.log("closed");
+  };
+
   return (
     <>
       {state.openNewTicketsModal ? (
-        <div className="new_tickets_container">
-          <div
-            className="new_tickets_header"
-            onClick={handleCloseNewTicketsModal}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-            >
-              <path
-                stroke="currentcolor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 12h14M5 12l4 4m-4-4 4-4"
-              ></path>
-            </svg>
-            <span className="new_tickets_title">New ticket</span>
-          </div>
-          <div className="new_tickets_main">
-            <div className="textbox_container">
-              <label>Subject</label>
-              <TextfieldComponent
-                placeholder="Enter subject"
-                customStyle="custom_textfield_box"
-              />
+        //  <div className="modal_overlay">
+        // <div className="new_tickets_container">
+        //   <div
+        //     className="new_tickets_header"
+        //     onClick={handleCloseNewTicketsModal}
+        //   >
+        //     <svg
+        //       xmlns="http://www.w3.org/2000/svg"
+        //       fill="none"
+        //       viewBox="0 0 24 24"
+        //       width="20"
+        //       height="20"
+        //     >
+        //       <path
+        //         stroke="currentcolor"
+        //         stroke-linecap="round"
+        //         stroke-linejoin="round"
+        //         stroke-width="2"
+        //         d="M5 12h14M5 12l4 4m-4-4 4-4"
+        //       ></path>
+        //     </svg>
+        //     <span className="new_tickets_title">New ticket</span>
+        //   </div>
+        //   <div className="new_tickets_main">
+        //     <div className="textbox_container">
+        //       <label>Subject</label>
+        //       <TextfieldComponent
+        //         placeholder="Enter subject"
+        //         customStyle="custom_textfield_box"
+        //       />
+        //     </div>
+        //     <div className="requester_name_email">
+        //       <div className="textbox_container" style={{ width: "50%" }}>
+        //         <label>Requester name</label>
+        //         <TextfieldComponent
+        //           placeholder="Enter requester name"
+        //           customStyle="custom_textfield_box"
+        //         />
+        //       </div>
+        //       <div className="textbox_container" style={{ width: "50%" }}>
+        //         <label>Requester email</label>
+        //         <TextfieldComponent
+        //           placeholder="Enter requester email"
+        //           customStyle="custom_textfield_box"
+        //         />
+        //       </div>
+        //     </div>
+        //     <div className="textbox_container">
+        //       <label>User SID</label>
+        //       <Select
+        //         isMulti
+        //         options={sidOptions}
+        //         placeholder="Select the SID"
+        //       />
+        //     </div>
+        //     <div className="upload_excelfile_container">
+        //       {state.selectedFileName && <p> {state.selectedFileName}</p>}
+        //       <input
+        //         type="file"
+        //         accept=".xls,.xlsx"
+        //         ref={fileInputRef}
+        //         onChange={handleFileChange}
+        //         style={{ display: "none" }}
+        //       />
+        //       <ButtonComponent
+        //         label="upload Excel file"
+        //         onClick={handleUploadExcelClick}
+        //         customBtn="new_teaminbox_button"
+        //       />
+        //       <ButtonComponent
+        //         label="submit"
+        //         onClick={handleCloseNewTicketsModal}
+        //         customBtn="new_teaminbox_button"
+        //       />
+        //     </div>
+        //   </div>
+        // </div>
+        // </div>
+
+        <div className="modal-overlay">
+          <div className="new-ticket-container">
+            {/* Header */}
+            <div className="new-ticket-header">
+              <div>
+                <h2 className="new-ticket-title">New ticket</h2>
+              </div>
+              <div>
+                <button
+                  className="close-btn"
+                  onClick={handleCloseNewTicketsModal}
+                >
+                  <img src={closeIconPath} alt="close" width="20" height="20" />
+                </button>
+              </div>
             </div>
-            <div className="requester_name_email">
-              <div className="textbox_container" style={{ width: "50%" }}>
-                <label>Requester name</label>
-                <TextfieldComponent
-                  placeholder="Enter requester name"
-                  customStyle="custom_textfield_box"
+
+            {/* Content */}
+            <div className="new-ticket-content">
+              {/* Subject */}
+              <div className="form-group">
+                <label>Subject</label>
+                <input
+                  type="text"
+                  placeholder="Enter Subject"
+                  className="form-input"
                 />
               </div>
-              <div className="textbox_container" style={{ width: "50%" }}>
-                <label>Requester email</label>
-                <TextfieldComponent
-                  placeholder="Enter requester email"
-                  customStyle="custom_textfield_box"
-                />
+
+              {/* Target Module */}
+              <div className="form-group ">
+                <label>Target Module</label>
+                <select className="form-select">
+                  <option value="">Select Target Module</option>
+                  <option value="billing">Billing</option>
+                  <option value="support">Support</option>
+                  <option value="sales">Sales</option>
+                </select>
+                <div className="horizontal-line"></div>
               </div>
-            </div>
-            <div className="textbox_container">
-              <label>User SID</label>
-              <Select
-                isMulti
-                options={sidOptions}
-                placeholder="Select the SID"
-              />
-            </div>
-            <div className="upload_excelfile_container">
-              {state.selectedFileName && <p> {state.selectedFileName}</p>}
-              <input
-                type="file"
-                accept=".xls,.xlsx"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-              />
-              <ButtonComponent
-                label="upload Excel file"
-                onClick={handleUploadExcelClick}
-                customBtn="new_teaminbox_button"
-              />
-              <ButtonComponent
-                label="submit"
-                onClick={handleCloseNewTicketsModal}
-                customBtn="new_teaminbox_button"
-              />
+
+              {/* Channel */}
+              <div className="form-group">
+                <label>Channel</label>
+                <select className="form-select">
+                  <option value="">Select Channel</option>
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="chat">Chat</option>
+                </select>
+                 <div className="horizontal-line"></div>
+              </div>
+
+              {/* Recipient Section */}
+              <div className="recipient-section">
+                <div className="recipient-header">
+                  <label>Recipient</label>
+                </div>
+
+                <div className="recipient-input-row">
+                  <input
+                    type="text"
+                    placeholder="Add Recipient"
+                    className="recipient-input"
+                    value={recipient}
+                    onChange={(e) => setRecipient(e.target.value)}
+                  />
+                  <button className="add-btn">Add</button>
+                </div>
+
+                <div className="divider-section">
+                  <span className="divider-text">Or</span>
+                </div>
+
+                <div className="file-upload-section">
+                  <label className="file-upload-label">
+                    Upload csv/excel file
+                  </label>
+                  <input
+                    type="text"
+                    className="selectFiles-input"
+                    value={recipient}
+                    onChange={(e) => setRecipient(e.target.value)}
+                  />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept=".csv,.xlsx,.xls"
+                    style={{ display: "none" }}
+                  />
+                  <button
+                    className="select-files-btn"
+                    onClick={handleUploadClick}
+                  >
+                    Select Files
+                  </button>
+                  {selectedFile && (
+                    <span className="selected-file">{selectedFile.name}</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="action-buttons">
+                <button
+                  className="cancel-button"
+                  onClick={handleCloseNewTicketsModal}
+                >
+                  Cancel
+                </button>
+                <button className="submit-btn">Submit</button>
+              </div>
             </div>
           </div>
         </div>
       ) : (
-       
         <Box sx={style.new_teaminbox_container}>
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: state.open ? drawerWidth : collapsedWidth,
-            flexShrink: 0,
-            whiteSpace: "nowrap",
-            boxSizing: "border-box",
-            overflow: "hidden",
-            transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-            "& .MuiDrawer-paper": {
-              width: state.open ? drawerWidth : collapsedWidth,
-              transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-              overflowX: "hidden",
-              top: "60px",
-              // Hide sidebar on mobile when chat is open
-              display: {
-                xs: state.openChat ? 'none' : 'block',
-                sm: 'block'
-              }
-            },
-          }}
-        >
-          <Box
+          <Drawer
+            variant="permanent"
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: state.open ? "space-between" : "center",
-              padding: "4px",
-              marginLeft: state.open ? "12px": "0px"
+              width: state.open ? drawerWidth : collapsedWidth,
+              flexShrink: 0,
+              whiteSpace: "nowrap",
+              boxSizing: "border-box",
+              overflow: "hidden",
+              transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+              "& .MuiDrawer-paper": {
+                width: state.open ? drawerWidth : collapsedWidth,
+                transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                overflowX: "hidden",
+                top: "60px",
+                // Hide sidebar on mobile when chat is open
+                display: {
+                  xs: state.openChat ? "none" : "block",
+                  sm: "block",
+                },
+              },
             }}
           >
-            <IconButton onClick={toggleDrawer}>
-              <MenuIcon />
-            </IconButton>
-          </Box>
-
-          {state.open && (
-            <Box sx={style.teaminbox_search_container}>
-              <SearchboxComponent
-                placeholder="Search..."
-                customSearch="new_teaminbox_search"
-              />
-            </Box>
-          )}
-
-          <List>
             <Box
               sx={{
-                borderBottom: state.open ? "1px solid #ccc" : "none",
-                mb: "5px",
-                pb: "5px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: state.open ? "space-between" : "center",
+                padding: "4px",
+                marginLeft: state.open ? "12px" : "0px",
               }}
             >
-              {state.open && (
-                <Typography
-                  variant="caption"
-                  sx={style.teaminbox_sidebar_header}
-                >
-                  TICKETS
-                </Typography>
-              )}
-              {ticketData.map(({ text, icon, count, sideIcon }) => (
-                <Tooltip
-                  key={text}
-                  title={
-                    !state.open ? (
-                      <Typography sx={{ fontSize: 11, color: "#fff" }}>
-                        {text}
-                      </Typography>
-                    ) : (
-                      ""
-                    )
-                  }
-                  placement="right"
-                  arrow
-                  disableHoverListener={state.open}
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        backgroundColor: "#5D3FD3",
-                        borderRadius: 1,
-                        px: 1,
-                        py: 0.5,
-                      },
-                    },
-                  }}
-                >
-                  <ListItem
-                    sx={{
-                      display: "flex",
-                      justifyContent: state.open ? "space-between" : "center",
-                      pt: state.open ? "4px" : "10px",
-                      pb: state.open ? "4px" : "10px",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                      "&:hover, &:focus": {
-                        backgroundColor: "#f0f0f0",
-                        "& .MuiTypography-root": {
-                          color: "#5D3FD3",
-                        },
-                        "& .MuiChip-root": {
-                          backgroundColor: "#5D3FD3",
-                          color: "#fff",
-                        },
-                      },
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <ListItemIcon
-                        sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
-                      >
-                        <img
-                          src={icon}
-                          alt={text}
-                          style={{ width: 20, height: 20 }}
-                        />
-                      </ListItemIcon>
-                      {state.open && (
-                        <ListItemText
-                          primary={<Typography>{text}</Typography>}
-                        />
-                      )}
-                    </Box>
-                    {state.open && (
-                      ( sideIcon ?( <img style={{marginRight:"10px"}} src={AngleRight} alt="AngleRight" />):(
-                      <Chip
-                        label={count}
-                        size="small"
-                        sx={{
-                          fontSize: "12px",
-                          width: "30px",
-                          height: "28px",
-                          borderRadius: "6px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          p: 0,
-                        }}
-                      />))
-                    )}
-                  </ListItem>
-                </Tooltip>
-              ))}
-            </Box>
-            <Box>
-              {state.open && (
-                <Typography
-                  variant="caption"
-                  sx={style.teaminbox_sidebar_header}
-                >
-                  INSIDER
-                </Typography>
-              )}
-              {insiderData.map(({ text, icon, count }) => (
-                <Tooltip
-                  key={text}
-                  title={
-                    !state.open ? (
-                      <Typography sx={{ fontSize: 11, color: "#fff" }}>
-                        {text}
-                      </Typography>
-                    ) : (
-                      ""
-                    )
-                  }
-                  placement="right"
-                  arrow
-                  disableHoverListener={state.open}
-                  componentsProps={{
-                    tooltip: {
-                      sx: {
-                        backgroundColor: "#5D3FD3",
-                        borderRadius: 1,
-                        px: 1,
-                        py: 0.5,
-                      },
-                    },
-                  }}
-                >
-                  <ListItem
-                    sx={{
-                      display: "flex",
-                      justifyContent: state.open ? "space-between" : "center",
-                      pt: state.open ? "4px" : "10px",
-                      pb: state.open ? "4px" : "10px",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                      "&:hover, &:focus": {
-                        backgroundColor: "#f0f0f0",
-                        "& .MuiTypography-root": {
-                          color: "#5D3FD3",
-                        },
-                        "& .MuiChip-root": {
-                          backgroundColor: "#5D3FD3",
-                          color: "#fff",
-                        },
-                      },
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <ListItemIcon
-                        sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
-                      >
-                        <img
-                          src={icon}
-                          alt={text}
-                          style={{ width: 20, height: 20 }}
-                        />
-                      </ListItemIcon>
-                      {state.open && (
-                        <ListItemText
-                          primary={<Typography>{text}</Typography>}
-                        />
-                      )}
-                    </Box>
-                    {state.open && (
-                      <Chip
-                        label={count}
-                        size="small"
-                        sx={{
-                          fontSize: "12px",
-                          width: "30px",
-                          height: "28px",
-                          borderRadius: "6px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          p: 0,
-                        }}
-                      />
-                    )}
-                  </ListItem>
-                </Tooltip>
-              ))}
-            </Box>
-          </List>
-        </Drawer>
-
-
-
-<div style={{
-  display: "flex", 
-  flexDirection: "column", 
-  // marginLeft: state.open ? `${drawerWidth}px` : `${collapsedWidth}px`,
-  transition: "margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-  width: state.open ? `calc(100vw - ${drawerWidth}px)` : `calc(100vw - ${collapsedWidth}px)`,
-  minHeight: "100vh"
-}}>
-
-  {/* Header - Full width */}
-  <Box sx={{ 
-    display: "flex", 
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "16px 24px",
-    width: "100%"
-  }}>
-    <Typography variant="h5" fontWeight="bold">
-      My Tickets
-    </Typography>
-    <ButtonComponent
-      label="+ New Ticket"
-      onClick={handleOpenNewTicketsModal}
-      customBtn="new_teaminbox_button"
-    />
-  </Box>
-
-  {/* Main Content Area - Full width */}
-  <Box sx={{ 
-    display: "flex",
-    flex: 1,
-    gap: 2,
-    padding: "0 24px 24px",
-    height: "calc(100vh - 140px)", 
-    overflow: "hidden"
-  }}>
-    
-    {/* Left Panel - Tickets List */}
-    <Box sx={{
-      width: state.openChat ? 
-        (state.openSidePanel ? "310px" : "350px") : 
-        "100%", 
-      flexShrink: 0,
-      height:"calc(100vh - 100px)",
-      transition: "width 0.4s ease-in-out",
-      display: {
-        xs: (state.openChat && state.openSidePanel) ? "none" : "block",
-        sm: "block"
-      }
-    }}>
-      <Paper elevation={1} sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        {/* Tickets Header */}
-        <Box sx={{ p: 2, borderBottom: "1px solid #e0e0e0" }}>
-          <Box sx={{ display: "flex", flexDirection: state.openChat ? "column": "row", justifyContent: "space-between", alignItems: "left" }}>
-            <Typography sx={{textAlign:"left", marginBottom:"10px"}} variant="h6" fontWeight="bold">Tickets</Typography>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <SearchboxComponent
-                placeholder="search tickets"
-                customSearch="new_teaminbox_search"
-              />
-              <IconButton sx={style.new_teaminbox_filter}>
-                <FilterAltIcon />
+              <IconButton onClick={toggleDrawer}>
+                <MenuIcon />
               </IconButton>
             </Box>
-          </Box>
+
+            {state.open && (
+              <Box sx={style.teaminbox_search_container}>
+                <SearchboxComponent
+                  placeholder="Search..."
+                  customSearch="new_teaminbox_search"
+                />
+              </Box>
+            )}
+
+            <List>
+              <Box
+                sx={{
+                  borderBottom: state.open ? "1px solid #ccc" : "none",
+                  mb: "5px",
+                  pb: "5px",
+                }}
+              >
+                {state.open && (
+                  <Typography
+                    variant="caption"
+                    sx={style.teaminbox_sidebar_header}
+                  >
+                    TICKETS
+                  </Typography>
+                )}
+                {ticketData.map(({ text, icon, count, sideIcon }) => (
+                  <Tooltip
+                    key={text}
+                    title={
+                      !state.open ? (
+                        <Typography sx={{ fontSize: 11, color: "#fff" }}>
+                          {text}
+                        </Typography>
+                      ) : (
+                        ""
+                      )
+                    }
+                    placement="right"
+                    arrow
+                    disableHoverListener={state.open}
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          backgroundColor: "#5D3FD3",
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        display: "flex",
+                        justifyContent: state.open ? "space-between" : "center",
+                        pt: state.open ? "4px" : "10px",
+                        pb: state.open ? "4px" : "10px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover, &:focus": {
+                          backgroundColor: "#f0f0f0",
+                          "& .MuiTypography-root": {
+                            color: "#5D3FD3",
+                          },
+                          "& .MuiChip-root": {
+                            backgroundColor: "#5D3FD3",
+                            color: "#fff",
+                          },
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <ListItemIcon
+                          sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
+                        >
+                          <img
+                            src={icon}
+                            alt={text}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        </ListItemIcon>
+                        {state.open && (
+                          <ListItemText
+                            primary={<Typography>{text}</Typography>}
+                          />
+                        )}
+                      </Box>
+                      {state.open &&
+                        (sideIcon ? (
+                          <img
+                            style={{ marginRight: "10px" }}
+                            src={AngleRight}
+                            alt="AngleRight"
+                          />
+                        ) : (
+                          <Chip
+                            label={count}
+                            size="small"
+                            sx={{
+                              fontSize: "12px",
+                              width: "30px",
+                              height: "28px",
+                              borderRadius: "6px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              p: 0,
+                            }}
+                          />
+                        ))}
+                    </ListItem>
+                  </Tooltip>
+                ))}
+              </Box>
+              <Box>
+                {state.open && (
+                  <Typography
+                    variant="caption"
+                    sx={style.teaminbox_sidebar_header}
+                  >
+                    INSIDER
+                  </Typography>
+                )}
+                {insiderData.map(({ text, icon, count }) => (
+                  <Tooltip
+                    key={text}
+                    title={
+                      !state.open ? (
+                        <Typography sx={{ fontSize: 11, color: "#fff" }}>
+                          {text}
+                        </Typography>
+                      ) : (
+                        ""
+                      )
+                    }
+                    placement="right"
+                    arrow
+                    disableHoverListener={state.open}
+                    componentsProps={{
+                      tooltip: {
+                        sx: {
+                          backgroundColor: "#5D3FD3",
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        display: "flex",
+                        justifyContent: state.open ? "space-between" : "center",
+                        pt: state.open ? "4px" : "10px",
+                        pb: state.open ? "4px" : "10px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        "&:hover, &:focus": {
+                          backgroundColor: "#f0f0f0",
+                          "& .MuiTypography-root": {
+                            color: "#5D3FD3",
+                          },
+                          "& .MuiChip-root": {
+                            backgroundColor: "#5D3FD3",
+                            color: "#fff",
+                          },
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <ListItemIcon
+                          sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
+                        >
+                          <img
+                            src={icon}
+                            alt={text}
+                            style={{ width: 20, height: 20 }}
+                          />
+                        </ListItemIcon>
+                        {state.open && (
+                          <ListItemText
+                            primary={<Typography>{text}</Typography>}
+                          />
+                        )}
+                      </Box>
+                      {state.open && (
+                        <Chip
+                          label={count}
+                          size="small"
+                          sx={{
+                            fontSize: "12px",
+                            width: "30px",
+                            height: "28px",
+                            borderRadius: "6px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            p: 0,
+                          }}
+                        />
+                      )}
+                    </ListItem>
+                  </Tooltip>
+                ))}
+              </Box>
+            </List>
+          </Drawer>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              // marginLeft: state.open ? `${drawerWidth}px` : `${collapsedWidth}px`,
+              transition: "margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+              width: state.open
+                ? `calc(100vw - ${drawerWidth}px)`
+                : `calc(100vw - ${collapsedWidth}px)`,
+              minHeight: "100vh",
+            }}
+          >
+            {/* Header - Full width */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "16px 24px",
+                width: "100%",
+              }}
+            >
+              <Typography variant="h5" fontWeight="bold">
+                My Tickets
+              </Typography>
+              <ButtonComponent
+                label="+ New Ticket"
+                onClick={handleOpenNewTicketsModal}
+                customBtn="new_teaminbox_button"
+              />
+            </Box>
+
+            {/* Main Content Area - Full width */}
+            <Box
+              sx={{
+                display: "flex",
+                flex: 1,
+                gap: 2,
+                padding: "0 24px 24px",
+                height: "calc(100vh - 140px)",
+                overflow: "hidden",
+              }}
+            >
+              {/* Left Panel - Tickets List */}
+              <Box
+                sx={{
+                  width: state.openChat
+                    ? state.openSidePanel
+                      ? "310px"
+                      : "350px"
+                    : "100%",
+                  flexShrink: 0,
+                  height: "calc(100vh - 100px)",
+                  transition: "width 0.4s ease-in-out",
+                  display: {
+                    xs:
+                      state.openChat && state.openSidePanel ? "none" : "block",
+                    sm: "block",
+                  },
+                }}
+              >
+                <Paper
+                  elevation={1}
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  {/* Tickets Header */}
+                  <Box sx={{ p: 2, borderBottom: "1px solid #e0e0e0" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: state.openChat ? "column" : "row",
+                        justifyContent: "space-between",
+                        alignItems: "left",
+                      }}
+                    >
+                      <Typography
+                        sx={{ textAlign: "left", marginBottom: "10px" }}
+                        variant="h6"
+                        fontWeight="bold"
+                      >
+                        Tickets
+                      </Typography>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
+                        <SearchboxComponent
+                          placeholder="search tickets"
+                          customSearch="new_teaminbox_search"
+                        />
+                        <IconButton sx={style.new_teaminbox_filter}>
+                          <FilterAltIcon />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                  </Box>
+
+                  {/* Tickets List - Scrollable */}
+                  <Box
+                    sx={{
+                      flex: 1,
+                      overflowY: "auto",
+                      p: 1,
+                    }}
+                  >
+                    {cardData.map((data, idx) => (
+                      <TicketsCard
+                        key={idx}
+                        {...data}
+                        handleOpenChat={handleOpenChat}
+                      />
+                    ))}
+                  </Box>
+                </Paper>
+              </Box>
+
+              {/* Middle Panel - Chat */}
+              {state.openChat && (
+                <Box
+                  sx={{
+                    flex: 1,
+                    minWidth: "400px",
+                    display: {
+                      xs: state.openSidePanel ? "none" : "block",
+                      sm: "block",
+                    },
+                    transition: "all 0.4s ease-in-out",
+                  }}
+                >
+                  {/* <Paper elevation={1} sx={{ height: "100%" }}> */}
+                  <TicketsChat handleOpenSidePanel={handleOpenSidePanel} />
+                  {/* </Paper> */}
+                </Box>
+              )}
+
+              {/* Right Panel - Side Panel */}
+              {state.openSidePanel && (
+                <Box
+                  sx={{
+                    width: "200px",
+                    flexShrink: 0,
+                    transition: "all 0.4s ease-in-out",
+                  }}
+                >
+                  <TicketSidePanel
+                    onClose={() => setState({ ...state, openSidePanel: false })}
+                  />
+                </Box>
+              )}
+            </Box>
+
+            {/* Mobile Navigation - Same as your existing code */}
+            {state.openChat && (
+              <Box
+                sx={{
+                  display: { xs: "flex", sm: "none" },
+                  position: "fixed",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  backgroundColor: "white",
+                  borderTop: "1px solid #e0e0e0",
+                  padding: "8px 16px",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  zIndex: 1000,
+                }}
+              >
+                {/* Your existing mobile nav buttons */}
+              </Box>
+            )}
+          </div>
         </Box>
-        
-        {/* Tickets List - Scrollable */}
-        <Box sx={{ 
-          flex: 1, 
-          overflowY: "auto",
-          p: 1
-        }}>
-          {cardData.map((data, idx) => (
-            <TicketsCard
-              key={idx}
-              {...data}
-              handleOpenChat={handleOpenChat}
-            />
-          ))}
-        </Box>
-      </Paper>
-    </Box>
-
-    {/* Middle Panel - Chat */}
-    {state.openChat && (
-      <Box sx={{
-        flex: 1, 
-        minWidth: "400px", 
-        display: {
-          xs: state.openSidePanel ? "none" : "block",
-          sm: "block"
-        },
-        transition: "all 0.4s ease-in-out"
-      }}>
-        {/* <Paper elevation={1} sx={{ height: "100%" }}> */}
-          <TicketsChat handleOpenSidePanel={handleOpenSidePanel} />
-        {/* </Paper> */}
-      </Box>
-    )}
-
-    {/* Right Panel - Side Panel */}
-    {state.openSidePanel && (
-      <Box sx={{
-        width: "200px",
-        flexShrink: 0,
-        transition: "all 0.4s ease-in-out"
-      }}>
-        <TicketSidePanel
-          onClose={() => setState({ ...state, openSidePanel: false })}
-        />
-      </Box>
-    )}
-  </Box>
-
-  {/* Mobile Navigation - Same as your existing code */}
-  {state.openChat && (
-    <Box sx={{
-      display: { xs: "flex", sm: "none" },
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: "white",
-      borderTop: "1px solid #e0e0e0",
-      padding: "8px 16px",
-      justifyContent: "space-around",
-      alignItems: "center",
-      zIndex: 1000
-    }}>
-      {/* Your existing mobile nav buttons */}
-    </Box>
-  )}
-</div>
-
-</Box>
       )}
     </>
   );

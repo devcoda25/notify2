@@ -695,7 +695,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
       overflowY: "auto",
       // Adjust height based on screen size and mobile nav
       maxHeight: {
-        xs: "calc(100vh - 450px)",
+        xs: "calc(100vh - 415px)",
         // sm: "calc(100vh - 450px)",
         // md: "calc(100vh - 450px)",
         // lg: "calc(100vh - 450px)",
