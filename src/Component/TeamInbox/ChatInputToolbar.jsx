@@ -15,6 +15,7 @@ import recorderImg from "../Assets/img/TeamInbox/recorderImg.svg"
 import textImg from "../Assets/img/TeamInbox/textImg.svg"
 import atImg from "../Assets/img/TeamInbox/atImg.svg"
 import attachImg from "../Assets/img/TeamInbox/attachImg.svg"
+import addImg from "../Assets/img/TeamInbox/add-circle.svg"
 
 export default function ChatInputToolbar() {
   return (
@@ -197,6 +198,9 @@ export default function ChatInputToolbar() {
           </IconButton>
           <IconButton size="small">
             <img alt="center" src={centerImg1} height={"12px"} width={"12px"} />
+          </IconButton>
+          <IconButton size="small">
+            <img alt="center" src={addImg} height={"16px"} width={"16px"} />
           </IconButton>
         </Box>
       </Box>

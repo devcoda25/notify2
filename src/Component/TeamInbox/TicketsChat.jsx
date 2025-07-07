@@ -27,6 +27,9 @@ import arrowImg from "../Assets/img/TeamInbox/angle-down-small.svg"
 import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { styled } from "@mui/material/styles";
+import { SearchOutlinedIcon } from '../Icon'
+
+
 
 export default function TicketsChat({ handleOpenSidePanel }) {
 
@@ -512,7 +515,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
           minWidth: 0 // Prevent text overflow issues
         }}
       >
-        <Typography
+        {/* <Typography
           sx={{ 
             color: "white", 
             fontSize: {
@@ -526,7 +529,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
           variant="h6"
         >
           Application Approval
-        </Typography>
+        </Typography> */}
 
         <Box
           sx={{
@@ -618,13 +621,20 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     </Box>
     
     <Box 
-      sx={{ 
+     sx={{
+      display:"flex",
+      flexDirection:"row",
+      justifyContent:"space-between"
+     }}
+    >
+      <Box  sx={{ 
         display: "flex", 
+        flexDirection:"row",
         alignItems: "center", 
         gap: 1,
         flexWrap: "wrap"
-      }}
-    >
+      }}>
+
       <Chip
         label="Active"
         size="small"
@@ -678,7 +688,18 @@ export default function TicketsChat({ handleOpenSidePanel }) {
             sm: 32
           }
         }} 
-      />
+      /> 
+      </Box>
+
+    <div className="searchbox_teaminbox new_teaminbox_chatbox_search">
+                <span className="search_icon"><SearchOutlinedIcon /></span>
+                <input
+                    type="text"
+                    placeholder="Search Message"
+                    // value={value}
+                    // onChange={onChange}
+                />
+            </div>
     </Box>
   </Box>
   <Divider />
@@ -703,6 +724,36 @@ export default function TicketsChat({ handleOpenSidePanel }) {
       }
     }}
   >
+       {/* Expired label */}
+    <Typography
+      variant="caption"
+      sx={{
+        color: "#E53935",
+        textAlign: "center",
+        display: "block",
+        mb: 2,
+        fontSize: {
+          xs: "0.65rem",
+          sm: "0.75rem"
+        }
+      }}
+    >
+      Thursday, Jun 12 • 09.30 AM (Expired)
+    </Typography>
+     <Typography
+          variant="caption"
+          sx={{ 
+            color: "#4CAF50", 
+            mb: 0.5, 
+            display: "block",
+            fontSize: {
+              xs: "0.65rem",
+              sm: "0.75rem"
+            }
+          }}
+        >
+          Thursday, Jun 12 • 09.30 AM
+        </Typography>
     {/* Left message */}
     <Box sx={{ display: "flex", mb: 2 }}>
       <Avatar 
@@ -733,6 +784,27 @@ export default function TicketsChat({ handleOpenSidePanel }) {
             borderRadius: 2 
           }}
         >
+           <Box
+           sx={{
+            display:"flex"
+           }}>
+           <Typography 
+            sx={{ color: "#1D2739" }} 
+            variant="body2"
+          >
+            Shane Watson
+          </Typography>
+           <Typography 
+            sx={{ color: "#1D2739" }} 
+            variant="body2"
+          >
+            Jun 20 ,14:20
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent:"flex-end", gap: 0.5 }}>
+              <img src={smslogo} alt="smsimg" />
+              <img src={evlogo} alt="evlogo" />
+            </Box>
+            </Box>
           <Typography 
             sx={{ color: "#1D2739" }} 
             variant="body2"
@@ -762,49 +834,16 @@ export default function TicketsChat({ handleOpenSidePanel }) {
             >
               16/06/2025 09.30AM
             </Typography>
-            <Box sx={{ display: "flex", gap: 0.5 }}>
-              <img src={smslogo} alt="smsimg" />
-              <img src={evlogo} alt="evlogo" />
-            </Box>
           </Box>
         </Paper>
       </Box>
     </Box>
 
-    {/* Expired label */}
-    <Typography
-      variant="caption"
-      sx={{
-        color: "#E53935",
-        textAlign: "center",
-        display: "block",
-        mb: 2,
-        fontSize: {
-          xs: "0.65rem",
-          sm: "0.75rem"
-        }
-      }}
-    >
-      Thursday, Jun 12 • 09.30 AM (Expired)
-    </Typography>
 
     {/* Right message */}
     <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
       <Box sx={{ textAlign: "right", mr: 1, flex: 1 }}>
-        <Typography
-          variant="caption"
-          sx={{ 
-            color: "#4CAF50", 
-            mb: 0.5, 
-            display: "block",
-            fontSize: {
-              xs: "0.65rem",
-              sm: "0.75rem"
-            }
-          }}
-        >
-          Thursday, Jun 12 • 09.30 AM
-        </Typography>
+       
         <Paper
           sx={{
             p: {
@@ -1093,11 +1132,6 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     </Select>
   </FormControl>
 ))}
-
-
-
-
-
 
       </Box>
     </Box>

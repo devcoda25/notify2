@@ -1418,11 +1418,11 @@ const collapsedWidth = 60;
 
 const ticketData = [
   { text: "Initiated", icon: intiated, count: "02" },
-  { text: "Broadcast", icon: broadcast, count: "04" },
+  { text: "Broadcast", icon: broadcast, count: "04", unreaded: true },
   { text: "Groups", icon: groups, count: "04" },
-  { text: "Extracted", icon: extracted, count: "24" },
-  { text: "Chatbots", icon: chatbots, count: "18" },
-  { text: "Call Interactions", icon: call, count: "10" },
+  { text: "Extracted", icon: extracted, count: "24", unreaded : true },
+  { text: "Chatbots", icon: chatbots, count: "18", unreaded : true },
+  { text: "Call Interactions", icon: call, count: "10", unreaded : true },
   { text: "IVR", icon: IVR, count: "18" },
   { text: "Push To Module", icon: PushToModule, count: "12" },
   { text: "Custom", icon: Custom, sideIcon: AngleRight },
@@ -1876,7 +1876,7 @@ const TeamInbox = () => {
                     TICKETS
                   </Typography>
                 )}
-                {ticketData.map(({ text, icon, count, sideIcon }) => (
+                {ticketData.map(({ text, icon, count, sideIcon, unreaded }) => (
                   <Tooltip
                     key={text}
                     title={
@@ -1946,20 +1946,26 @@ const TeamInbox = () => {
                             alt="AngleRight"
                           />
                         ) : (
-                          <Chip
-                            label={count}
-                            size="small"
-                            sx={{
-                              fontSize: "12px",
-                              width: "30px",
-                              height: "28px",
-                              borderRadius: "6px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              p: 0,
-                            }}
-                          />
+                         <Chip
+                      label={count}
+                      size="small"
+                      sx={{
+                        fontSize: "12px",
+                        width: "30px",
+                        height: "28px",
+                        borderRadius: "6px",
+                        display: "flex",
+                        border: unreaded ? "1px solid #5D3FD3":"",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        p: 0,
+                        '& .MuiChip-label': {
+                          overflow: 'visible',
+                          textOverflow: 'unset',
+                          whiteSpace: 'nowrap', 
+                        },
+                      }}
+                    />
                         ))}
                     </ListItem>
                   </Tooltip>

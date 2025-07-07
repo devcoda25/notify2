@@ -244,9 +244,9 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
     };
     //subject text
 
-    const handleSubjectChange = (event) => {
-        updateState({ subjectText: event.target.value });
-    };
+    // const handleSubjectChange = (event) => {
+    //     updateState({ subjectText: event.target.value });
+    // };
     //toggle
 
     const handleToggle = () => {
@@ -265,9 +265,9 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
         updateState({ isFooterMessage: !state.isFooterMessage });
     };
 
-    const handleHtmlPreviewToggle = () => {
-        updateState({ isHtmlPreview: !state.isHtmlPreview });
-    };
+    // const handleHtmlPreviewToggle = () => {
+    //     updateState({ isHtmlPreview: !state.isHtmlPreview });
+    // };
 
     const handleEmojiClick = (emojiObject) => {
         updateState({ textareaContent: state.textareaContent + emojiObject.emoji });
@@ -573,8 +573,8 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                 <TextfieldComponent placeholder='Template Name' customStyle='template_input' />
                             </div>
                             <div className="name_block_field">
-                                <div className="name_block_title">Template Code</div>
-                                <TextfieldComponent placeholder='Template Code' customStyle='template_input' />
+                                <div className="name_block_title">Module Name</div>
+                                <TextfieldComponent placeholder='Module Name' customStyle='template_input' />
                             </div>
                             <div className="name_block_field">
                                 <div className="name_block_title">Channel</div>
@@ -915,7 +915,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                     <p><strong>Uploaded from PC:</strong>{state.previewImage.name}</p>
                                                     <img
                                                         src={state.previewImage.url}
-                                                        style={{ height: '200px' }} alt="Preview image"
+                                                        style={{ height: '200px' }} alt="Preview"
 
                                                     />
                                                 </>
@@ -1257,7 +1257,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                     maxWidth: state.PreviewMode === "mobile" ? "266px" : "320px",
 
                                                                 }}>
-                                                                    <h2 > <a style={{ color: selectedColors.link || 'white' }}>earl@example.com</a>wrote:</h2>
+                                                                    <h2 > <a href="#demo" style={{ color: selectedColors.link || 'white' }}>earl@example.com</a>wrote:</h2>
                                                                     <div>Hello, I have some difficult case here</div>
                                                                     <div className="history_date">Tue, 11/17/2020, 2:25 PM UTC</div>
                                                                 </div>
@@ -1385,7 +1385,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                         dangerouslySetInnerHTML={{
                                                             __html: state.textareaContent
                                                                 .replace(/\*(.*?)\*/g, "<b>$1</b>")
-                                                                .replace(/\_(.*?)\_/g, "<i>$1</i>")
+                                                                .replace(/(.*?)/g, "<i>$1</i>")
                                                                 .replace(/~(.*?)~/g, "<s>$1</s>"),
                                                         }}
                                                     />
