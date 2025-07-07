@@ -685,7 +685,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         sx={{ 
           width: {
             xs: 20,
-            sm: 60
+            sm: 32
           }, 
           height: {
             xs: 20,
@@ -1294,16 +1294,16 @@ export default function TicketsChat({ handleOpenSidePanel }) {
       sx={{ 
         textTransform: "none", 
         bgcolor: "#5D3FD3", 
-        minWidth: "60px", // Fixed width for submit button
-        width: "60px",    // Fixed width
+        minWidth: "70px", // Fixed width for submit button
+        width: "70px",    // Fixed width
         fontSize: "10px", // Fixed font size
         borderRadius: "1%",
-        padding: "2px 6px", // Fixed padding
+        padding: "6px 6px", // Fixed padding
         marginBottom: {
           xs: "0px",
           sm: "10px"
         }, 
-        marginRight: "0px",
+        marginRight: "8px",
         marginTop: "14px",
         alignSelf: {
           xs: "flex-end",

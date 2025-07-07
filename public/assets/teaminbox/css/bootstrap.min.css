@@ -12306,18 +12306,18 @@ margin-top: 15px;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color:rgb(0 0 0 / 62%);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .new-ticket-container {
   background: white;
   font-size: 12px;
   width: 580px;
-  height: 90vh;
+  height: 530px;
   max-width: 90vw;
   border-radius: 12px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -12442,7 +12442,7 @@ padding: 10px 44px;
   border-radius: 8px;
   padding: 4px 24px;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
 }
 
 .recipient-header {
@@ -12576,7 +12576,7 @@ padding: 10px 44px;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 .action-buttons .cancel-button {
   padding: 4px 8px;
@@ -12653,7 +12653,8 @@ padding: 10px 44px;
 }
 .new_teaminbox_chatbox_search{
   width: 30%;
-  height: 40px;
+  height: 30px;
+  border-radius: 20px;
   background-color: white;
   border: none;
 }

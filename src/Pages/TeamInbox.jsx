@@ -1617,87 +1617,10 @@ const TeamInbox = () => {
 
   return (
     <>
-      {state.openNewTicketsModal ? (
-        //  <div className="modal_overlay">
-        // <div className="new_tickets_container">
-        //   <div
-        //     className="new_tickets_header"
-        //     onClick={handleCloseNewTicketsModal}
-        //   >
-        //     <svg
-        //       xmlns="http://www.w3.org/2000/svg"
-        //       fill="none"
-        //       viewBox="0 0 24 24"
-        //       width="20"
-        //       height="20"
-        //     >
-        //       <path
-        //         stroke="currentcolor"
-        //         stroke-linecap="round"
-        //         stroke-linejoin="round"
-        //         stroke-width="2"
-        //         d="M5 12h14M5 12l4 4m-4-4 4-4"
-        //       ></path>
-        //     </svg>
-        //     <span className="new_tickets_title">New ticket</span>
-        //   </div>
-        //   <div className="new_tickets_main">
-        //     <div className="textbox_container">
-        //       <label>Subject</label>
-        //       <TextfieldComponent
-        //         placeholder="Enter subject"
-        //         customStyle="custom_textfield_box"
-        //       />
-        //     </div>
-        //     <div className="requester_name_email">
-        //       <div className="textbox_container" style={{ width: "50%" }}>
-        //         <label>Requester name</label>
-        //         <TextfieldComponent
-        //           placeholder="Enter requester name"
-        //           customStyle="custom_textfield_box"
-        //         />
-        //       </div>
-        //       <div className="textbox_container" style={{ width: "50%" }}>
-        //         <label>Requester email</label>
-        //         <TextfieldComponent
-        //           placeholder="Enter requester email"
-        //           customStyle="custom_textfield_box"
-        //         />
-        //       </div>
-        //     </div>
-        //     <div className="textbox_container">
-        //       <label>User SID</label>
-        //       <Select
-        //         isMulti
-        //         options={sidOptions}
-        //         placeholder="Select the SID"
-        //       />
-        //     </div>
-        //     <div className="upload_excelfile_container">
-        //       {state.selectedFileName && <p> {state.selectedFileName}</p>}
-        //       <input
-        //         type="file"
-        //         accept=".xls,.xlsx"
-        //         ref={fileInputRef}
-        //         onChange={handleFileChange}
-        //         style={{ display: "none" }}
-        //       />
-        //       <ButtonComponent
-        //         label="upload Excel file"
-        //         onClick={handleUploadExcelClick}
-        //         customBtn="new_teaminbox_button"
-        //       />
-        //       <ButtonComponent
-        //         label="submit"
-        //         onClick={handleCloseNewTicketsModal}
-        //         customBtn="new_teaminbox_button"
-        //       />
-        //     </div>
-        //   </div>
-        // </div>
-        // </div>
-
-        <div className="modal-overlay">
+        <Box sx={style.new_teaminbox_container}>
+          {
+            state.openNewTicketsModal &&  
+              <div className="modal-overlay">
           <div className="new-ticket-container">
             {/* Header */}
             <div className="new-ticket-header">
@@ -1813,258 +1736,267 @@ const TeamInbox = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <Box sx={style.new_teaminbox_container}>
-          <Drawer
-            variant="permanent"
+          }
+<Drawer
+  variant="permanent"
+  sx={{
+    width: state.open ? drawerWidth : collapsedWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    zIndex:"50",
+    boxSizing: "border-box",
+    height: "100vh", // Full viewport height
+    transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+    "& .MuiDrawer-paper": {
+      width: state.open ? drawerWidth : collapsedWidth,
+      transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+      overflowX: "hidden",
+      overflowY: "auto", // Changed from "scroll" to "auto"
+      top: "60px",
+      height: "calc(100vh - 60px)", // Subtract top offset
+      // Hide sidebar on mobile when chat is open
+      display: {
+        xs: state.openChat ? "none" : "block",
+        sm: "block",
+      },
+    },
+  }}
+>
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: state.open ? "space-between" : "center",
+      padding: "4px",
+      marginLeft: state.open ? "12px" : "0px",
+      position: "sticky", // Make header sticky
+      top: 0,
+      backgroundColor: "white", // Ensure background covers content
+      zIndex: 1,
+    }}
+  >
+    <IconButton onClick={toggleDrawer}>
+      <MenuIcon />
+    </IconButton>
+  </Box>
+
+  {state.open && (
+    <Box sx={style.teaminbox_search_container}>
+      <SearchboxComponent
+        placeholder="Search..."
+        customSearch="new_teaminbox_search"
+      />
+    </Box>
+  )}
+
+  <List
+    sx={{
+      flex: 1, // Take remaining space
+      paddingBottom: 2, // Add bottom padding
+    }}
+  >
+    <Box
+      sx={{
+        borderBottom: state.open ? "1px solid #ccc" : "none",
+        mb: "5px",
+        pb: "5px",
+      }}
+    >
+      {state.open && (
+        <Typography
+          variant="caption"
+          sx={style.teaminbox_sidebar_header}
+        >
+          TICKETS
+        </Typography>
+      )}
+      {ticketData.map(({ text, icon, count, sideIcon, unreaded }) => (
+        <Tooltip
+          key={text}
+          title={
+            !state.open ? (
+              <Typography sx={{ fontSize: 11, color: "#fff" }}>
+                {text}
+              </Typography>
+            ) : (
+              ""
+            )
+          }
+          placement="right"
+          arrow
+          disableHoverListener={state.open}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "#5D3FD3",
+                borderRadius: 1,
+                px: 1,
+              },
+            },
+          }}
+        >
+          <ListItem
             sx={{
-              width: state.open ? drawerWidth : collapsedWidth,
-              flexShrink: 0,
-              whiteSpace: "nowrap",
-              boxSizing: "border-box",
-              overflow: "scroll",
-              height:"100vh",
-              transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-              "& .MuiDrawer-paper": {
-                width: state.open ? drawerWidth : collapsedWidth,
-                transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-                overflowX: "hidden",
-                top: "60px",
-                // Hide sidebar on mobile when chat is open
-                display: {
-                  xs: state.openChat ? "none" : "block",
-                  sm: "block",
+              display: "flex",
+              justifyContent: state.open ? "space-between" : "center",
+              pt: state.open ? "4px" : "10px",
+              pb: state.open ? "4px" : "10px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover, &:focus": {
+                backgroundColor: "#f0f0f0",
+                "& .MuiTypography-root": {
+                  color: "#5D3FD3",
+                },
+                "& .MuiChip-root": {
+                  backgroundColor: "#5D3FD3",
+                  color: "#fff",
                 },
               },
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: state.open ? "space-between" : "center",
-                padding: "4px",
-                marginLeft: state.open ? "12px" : "0px",
-              }}
-            >
-              <IconButton onClick={toggleDrawer}>
-                <MenuIcon />
-              </IconButton>
-            </Box>
-
-            {state.open && (
-              <Box sx={style.teaminbox_search_container}>
-                <SearchboxComponent
-                  placeholder="Search..."
-                  customSearch="new_teaminbox_search"
-                />
-              </Box>
-            )}
-
-            <List>
-              <Box
-                sx={{
-                  borderBottom: state.open ? "1px solid #ccc" : "none",
-                  mb: "5px",
-                  pb: "5px",
-                }}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <ListItemIcon
+                sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
               >
-                {state.open && (
-                  <Typography
-                    variant="caption"
-                    sx={style.teaminbox_sidebar_header}
-                  >
-                    TICKETS
-                  </Typography>
-                )}
-                {ticketData.map(({ text, icon, count, sideIcon, unreaded }) => (
-                  <Tooltip
-                    key={text}
-                    title={
-                      !state.open ? (
-                        <Typography sx={{ fontSize: 11, color: "#fff" }}>
-                          {text}
-                        </Typography>
-                      ) : (
-                        ""
-                      )
-                    }
-                    placement="right"
-                    arrow
-                    disableHoverListener={state.open}
-                    componentsProps={{
-                      tooltip: {
-                        sx: {
-                          backgroundColor: "#5D3FD3",
-                          borderRadius: 1,
-                          px: 1,
-                          py: 0.5,
-                        },
-                      },
-                    }}
-                  >
-                    <ListItem
-                      sx={{
-                        display: "flex",
-                        justifyContent: state.open ? "space-between" : "center",
-                        pt: state.open ? "4px" : "10px",
-                        pb: state.open ? "4px" : "10px",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        "&:hover, &:focus": {
-                          backgroundColor: "#f0f0f0",
-                          "& .MuiTypography-root": {
-                            color: "#5D3FD3",
-                          },
-                          "& .MuiChip-root": {
-                            backgroundColor: "#5D3FD3",
-                            color: "#fff",
-                          },
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <ListItemIcon
-                          sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
-                        >
-                          <img
-                            src={icon}
-                            alt={text}
-                            style={{ width: 20, height: 20 }}
-                          />
-                        </ListItemIcon>
-                        {state.open && (
-                          <ListItemText
-                            primary={<Typography>{text}</Typography>}
-                          />
-                        )}
-                      </Box>
-                      {state.open &&
-                        (sideIcon ? (
-                          <img
-                            style={{ marginRight: "10px" }}
-                            src={AngleRight}
-                            alt="AngleRight"
-                          />
-                        ) : (
-                         <Chip
-                      label={count}
-                      size="small"
-                      sx={{
-                        fontSize: "12px",
-                        width: "30px",
-                        height: "28px",
-                        borderRadius: "6px",
-                        display: "flex",
-                        border: unreaded ? "1px solid #5D3FD3":"",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        p: 0,
-                        '& .MuiChip-label': {
-                          overflow: 'visible',
-                          textOverflow: 'unset',
-                          whiteSpace: 'nowrap', 
-                        },
-                      }}
-                    />
-                        ))}
-                    </ListItem>
-                  </Tooltip>
-                ))}
-              </Box>
-              <Box>
-                {state.open && (
-                  <Typography
-                    variant="caption"
-                    sx={style.teaminbox_sidebar_header}
-                  >
-                    INSIDER
-                  </Typography>
-                )}
-                {insiderData.map(({ text, icon, count }) => (
-                  <Tooltip
-                    key={text}
-                    title={
-                      !state.open ? (
-                        <Typography sx={{ fontSize: 11, color: "#fff" }}>
-                          {text}
-                        </Typography>
-                      ) : (
-                        ""
-                      )
-                    }
-                    placement="right"
-                    arrow
-                    disableHoverListener={state.open}
-                    componentsProps={{
-                      tooltip: {
-                        sx: {
-                          backgroundColor: "#5D3FD3",
-                          borderRadius: 1,
-                          px: 1,
-                          py: 0.5,
-                        },
-                      },
-                    }}
-                  >
-                    <ListItem
-                      sx={{
-                        display: "flex",
-                        justifyContent: state.open ? "space-between" : "center",
-                        pt: state.open ? "4px" : "10px",
-                        pb: state.open ? "4px" : "10px",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        "&:hover, &:focus": {
-                          backgroundColor: "#f0f0f0",
-                          "& .MuiTypography-root": {
-                            color: "#5D3FD3",
-                          },
-                          "& .MuiChip-root": {
-                            backgroundColor: "#5D3FD3",
-                            color: "#fff",
-                          },
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <ListItemIcon
-                          sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
-                        >
-                          <img
-                            src={icon}
-                            alt={text}
-                            style={{ width: 20, height: 20 }}
-                          />
-                        </ListItemIcon>
-                        {state.open && (
-                          <ListItemText
-                            primary={<Typography>{text}</Typography>}
-                          />
-                        )}
-                      </Box>
-                      {state.open && (
-                        <Chip
-                          label={count}
-                          size="small"
-                          sx={{
-                            fontSize: "12px",
-                            width: "30px",
-                            height: "28px",
-                            borderRadius: "6px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            p: 0,
-                          }}
-                        />
-                      )}
-                    </ListItem>
-                  </Tooltip>
-                ))}
-              </Box>
-            </List>
-          </Drawer>
+                <img
+                  src={icon}
+                  alt={text}
+                  style={{ width: 20, height: 20 }}
+                />
+              </ListItemIcon>
+              {state.open && (
+                <ListItemText
+                  primary={<Typography>{text}</Typography>}
+                />
+              )}
+            </Box>
+            {state.open &&
+              (sideIcon ? (
+                <img
+                  style={{ marginRight: "10px" }}
+                  src={AngleRight}
+                  alt="AngleRight"
+                />
+              ) : (
+                <Chip
+                  label={count}
+                  size="small"
+                  sx={{
+                    fontSize: "12px",
+                    width: "30px",
+                    height: "28px",
+                    borderRadius: "6px",
+                    display: "flex",
+                    border: unreaded ? "1px solid #5D3FD3" : "",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    p: 0,
+                    '& .MuiChip-label': {
+                      overflow: 'visible',
+                      textOverflow: 'unset',
+                      whiteSpace: 'nowrap', 
+                    },
+                  }}
+                />
+              ))}
+          </ListItem>
+        </Tooltip>
+      ))}
+    </Box>
+    <Box>
+      {state.open && (
+        <Typography
+          variant="caption"
+          sx={style.teaminbox_sidebar_header}
+        >
+          INSIDER
+        </Typography>
+      )}
+      {insiderData.map(({ text, icon, count }) => (
+        <Tooltip
+          key={text}
+          title={
+            !state.open ? (
+              <Typography sx={{ fontSize: 11, color: "#fff" }}>
+                {text}
+              </Typography>
+            ) : (
+              ""
+            )
+          }
+          placement="right"
+          arrow
+          disableHoverListener={state.open}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "#5D3FD3",
+                borderRadius: 1,
+                px: 1,
+                py: 0.5,
+              },
+            },
+          }}
+        >
+          <ListItem
+            sx={{
+              display: "flex",
+              justifyContent: state.open ? "space-between" : "center",
+              pt: state.open ? "4px" : "10px",
+              pb: state.open ? "4px" : "10px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              "&:hover, &:focus": {
+                backgroundColor: "#f0f0f0",
+                "& .MuiTypography-root": {
+                  color: "#5D3FD3",
+                },
+                "& .MuiChip-root": {
+                  backgroundColor: "#5D3FD3",
+                  color: "#fff",
+                },
+              },
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <ListItemIcon
+                sx={{ minWidth: 0, mr: state.open ? 1 : 0 }}
+              >
+                <img
+                  src={icon}
+                  alt={text}
+                  style={{ width: 20, height: 20 }}
+                />
+              </ListItemIcon>
+              {state.open && (
+                <ListItemText
+                  primary={<Typography>{text}</Typography>}
+                />
+              )}
+            </Box>
+            {state.open && (
+              <Chip
+                label={count}
+                size="small"
+                sx={{
+                  fontSize: "12px",
+                  width: "30px",
+                  height: "28px",
+                  borderRadius: "6px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  p: 0,
+                }}
+              />
+            )}
+          </ListItem>
+        </Tooltip>
+      ))}
+    </Box>
+  </List>
+</Drawer>
 
           <div
             style={{
@@ -2243,9 +2175,89 @@ const TeamInbox = () => {
             )}
           </div>
         </Box>
-      )}
+    
     </>
   );
 };
 
 export default TeamInbox;
+
+   {/* // <div className="modal_overlay">
+        //  <div className="new_tickets_container">
+        //   <div
+        //     className="new_tickets_header"
+        //     onClick={handleCloseNewTicketsModal}
+        //   >
+        //     <svg
+        //       xmlns="http://www.w3.org/2000/svg"
+        //       fill="none"
+        //       viewBox="0 0 24 24"
+        //       width="20"
+        //       height="20"
+        //     >
+        //       <path
+        //         stroke="currentcolor"
+        //         stroke-linecap="round"
+        //         stroke-linejoin="round"
+        //         stroke-width="2"
+        //         d="M5 12h14M5 12l4 4m-4-4 4-4"
+        //       ></path>
+        //     </svg>
+        //     <span className="new_tickets_title">New ticket</span>
+        //   </div>
+        //   <div className="new_tickets_main">
+        //     <div className="textbox_container">
+        //       <label>Subject</label>
+        //       <TextfieldComponent
+        //         placeholder="Enter subject"
+        //         customStyle="custom_textfield_box"
+        //       />
+        //     </div>
+        //     <div className="requester_name_email">
+        //       <div className="textbox_container" style={{ width: "50%" }}>
+        //         <label>Requester name</label>
+        //         <TextfieldComponent
+        //           placeholder="Enter requester name"
+        //           customStyle="custom_textfield_box"
+        //         />
+        //       </div>
+        //       <div className="textbox_container" style={{ width: "50%" }}>
+        //         <label>Requester email</label>
+        //         <TextfieldComponent
+        //           placeholder="Enter requester email"
+        //           customStyle="custom_textfield_box"
+        //         />
+        //       </div>
+        //     </div>
+        //     <div className="textbox_container">
+        //       <label>User SID</label>
+        //       <Select
+        //         isMulti
+        //         options={sidOptions}
+        //         placeholder="Select the SID"
+        //       />
+        //     </div>
+        //     <div className="upload_excelfile_container">
+        //       {state.selectedFileName && <p> {state.selectedFileName}</p>}
+        //       <input
+        //         type="file"
+        //         accept=".xls,.xlsx"
+        //         ref={fileInputRef}
+        //         onChange={handleFileChange}
+        //         style={{ display: "none" }}
+        //       />
+        //       <ButtonComponent
+        //         label="upload Excel file"
+        //         onClick={handleUploadExcelClick}
+        //         customBtn="new_teaminbox_button"
+        //       />
+        //       <ButtonComponent
+        //         label="submit"
+        //         onClick={handleCloseNewTicketsModal}
+        //         customBtn="new_teaminbox_button"
+        //       />
+        //     </div>
+        //   </div>
+        // </div>
+        // </div>     */}
+

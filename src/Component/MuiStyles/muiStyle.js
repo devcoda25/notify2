@@ -563,7 +563,6 @@ const style = {
   display: 'flex', 
   alignItems: 'center', 
   px: 2, 
-  py: 1 
   },
   teaminbox_sidebar_header:{
     pl: 2, pt: 1, color: 'gray' 
