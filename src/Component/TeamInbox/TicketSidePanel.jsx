@@ -25,7 +25,7 @@ const TicketSidePanel = ({ onClose }) => {
         width: { xs: "100%", sm: "200px", md: "200px", lg: "100%", xl:"100%" },
         maxWidth: { xs: "100vw", sm: "400px" },
         height: { xs: "100vh", sm: "100vh" },
-        maxHeight: { xs: "100vh", sm: "90vh", md:"calc(90vh - 50px )", lg:"calc(90vh - 50px )", xl:"calc(90vh - 50px )" },
+        maxHeight: { xs: "100vh", sm: "100vh", md:"100vh", lg:"100vh", xl:"100vh" },
         p: 0,
         display: "flex",
         flexDirection: "column",

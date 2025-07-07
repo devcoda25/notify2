@@ -12633,6 +12633,7 @@ padding: 10px 44px;
 .searchbox_teaminbox{
   display: flex;
   align-items: center;
+  font-size: x-small;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;

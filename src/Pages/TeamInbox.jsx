@@ -1822,7 +1822,8 @@ const TeamInbox = () => {
               flexShrink: 0,
               whiteSpace: "nowrap",
               boxSizing: "border-box",
-              overflow: "hidden",
+              overflow: "scroll",
+              height:"100vh",
               transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
               "& .MuiDrawer-paper": {
                 width: state.open ? drawerWidth : collapsedWidth,
@@ -2104,7 +2105,7 @@ const TeamInbox = () => {
                 flex: 1,
                 gap: 2,
                 padding: "0 24px 24px",
-                height: "calc(100vh - 140px)",
+                height: "100vh",
                 overflow: "hidden",
               }}
             >
@@ -2117,7 +2118,7 @@ const TeamInbox = () => {
                       : "350px"
                     : "100%",
                   flexShrink: 0,
-                  height: "calc(100vh - 100px)",
+                  height: "100vh",
                   transition: "width 0.4s ease-in-out",
                   display: {
                     xs:
@@ -2207,6 +2208,7 @@ const TeamInbox = () => {
               {state.openSidePanel && (
                 <Box
                   sx={{
+                    height:"100vh",
                     width: "200px",
                     flexShrink: 0,
                     transition: "all 0.4s ease-in-out",
