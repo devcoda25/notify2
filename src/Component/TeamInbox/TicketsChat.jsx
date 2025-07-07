@@ -32,6 +32,7 @@ import Switch from "@mui/material/Switch";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { styled } from "@mui/material/styles";
 import { SearchOutlinedIcon } from '../Icon'
+import AvatarGroup from '@mui/material/AvatarGroup';
 
 
 
@@ -680,19 +681,27 @@ export default function TicketsChat({ handleOpenSidePanel }) {
           }
         }}
       />
-      <Avatar 
-        src={profile3} 
-        sx={{ 
-          width: {
-            xs: 20,
-            sm: 32
-          }, 
-          height: {
-            xs: 20,
-            sm: 32
-          }
-        }} 
-      /> 
+      <AvatarGroup spacing={24}>
+  <Avatar sx={{ width: 24, height: 24 }} alt="Remy Sharp" src={profile1} />
+  <Avatar sx={{ width: 24, height: 24 }} alt="Travis Howard" src={profile2} />
+  <Avatar sx={{ width: 24, height: 24 }} alt="Cindy Baker" src={profile3} />
+</AvatarGroup>
+<Typography
+          sx={{ 
+            color: "white", 
+            fontSize: {
+              xs: "10px",
+              sm: "10px"
+            }, 
+            textWrap: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis"
+          }}
+          variant="h6"
+        >
+         +2 Others
+        </Typography>
+
       </Box>
 
     <div className="searchbox_teaminbox new_teaminbox_chatbox_search">
@@ -1132,7 +1141,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
   </Box>
 
   {/* FOOTER ACTIONS */}
- <Box
+<Box
     sx={{
       p: {
         xs: 0.5,
@@ -1187,132 +1196,126 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         label="Private"
         labelPlacement="bottom"
       />
-      
-      {/* Scrollable container for dropdowns on mobile */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "4px",
-          overflowX: {
-            xs: "auto",
-            sm: "visible"
-          },
-          width: {
-            xs: "100%",
-            sm: "auto"
-          },
-          flex: 1,
-          "&::-webkit-scrollbar": {
-            height: "4px"
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: "#f1f1f1"
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "#c1c1c1",
-            borderRadius: "2px"
-          }
-        }}
-      >
-
-{["Bots", "Quick Replies", "Templates", "Email"].map((label) => (
-  <FormControl key={label} size="small" variant="standard">
-    <Select
-      value=""
-      displayEmpty
-      disableUnderline
-      IconComponent={() => null}
-      inputProps={{ "aria-label": "Without label" }}
-      sx={{
-        position: "relative",
-        m: 0.5,
-        minWidth: {
-          xs: "40px",   // Minimum width for very small screens
-          sm: "40px",   // Slightly larger for small screens
-          md: "40px",   // Medium screens
-          lg: "50px",   // Large screens
-          xl: "80px"   // Extra large screens
-        },
-        width: {
-          xs: "auto",
-          sm: "auto"
-        },
-        maxWidth: {
-          xs: "100px",  // Maximum width constraint for mobile
-          sm: "150px",  // Larger max width for larger screens
-          md: "200px"
-        },
-        borderRadius: "1%",
-        fontSize: {
-          xs: "0.6rem",
-          sm: "0.7rem",
-          md: "0.75rem"
-        },
-        height: "30px",
-        backgroundColor: "#F3F3F3",
-
-        "& .MuiSelect-select.MuiInputBase-input.MuiInput-input": {
-          padding: "4px 4px !important",
-          minWidth: "10px !important",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap"
-        },
-
-        "&::after": {
-          content: '""',
-          position: "absolute",
-          top: "60%",
-          right: "4px",
-          transform: "translateY(-50%)",
-          width: "8px",
-          height: "8px",
-          backgroundImage: `url(${arrowImg})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-          pointerEvents: "none",
-        },
-      }}
-    >
-      <MenuItem value="">
-        <em>{label}</em>
-      </MenuItem>
-      <MenuItem value={10}>Option 1</MenuItem>
-      <MenuItem value={20}>Option 2</MenuItem>
-      <MenuItem value={30}>Option 3</MenuItem>
-    </Select>
-  </FormControl>
-))}
-
-      </Box>
     </Box>
     
-    <Button
-      variant="contained"
-      endIcon={<KeyboardArrowDownIcon />}
-      sx={{ 
-        textTransform: "none", 
-        bgcolor: "#5D3FD3", 
-        minWidth: "70px", // Fixed width for submit button
-        width: "70px",    // Fixed width
-        fontSize: "10px", // Fixed font size
-        borderRadius: "1%",
-        padding: "6px 6px", // Fixed padding
-        marginBottom: {
-          xs: "0px",
-          sm: "10px"
-        }, 
-        marginRight: "8px",
-        marginTop: "14px",
-        alignSelf: {
-          xs: "flex-end",
-          sm: "flex-start"
+    {/* Moved select menus to be beside submit button */}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "4px",
+        overflowX: {
+          xs: "auto",
+          sm: "visible"
+        },
+        alignItems: "center",
+        "&::-webkit-scrollbar": {
+          height: "4px"
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: "#f1f1f1"
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "#c1c1c1",
+          borderRadius: "2px"
         }
       }}
     >
-      Submit
-    </Button>
+      {["Bots", "Quick Replies", "Templates", "Email"].map((label) => (
+        <FormControl key={label} size="small" variant="standard">
+          <Select
+            value=""
+            displayEmpty
+            disableUnderline
+            IconComponent={() => null}
+            inputProps={{ "aria-label": "Without label" }}
+            sx={{
+              position: "relative",
+              m: 0.5,
+              minWidth: {
+                xs: "40px",   // Minimum width for very small screens
+                sm: "40px",   // Slightly larger for small screens
+                md: "40px",   // Medium screens
+                lg: "50px",   // Large screens
+                xl: "80px"   // Extra large screens
+              },
+              width: {
+                xs: "auto",
+                sm: "auto"
+              },
+              maxWidth: {
+                xs: "100px",  // Maximum width constraint for mobile
+                sm: "150px",  // Larger max width for larger screens
+                md: "200px"
+              },
+              borderRadius: "1%",
+              fontSize: {
+                xs: "0.6rem",
+                sm: "0.7rem",
+                md: "0.75rem"
+              },
+              height: "30px",
+              backgroundColor: "#F3F3F3",
+
+              "& .MuiSelect-select.MuiInputBase-input.MuiInput-input": {
+                padding: "4px 4px !important",
+                minWidth: "10px !important",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap"
+              },
+
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                top: "60%",
+                right: "4px",
+                transform: "translateY(-50%)",
+                width: "8px",
+                height: "8px",
+                backgroundImage: `url(${arrowImg})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+                pointerEvents: "none",
+              },
+            }}
+          >
+            <MenuItem value="">
+              <em>{label}</em>
+            </MenuItem>
+            <MenuItem value={10}>Option 1</MenuItem>
+            <MenuItem value={20}>Option 2</MenuItem>
+            <MenuItem value={30}>Option 3</MenuItem>
+          </Select>
+        </FormControl>
+      ))}
+      
+      <Button
+        variant="contained"
+        endIcon={<KeyboardArrowDownIcon />}
+        sx={{ 
+          textTransform: "none", 
+          bgcolor: "#5D3FD3", 
+          minWidth: "70px", // Fixed width for submit button
+          width: "70px",    // Fixed width
+          fontSize: "10px", // Fixed font size
+          borderRadius: "1%",
+          padding: "6px 6px", // Fixed padding
+          marginBottom: {
+            xs: "0px",
+            sm: "10px"
+          }, 
+          marginRight: "8px",
+          marginTop: "14px",
+          alignSelf: {
+            xs: "flex-end",
+            sm: "flex-start"
+          }
+        }}
+      >
+        Submit
+      </Button>
+    </Box>
   </Box>
 </Paper>
   );

@@ -12637,14 +12637,14 @@ padding: 10px 44px;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  gap: 10px;
+  gap: 2px;
   width: 100%;
 }
 .searchbox_teaminbox input {
   border: none;
   outline: none;
   width: 100%;
-  font-size: 14px;
+  font-size: 10px;
 }
 
 .searchbox_teaminbox .search_icon {
