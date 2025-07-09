@@ -1283,9 +1283,9 @@ export default function TicketsChat({ handleOpenSidePanel }) {
             <MenuItem value="">
               <em>{label}</em>
             </MenuItem>
-            <MenuItem value={10}>Option 1</MenuItem>
-            <MenuItem value={20}>Option 2</MenuItem>
-            <MenuItem value={30}>Option 3</MenuItem>
+            <MenuItem value={10}>{label==="Email" ? "Whatsapp": "option1"}</MenuItem>
+            <MenuItem value={20}>{label==="Email" ? "SMS": "option2"}</MenuItem>
+            <MenuItem value={30}>{label==="Email" ? "Email": "option3"}</MenuItem>
           </Select>
         </FormControl>
       ))}

@@ -3,6 +3,10 @@ import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Icon
 import { Modal, ModalBody, ModalFooter } from 'react-bootstrap';
 import { MdClose } from "react-icons/md";
 import NewTemplate from '../Broadcast/NewTemplate'
+import axios from "axios";
+import baseURL from "../../Url";
+import { TbRuler2 } from "react-icons/tb";
+
 const styles = {
     autocompleteStyle: {
         backgroundColor: 'rgb(245, 246, 250) !important',
@@ -27,49 +31,51 @@ const styles = {
     }
 
 }
-const templateData = [
 
-    {
-        id: 1,
-        templateName: "faff",
-        category: "Marketing",
-        status: "DRAFT",
-        language: "English (US)",
-        lastUpdated: "7/20/2024",
-    },
-    {
-        id: 2,
-        templateName: "aaa",
-        category: "Marketing",
-        status: "APPROVED",
-        language: "English (US)",
-        lastUpdated: "10/7/2024",
-    },
-    {
-        id: 3,
-        templateName: "faff",
-        category: "Marketing",
-        status: "DRAFT",
-        language: "English (US)",
-        lastUpdated: "7/20/2024",
-    },
-    {
-        id: 4,
-        templateName: "faff",
-        category: "Marketing",
-        status: "DRAFT",
-        language: "English (US)",
-        lastUpdated: "7/20/2024",
-    },
-    {
-        id: 5,
-        templateName: "faff",
-        category: "Marketing",
-        status: "APPROVED",
-        language: "English (US)",
-        lastUpdated: "7/20/2024",
-    },
-];
+// const templateData = [
+
+//     {
+//         id: 1,
+//         templateName: "faff",
+//         category: "Marketing",
+//         status: "DRAFT",
+//         language: "English (US)",
+//         lastUpdated: "7/20/2024",
+//     },
+//     {
+//         id: 2,
+//         templateName: "aaa",
+//         category: "Marketing",
+//         status: "APPROVED",
+//         language: "English (US)",
+//         lastUpdated: "10/7/2024",
+//     },
+//     {
+//         id: 3,
+//         templateName: "faff",
+//         category: "Marketing",
+//         status: "DRAFT",
+//         language: "English (US)",
+//         lastUpdated: "7/20/2024",
+//     },
+//     {
+//         id: 4,
+//         templateName: "faff",
+//         category: "Marketing",
+//         status: "DRAFT",
+//         language: "English (US)",
+//         lastUpdated: "7/20/2024",
+//     },
+//     {
+//         id: 5,
+//         templateName: "faff",
+//         category: "Marketing",
+//         status: "APPROVED",
+//         language: "English (US)",
+//         lastUpdated: "7/20/2024",
+//     },
+// ];
+
 const TemplateDeleteModal = ({ show, onClose }) => {
 
     return (
@@ -183,6 +189,47 @@ const YourTemplate = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const totalRows = 5;
+    const [templateData, setTemplateData]= useState([]);
+
+//    const baseURL = `https://api.dev.evzone.app/api/v1.0/web/notify/template`;
+
+    console.log( "baseURL",baseURL)
+
+      function getAuthIdFromUrl() {
+            const path = window.location.pathname; 
+            const parts = path.split('/'); 
+            const userId = parts[2]; 
+            return userId ? userId : 0; 
+        }
+
+
+
+//    const headers = { 'Accept': 'application/json',
+//                     'Content-Type': 'application/json',
+//                     "X-Authuser" : getAuthIdFromUrl(),
+//                     "X-Request-Agent":"APP",
+//                     "X-SID":"sid_r3fCxGnrMOp07mKQaCiS",
+//                     "X-MUID":"mut_XHujrA2WUG51hx3uOLL8"}
+    
+
+                    
+     const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+
+
+        useEffect(() => {
+        GetTemplateCategories();
+        }, []);
+
+        const GetTemplateCategories = async () => {
+        try {
+            const res = await axios.get(`${baseURL}/categories`, {headers, withCredentials: TbRuler2});
+            console.log("data", res.data?.data?.values)
+            setTemplateData(res.data?.data?.values); 
+        } catch (err) {
+            console.error("Error fetching categories:", err);
+        }
+        };
+
 
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
@@ -422,7 +469,7 @@ const YourTemplate = () => {
                                     </div>
                                 </div>
                                 <div className="template__table-container">
-                                    <Table className='template__table'>
+                                    {/* <Table className='template__table'>
                                         <TableHead className='template__table__Head'>
                                             <TableRow>
                                                 <TableCell>Template Name</TableCell>
@@ -492,6 +539,49 @@ const YourTemplate = () => {
                                                 </TableRow>
                                             ))}
                                         </TableBody>
+
+                                    </Table> */}
+                                    <Table className='template__table'>
+                                        <TableHead className='template__table__Head'>
+                                            <TableRow>
+                                                <TableCell>Category Name</TableCell>
+                                                <TableCell>Description</TableCell>
+                                                <TableCell>Slug</TableCell>
+                                                <TableCell>Status</TableCell>
+                                                {/* <TableCell>Color</TableCell> */}
+                                                <TableCell>Created At</TableCell>
+                                                <TableCell>Actions</TableCell>
+                                            </TableRow>
+                                            </TableHead>
+
+                                        <TableBody className="template__table__body">
+                                        {templateData.map((row) => (
+                                            <TableRow key={row.id}>
+                                            <TableCell>{row.name}</TableCell>
+                                            <TableCell>{row.description}</TableCell>
+                                            <TableCell>{row.slug}</TableCell>
+                                            <TableCell>
+                                                <span className={`message-badge ${row.is_active ? "message-badge_approved" : "message-badge_draft"}`}>
+                                                {row.is_active ? "Active" : "Inactive"}
+                                                </span>
+                                            </TableCell>
+                                            {/* <TableCell>
+                                                <span style={{ backgroundColor: row.color }} className="inline-block w-4 h-4 rounded-full mr-2"></span>
+                                                {row.color}
+                                            </TableCell> */}
+                                            <TableCell>{new Date(row.updated_at).toLocaleDateString()}</TableCell>
+                                            <TableCell>
+                                                <Tooltip title="Edit Category">
+                                                <button className="cell__edit">Edit</button>
+                                                </Tooltip>
+                                                <Tooltip title="Delete Category">
+                                                <button className="cell__delete">Delete</button>
+                                                </Tooltip>
+                                            </TableCell>
+                                            </TableRow>
+                                        ))}
+                                        </TableBody>
+
 
                                     </Table>
                                 </div>

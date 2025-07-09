@@ -3115,6 +3115,7 @@
   height: 100%;
 }
 .template__table__Head .MuiTableCell-root:first-child {
+  font-size: 16px;
   padding-left: 0px;
   text-align: left;
 }
@@ -3123,9 +3124,10 @@
   color: rgb(51, 51, 51);
   border-bottom: 1px solid rgb(224, 224, 224);
   font-weight: 600;
-  font-size: 1.28rem;
+  font-size: 16px;
+  text-wrap-mode: nowrap;
   line-height: 27px;
-  padding: 2rem 10px;
+  padding: 1rem 10px;
   text-align: center;
 }
 .template__table__Head .MuiTableCell-root:last-child {
@@ -3149,10 +3151,10 @@
 }
 .template__table__body .MuiTableCell-root {
   border-bottom: none;
-  padding: 1.5rem 5px;
+  padding: 1rem 5px;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: rgb(51, 51, 51);
-  font-size: 1.2rem;
+  font-size: 14px;
   line-height: 25px;
   text-align: center;
 }
@@ -3173,13 +3175,16 @@
 }
 .template__table__body  .message-badge_draft {
   background-color: rgb(255, 247, 228);
+  font-size: 8px;
   color: rgb(255, 185, 6);
 }
 .template__table__body .message-badge span {
   margin-left: 0px;
+  font-size: 2px;
 }
 .template__table__body  .message-badge_approved {
   background-color: rgb(233, 246, 238);
+  font-size: 8px;
   color: rgb(35, 164, 85);
 }
 .your-template-filter .custom-filter-button{
@@ -3201,7 +3206,8 @@
 .template__table__body  .message-badge {
   margin: 0px auto;
   width: calc(12.5rem);
-  max-width: 100%;
+  font-size: 8px;
+  max-width: 50%;
   height: calc(3rem);
   display: block;
   border-radius: 100px;

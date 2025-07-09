@@ -13378,8 +13378,7 @@ fieldset:disabled .btn {
 }
 
 
-.cell__edit,
-.cell__delete,
+
 .cell__download,
 .cell__copy,
 .user_cell__arrow,
@@ -13392,7 +13391,18 @@ fieldset:disabled .btn {
   border: 1px solid rgb(206, 208, 206);
   box-sizing: border-box;
   border-radius: 5px;
+}
 
+.cell__edit,
+.cell__delete{
+  display: inline-flex;
+  width: 60px;
+  height: 32px;
+  background: rgb(245, 246, 250);
+  border: 1px solid rgb(206, 208, 206);
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 8px;
 }
 
 .cell__edit .editsvg,
