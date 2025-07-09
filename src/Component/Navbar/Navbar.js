@@ -70,6 +70,12 @@ const Navbar = () => {
       icons:TeaminboxImg
     },
     { 
+      path: `/u/${authUser}/Dialer`, 
+      label: 'Dialer', 
+      icons:ClickImg
+      // icon: <SignalCellularAltIcon /> 
+    },
+    { 
       path: `/u/${authUser}/meetings`, 
       label: 'Meetings', 
       icons:MeetingImg
@@ -103,12 +109,6 @@ const Navbar = () => {
       path: `/u/${authUser}/reports`, 
       label: 'Reports', 
       icons:ReportsImg
-      // icon: <SignalCellularAltIcon /> 
-    },
-    { 
-      path: `/u/${authUser}/ads`, 
-      label: 'Ads', 
-      icons:ClickImg
       // icon: <SignalCellularAltIcon /> 
     },
     { 
