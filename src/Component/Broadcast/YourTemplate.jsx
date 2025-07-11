@@ -222,7 +222,7 @@ const YourTemplate = () => {
 
         const GetTemplateCategories = async () => {
         try {
-            const res = await axios.get(`${baseURL}/categories`, {headers, withCredentials: TbRuler2});
+            const res = await axios.get(`${baseURL}/categories`, {headers, withCredentials: true});
             console.log("data", res.data?.data?.values)
             setTemplateData(res.data?.data?.values); 
         } catch (err) {

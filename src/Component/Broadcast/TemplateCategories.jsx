@@ -30,14 +30,14 @@ const TemplateCategories = () => {
     return parts[2] || 0;
   };
 
-//   const headers = {
-//     'Accept': 'application/json',
-//     'Content-Type': 'application/json',
-//     'X-Authuser': getAuthIdFromUrl(),
-//     'X-Request-Agent': 'APP',
-//     'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-//     'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-//   };
+  // const headers = {
+  //   'Accept': 'application/json',
+  //   'Content-Type': 'application/json',
+  //   'X-Authuser': getAuthIdFromUrl(),
+  //   'X-Request-Agent': 'APP',
+  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
+  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
+  // };
 
      const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
@@ -153,89 +153,89 @@ const Field = ({ label, value }) => (
         </div>
             </div>
 
-      <TableContainer component={Paper} elevation={3}>
-        <Table>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-              <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Slug</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Updated At</TableCell>
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-{filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <TableRow key={row.id} hover>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.description}</TableCell>
-                <TableCell>{row.slug}</TableCell>
-                {/* <TableCell>
-                  <span style={{
-                    padding: '4px 8px', borderRadius: '12px',
-                    backgroundColor: row.is_active ? '#d0f0c0' : '#f8d7da',
-                    color: row.is_active ? '#2e7d32' : '#c62828',
-                    fontWeight: 500
-                  }}>
-                    {row.is_active ? 'Active' : 'Inactive'}
-                  </span>
-                </TableCell> */}
-                <TableCell>
-                <RadioGroup
-                    row
-                    value={row.is_active ? 'true' : 'false'}
-                    onChange={(e) => handleStatusChange(row.id, e.target.value === 'true')}
+  <TableContainer component={Paper} elevation={1}>
+  <Table size="small">
+    <TableHead>
+      <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+        <TableCell>Name</TableCell>
+        <TableCell>Description</TableCell>
+        <TableCell>Slug</TableCell>
+        <TableCell>Status</TableCell>
+        <TableCell>Updated</TableCell>
+        <TableCell align="center">Actions</TableCell>
+      </TableRow>
+    </TableHead>
+    <TableBody>
+      {filteredData
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((row) => (
+          <TableRow key={row.id} hover>
+            <TableCell sx={{ py: 0.5, fontSize: 13 }}>{row.name}</TableCell>
+            <TableCell sx={{ py: 0.5, fontSize: 13 }}>{row.description}</TableCell>
+            <TableCell sx={{ py: 0.5, fontSize: 13 }}>{row.slug}</TableCell>
+            <TableCell sx={{ py: 0.5 }}>
+              <RadioGroup
+                row
+                value={row.is_active ? 'true' : 'false'}
+                onChange={(e) =>
+                  handleStatusChange(row.id, e.target.value === 'true')
+                }
+              >
+                <FormControlLabel
+                  value="true"
+                  control={<Radio size="small" color="success" />}
+                  label={<span style={{ fontSize: 12 }}>Active</span>}
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio size="small" color="error" />}
+                  label={<span style={{ fontSize: 12 }}>Inactive</span>}
+                />
+              </RadioGroup>
+            </TableCell>
+            <TableCell sx={{ py: 0.5, fontSize: 13 }}>
+              {new Date(row.updated_at).toLocaleDateString()}
+            </TableCell>
+            <TableCell align="center" sx={{ py: 0.5 }}>
+              <Tooltip title="View">
+                <IconButton onClick={() => handleViewCategory(row.id)} color="info" size="small">
+                  <Visibility fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Edit">
+                <IconButton onClick={() => handleOpenDialog(row)} color="success" size="small">
+                  <Edit fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  onClick={() => {
+                    setDeleteId(row.id);
+                    setOpenDeleteConfirm(true);
+                  }}
+                  color="error"
+                  size="small"
                 >
-                    <FormControlLabel
-                    value="true"
-                    control={<Radio size="small" color="success" />}
-                    label="Active"
-                    />
-                    <FormControlLabel
-                    value="false"
-                    control={<Radio size="small" color="error" />}
-                    label="Inactive"
-                    />
-                </RadioGroup>
-                </TableCell>
+                  <Delete fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </TableCell>
+          </TableRow>
+        ))}
+    </TableBody>
+  </Table>
 
-                <TableCell>{new Date(row.updated_at).toLocaleDateString()}</TableCell>
-                <TableCell align="center">
-                  <Tooltip title="View">
-                    <IconButton onClick={() => handleViewCategory(row.id)} color="info">
-                      <Visibility />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Edit">
-                    <IconButton onClick={() => handleOpenDialog(row)} color="primary">
-                      <Edit />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete">
-                    <IconButton onClick={() => {
-                      setDeleteId(row.id);
-                      setOpenDeleteConfirm(true);
-                    }} color="error">
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+  <TablePagination
+    component="div"
+    count={filteredData.length}
+    page={page}
+    onPageChange={(e, newPage) => setPage(newPage)}
+    rowsPerPage={rowsPerPage}
+    rowsPerPageOptions={[rowsPerPage]}
+    sx={{ mt: 1, fontSize: 13 }}
+  />
+</TableContainer>
 
-       <TablePagination
-        component="div"
-        count={filteredData.length}
-        page={page}
-        onPageChange={(e, newPage) => setPage(newPage)}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[rowsPerPage]}
-        />
-
-      </TableContainer>
 
       {/* Add/Edit Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>

@@ -12238,8 +12238,13 @@ fieldset:disabled .btn {
 
 }
 
+.leftbar__item__title{
+  font-size: 14px;
+  font-weight: 500;
+  /* line-height: 22px; */
+}
 
-.leftbar__item__title,
+
 .leftbar__item__title__whatsapp {
   font-size: 15px;
   font-weight: 500;
