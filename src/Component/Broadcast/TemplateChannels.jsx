@@ -2,25 +2,63 @@ import React, { useState, useEffect } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Tooltip, Typography, TablePagination, Radio, RadioGroup, FormControlLabel, Switch, Grid, Box,Chip, Divider 
+  TextField, Tooltip, Typography, TablePagination, Radio, RadioGroup, 
+  FormControlLabel, Switch, Grid, Box, Chip, Divider, Alert, Snackbar,
+  FormControl, FormLabel, FormHelperText, InputLabel, Select, MenuItem,
+  CircularProgress, Backdrop, Card, CardContent, useTheme, alpha
 } from '@mui/material';
-import { Add, Edit, Delete, Visibility } from '@mui/icons-material';
+import { Add, Edit, Delete, Visibility, Save, Cancel, Search, FilterList } from '@mui/icons-material';
 import axios from 'axios';
 import baseURL from '../../Url';
 
 const TemplateChannels = () => {
+  const theme = useTheme();
+  
+  // State management
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  
+  // Form state
   const [formData, setFormData] = useState({
-    id: null, name: '', slug: '', description: '', is_active: true,
-    supports_versioning: false, supports_translation: false
+    id: null,
+    name: '',
+    slug: '',
+    type: '',
+    description: '',
+    supported_formats: [],
+    priority: 1,
+    debug: 0,
+    is_active: true
   });
+  
+  // Validation state
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  
+  // Dialog states
   const [openDialog, setOpenDialog] = useState(false);
   const [openView, setOpenView] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [viewData, setViewData] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-  const [openDelete, setOpenDelete] = useState(false);
+  
+  // Pagination
   const [page, setPage] = useState(0);
-  const rowsPerPage = 5;
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  
+  // Notification
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
+  // Predefined options
+  const channelTypes = ['email', 'sms', 'push', 'webhook', 'api', 'file'];
+  const supportedFormats = ['json', 'xml', 'html', 'text', 'csv', 'pdf'];
 
   const getAuthIdFromUrl = () => {
     const parts = window.location.pathname.split('/');
@@ -36,363 +74,831 @@ const TemplateChannels = () => {
   //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
   // };
 
-     const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
 
+  // Validation rules
+  const validationRules = {
+    name: {
+      required: true,
+      minLength: 2,
+      maxLength: 100,
+      pattern: /^[a-zA-Z0-9\s\-_]+$/
+    },
+    slug: {
+      required: true,
+      minLength: 2,
+      maxLength: 50,
+      pattern: /^[a-z0-9\-_]+$/
+    },
+    type: {
+      required: true,
+      enum: channelTypes
+    },
+    description: {
+      maxLength: 500
+    },
+    priority: {
+      required: true,
+      min: 1,
+      max: 100
+    },
+    debug: {
+      min: 0,
+      max: 1
+    },
+    supported_formats: {
+      required: true,
+      minItems: 1
+    }
+  };
+
+  // Validation function
+  const validateField = (name, value) => {
+    const rules = validationRules[name];
+    if (!rules) return '';
+
+    if (rules.required && (!value || (Array.isArray(value) && value.length === 0))) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+    }
+
+    if (rules.minLength && value.length < rules.minLength) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.minLength} characters`;
+    }
+
+    if (rules.maxLength && value.length > rules.maxLength) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} must not exceed ${rules.maxLength} characters`;
+    }
+
+    if (rules.pattern && !rules.pattern.test(value)) {
+      if (name === 'name') {
+        return 'Name can only contain letters, numbers, spaces, hyphens, and underscores';
+      }
+      if (name === 'slug') {
+        return 'Slug can only contain lowercase letters, numbers, hyphens, and underscores';
+      }
+    }
+
+    if (rules.enum && !rules.enum.includes(value)) {
+      return `Please select a valid ${name}`;
+    }
+
+    if (rules.min && value < rules.min) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.min}`;
+    }
+
+    if (rules.max && value > rules.max) {
+      return `${name.charAt(0).toUpperCase() + name.slice(1)} must not exceed ${rules.max}`;
+    }
+
+    if (rules.minItems && Array.isArray(value) && value.length < rules.minItems) {
+      return `Please select at least ${rules.minItems} format(s)`;
+    }
+
+    return '';
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    Object.keys(validationRules).forEach(field => {
+      const error = validateField(field, formData[field]);
+      if (error) newErrors[field] = error;
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Auto-generate slug from name
+  const generateSlug = (name) => {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s\-_]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  };
+
+  // Fetch data
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Filter data based on search
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredData(data);
+    } else {
+      const filtered = data.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
+  }, [data, searchQuery]);
+
   const fetchData = async () => {
-    const res = await axios.get(`${baseURL}/channels`, { headers, withCredentials: true });
-    setData(res.data?.data?.values || []);
+    try {
+      setLoading(true);
+      const res = await axios.get(`${baseURL}/channels`, { headers, withCredentials: true });
+      setData(res.data?.data?.values || []);
+      showNotification('Data loaded successfully', 'success');
+    } catch (error) {
+      showNotification('Failed to load data', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const showNotification = (message, severity = 'success') => {
+    setNotification({
+      open: true,
+      message,
+      severity
+    });
   };
 
   const handleDialogOpen = (item = null) => {
-    setFormData(item ? { ...item } : {
-      id: null, name: '', slug: '', description: '',
-      supports_versioning: false, supports_translation: false, is_active: true
-    });
+    if (item) {
+      setFormData({
+        ...item,
+        supported_formats: Array.isArray(item.supported_formats) ? item.supported_formats : []
+      });
+    } else {
+      setFormData({
+        id: null,
+        name: '',
+        slug: '',
+        type: '',
+        description: '',
+        supported_formats: [],
+        priority: 1,
+        debug: 0,
+        is_active: true
+      });
+    }
+    setErrors({});
+    setTouched({});
     setOpenDialog(true);
   };
 
-  const handleDialogClose = () => setOpenDialog(false);
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    setErrors({});
+    setTouched({});
+  };
 
   const handleInputChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    let newValue = type === 'checkbox' ? checked : value;
 
-  if (name === 'configuration') {
-    try {
-      setFormData((prev) => ({ ...prev, configuration: JSON.parse(value) }));
-    } catch {
-      setFormData((prev) => ({ ...prev, configuration: value })); // Keep raw if invalid
+    // Auto-generate slug when name changes
+    if (name === 'name' && !formData.id) {
+      setFormData(prev => ({
+        ...prev,
+        [name]: newValue,
+        slug: generateSlug(newValue)
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: newValue }));
     }
-  } else if (name === 'supported_formats') {
-    setFormData((prev) => ({
-      ...prev,
-      supported_formats: value.split(',').map(f => f.trim()),
-    }));
-  } else {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }
-};
+
+    // Mark field as touched
+    setTouched(prev => ({ ...prev, [name]: true }));
+
+    // Validate field
+    const error = validateField(name, newValue);
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
+
+  const handleMultiSelectChange = (name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setTouched(prev => ({ ...prev, [name]: true }));
+    
+    const error = validateField(name, value);
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
 
   const handleSubmit = async () => {
-    const url = formData.id
-      ? `${baseURL}/channel/update`
-      : `${baseURL}/channel/store`;
+    if (!validateForm()) {
+      showNotification('Please correct the errors before submitting', 'error');
+      return;
+    }
 
-    await axios.post(url, formData, { headers, withCredentials: true });
-    setOpenDialog(false);
-    fetchData();
+    try {
+      setSubmitting(true);
+      const url = formData.id ? `${baseURL}/channel/update` : `${baseURL}/channel/store`;
+      
+      await axios.post(url, formData, { headers, withCredentials: true });
+      
+      setOpenDialog(false);
+      await fetchData();
+      showNotification(
+        formData.id ? 'Channel updated successfully' : 'Channel created successfully',
+        'success'
+      );
+    } catch (error) {
+      showNotification('Failed to save channel', 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleDelete = async () => {
-    await axios.post(`${baseURL}/channel/delete`, { id: deleteId }, { headers, withCredentials: true });
-    setOpenDelete(false);
-    fetchData();
+    try {
+      setSubmitting(true);
+      await axios.post(`${baseURL}/channel/delete`, { id: deleteId }, { headers, withCredentials: true });
+      setOpenDelete(false);
+      await fetchData();
+      showNotification('Channel deleted successfully', 'success');
+    } catch (error) {
+      showNotification('Failed to delete channel', 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
-  
+
   const handleView = async (id) => {
-    const res = await axios.get(`${baseURL}/channel/show?id=${id}`, { headers, withCredentials: true });
-    setViewData(res.data?.data);
-    setOpenView(true);
+    try {
+      setLoading(true);
+      const res = await axios.get(`${baseURL}/channel/show?id=${id}`, { headers, withCredentials: true });
+      setViewData(res.data?.data);
+      setOpenView(true);
+    } catch (error) {
+      showNotification('Failed to load channel details', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
-    const Field = ({ label, value }) => (
+  const handleStatusChange = async (row, isActive) => {
+    try {
+      await axios.post(`${baseURL}/channel/update`, {
+        ...row,
+        is_active: isActive,
+      }, { headers, withCredentials: true });
+      
+      await fetchData();
+      showNotification('Status updated successfully', 'success');
+    } catch (error) {
+      showNotification('Failed to update status', 'error');
+    }
+  };
+
+  const Field = ({ label, value, chip = false }) => (
     <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'text.primary' }}>
+      <Typography variant="subtitle2" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>
         {label}
-        </Typography>
+      </Typography>
+      {chip ? (
+        <Box>{value}</Box>
+      ) : (
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        {value}
+          {value || '—'}
         </Typography>
+      )}
     </Box>
-    );
+  );
 
-
+  const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
-    <div className="p-4">
-      <Typography variant="h5" gutterBottom>Templates</Typography>
-      <Button variant="contained" sx={{marginBottom:"20px"}} startIcon={<Add />} onClick={() => handleDialogOpen()}>
-        Add Channel
-      </Button>
+    <Box sx={{ p: 3 }}>
+      {/* Header */}
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'text.primary' }}>
+          Template Channels
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Manage your template channels with advanced validation and elegant interface
+        </Typography>
+      </Box>
 
-<TableContainer component={Paper} elevation={1}>
-  <Table size="small">
-    <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
-      <TableRow>
-        <TableCell>Name</TableCell>
-        <TableCell>Slug</TableCell>
-        <TableCell>Type</TableCell>
-        <TableCell>Description</TableCell>
-        <TableCell>Supported Formats</TableCell>
-        <TableCell>Priority</TableCell>
-        <TableCell>Status</TableCell>
-        <TableCell align="center">Actions</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-        <TableRow key={row.id} hover>
-          <TableCell>{row.name}</TableCell>
-          <TableCell>{row.slug}</TableCell>
-          <TableCell>{row.type}</TableCell>
-          <TableCell sx={{ maxWidth: 150, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {row.description}
-          </TableCell>
-          <TableCell>
-            {Array.isArray(row.supported_formats) ? (
-              row.supported_formats.map((format, idx) => (
-                <Chip
-                  key={idx}
-                  label={format}
-                  size="small"
-                  sx={{ mr: 0.3, mb: 0.3 }}
-                />
-              ))
-            ) : (
-              'N/A'
-            )}
-          </TableCell>
-          <TableCell>{row.priority}</TableCell>
+      {/* Actions Bar */}
+      <Card sx={{ mb: 3, p: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+          <TextField
+            size="small"
+            placeholder="Search channels..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            InputProps={{
+              startAdornment: <Search sx={{ color: 'text.secondary', mr: 1 }} />
+            }}
+            sx={{ minWidth: 250 }}
+          />
+          
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => handleDialogOpen()}
+            sx={{
+              borderRadius: 2,
+              textTransform: 'none',
+              fontWeight: 600,
+              px: 3
+            }}
+          >
+            Add Channel
+          </Button>
+        </Box>
+      </Card>
 
-          {/* Active/Inactive status in compact row view */}
-          <TableCell sx={{ px: 0 }}>
-            <RadioGroup
-              row
-              value={row.is_active ? 'true' : 'false'}
-              onChange={(e) =>
-                axios
-                  .post(`${baseURL}/channel/update`, {
-                    ...row,
-                    is_active: e.target.value === 'true',
-                  }, { headers, withCredentials: true })
-                  .then(fetchData)
-              }
-              sx={{ display: 'flex', gap: 0 }}
-            >
-              <FormControlLabel
-                value="true"
-                control={<Radio size="small" color="success" />}
-                label="Active"
-                sx={{ mr: 1 }}
-              />
-              <FormControlLabel
-                value="false"
-                control={<Radio size="small" color="error" />}
-                label="Inactive"
-              />
-            </RadioGroup>
-          </TableCell>
+      {/* Data Table */}
+      <Card elevation={2}>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: alpha(theme.palette.primary.main, 0.05) }}>
+                <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Slug</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Type</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Description</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Formats</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Priority</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600 }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {loading ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                    <CircularProgress size={24} />
+                  </TableCell>
+                </TableRow>
+              ) : paginatedData.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                    <Typography color="text.secondary">No channels found</Typography>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                paginatedData.map((row) => (
+                  <TableRow key={row.id} hover sx={{ '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.02) } }}>
+                    <TableCell>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {row.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip label={row.slug} variant="outlined" size="small" />
+                    </TableCell>
+                    <TableCell>
+                      <Chip 
+                        label={row.type} 
+                        color="primary" 
+                        variant="outlined" 
+                        size="small"
+                        sx={{ textTransform: 'capitalize' }}
+                      />
+                    </TableCell>
+                    <TableCell sx={{ maxWidth: 200 }}>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          overflow: 'hidden', 
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        {row.description || '—'}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {Array.isArray(row.supported_formats) ? 
+                          row.supported_formats.slice(0, 2).map((format, idx) => (
+                            <Chip
+                              key={idx}
+                              label={format.toUpperCase()}
+                              size="small"
+                              variant="outlined"
+                              sx={{ fontSize: '0.7rem' }}
+                            />
+                          )) : null
+                        }
+                        {Array.isArray(row.supported_formats) && row.supported_formats.length > 2 && (
+                          <Chip label={`+${row.supported_formats.length - 2}`} size="small" variant="outlined" />
+                        )}
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Chip 
+                        label={row.priority} 
+                        color={row.priority <= 3 ? 'success' : row.priority <= 7 ? 'warning' : 'error'}
+                        size="small"
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <RadioGroup
+                        row
+                        value={row.is_active ? 'true' : 'false'}
+                        onChange={(e) => handleStatusChange(row, e.target.value === 'true')}
+                        sx={{ justifyContent: 'center' }}
+                      >
+                        <FormControlLabel
+                          value="true"
+                          control={<Radio size="small" color="success" />}
+                          label="Active"
+                          sx={{ mr: 1 }}
+                        />
+                        <FormControlLabel
+                          value="false"
+                          control={<Radio size="small" color="error" />}
+                          label="Inactive"
+                        />
+                      </RadioGroup>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}>
+                        <Tooltip title="View Details">
+                          <IconButton 
+                            onClick={() => handleView(row.id)} 
+                            size="small" 
+                            sx={{ color: 'info.main' }}
+                          >
+                            <Visibility fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Edit">
+                          <IconButton 
+                            onClick={() => handleDialogOpen(row)} 
+                            size="small" 
+                            sx={{ color: 'primary.main' }}
+                          >
+                            <Edit fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <IconButton
+                            onClick={() => {
+                              setDeleteId(row.id);
+                              setOpenDelete(true);
+                            }}
+                            size="small"
+                            sx={{ color: 'error.main' }}
+                          >
+                            <Delete fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-          {/* Colored action icons */}
-          <TableCell align="center">
-            <Box display="flex" justifyContent="center" gap={1}>
-              <Tooltip title="View">
-                <IconButton onClick={() => handleView(row.id)} size="small" sx={{ color: 'info.main' }}>
-                  <Visibility fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit">
-                <IconButton onClick={() => handleDialogOpen(row)} size="small" sx={{ color: 'primary.main' }}>
-                  <Edit fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  onClick={() => {
-                    setDeleteId(row.id);
-                    setOpenDelete(true);
-                  }}
-                  size="small"
-                  sx={{ color: 'error.main' }}
-                >
-                  <Delete fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-
-  {/* Pagination */}
-  <TablePagination
-    component="div"
-    count={data.length}
-    page={page}
-    onPageChange={(e, newPage) => setPage(newPage)}
-    rowsPerPage={rowsPerPage}
-    rowsPerPageOptions={[rowsPerPage]}
-    sx={{ px: 2 }}
-  />
-</TableContainer>
-
-
+        <TablePagination
+          component="div"
+          count={filteredData.length}
+          page={page}
+          onPageChange={(e, newPage) => setPage(newPage)}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          sx={{ borderTop: 1, borderColor: 'divider' }}
+        />
+      </Card>
 
       {/* Add/Edit Dialog */}
- <Dialog open={openDialog} onClose={handleDialogClose} fullWidth maxWidth="sm">
-  <DialogTitle>{formData?.id ? 'Edit Channel' : 'Add Channel'}</DialogTitle>
-  <DialogContent dividers>
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <TextField
-          fullWidth label="Name" name="name"
-          value={formData.name || ''} onChange={handleInputChange}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          fullWidth label="Slug" name="slug"
-          value={formData.slug || ''} onChange={handleInputChange}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          fullWidth label="Type" name="type"
-          value={formData.type || ''} onChange={handleInputChange}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          fullWidth
-          label="Supported Formats (Comma Separated)"
-          name="supported_formats"
-          value={
-            Array.isArray(formData.supported_formats)
-              ? formData.supported_formats.join(', ')
-              : formData.supported_formats || ''
-          }
-          onChange={handleInputChange}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth type="number"
-          label="Priority" name="priority"
-          value={formData.priority || ''} onChange={handleInputChange}
-        />
-      </Grid>
-      <Grid item xs={6}>
-        <TextField
-          fullWidth type="number"
-          label="Debug" name="debug"
-          value={formData.debug || ''} onChange={handleInputChange}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={formData.is_active || false}
-              onChange={(e) =>
-                handleInputChange({
-                  target: { name: 'is_active', value: e.target.checked }
-                })
-              }
-            />
-          }
-          label="Is Active"
-        />
-      </Grid>
-    </Grid>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleDialogClose}>Cancel</Button>
-    <Button variant="contained" color="primary" onClick={handleSubmit}>
-      Save
-    </Button>
-  </DialogActions>
-</Dialog>
+      <Dialog 
+        open={openDialog} 
+        onClose={handleDialogClose} 
+        maxWidth="md" 
+        fullWidth
+        PaperProps={{
+          sx: { borderRadius: 3 }
+        }}
+      >
+        <DialogTitle sx={{ 
+          fontWeight: 600, 
+          fontSize: '1.5rem',
+          borderBottom: 1,
+          borderColor: 'divider'
+        }}>
+          {formData?.id ? 'Edit Channel' : 'Add New Channel'}
+        </DialogTitle>
+        
+        <DialogContent sx={{ pt: 3 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Channel Name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                error={touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Slug"
+                name="slug"
+                value={formData.slug}
+                onChange={handleInputChange}
+                error={touched.slug && !!errors.slug}
+                helperText={touched.slug && errors.slug}
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
 
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth error={touched.type && !!errors.type}>
+                <InputLabel>Channel Type *</InputLabel>
+                <Select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleInputChange}
+                  label="Channel Type *"
+                >
+                  {channelTypes.map(type => (
+                    <MenuItem key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {touched.type && errors.type && (
+                  <FormHelperText>{errors.type}</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
 
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                type="number"
+                label="Priority"
+                name="priority"
+                value={formData.priority}
+                onChange={handleInputChange}
+                error={touched.priority && !!errors.priority}
+                helperText={touched.priority && errors.priority}
+                required
+                inputProps={{ min: 1, max: 100 }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                label="Description"
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                error={touched.description && !!errors.description}
+                helperText={touched.description && errors.description}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl fullWidth error={touched.supported_formats && !!errors.supported_formats}>
+                <InputLabel>Supported Formats *</InputLabel>
+                <Select
+                  multiple
+                  name="supported_formats"
+                  value={formData.supported_formats}
+                  onChange={(e) => handleMultiSelectChange('supported_formats', e.target.value)}
+                  label="Supported Formats *"
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value.toUpperCase()} size="small" />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {supportedFormats.map(format => (
+                    <MenuItem key={format} value={format}>
+                      {format.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {touched.supported_formats && errors.supported_formats && (
+                  <FormHelperText>{errors.supported_formats}</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                type="number"
+                label="Debug Level"
+                name="debug"
+                value={formData.debug}
+                onChange={handleInputChange}
+                error={touched.debug && !!errors.debug}
+                helperText={touched.debug && errors.debug}
+                inputProps={{ min: 0, max: 1 }}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={formData.is_active}
+                    onChange={(e) => handleInputChange({
+                      target: { name: 'is_active', value: e.target.checked }
+                    })}
+                    color="primary"
+                  />
+                }
+                label="Active Channel"
+                sx={{ mt: 2 }}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        
+        <DialogActions sx={{ p: 3, borderTop: 1, borderColor: 'divider' }}>
+          <Button 
+            onClick={handleDialogClose}
+            startIcon={<Cancel />}
+            sx={{ textTransform: 'none' }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            variant="contained" 
+            onClick={handleSubmit}
+            disabled={submitting}
+            startIcon={submitting ? <CircularProgress size={16} /> : <Save />}
+            sx={{ textTransform: 'none', px: 3 }}
+          >
+            {submitting ? 'Saving...' : 'Save Channel'}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* View Dialog */}
       <Dialog
-  open={openView}
-  onClose={() => setOpenView(false)}
-  maxWidth="sm"
-  fullWidth
-  PaperProps={{
-    sx: {
-      borderRadius: 3,
-      p: 2,
-      backgroundColor: '#fafafa',
-    },
-  }}
->
-  <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.4rem', pb: 0 }}>
-    Channel Details
-  </DialogTitle>
+        open={openView}
+        onClose={() => setOpenView(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: { borderRadius: 3 }
+        }}
+      >
+        <DialogTitle sx={{ 
+          fontWeight: 600, 
+          fontSize: '1.5rem',
+          borderBottom: 1,
+          borderColor: 'divider'
+        }}>
+          Channel Details
+        </DialogTitle>
 
-  <DialogContent dividers sx={{ mt: 1 }}>
-    {viewData ? (
-      <>
-        <Field label="Name" value={viewData.name} />
-        <Field label="Slug" value={viewData.slug} />
-        <Field label="Type" value={viewData.type} />
-        <Field label="Description" value={viewData.description || '—'} />
-        <Field
-          label="Status"
-          value={
-            <Chip
-              label={viewData.is_active ? 'Active' : 'Inactive'}
-              color={viewData.is_active ? 'success' : 'default'}
-              size="small"
-            />
-          }
-        />
-        <Field label="Priority" value={viewData.priority} />
-        <Field
-          label="Supported Formats"
-          value={
-            viewData.supported_formats?.length ? (
-              viewData.supported_formats.map((fmt, idx) => (
-                <Chip
-                  key={idx}
-                  label={fmt.toUpperCase()}
-                  size="small"
-                  variant="outlined"
-                  sx={{ mr: 0.5 }}
+        <DialogContent sx={{ pt: 3 }}>
+          {viewData ? (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Field label="Name" value={viewData.name} />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Field label="Slug" value={<Chip label={viewData.slug} variant="outlined" size="small" />} chip />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Field label="Type" value={<Chip label={viewData.type} color="primary" variant="outlined" size="small" />} chip />
+              </Grid>
+              <Grid item xs={12}>
+                <Field label="Description" value={viewData.description} />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Field label="Priority" value={<Chip label={viewData.priority} color="info" size="small" />} chip />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Field 
+                  label="Status" 
+                  value={
+                    <Chip
+                      label={viewData.is_active ? 'Active' : 'Inactive'}
+                      color={viewData.is_active ? 'success' : 'error'}
+                      size="small"
+                    />
+                  } 
+                  chip 
                 />
-              ))
-            ) : (
-              '—'
-            )
-          }
-        />
-       
-        {/* <Divider sx={{ my: 2 }} /> */}
-        {/* <Field label="Created At" value={new Date(viewData.created_at).toLocaleString()} />
-        <Field label="Updated At" value={new Date(viewData.updated_at).toLocaleString()} /> */}
-      </>
-    ) : (
-      <Typography>Loading...</Typography>
-    )}
-  </DialogContent>
+              </Grid>
+              <Grid item xs={12}>
+                <Field
+                  label="Supported Formats"
+                  value={
+                    viewData.supported_formats?.length ? (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {viewData.supported_formats.map((fmt, idx) => (
+                          <Chip
+                            key={idx}
+                            label={fmt.toUpperCase()}
+                            size="small"
+                            variant="outlined"
+                            color="primary"
+                          />
+                        ))}
+                      </Box>
+                    ) : '—'
+                  }
+                  chip
+                />
+              </Grid>
+            </Grid>
+          ) : (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+              <CircularProgress />
+            </Box>
+          )}
+        </DialogContent>
 
-  <DialogActions>
-    <Button variant="outlined" onClick={() => setOpenView(false)}>
-      Close
-    </Button>
-  </DialogActions>
-</Dialog>
-
-
-
-      {/* Delete Confirm */}
-      <Dialog open={openDelete} onClose={() => setOpenDelete(false)}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>Are you sure you want to delete this template?</DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
-          <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
+        <DialogActions sx={{ p: 3, borderTop: 1, borderColor: 'divider' }}>
+          <Button 
+            variant="outlined" 
+            onClick={() => setOpenView(false)}
+            sx={{ textTransform: 'none' }}
+          >
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
-    </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog 
+        open={openDelete} 
+        onClose={() => setOpenDelete(false)}
+        PaperProps={{
+          sx: { borderRadius: 3 }
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 600, color: 'error.main' }}>
+          Confirm Delete
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete this channel? This action cannot be undone.
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button 
+            onClick={() => setOpenDelete(false)}
+            sx={{ textTransform: 'none' }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            variant="contained" 
+            color="error" 
+            onClick={handleDelete}
+            disabled={submitting}
+            startIcon={submitting ? <CircularProgress size={16} /> : <Delete />}
+            sx={{ textTransform: 'none' }}
+          >
+            {submitting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Loading Backdrop */}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+      {/* Notification Snackbar */}
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={4000}
+        onClose={() => setNotification(prev => ({ ...prev, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={() => setNotification(prev => ({ ...prev, open: false }))}
+          severity={notification.severity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 

@@ -1,19 +1,118 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Card, CardHeader, Table, TableHead, TableRow, TableCell, TableBody,
   IconButton, Tooltip, Button, Dialog, DialogTitle, DialogContent, DialogActions,
   TextField, Box, Typography, Chip, Grid, Paper, Divider, Alert, Snackbar,
   FormControl, InputLabel, Select, MenuItem, Switch, FormControlLabel,
   Accordion, AccordionSummary, AccordionDetails, CircularProgress,
-  TableContainer, TablePagination, InputAdornment, AppBar, Toolbar
+  TableContainer, TablePagination, InputAdornment, AppBar, Toolbar,
+  Fade, Slide, Collapse, FormHelperText, Stack, Avatar
 } from '@mui/material';
 import {
   Add, Delete, Edit, Visibility, Search, Code, Language, Settings,
-  ExpandMore, ContentCopy, Preview, Check, Error, Warning, Info
+  ExpandMore, ContentCopy, Preview, Check, Error, Warning, Info,
+  Email, Description, DataObject, Psychology, AutoFixHigh,
+  Timeline, Palette, Security, BugReport
 } from '@mui/icons-material';
+import { alpha, useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import baseURL from '../../Url';
 
+// Enhanced validation schema
+const validationSchema = {
+  template_id: {
+    required: true,
+    type: 'number',
+    min: 1,
+    message: 'Template ID is required and must be a positive number'
+  },
+  channel_id: {
+    required: true,
+    type: 'number',
+    min: 1,
+    message: 'Channel ID is required and must be a positive number'
+  },
+  language_id: {
+    required: true,
+    type: 'number',
+    min: 1,
+    message: 'Language ID is required and must be a positive number'
+  },
+  subject: {
+    required: true,
+    minLength: 5,
+    maxLength: 200,
+    message: 'Subject must be between 5 and 200 characters'
+  },
+  content: {
+    required: true,
+    minLength: 10,
+    message: 'Content must be at least 10 characters long'
+  },
+  plain_content: {
+    required: true,
+    minLength: 10,
+    message: 'Plain content must be at least 10 characters long'
+  },
+  variables: {
+    pattern: /^[a-zA-Z_][a-zA-Z0-9_]*(\s*,\s*[a-zA-Z_][a-zA-Z0-9_]*)*$/,
+    message: 'Variables must be valid identifiers separated by commas'
+  },
+  dynamic_content: {
+    type: 'json',
+    message: 'Dynamic content must be valid JSON'
+  },
+  conditional_blocks: {
+    type: 'json',
+    message: 'Conditional blocks must be valid JSON'
+  }
+};
+
+// Enhanced validation function
+const validateField = (name, value, schema) => {
+  const rules = schema[name];
+  if (!rules) return null;
+
+  // Required validation
+  if (rules.required && (!value || value.toString().trim() === '')) {
+    return rules.message || `${name} is required`;
+  }
+
+  // Skip other validations if field is empty and not required
+  if (!value || value.toString().trim() === '') return null;
+
+  // Type validation
+  if (rules.type === 'number') {
+    const num = Number(value);
+    if (isNaN(num)) return 'Must be a valid number';
+    if (rules.min && num < rules.min) return `Must be at least ${rules.min}`;
+    if (rules.max && num > rules.max) return `Must be at most ${rules.max}`;
+  }
+
+  // Length validation
+  if (rules.minLength && value.length < rules.minLength) {
+    return `Must be at least ${rules.minLength} characters`;
+  }
+  if (rules.maxLength && value.length > rules.maxLength) {
+    return `Must be at most ${rules.maxLength} characters`;
+  }
+
+  // Pattern validation
+  if (rules.pattern && !rules.pattern.test(value)) {
+    return rules.message || 'Invalid format';
+  }
+
+  // JSON validation
+  if (rules.type === 'json') {
+    try {
+      JSON.parse(value);
+    } catch (e) {
+      return 'Must be valid JSON';
+    }
+  }
+
+  return null;
+};
 
 const mockTemplateContents = [
   {
@@ -46,9 +145,11 @@ const mockTemplateContents = [
 ];
 
 const TemplateContents = () => {
+  const theme = useTheme();
   const [templateContents, setTemplateContents] = useState(mockTemplateContents);
   const [filteredContents, setFilteredContents] = useState(mockTemplateContents);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [openPreviewDialog, setOpenPreviewDialog] = useState(false);
   const [editingContent, setEditingContent] = useState(null);
@@ -57,6 +158,9 @@ const TemplateContents = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteItemId, setDeleteItemId] = useState(null);
+  const [formTouched, setFormTouched] = useState({});
 
   const [form, setForm] = useState({
     template_id: '',
@@ -66,38 +170,55 @@ const TemplateContents = () => {
     content: '',
     plain_content: '',
     variables: '',
-    dynamic_content: '',
-    conditional_blocks: '',
+    dynamic_content: '{}',
+    conditional_blocks: '{}',
     is_compiled: false
   });
 
-   const getAuthIdFromUrl = () => {
+  const getAuthIdFromUrl = () => {
     const parts = window.location.pathname.split('/');
     return parts[2] || 0;
   };
 
-//   const headers = {
-//     'Accept': 'application/json',
-//     'Content-Type': 'application/json',
-//     'X-Authuser': getAuthIdFromUrl(),
-//     'X-Request-Agent': 'APP',
-//     'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-//     'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-//   };
-     
+  // const headers = {
+  //   'Accept': 'application/json',
+  //   'Content-Type': 'application/json',
+  //   'X-Authuser': getAuthIdFromUrl(),
+  //   'X-Request-Agent': 'APP',
+  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
+  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
+  // };
+
   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
 
+  // Memoized form validation
+  const formErrors = useMemo(() => {
+    const errors = {};
+    Object.keys(form).forEach(field => {
+      const error = validateField(field, form[field], validationSchema);
+      if (error) errors[field] = error;
+    });
+    return errors;
+  }, [form]);
 
-  const [formErrors, setFormErrors] = useState({});
+  // Check if form is valid
+  const isFormValid = useMemo(() => {
+    return Object.keys(formErrors).length === 0;
+  }, [formErrors]);
+
+  // Enhanced field change handler with real-time validation
+  const handleFieldChange = useCallback((field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+    setFormTouched(prev => ({ ...prev, [field]: true }));
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-    //   await new Promise(resolve => setTimeout(resolve, 1000));
-    const res = await axios.get(`${baseURL}/contents`, { headers, withCredentials: true });
-      setTemplateContents(res.data?.data?.values);
-      setFilteredContents(res.data?.data?.values);
+      const res = await axios.get(`${baseURL}/contents`, { headers, withCredentials: true });
+      setTemplateContents(res.data?.data?.values || []);
+      setFilteredContents(res.data?.data?.values || []);
     } catch (error) {
       showSnackbar('Error fetching data', 'error');
     } finally {
@@ -117,26 +238,15 @@ const TemplateContents = () => {
     fetchData();
   }, []);
 
- useEffect(() => {
-  const filtered = templateContents.filter(content =>
-    (content.subject?.toLowerCase()?.includes(searchTerm.toLowerCase()) ?? false) ||
-    (Array.isArray(content.variables) &&
-      content.variables.some(variable => variable?.toLowerCase()?.includes(searchTerm.toLowerCase())))
-  );
-  setFilteredContents(filtered);
-  setPage(0);
-}, [searchTerm, templateContents]);
-
-
-  const validateForm = () => {
-    const errors = {};
-    if (!form.subject.trim()) errors.subject = 'Subject is required';
-    if (!form.content.trim()) errors.content = 'Content is required';
-    if (!form.plain_content.trim()) errors.plain_content = 'Plain content is required';
-    
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+  useEffect(() => {
+    const filtered = templateContents.filter(content =>
+      (content.subject?.toLowerCase()?.includes(searchTerm.toLowerCase()) ?? false) ||
+      (Array.isArray(content.variables) &&
+        content.variables.some(variable => variable?.toLowerCase()?.includes(searchTerm.toLowerCase())))
+    );
+    setFilteredContents(filtered);
+    setPage(0);
+  }, [searchTerm, templateContents]);
 
   const handleOpen = (item = null) => {
     setEditingContent(item);
@@ -167,7 +277,7 @@ const TemplateContents = () => {
         is_compiled: false
       });
     }
-    setFormErrors({});
+    setFormTouched({});
     setOpenDialog(true);
   };
 
@@ -177,9 +287,19 @@ const TemplateContents = () => {
   };
 
   const handleSave = async () => {
-    if (!validateForm()) return;
+    // Touch all fields to show validation errors
+    const allTouched = Object.keys(form).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {});
+    setFormTouched(allTouched);
 
-    setLoading(true);
+    if (!isFormValid) {
+      showSnackbar('Please fix validation errors before saving', 'error');
+      return;
+    }
+
+    setSaving(true);
     try {
       const payload = {
         ...form,
@@ -188,30 +308,74 @@ const TemplateContents = () => {
         conditional_blocks: form.conditional_blocks ? JSON.parse(form.conditional_blocks) : {}
       };
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       if (editingContent) {
-        showSnackbar('Template content updated successfully!');
+        await axios.post(`${baseURL}/content/update`, { ...payload, id: editingContent.id }, { headers, withCredentials: true });
+        showSnackbar('Template content updated successfully!', 'success');
       } else {
-        showSnackbar('Template content created successfully!');
+        await axios.post(`${baseURL}/content/store`, payload, { headers, withCredentials: true });
+        showSnackbar('Template content created successfully!', 'success');
       }
 
       setOpenDialog(false);
+      resetForm();
       fetchData();
     } catch (error) {
-      showSnackbar('Error saving template content', 'error');
+      console.error('Error saving template content:', error);
+      
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data?.message || 'Server error occurred';
+        
+        const errorMessages = {
+          400: `Validation error: ${message}`,
+          401: 'Unauthorized access',
+          403: 'Permission denied',
+          404: 'Template not found',
+          409: 'Template already exists'
+        };
+        
+        showSnackbar(errorMessages[status] || `Error: ${message}`, 'error');
+      } else if (error.request) {
+        showSnackbar('Network error. Please check your connection.', 'error');
+      } else {
+        showSnackbar('Error processing data. Please check your input.', 'error');
+      }
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this template content?')) return;
+  const resetForm = () => {
+    setForm({
+      template_id: '',
+      channel_id: '',
+      language_id: '',
+      subject: '',
+      content: '',
+      plain_content: '',
+      variables: '',
+      dynamic_content: '{}',
+      conditional_blocks: '{}',
+      is_compiled: false
+    });
+    setEditingContent(null);
+    setFormTouched({});
+  };
+
+  const handleDeleteClick = (id) => {
+    setDeleteItemId(id);
+    setOpenDelete(true);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteItemId) return;
     
     setLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      showSnackbar('Template content deleted successfully!');
+      await axios.post(`${baseURL}/content/delete`, { id: deleteItemId }, { headers, withCredentials: true });
+      setOpenDelete(false);
+      setDeleteItemId(null);
+      showSnackbar('Template content deleted successfully!', 'success');
       fetchData();
     } catch (error) {
       showSnackbar('Error deleting template content', 'error');
@@ -229,29 +393,95 @@ const TemplateContents = () => {
     setPage(0);
   };
 
-//   const copyToClipboard = (text) => {
-//     navigator.clipboard.writeText(text);
-//     showSnackbar('Copied to clipboard!');
-//   };
-
   const paginatedContents = filteredContents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+  // Enhanced form field component
+  const FormField = ({ name, label, type = 'text', multiline = false, rows = 1, icon, ...props }) => {
+    const hasError = formTouched[name] && formErrors[name];
+    const isRequired = validationSchema[name]?.required;
+
+    return (
+      <TextField
+        label={
+          <Box display="flex" alignItems="center" gap={0.5}>
+            {icon}
+            {label}
+            {isRequired && <Typography color="error.main">*</Typography>}
+          </Box>
+        }
+        fullWidth
+        margin="dense"
+        type={type}
+        multiline={multiline}
+        rows={rows}
+        value={form[name]}
+        onChange={(e) => handleFieldChange(name, e.target.value)}
+        error={hasError}
+        helperText={hasError ? formErrors[name] : props.helperText}
+        variant="outlined"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: hasError ? 'error.main' : 'primary.main',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderWidth: 2,
+            },
+          },
+          '& .MuiInputLabel-root': {
+            fontWeight: 500,
+          },
+        }}
+        {...props}
+      />
+    );
+  };
+
   return (
-    <Box sx={{ p: 3 }}>
-      <Paper elevation={0} sx={{ mb: 3 }}>
-        <AppBar position="static" color="default" elevation={0}>
-          <Toolbar>
-            <Typography variant="h5" component="h1" sx={{ flexGrow: 1, fontWeight: 600 }}>
-              Template Content Manager
-            </Typography>
+    <Box sx={{ p: 3, bgcolor: 'grey.50', minHeight: '100vh' }}>
+      <Paper elevation={0} sx={{ mb: 3, borderRadius: 3, overflow: 'hidden' }}>
+        <AppBar 
+          position="static" 
+          color="default" 
+          elevation={0}
+          sx={{
+            bgcolor: 'background.paper',
+            borderBottom: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Toolbar sx={{ py: 1 }}>
+            <Box display="flex" alignItems="center" gap={2} flexGrow={1}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
+                <Email />
+              </Avatar>
+              <Box>
+                <Typography variant="h5" component="h1" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                  Template Content Manager
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Manage and organize your email templates
+                </Typography>
+              </Box>
+            </Box>
             <Button
               startIcon={<Add />}
               variant="contained"
               size="large"
               onClick={() => handleOpen()}
-              sx={{ borderRadius: 2 }}
+              sx={{ 
+                borderRadius: 3,
+                px: 3,
+                py: 1.5,
+                fontWeight: 600,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
+                }
+              }}
             >
-              Add Template
+              Create Template
             </Button>
           </Toolbar>
         </AppBar>
@@ -259,12 +489,23 @@ const TemplateContents = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Card elevation={2}>
+          <Card elevation={0} sx={{ borderRadius: 3, overflow: 'hidden' }}>
             <CardHeader
+              sx={{ 
+                bgcolor: alpha(theme.palette.primary.main, 0.02),
+                borderBottom: `1px solid ${theme.palette.divider}`,
+              }}
               title={
                 <Box display="flex" alignItems="center" gap={2}>
-                  <Typography variant="h6">Template Contents</Typography>
-                  <Chip label={`${filteredContents.length} items`} color="primary" size="small" />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Template Contents
+                  </Typography>
+                  <Chip 
+                    label={`${filteredContents.length} templates`} 
+                    color="primary" 
+                    size="small"
+                    sx={{ fontWeight: 500 }}
+                  />
                 </Box>
               }
               action={
@@ -274,9 +515,19 @@ const TemplateContents = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start"><Search /></InputAdornment>,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search color="action" />
+                      </InputAdornment>
+                    ),
                   }}
-                  sx={{ width: 250 }}
+                  sx={{ 
+                    width: 300,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      bgcolor: 'background.paper',
+                    }
+                  }}
                 />
               }
             />
@@ -284,7 +535,7 @@ const TemplateContents = () => {
             <TableContainer>
               <Table>
                 <TableHead>
-                  <TableRow>
+                  <TableRow sx={{ '& .MuiTableCell-head': { fontWeight: 600, bgcolor: 'grey.50' } }}>
                     <TableCell>Subject</TableCell>
                     <TableCell>Variables</TableCell>
                     <TableCell>Status</TableCell>
@@ -295,22 +546,47 @@ const TemplateContents = () => {
                 <TableBody>
                   {loading ? (
                     <TableRow>
-                      <TableCell colSpan={5} align="center" sx={{ py: 4 }}>
-                        <CircularProgress />
+                      <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
+                        <Stack alignItems="center" spacing={2}>
+                          <CircularProgress size={40} />
+                          <Typography color="text.secondary">Loading templates...</Typography>
+                        </Stack>
                       </TableCell>
                     </TableRow>
                   ) : paginatedContents.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} align="center" sx={{ py: 4 }}>
-                        <Typography color="textSecondary">No template contents found</Typography>
+                      <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
+                        <Stack alignItems="center" spacing={2}>
+                          <Email sx={{ fontSize: 48, color: 'text.disabled' }} />
+                          <Typography color="text.secondary">No template contents found</Typography>
+                          <Button 
+                            variant="outlined" 
+                            startIcon={<Add />}
+                            onClick={() => handleOpen()}
+                            sx={{ borderRadius: 2 }}
+                          >
+                            Create Your First Template
+                          </Button>
+                        </Stack>
                       </TableCell>
                     </TableRow>
                   ) : (
                     paginatedContents.map((row) => (
-                      <TableRow key={row.id} hover>
+                      <TableRow 
+                        key={row.id} 
+                        hover
+                        sx={{
+                          '&:hover': {
+                            bgcolor: alpha(theme.palette.primary.main, 0.04),
+                          },
+                        }}
+                      >
                         <TableCell>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5 }}>
                             {row.subject}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            ID: {row.id}
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -322,13 +598,15 @@ const TemplateContents = () => {
                                 size="small"
                                 variant="outlined"
                                 color="secondary"
+                                sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
                               />
                             ))}
                             {row.variables.length > 3 && (
                               <Chip
-                                label={`+${row.variables.length - 3}`}
+                                label={`+${row.variables.length - 3} more`}
                                 size="small"
                                 variant="outlined"
+                                color="default"
                               />
                             )}
                           </Box>
@@ -339,50 +617,51 @@ const TemplateContents = () => {
                             color={row.is_compiled ? 'success' : 'warning'}
                             size="small"
                             icon={row.is_compiled ? <Check /> : <Warning />}
+                            sx={{ fontWeight: 500 }}
                           />
                         </TableCell>
                         <TableCell>
-                          <Typography variant="body2" color="textSecondary">
-                            {new Date(row.updated_at).toLocaleDateString()}
+                          <Typography variant="body2" color="text.secondary">
+                            {new Date(row.updated_at).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            })}
                           </Typography>
                         </TableCell>
                         <TableCell align="center">
-                          <Tooltip title="Preview">
-                            <IconButton
-                              color="info"
-                              onClick={() => handlePreview(row)}
-                              size="small"
-                            >
-                              <Visibility />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Edit">
-                            <IconButton
-                              color="primary"
-                              onClick={() => handleOpen(row)}
-                              size="small"
-                            >
-                              <Edit />
-                            </IconButton>
-                          </Tooltip>
-                          {/* <Tooltip title="Copy">
-                            <IconButton
-                              color="secondary"
-                              onClick={() => copyToClipboard(row.content)}
-                              size="small"
-                            >
-                              <ContentCopy />
-                            </IconButton>
-                          </Tooltip> */}
-                          <Tooltip title="Delete">
-                            <IconButton
-                              color="error"
-                              onClick={() => handleDelete(row.id)}
-                              size="small"
-                            >
-                              <Delete />
-                            </IconButton>
-                          </Tooltip>
+                          <Box display="flex" gap={0.5} justifyContent="center">
+                            <Tooltip title="Preview Template">
+                              <IconButton
+                                color="info"
+                                onClick={() => handlePreview(row)}
+                                size="small"
+                                sx={{ borderRadius: 1.5 }}
+                              >
+                                <Visibility />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Edit Template">
+                              <IconButton
+                                color="primary"
+                                onClick={() => handleOpen(row)}
+                                size="small"
+                                sx={{ borderRadius: 1.5 }}
+                              >
+                                <Edit />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete Template">
+                              <IconButton
+                                color="error"
+                                onClick={() => handleDeleteClick(row.id)}
+                                size="small"
+                                sx={{ borderRadius: 1.5 }}
+                              >
+                                <Delete />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
                         </TableCell>
                       </TableRow>
                     ))
@@ -399,157 +678,207 @@ const TemplateContents = () => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              sx={{
+                borderTop: `1px solid ${theme.palette.divider}`,
+                '& .MuiTablePagination-toolbar': {
+                  px: 3,
+                },
+              }}
             />
           </Card>
         </Grid>
       </Grid>
 
-      {/* Add/Edit Dialog */}
+      {/* Enhanced Add/Edit Dialog */}
       <Dialog 
         open={openDialog} 
         onClose={() => setOpenDialog(false)} 
         fullWidth 
         maxWidth="lg"
-        PaperProps={{ sx: { borderRadius: 2 } }}
+        TransitionComponent={Fade}
+        PaperProps={{ 
+          sx: { 
+            borderRadius: 3,
+            maxHeight: '90vh',
+          } 
+        }}
       >
-        <DialogTitle>
-          <Typography variant="h6">
-            {editingContent ? 'Edit Template Content' : 'Add Template Content'}
-          </Typography>
+        <DialogTitle sx={{ pb: 2 }}>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Avatar sx={{ bgcolor: editingContent ? 'warning.main' : 'primary.main' }}>
+              {editingContent ? <Edit /> : <Add />}
+            </Avatar>
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                {editingContent ? 'Edit Template Content' : 'Create New Template'}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {editingContent ? 'Update your template content' : 'Build a new email template'}
+              </Typography>
+            </Box>
+          </Stack>
         </DialogTitle>
-        <DialogContent dividers>
+
+        <DialogContent dividers sx={{ px: 3 }}>
           <Grid container spacing={3}>
+            {/* Basic Information */}
+            <Grid item xs={12}>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'primary.main' }}>
+                Basic Information
+              </Typography>
+            </Grid>
+            
             <Grid item xs={12} md={4}>
-              <TextField
+              <FormField
+                name="template_id"
                 label="Template ID"
-                fullWidth
-                margin="dense"
                 type="number"
-                value={form.template_id}
-                onChange={(e) => setForm({ ...form, template_id: e.target.value })}
+                icon={<Settings fontSize="small" />}
+                helperText="Unique identifier for the template"
               />
             </Grid>
+            
             <Grid item xs={12} md={4}>
-              <TextField
+              <FormField
+                name="channel_id"
                 label="Channel ID"
-                fullWidth
-                margin="dense"
                 type="number"
-                value={form.channel_id}
-                onChange={(e) => setForm({ ...form, channel_id: e.target.value })}
+                icon={<Timeline fontSize="small" />}
+                helperText="Communication channel identifier"
               />
             </Grid>
+            
             <Grid item xs={12} md={4}>
-              <TextField
+              <FormField
+                name="language_id"
                 label="Language ID"
-                fullWidth
-                margin="dense"
                 type="number"
-                value={form.language_id}
-                onChange={(e) => setForm({ ...form, language_id: e.target.value })}
+                icon={<Language fontSize="small" />}
+                helperText="Language localization identifier"
               />
             </Grid>
+            
             <Grid item xs={12}>
-              <TextField
-                label="Subject"
-                fullWidth
-                margin="dense"
-                value={form.subject}
-                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                error={!!formErrors.subject}
-                helperText={formErrors.subject}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start"><Language /></InputAdornment>,
-                }}
+              <FormField
+                name="subject"
+                label="Subject Line"
+                icon={<Email fontSize="small" />}
+                helperText="Email subject with template variables (e.g., {{user_name}})"
               />
             </Grid>
+            
             <Grid item xs={12}>
-              <TextField
-                label="Variables (comma-separated)"
-                fullWidth
-                margin="dense"
-                value={form.variables}
-                onChange={(e) => setForm({ ...form, variables: e.target.value })}
-                helperText="Enter variables like: user_name, company_name, email"
+              <FormField
+                name="variables"
+                label="Template Variables"
+                icon={<DataObject fontSize="small" />}
+                helperText="Comma-separated variables (e.g., user_name, company_name, email)"
               />
             </Grid>
+            
             <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Switch
                     checked={form.is_compiled}
-                    onChange={(e) => setForm({ ...form, is_compiled: e.target.checked })}
+                    onChange={(e) => handleFieldChange('is_compiled', e.target.checked)}
+                    color="primary"
                   />
                 }
-                label="Compiled Template"
+                label={
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <AutoFixHigh fontSize="small" />
+                    <Typography>Compiled Template</Typography>
+                  </Box>
+                }
+                sx={{ mt: 1 }}
               />
             </Grid>
           </Grid>
 
-          <Box sx={{ mt: 3 }}>
-            <Accordion defaultExpanded>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="h6">Content</Typography>
+          <Box sx={{ mt: 4 }}>
+            <Accordion defaultExpanded sx={{ borderRadius: 2, mb: 2 }}>
+              <AccordionSummary 
+                expandIcon={<ExpandMore />}
+                sx={{ 
+                  bgcolor: alpha(theme.palette.primary.main, 0.04),
+                  borderRadius: 2,
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
+                  }
+                }}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Description color="primary" />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Content Templates
+                  </Typography>
+                </Stack>
               </AccordionSummary>
-              <AccordionDetails>
-                <Grid container spacing={2}>
+              <AccordionDetails sx={{ pt: 3 }}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
-                    <TextField
+                    <FormField
+                      name="content"
                       label="HTML Content"
-                      fullWidth
                       multiline
-                      rows={8}
-                      value={form.content}
-                      onChange={(e) => setForm({ ...form, content: e.target.value })}
-                      error={!!formErrors.content}
-                      helperText={formErrors.content}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start"><Code /></InputAdornment>,
-                      }}
+                      rows={12}
+                      icon={<Code fontSize="small" />}
+                      helperText="Rich HTML content with styling and template variables"
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Plain Content"
-                      fullWidth
+                    <FormField
+                      name="plain_content"
+                      label="Plain Text Content"
                       multiline
-                      rows={8}
-                      value={form.plain_content}
-                      onChange={(e) => setForm({ ...form, plain_content: e.target.value })}
-                      error={!!formErrors.plain_content}
-                      helperText={formErrors.plain_content}
+                      rows={12}
+                      icon={<Description fontSize="small" />}
+                      helperText="Plain text version for email clients that don't support HTML"
                     />
                   </Grid>
                 </Grid>
               </AccordionDetails>
             </Accordion>
 
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMore />}>
-                <Typography variant="h6">Advanced Settings</Typography>
+            <Accordion sx={{ borderRadius: 2 }}>
+              <AccordionSummary 
+                expandIcon={<ExpandMore />}
+                sx={{ 
+                  bgcolor: alpha(theme.palette.secondary.main, 0.04),
+                  borderRadius: 2,
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.secondary.main, 0.08),
+                  }
+                }}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Psychology color="secondary" />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Advanced Configuration
+                  </Typography>
+                </Stack>
               </AccordionSummary>
-              <AccordionDetails>
-                <Grid container spacing={2}>
+              <AccordionDetails sx={{ pt: 3 }}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
-                    <TextField
+                    <FormField
+                      name="dynamic_content"
                       label="Dynamic Content (JSON)"
-                      fullWidth
                       multiline
-                      rows={6}
-                      value={form.dynamic_content}
-                      onChange={(e) => setForm({ ...form, dynamic_content: e.target.value })}
-                      helperText="Enter JSON structure for dynamic content blocks"
+                      rows={8}
+                      icon={<DataObject fontSize="small" />}
+                      helperText="JSON structure for personalized content blocks"
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <TextField
+                    <FormField
+                      name="conditional_blocks"
                       label="Conditional Blocks (JSON)"
-                      fullWidth
                       multiline
-                      rows={6}
-                      value={form.conditional_blocks}
-                      onChange={(e) => setForm({ ...form, conditional_blocks: e.target.value })}
-                      helperText="Enter JSON structure for conditional content"
+                      rows={8}
+                      icon={<Security fontSize="small" />}
+                      helperText="JSON structure for conditional content rendering"
                     />
                   </Grid>
                 </Grid>
@@ -557,63 +886,262 @@ const TemplateContents = () => {
             </Accordion>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setOpenDialog(false)} size="large">
+
+        <DialogActions sx={{ px: 3, py: 2, bgcolor: 'grey.50' }}>
+          <Button 
+            onClick={() => setOpenDialog(false)} 
+            size="large"
+            sx={{ borderRadius: 2, px: 3 }}
+          >
             Cancel
           </Button>
           <Button 
             onClick={handleSave} 
             variant="contained" 
             size="large"
-            disabled={loading}
-            startIcon={loading ? <CircularProgress size={20} /> : null}
+            disabled={saving || !isFormValid}
+            startIcon={saving ? <CircularProgress size={20} /> : <Check />}
+            sx={{ 
+              borderRadius: 2,
+              px: 3,
+              fontWeight: 600,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              '&:hover': {
+                boxShadow: '0 6px 16px rgba(0,0,0,0.2)',
+              },
+              '&:disabled': {
+                bgcolor: 'grey.300',
+                color: 'grey.500',
+              }
+            }}
           >
-            {loading ? 'Saving...' : 'Save'}
+            {saving ? 'Saving...' : editingContent ? 'Update Template' : 'Create Template'}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Preview Dialog */}
+      {/* Enhanced Preview Dialog */}
       <Dialog 
         open={openPreviewDialog} 
         onClose={() => setOpenPreviewDialog(false)} 
         fullWidth 
         maxWidth="md"
+        TransitionComponent={Slide}
+        TransitionProps={{ direction: 'up' }}
+        PaperProps={{ 
+          sx: { 
+            borderRadius: 3,
+            maxHeight: '80vh',
+          } 
+        }}
       >
-        <DialogTitle>
-          <Typography variant="h6">Template Preview</Typography>
+        <DialogTitle sx={{ pb: 2 }}>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Avatar sx={{ bgcolor: 'info.main' }}>
+              <Preview />
+            </Avatar>
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                Template Preview
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Live preview of your template content
+              </Typography>
+            </Box>
+          </Stack>
         </DialogTitle>
+
         <DialogContent dividers>
           {previewContent && (
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                {previewContent.subject}
-              </Typography>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant="body2" color="textSecondary" paragraph>
-                Variables: {previewContent.variables.join(', ')}
-              </Typography>
-              <Paper variant="outlined" sx={{ p: 2, bgcolor: 'grey.50' }}>
-                <Typography variant="body2" component="pre" sx={{ whiteSpace: 'pre-wrap' }}>
-                  {previewContent.plain_content}
+            <Stack spacing={3}>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                  {previewContent.subject}
                 </Typography>
-              </Paper>
-            </Box>
+                <Stack direction="row" spacing={1} mb={2}>
+                  <Chip
+                    label={previewContent.is_compiled ? 'Compiled' : 'Draft'}
+                    color={previewContent.is_compiled ? 'success' : 'warning'}
+                    size="small"
+                    icon={previewContent.is_compiled ? <Check /> : <Warning />}
+                  />
+                  <Chip
+                    label={`${previewContent.variables.length} variables`}
+                    color="primary"
+                    size="small"
+                    variant="outlined"
+                  />
+                </Stack>
+              </Box>
+              
+              <Divider />
+              
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                  Template Variables:
+                </Typography>
+                <Stack direction="row" flexWrap="wrap" gap={1}>
+                  {previewContent.variables.map((variable, index) => (
+                    <Chip
+                      key={index}
+                      label={`{{${variable}}}`}
+                      size="small"
+                      color="secondary"
+                      variant="outlined"
+                      sx={{ fontFamily: 'monospace' }}
+                    />
+                  ))}
+                </Stack>
+              </Box>
+              
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                  Plain Text Content:
+                </Typography>
+                <Paper 
+                  variant="outlined" 
+                  sx={{ 
+                    p: 2, 
+                    bgcolor: 'grey.50',
+                    borderRadius: 2,
+                    maxHeight: 300,
+                    overflow: 'auto'
+                  }}
+                >
+                  <Typography 
+                    variant="body2" 
+                    component="pre" 
+                    sx={{ 
+                      whiteSpace: 'pre-wrap',
+                      fontFamily: 'monospace',
+                      fontSize: '0.875rem',
+                      lineHeight: 1.5
+                    }}
+                  >
+                    {previewContent.plain_content}
+                  </Typography>
+                </Paper>
+              </Box>
+            </Stack>
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenPreviewDialog(false)}>Close</Button>
+
+        <DialogActions sx={{ px: 3, py: 2 }}>
+          <Button 
+            onClick={() => setOpenPreviewDialog(false)}
+            variant="outlined"
+            size="large"
+            sx={{ borderRadius: 2, px: 3 }}
+          >
+            Close Preview
+          </Button>
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar */}
+      {/* Enhanced Delete Confirmation Dialog */}
+      <Dialog
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        maxWidth="xs"
+        fullWidth
+        TransitionComponent={Fade}
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12)'
+          }
+        }}
+      >
+        <DialogTitle sx={{
+          pb: 2,
+          textAlign: 'center',
+        }}>
+          <Stack alignItems="center" spacing={2}>
+            <Avatar sx={{ bgcolor: 'error.main', width: 56, height: 56 }}>
+              <Delete fontSize="large" />
+            </Avatar>
+            <Box textAlign="center">
+              <Typography variant="h6" sx={{ fontWeight: 600, color: 'error.main' }}>
+                Delete Template
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                This action cannot be undone
+              </Typography>
+            </Box>
+          </Stack>
+        </DialogTitle>
+
+        <DialogContent sx={{ textAlign: 'center', pb: 3 }}>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Are you sure you want to delete this template?
+          </Typography>
+          <Alert severity="warning" sx={{ borderRadius: 2 }}>
+            All associated data will be permanently removed from the system.
+          </Alert>
+        </DialogContent>
+
+        <DialogActions sx={{ px: 3, py: 2, gap: 2, justifyContent: 'center' }}>
+          <Button
+            onClick={() => setOpenDelete(false)}
+            variant="outlined"
+            size="large"
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              fontWeight: 500,
+              borderColor: 'grey.400',
+              color: 'grey.600',
+              '&:hover': {
+                borderColor: 'grey.500',
+                bgcolor: 'grey.50'
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            color="error"
+            size="large"
+            disabled={loading}
+            startIcon={loading ? <CircularProgress size={20} /> : <Delete />}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              fontWeight: 600,
+              '&:hover': {
+                bgcolor: 'error.dark'
+              }
+            }}
+          >
+            {loading ? 'Deleting...' : 'Delete Template'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Enhanced Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        TransitionComponent={Slide}
+        TransitionProps={{ direction: 'left' }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert 
+          onClose={handleCloseSnackbar} 
+          severity={snackbar.severity} 
+          variant="filled"
+          sx={{ 
+            width: '100%',
+            borderRadius: 2,
+            fontWeight: 500,
+            '& .MuiAlert-icon': {
+              fontSize: '1.5rem'
+            }
+          }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

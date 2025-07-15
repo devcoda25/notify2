@@ -209,7 +209,8 @@ const YourTemplate = () => {
 //                     "X-Authuser" : getAuthIdFromUrl(),
 //                     "X-Request-Agent":"APP",
 //                     "X-SID":"sid_r3fCxGnrMOp07mKQaCiS",
-//                     "X-MUID":"mut_XHujrA2WUG51hx3uOLL8"}
+//                     "X-MUID":"mut_XHujrA2WUG51hx3uOLL8"
+//                 }
     
 
                     
@@ -570,9 +571,9 @@ const YourTemplate = () => {
                                                 {row.color}
                                             </TableCell> */}
                                             <TableCell>{new Date(row.updated_at).toLocaleDateString()}</TableCell>
-                                            <TableCell>
+                                            <TableCell >
                                                 <Tooltip title="Edit Category">
-                                                <button className="cell__edit">Edit</button>
+                                                <button style={{marginRight:"4px"}} className="cell__edit">Edit</button>
                                                 </Tooltip>
                                                 <Tooltip title="Delete Category">
                                                 <button className="cell__delete">Delete</button>
