@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, IconButton, Button, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -10,10 +10,13 @@ import {
 } from '@mui/material';
 import { Add, Edit, Delete, Visibility, CheckCircle, Warning, Language } from '@mui/icons-material';
 import axios from 'axios';
-import baseURL from '../../Url';
+import baseURL, { addLanguage, deleteLanguage } from '../../Url';
+import { fetchTemplates, fetchLanguages, addTemplate, deleteTemplate, showTemplates, updateTemplate, setDefaultLanguage } from '../../Url';
+import { config } from '../../Url';
+
 
 const Templates = () => {
-  // State Management
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
@@ -30,7 +33,6 @@ const Templates = () => {
   const [submitting, setSubmitting] = useState(false);
   const rowsPerPage = 10;
 
-  // Language Management State
   const [languages, setLanguages] = useState([]);
   const [languageLoading, setLanguageLoading] = useState(false);
   const [openLangDialog, setOpenLangDialog] = useState(false);
@@ -46,29 +48,13 @@ const Templates = () => {
   });
   const [langErrors, setLangErrors] = useState({});
 
-  // Notification State
   const [notification, setNotification] = useState({
     open: false,
     message: '',
     severity: 'success'
   });
 
-  // Utility Functions
-  const getAuthIdFromUrl = () => {
-    const parts = window.location.pathname.split('/');
-    return parts[2] || 0;
-  };
 
-  // const headers = {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  //   'X-Authuser': getAuthIdFromUrl(),
-  //   'X-Request-Agent': 'APP',
-  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-  // };
-
-  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
 
   const showNotification = (message, severity = 'success') => {
@@ -79,7 +65,6 @@ const Templates = () => {
     setNotification(prev => ({ ...prev, open: false }));
   };
 
-  // Validation Functions
   const validateTemplateForm = () => {
     const errors = {};
     
@@ -163,36 +148,38 @@ const Templates = () => {
       .trim();
   };
 
-  const fetchData = useCallback(async () => {
+  const handleGetTemplates = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${baseURL}/templates`, { headers, withCredentials: true });
+      const res = await axios.get(fetchTemplates(), config);
       setData(res.data?.data?.values || []);
     } catch (error) {
-      showNotification('Failed to fetch templates', 'error');
+      // showNotification('Failed to fetch templates', 'error');
       console.error('Error fetching templates:', error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
+  
 
-  const fetchLanguages = useCallback(async () => {
+  const handleGetLanguages = async () => {
     try {
       setLanguageLoading(true);
-      const res = await axios.get(`${baseURL}/languages`, { headers, withCredentials: true });
+      const res = await axios.get(fetchLanguages(), config );
       setLanguages(res.data?.data?.values || []);
     } catch (error) {
-      showNotification('Failed to fetch languages', 'error');
+      // showNotification('Failed to fetch languages', 'error');
       console.error('Error fetching languages:', error);
     } finally {
       setLanguageLoading(false);
     }
-  }, []);
+  };
+
 
   useEffect(() => {
-    fetchData();
-    fetchLanguages();
-  }, [fetchData, fetchLanguages]);
+    handleGetTemplates();
+    handleGetLanguages();
+  }, []);
 
   // Dialog Handlers
   const handleDialogOpen = (item = null) => {
@@ -230,7 +217,6 @@ const Templates = () => {
       return newData;
     });
 
-    // Clear error when user starts typing
     if (formErrors[name]) {
       setFormErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -256,11 +242,11 @@ const Templates = () => {
         metadata: formData.metadata ? JSON.parse(formData.metadata) : null
       };
 
-      const url = formData.id ? `${baseURL}/template/update` : `${baseURL}/template/store`;
-      await axios.post(url, payload, { headers, withCredentials: true });
+      const url = formData.id ? updateTemplate() : addTemplate() ;
+      await axios.post(url, payload, config );
       
       setOpenDialog(false);
-      fetchData();
+      handleGetTemplates();
       showNotification(
         formData.id ? 'Template updated successfully' : 'Template created successfully'
       );
@@ -274,7 +260,7 @@ const Templates = () => {
 
   const handleView = async (id) => {
     try {
-      const res = await axios.get(`${baseURL}/template/show?id=${id}`, { headers, withCredentials: true });
+      const res = await axios.get(`${showTemplates()}?id=${id}`, config );
       setViewData(res.data?.data);
       setOpenView(true);
     } catch (error) {
@@ -285,9 +271,9 @@ const Templates = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.post(`${baseURL}/template/delete`, { id: deleteId }, { headers, withCredentials: true });
+      await axios.post(deleteTemplate(), { id: deleteId }, config );
       setOpenDelete(false);
-      fetchData();
+      handleGetTemplates();
       showNotification('Template deleted successfully');
     } catch (error) {
       showNotification('Failed to delete template', 'error');
@@ -319,10 +305,10 @@ const Templates = () => {
 
     try {
       setSubmitting(true);
-      await axios.post(`${baseURL}/language/store`, newLanguage, { headers, withCredentials: true });
+      await axios.post(addLanguage(), newLanguage, config );
       setOpenLangDialog(false);
       setShowAddLang(false);
-      fetchLanguages();
+      handleGetLanguages();
       showNotification('Language added successfully');
       setNewLanguage({
         name: '',
@@ -344,8 +330,8 @@ const Templates = () => {
 
   const handleDeleteLanguage = async (id) => {
     try {
-      await axios.post(`${baseURL}/language/delete`, { id }, { headers, withCredentials: true });
-      fetchLanguages();
+      await axios.post(deleteLanguage(), { id }, config );
+      handleGetLanguages();
       showNotification('Language deleted successfully');
     } catch (error) {
       showNotification('Failed to delete language', 'error');
@@ -355,8 +341,11 @@ const Templates = () => {
 
   const setAsDefaultLanguage = async (langId) => {
     try {
-      await axios.post(`${baseURL}/language/set-default`, { langId }, { headers, withCredentials: true });
-      fetchLanguages();
+      const payload = {
+        id:langId
+      }
+      await axios.post(setDefaultLanguage(), payload, config );
+      handleGetLanguages();
       showNotification('Default language updated successfully');
     } catch (err) {
       showNotification('Failed to set default language', 'error');
@@ -750,8 +739,16 @@ const Templates = () => {
                     <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {data.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((row) => (
+                <TableBody>{data.length === 0 ? (
+                                            <TableRow>
+                                              <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
+                                                <Typography variant="h6" color="text.secondary">
+                                                  No templates found
+                                                </Typography>
+                                              </TableCell>
+                                            </TableRow>
+                                          ) : (
+                  data.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((row) => (
                     <TableRow key={row.id} hover>
                       <TableCell>
                         <Typography variant="body2" fontWeight={500}>
@@ -819,7 +816,7 @@ const Templates = () => {
                         </Box>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  )))}
                 </TableBody>
               </Table>
             </TableContainer>

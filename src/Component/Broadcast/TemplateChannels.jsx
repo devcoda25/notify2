@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Add, Edit, Delete, Visibility, Save, Cancel, Search, FilterList } from '@mui/icons-material';
 import axios from 'axios';
-import baseURL from '../../Url';
+import { addChannel, config, deleteChannel, fetchChannels, showChannel, updateChannel } from '../../Url';
 
 const TemplateChannels = () => {
   const theme = useTheme();
@@ -56,28 +56,11 @@ const TemplateChannels = () => {
     severity: 'success'
   });
 
-  // Predefined options
   const channelTypes = ['email', 'sms', 'push', 'webhook', 'api', 'file'];
   const supportedFormats = ['json', 'xml', 'html', 'text', 'csv', 'pdf'];
 
-  const getAuthIdFromUrl = () => {
-    const parts = window.location.pathname.split('/');
-    return parts[2] || 0;
-  };
-
-  // const headers = {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  //   'X-Authuser': getAuthIdFromUrl(),
-  //   'X-Request-Agent': 'APP',
-  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-  // };
-
-  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
 
-  // Validation rules
   const validationRules = {
     name: {
       required: true,
@@ -113,7 +96,6 @@ const TemplateChannels = () => {
     }
   };
 
-  // Validation function
   const validateField = (name, value) => {
     const rules = validationRules[name];
     if (!rules) return '';
@@ -168,7 +150,6 @@ const TemplateChannels = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Auto-generate slug from name
   const generateSlug = (name) => {
     return name
       .toLowerCase()
@@ -178,12 +159,10 @@ const TemplateChannels = () => {
       .trim();
   };
 
-  // Fetch data
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Filter data based on search
   useEffect(() => {
     if (!searchQuery) {
       setFilteredData(data);
@@ -201,11 +180,12 @@ const TemplateChannels = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${baseURL}/channels`, { headers, withCredentials: true });
+      const res = await axios.get(fetchChannels(),config);
       setData(res.data?.data?.values || []);
-      showNotification('Data loaded successfully', 'success');
+      // showNotification('Data loaded successfully', 'success');
     } catch (error) {
-      showNotification('Failed to load data', 'error');
+      // showNotification('Failed to load data', 'error');
+      console.log('fetch error','Failed to load data')
     } finally {
       setLoading(false);
     }
@@ -288,9 +268,9 @@ const TemplateChannels = () => {
 
     try {
       setSubmitting(true);
-      const url = formData.id ? `${baseURL}/channel/update` : `${baseURL}/channel/store`;
+      const url = formData.id ? updateChannel() : addChannel();
       
-      await axios.post(url, formData, { headers, withCredentials: true });
+      await axios.post(url, formData, config);
       
       setOpenDialog(false);
       await fetchData();
@@ -308,7 +288,7 @@ const TemplateChannels = () => {
   const handleDelete = async () => {
     try {
       setSubmitting(true);
-      await axios.post(`${baseURL}/channel/delete`, { id: deleteId }, { headers, withCredentials: true });
+      await axios.post(deleteChannel(), { id: deleteId }, config);
       setOpenDelete(false);
       await fetchData();
       showNotification('Channel deleted successfully', 'success');
@@ -322,7 +302,7 @@ const TemplateChannels = () => {
   const handleView = async (id) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${baseURL}/channel/show?id=${id}`, { headers, withCredentials: true });
+      const res = await axios.get(`${showChannel()}?id=${id}`, config);
       setViewData(res.data?.data);
       setOpenView(true);
     } catch (error) {
@@ -334,10 +314,10 @@ const TemplateChannels = () => {
 
   const handleStatusChange = async (row, isActive) => {
     try {
-      await axios.post(`${baseURL}/channel/update`, {
+      await axios.post(updateChannel(), {
         ...row,
         is_active: isActive,
-      }, { headers, withCredentials: true });
+      }, config);
       
       await fetchData();
       showNotification('Status updated successfully', 'success');
@@ -599,7 +579,7 @@ const TemplateChannels = () => {
                 error={touched.name && !!errors.name}
                 helperText={touched.name && errors.name}
                 required
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, mt:2 }}
               />
             </Grid>
             
@@ -613,7 +593,7 @@ const TemplateChannels = () => {
                 error={touched.slug && !!errors.slug}
                 helperText={touched.slug && errors.slug}
                 required
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, mt:2 }}
               />
             </Grid>
 
@@ -874,15 +854,7 @@ const TemplateChannels = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Loading Backdrop */}
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
 
-      {/* Notification Snackbar */}
       <Snackbar
         open={notification.open}
         autoHideDuration={4000}

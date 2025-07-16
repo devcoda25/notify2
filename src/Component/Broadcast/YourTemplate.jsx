@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, IconButton, Tooltip, Badge, Autocomplete, FormControlLabel, Radio, RadioGroup, Chip } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TablePagination, TableRow, IconButton, Tooltip, Badge } from '@mui/material';
 import { Modal, ModalBody, ModalFooter } from 'react-bootstrap';
 import { MdClose } from "react-icons/md";
 import NewTemplate from '../Broadcast/NewTemplate'
 import axios from "axios";
-import baseURL from "../../Url";
-import { TbRuler2 } from "react-icons/tb";
+import { config, fetchCategories } from "../../Url";
 
 const styles = {
     autocompleteStyle: {
@@ -191,30 +190,8 @@ const YourTemplate = () => {
     const totalRows = 5;
     const [templateData, setTemplateData]= useState([]);
 
-//    const baseURL = `https://api.dev.evzone.app/api/v1.0/web/notify/template`;
 
-    console.log( "baseURL",baseURL)
-
-      function getAuthIdFromUrl() {
-            const path = window.location.pathname; 
-            const parts = path.split('/'); 
-            const userId = parts[2]; 
-            return userId ? userId : 0; 
-        }
-
-
-
-//    const headers = { 'Accept': 'application/json',
-//                     'Content-Type': 'application/json',
-//                     "X-Authuser" : getAuthIdFromUrl(),
-//                     "X-Request-Agent":"APP",
-//                     "X-SID":"sid_r3fCxGnrMOp07mKQaCiS",
-//                     "X-MUID":"mut_XHujrA2WUG51hx3uOLL8"
-//                 }
-    
-
-                    
-     const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+    // console.log( "baseURL",baseURL)
 
 
         useEffect(() => {
@@ -223,7 +200,7 @@ const YourTemplate = () => {
 
         const GetTemplateCategories = async () => {
         try {
-            const res = await axios.get(`${baseURL}/categories`, {headers, withCredentials: true});
+            const res = await axios.get(fetchCategories(), config);
             console.log("data", res.data?.data?.values)
             setTemplateData(res.data?.data?.values); 
         } catch (err) {

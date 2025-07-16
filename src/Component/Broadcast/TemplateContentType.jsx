@@ -11,7 +11,8 @@ import {
   CheckCircle, ErrorOutline, Code, Description, Label
 } from '@mui/icons-material';
 import axios from 'axios';
-import baseURL from '../../Url';
+import baseURL, { addContentType, deleteContentType, fetchContentTypes, showContentType, updateContentType } from '../../Url';
+import { config } from '../../Url';
 
 const TemplateContentType = () => {
   const [data, setData] = useState([]);
@@ -32,24 +33,7 @@ const TemplateContentType = () => {
   const [notification, setNotification] = useState({ open: false, message: '', type: 'success' });
   const rowsPerPage = 5;
 
-  const getAuthIdFromUrl = () => {
-    const parts = window.location.pathname.split('/');
-    return parts[2] || 0;
-  };
 
-  // const headers = {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  //   'X-Authuser': getAuthIdFromUrl(),
-  //   'X-Request-Agent': 'APP',
-  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-  // };
-
-  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
-
-
-  // Validation functions
   const validateField = (name, value) => {
     const validationRules = {
       name: {
@@ -142,7 +126,7 @@ const TemplateContentType = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${baseURL}/content-types`, { headers, withCredentials: true });
+      const res = await axios.get(fetchContentTypes(), config);
       setData(res.data?.data?.values || []);
     } catch (error) {
       showNotification('Failed to fetch data', 'error');
@@ -193,10 +177,10 @@ const TemplateContentType = () => {
     setSubmitting(true);
     try {
       const url = formData.id
-        ? `${baseURL}/content-type/update`
-        : `${baseURL}/content-type/store`;
+        ? updateContentType()
+        : addContentType();
 
-      await axios.post(url, formData, { headers, withCredentials: true });
+      await axios.post(url, formData, config);
       setOpenDialog(false);
       fetchData();
       showNotification(
@@ -213,7 +197,7 @@ const TemplateContentType = () => {
   const handleDelete = async () => {
     setSubmitting(true);
     try {
-      await axios.post(`${baseURL}/content-type/delete`, { id: deleteId }, { headers, withCredentials: true });
+      await axios.post(deleteContentType(), { id: deleteId }, config);
       setOpenDelete(false);
       fetchData();
       showNotification('Template deleted successfully', 'success');
@@ -227,7 +211,7 @@ const TemplateContentType = () => {
   const handleView = async (id) => {
     setLoading(true);
     try {
-      const res = await axios.get(`${baseURL}/content-type/show?id=${id}`, { headers, withCredentials: true });
+      const res = await axios.get(`${showContentType()}?id=${id}`, config);
       setViewData(res.data?.data);
       setOpenView(true);
     } catch (error) {
@@ -247,7 +231,7 @@ const TemplateContentType = () => {
     };
 
     try {
-      await axios.post(`${baseURL}/content-type/update`, payload, { headers, withCredentials: true });
+      await axios.post(updateContentType(), payload, config);
       fetchData();
       showNotification(`Template ${isActive ? 'activated' : 'deactivated'} successfully`);
     } catch (error) {

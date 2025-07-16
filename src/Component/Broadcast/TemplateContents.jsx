@@ -16,9 +16,9 @@ import {
 } from '@mui/icons-material';
 import { alpha, useTheme } from '@mui/material/styles';
 import axios from 'axios';
-import baseURL from '../../Url';
+import { addContent, config, deleteContent, fetchContents, updateContent } from '../../Url';
 
-// Enhanced validation schema
+//  validation schema
 const validationSchema = {
   template_id: {
     required: true,
@@ -68,20 +68,17 @@ const validationSchema = {
   }
 };
 
-// Enhanced validation function
+// validation function
 const validateField = (name, value, schema) => {
   const rules = schema[name];
   if (!rules) return null;
 
-  // Required validation
   if (rules.required && (!value || value.toString().trim() === '')) {
     return rules.message || `${name} is required`;
   }
 
-  // Skip other validations if field is empty and not required
   if (!value || value.toString().trim() === '') return null;
 
-  // Type validation
   if (rules.type === 'number') {
     const num = Number(value);
     if (isNaN(num)) return 'Must be a valid number';
@@ -89,7 +86,6 @@ const validateField = (name, value, schema) => {
     if (rules.max && num > rules.max) return `Must be at most ${rules.max}`;
   }
 
-  // Length validation
   if (rules.minLength && value.length < rules.minLength) {
     return `Must be at least ${rules.minLength} characters`;
   }
@@ -97,12 +93,10 @@ const validateField = (name, value, schema) => {
     return `Must be at most ${rules.maxLength} characters`;
   }
 
-  // Pattern validation
   if (rules.pattern && !rules.pattern.test(value)) {
     return rules.message || 'Invalid format';
   }
 
-  // JSON validation
   if (rules.type === 'json') {
     try {
       JSON.parse(value);
@@ -114,40 +108,52 @@ const validateField = (name, value, schema) => {
   return null;
 };
 
-const mockTemplateContents = [
-  {
-    id: 1,
-    template_id: 1,
-    channel_id: 1,
-    language_id: 1,
-    subject: "Welcome to {{company_name}}, {{user_first_name}}!",
-    content: "{{fragment:email-header}}\n<div style=\"padding: 30px; max-width: 600px; margin: 0 auto;\">\n<h2 style=\"color: #333; margin-bottom: 20px;\">Welcome aboard, {{user_first_name}}!</h2>\n<p style=\"color: #666; line-height: 1.6; margin-bottom: 20px;\">\nWe're thrilled to have you join our community! Your account has been successfully created, and you're now ready to explore all the amazing features we have to offer.\n</p>\n</div>\n{{fragment:email-footer}}",
-    plain_content: "Welcome aboard, {{user_first_name}}!\n\nWe're thrilled to have you join our community! Your account has been successfully created, and you're now ready to explore all the amazing features we have to offer.\n\nBest regards,\n{{company_name}} Team",
-    variables: ["user_first_name", "company_name", "cta_url", "cta_text"],
-    dynamic_content: {
-      personalization_blocks: {
-        greeting: {
-          new_user: "Welcome aboard",
-          returning_user: "Welcome back"
-        }
+const FormField = ({ name, label, type = 'text', multiline = false, rows = 1, icon, form, formTouched, formErrors, handleFieldChange, ...props }) => {
+  const hasError = formTouched[name] && formErrors[name];
+  const isRequired = validationSchema[name]?.required;
+
+  return (
+    <TextField
+      label={
+        <Box display="flex" alignItems="center" gap={0.5}>
+          {icon}
+          {label}
+          {isRequired && <Typography color="error.main">*</Typography>}
+        </Box>
       }
-    },
-    conditional_blocks: {
-      new_user_bonus: {
-        content: "<p>As a welcome gift, enjoy 20% off your first purchase with code WELCOME20!</p>",
-        condition: "user.registration_date >= now() - 7 days"
-      }
-    },
-    is_compiled: false,
-    created_at: "2025-07-02T08:45:22.000000Z",
-    updated_at: "2025-07-02T08:45:22.000000Z"
-  }
-];
+      fullWidth
+      margin="dense"
+      type={type}
+      multiline={multiline}
+      rows={rows}
+      value={form[name]}
+      onChange={(e) => handleFieldChange(name, e.target.value)}
+      error={hasError}
+      helperText={hasError ? formErrors[name] : props.helperText}
+      variant="outlined"
+      sx={{
+        '& .MuiOutlinedInput-root': {
+          borderRadius: 2,
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: hasError ? 'error.main' : 'primary.main',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderWidth: 2,
+          },
+        },
+        '& .MuiInputLabel-root': {
+          fontWeight: 500,
+        },
+      }}
+      {...props}
+    />
+  );
+};
 
 const TemplateContents = () => {
   const theme = useTheme();
-  const [templateContents, setTemplateContents] = useState(mockTemplateContents);
-  const [filteredContents, setFilteredContents] = useState(mockTemplateContents);
+  const [templateContents, setTemplateContents] = useState([]);
+  const [filteredContents, setFilteredContents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -175,24 +181,6 @@ const TemplateContents = () => {
     is_compiled: false
   });
 
-  const getAuthIdFromUrl = () => {
-    const parts = window.location.pathname.split('/');
-    return parts[2] || 0;
-  };
-
-  // const headers = {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  //   'X-Authuser': getAuthIdFromUrl(),
-  //   'X-Request-Agent': 'APP',
-  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-  // };
-
-  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
-
-
-  // Memoized form validation
   const formErrors = useMemo(() => {
     const errors = {};
     Object.keys(form).forEach(field => {
@@ -202,12 +190,10 @@ const TemplateContents = () => {
     return errors;
   }, [form]);
 
-  // Check if form is valid
   const isFormValid = useMemo(() => {
     return Object.keys(formErrors).length === 0;
   }, [formErrors]);
 
-  // Enhanced field change handler with real-time validation
   const handleFieldChange = useCallback((field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
     setFormTouched(prev => ({ ...prev, [field]: true }));
@@ -216,11 +202,11 @@ const TemplateContents = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${baseURL}/contents`, { headers, withCredentials: true });
+      const res = await axios.get(fetchContents(), config);
       setTemplateContents(res.data?.data?.values || []);
       setFilteredContents(res.data?.data?.values || []);
     } catch (error) {
-      showSnackbar('Error fetching data', 'error');
+      console.log('Error fetching data', 'error');
     } finally {
       setLoading(false);
     }
@@ -287,7 +273,6 @@ const TemplateContents = () => {
   };
 
   const handleSave = async () => {
-    // Touch all fields to show validation errors
     const allTouched = Object.keys(form).reduce((acc, key) => {
       acc[key] = true;
       return acc;
@@ -295,7 +280,7 @@ const TemplateContents = () => {
     setFormTouched(allTouched);
 
     if (!isFormValid) {
-      showSnackbar('Please fix validation errors before saving', 'error');
+      console.log('Please fix validation errors before saving', 'error');
       return;
     }
 
@@ -309,10 +294,10 @@ const TemplateContents = () => {
       };
 
       if (editingContent) {
-        await axios.post(`${baseURL}/content/update`, { ...payload, id: editingContent.id }, { headers, withCredentials: true });
+        await axios.post(updateContent(), { ...payload, id: editingContent.id }, config);
         showSnackbar('Template content updated successfully!', 'success');
       } else {
-        await axios.post(`${baseURL}/content/store`, payload, { headers, withCredentials: true });
+        await axios.post(addContent(), payload, config);
         showSnackbar('Template content created successfully!', 'success');
       }
 
@@ -372,7 +357,7 @@ const TemplateContents = () => {
     
     setLoading(true);
     try {
-      await axios.post(`${baseURL}/content/delete`, { id: deleteItemId }, { headers, withCredentials: true });
+      await axios.post(deleteContent(), { id: deleteItemId }, config);
       setOpenDelete(false);
       setDeleteItemId(null);
       showSnackbar('Template content deleted successfully!', 'success');
@@ -395,48 +380,6 @@ const TemplateContents = () => {
 
   const paginatedContents = filteredContents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-  // Enhanced form field component
-  const FormField = ({ name, label, type = 'text', multiline = false, rows = 1, icon, ...props }) => {
-    const hasError = formTouched[name] && formErrors[name];
-    const isRequired = validationSchema[name]?.required;
-
-    return (
-      <TextField
-        label={
-          <Box display="flex" alignItems="center" gap={0.5}>
-            {icon}
-            {label}
-            {isRequired && <Typography color="error.main">*</Typography>}
-          </Box>
-        }
-        fullWidth
-        margin="dense"
-        type={type}
-        multiline={multiline}
-        rows={rows}
-        value={form[name]}
-        onChange={(e) => handleFieldChange(name, e.target.value)}
-        error={hasError}
-        helperText={hasError ? formErrors[name] : props.helperText}
-        variant="outlined"
-        sx={{
-          '& .MuiOutlinedInput-root': {
-            borderRadius: 2,
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: hasError ? 'error.main' : 'primary.main',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderWidth: 2,
-            },
-          },
-          '& .MuiInputLabel-root': {
-            fontWeight: 500,
-          },
-        }}
-        {...props}
-      />
-    );
-  };
 
   return (
     <Box sx={{ p: 3, bgcolor: 'grey.50', minHeight: '100vh' }}>
@@ -690,7 +633,7 @@ const TemplateContents = () => {
       </Grid>
 
       {/* Enhanced Add/Edit Dialog */}
-      <Dialog 
+     <Dialog 
         open={openDialog} 
         onClose={() => setOpenDialog(false)} 
         fullWidth 
@@ -735,6 +678,10 @@ const TemplateContents = () => {
                 type="number"
                 icon={<Settings fontSize="small" />}
                 helperText="Unique identifier for the template"
+                form={form}
+                formTouched={formTouched}
+                formErrors={formErrors}
+                handleFieldChange={handleFieldChange}
               />
             </Grid>
             
@@ -745,6 +692,10 @@ const TemplateContents = () => {
                 type="number"
                 icon={<Timeline fontSize="small" />}
                 helperText="Communication channel identifier"
+                form={form}
+                formTouched={formTouched}
+                formErrors={formErrors}
+                handleFieldChange={handleFieldChange}
               />
             </Grid>
             
@@ -755,6 +706,10 @@ const TemplateContents = () => {
                 type="number"
                 icon={<Language fontSize="small" />}
                 helperText="Language localization identifier"
+                form={form}
+                formTouched={formTouched}
+                formErrors={formErrors}
+                handleFieldChange={handleFieldChange}
               />
             </Grid>
             
@@ -764,6 +719,10 @@ const TemplateContents = () => {
                 label="Subject Line"
                 icon={<Email fontSize="small" />}
                 helperText="Email subject with template variables (e.g., {{user_name}})"
+                form={form}
+                formTouched={formTouched}
+                formErrors={formErrors}
+                handleFieldChange={handleFieldChange}
               />
             </Grid>
             
@@ -773,6 +732,10 @@ const TemplateContents = () => {
                 label="Template Variables"
                 icon={<DataObject fontSize="small" />}
                 helperText="Comma-separated variables (e.g., user_name, company_name, email)"
+                form={form}
+                formTouched={formTouched}
+                formErrors={formErrors}
+                handleFieldChange={handleFieldChange}
               />
             </Grid>
             
@@ -825,6 +788,10 @@ const TemplateContents = () => {
                       rows={12}
                       icon={<Code fontSize="small" />}
                       helperText="Rich HTML content with styling and template variables"
+                      form={form}
+                      formTouched={formTouched}
+                      formErrors={formErrors}
+                      handleFieldChange={handleFieldChange}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -835,6 +802,10 @@ const TemplateContents = () => {
                       rows={12}
                       icon={<Description fontSize="small" />}
                       helperText="Plain text version for email clients that don't support HTML"
+                      form={form}
+                      formTouched={formTouched}
+                      formErrors={formErrors}
+                      handleFieldChange={handleFieldChange}
                     />
                   </Grid>
                 </Grid>
@@ -869,6 +840,10 @@ const TemplateContents = () => {
                       rows={8}
                       icon={<DataObject fontSize="small" />}
                       helperText="JSON structure for personalized content blocks"
+                      form={form}
+                      formTouched={formTouched}
+                      formErrors={formErrors}
+                      handleFieldChange={handleFieldChange}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -879,6 +854,10 @@ const TemplateContents = () => {
                       rows={8}
                       icon={<Security fontSize="small" />}
                       helperText="JSON structure for conditional content rendering"
+                      form={form}
+                      formTouched={formTouched}
+                      formErrors={formErrors}
+                      handleFieldChange={handleFieldChange}
                     />
                   </Grid>
                 </Grid>

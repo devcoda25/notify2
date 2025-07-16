@@ -7,7 +7,8 @@ import {
 } from '@mui/material';
 import { Add, Edit, Delete, Visibility, CheckCircle, Error } from '@mui/icons-material';
 import axios from 'axios';
-import baseURL from '../../Url';
+import { addCategory, deleteCategory, fetchCategories, showCategory, updateCategory } from '../../Url';
+import { config } from '../../Url';
 
 const TemplateCategories = () => {
   const [templateData, setTemplateData] = useState([]);
@@ -30,24 +31,7 @@ const TemplateCategories = () => {
 
   const rowsPerPage = 5;
 
-  const getAuthIdFromUrl = () => {
-    const parts = window.location.pathname.split('/');
-    return parts[2] || 0;
-  };
 
-  // const headers = {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  //   'X-Authuser': getAuthIdFromUrl(),
-  //   'X-Request-Agent': 'APP',
-  //   'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-  //   'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-  // };
-
-  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
-
-
-  // Validation rules
   const validateField = (name, value, allData = formData) => {
     switch (name) {
       case 'name':
@@ -164,7 +148,7 @@ const TemplateCategories = () => {
 
   const GetTemplateCategories = async () => {
     try {
-      const res = await axios.get(`${baseURL}/categories`, { headers, withCredentials: true });
+      const res = await axios.get(fetchCategories(), config);
       setTemplateData(res.data?.data?.values || []);
     } catch (err) {
       console.error('Error fetching categories:', err);
@@ -245,10 +229,10 @@ const TemplateCategories = () => {
 
     try {
       const url = formData.id
-        ? `${baseURL}/category/update`
-        : `${baseURL}/category/store`;
+        ? updateCategory()
+        : addCategory();
 
-      await axios.post(url, formData, { headers, withCredentials: true });
+      await axios.post(url, formData, config);
       handleCloseDialog();
       GetTemplateCategories();
     } catch (err) {
@@ -259,7 +243,7 @@ const TemplateCategories = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.post(`${baseURL}/category/delete`, { id: deleteId }, { headers, withCredentials: true } );
+      await axios.post(deleteCategory(), { id: deleteId }, config );
       setOpenDeleteConfirm(false);
       GetTemplateCategories();
     } catch (err) {
@@ -269,7 +253,7 @@ const TemplateCategories = () => {
 
   const handleViewCategory = async (id) => {
     try {
-      const res = await axios.get(`${baseURL}/category/show?id=${id}`, { headers, withCredentials: true });
+      const res = await axios.get(`${showCategory()}?id=${id}`, config);
       setViewData(res.data?.data);
       setOpenViewDialog(true);
     } catch (err) {
@@ -284,7 +268,7 @@ const TemplateCategories = () => {
 
       const payload = { ...updated, is_active: newStatus };
 
-      await axios.post(`${baseURL}/category/update`, payload, { headers, withCredentials: true });
+      await axios.post(updateCategory(), payload, config);
       GetTemplateCategories();
     } catch (err) {
       console.error("Error updating status:", err);
@@ -350,7 +334,16 @@ const TemplateCategories = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData
+            {templateData.length === 0 ? (
+                            <TableRow>
+                              <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
+                                <Typography variant="h6" color="text.secondary">
+                                  No templates found
+                                </Typography>
+                              </TableCell>
+                            </TableRow>
+                          ) :(
+            filteredData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow key={row.id} hover>
@@ -405,7 +398,7 @@ const TemplateCategories = () => {
                     </Tooltip>
                   </TableCell>
                 </TableRow>
-              ))}
+              )))}
           </TableBody>
         </Table>
 

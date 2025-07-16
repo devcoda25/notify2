@@ -19,23 +19,40 @@ const Broadcast = (authUser) => {
         setActiveContent(content);
     };
 
+    const getAuthIdFromUrl = () => {
+    const parts = window.location.pathname.split('/');
+    return parts[2] || 0;
+  };
+
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'X-Authuser': getAuthIdFromUrl(),
+    'X-Request-Agent': 'APP',
+    'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
+    'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
+  };
+
+//   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+
+
     
     const renderContent = () => {
         switch (activeContent) {
             case 'YourTemplate':
-                return <YourTemplate />
+                return <YourTemplate headers={headers} getAuthIdFromUrl={getAuthIdFromUrl}  />
             case 'TemplateLibrary':
                 return <TemplateLibrary />
             case 'Categories':
-                return <TemplateCategories />
+                return <TemplateCategories headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
             case 'ContentTypes':
-                return <TemplateContentType/>
+                return <TemplateContentType headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
             case 'Channels':
-                return <TemplateChannels />
+                return <TemplateChannels headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
             case 'Templates':
-                return <Templates />
+                return <Templates headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
             case 'TemplateContents':
-                return <TemplateContents />
+                return <TemplateContents headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
             case 'BroadcastAnalytics':
                 return <BroadcastAnalytics />
             case 'ScheduledBroadcast':
