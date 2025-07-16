@@ -7,16 +7,16 @@
     return parts[2] || 0;
   };
 
-  const headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Authuser': getAuthIdFromUrl(),
-    'X-Request-Agent': 'APP',
-    'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
-    'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
-  };
+//   const headers = {
+//     'Accept': 'application/json',
+//     'Content-Type': 'application/json',
+//     'X-Authuser': getAuthIdFromUrl(),
+//     'X-Request-Agent': 'APP',
+//     'X-SID': 'sid_r3fCxGnrMOp07mKQaCiS',
+//     'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
+//   };
 
-//   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
 
 export const config = { headers, withCredentials: true } 
