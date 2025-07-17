@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import YourTemplate from "../Component/Broadcast/YourTemplate";
 import TemplateLibrary from "../Component/Broadcast/TemplateLibrary";
 import BroadcastAnalytics from "../Component/Broadcast/BroadcastAnalytics";
@@ -8,10 +8,16 @@ import TemplateChannels from "../Component/Broadcast/TemplateChannels";
 import Templates from "../Component/Broadcast/Templates";
 import TemplateContentType from "../Component/Broadcast/TemplateContentType";
 import TemplateContents from "../Component/Broadcast/TemplateContents";
+import axios from "axios";
+import { config, fetchTemplates } from "../Url";
+import { fetchChannels } from "../Url";
 
 const Broadcast = (authUser) => {
     const [activeContent, setActiveContent] = useState('AccountSettings');
     const [state, setState] = useState("default")
+    const [channelData, setChannelData] = useState([]);
+    const [templateData, setTemplateData] = useState([]);
+
 
     const handleNavigationClick = (e, content) => {
         e.preventDefault();
@@ -24,6 +30,8 @@ const Broadcast = (authUser) => {
     return parts[2] || 0;
   };
 
+  // Local 
+
   const headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
@@ -33,26 +41,54 @@ const Broadcast = (authUser) => {
     'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
   };
 
-//   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+  // Dev
+
+  //   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+
+  const fetchChannelData = async () => {
+      try {
+        // setLoading(true);
+        const res = await axios.get(fetchChannels(),config);
+        setChannelData(res.data?.data?.values || []);
+      } catch (error) {
+        console.log('fetch error','Failed to load data')
+      } finally {
+        // setLoading(false);
+      }
+    };
+
+  const fetchTemplateData = async () => {
+        try {
+        //   setLoading(true);
+          const res = await axios.get(fetchTemplates(), config);
+          setTemplateData(res.data?.data?.values || []);
+        } catch (error) {
+          // showNotification('Failed to fetch templates', 'error');
+          console.error('Error fetching templates:', error);
+        } finally {
+        //   setLoading(false);
+        }
+      };
 
 
-    
+
+
     const renderContent = () => {
         switch (activeContent) {
             case 'YourTemplate':
-                return <YourTemplate headers={headers} getAuthIdFromUrl={getAuthIdFromUrl}  />
+                return <YourTemplate  />
             case 'TemplateLibrary':
                 return <TemplateLibrary />
             case 'Categories':
-                return <TemplateCategories headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
+                return <TemplateCategories />
             case 'ContentTypes':
-                return <TemplateContentType headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
+                return <TemplateContentType />
             case 'Channels':
-                return <TemplateChannels headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
+                return <TemplateChannels fetchChannelData = {fetchChannelData} data = {channelData}/>
             case 'Templates':
-                return <Templates headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
+                return <Templates fetchTemplateData = {fetchTemplateData} data = {templateData} />
             case 'TemplateContents':
-                return <TemplateContents headers={headers} getAuthIdFromUrl={getAuthIdFromUrl} />
+                return <TemplateContents channelData={channelData} templateData= {templateData} />
             case 'BroadcastAnalytics':
                 return <BroadcastAnalytics />
             case 'ScheduledBroadcast':

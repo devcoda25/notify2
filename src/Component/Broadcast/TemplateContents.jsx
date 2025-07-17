@@ -150,7 +150,7 @@ const FormField = ({ name, label, type = 'text', multiline = false, rows = 1, ic
   );
 };
 
-const TemplateContents = () => {
+const TemplateContents = ({channelData, templateData}) => {
   const theme = useTheme();
   const [templateContents, setTemplateContents] = useState([]);
   const [filteredContents, setFilteredContents] = useState([]);
@@ -167,7 +167,6 @@ const TemplateContents = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [formTouched, setFormTouched] = useState({});
-
   const [form, setForm] = useState({
     template_id: '',
     channel_id: '',
@@ -221,6 +220,7 @@ const TemplateContents = () => {
   };
 
   useEffect(() => {
+// console.log("channelData", channelData)
     fetchData();
   }, []);
 
@@ -294,6 +294,7 @@ const TemplateContents = () => {
       };
 
       if (editingContent) {
+        console.log("payload", payload)
         await axios.post(updateContent(), { ...payload, id: editingContent.id }, config);
         showSnackbar('Template content updated successfully!', 'success');
       } else {
@@ -483,7 +484,7 @@ const TemplateContents = () => {
                     <TableCell>Variables</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Updated</TableCell>
-                    <TableCell align="center">Actions</TableCell>
+                    <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -528,13 +529,13 @@ const TemplateContents = () => {
                           <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5 }}>
                             {row.subject}
                           </Typography>
-                          <Typography variant="caption" color="text.secondary">
+                          {/* <Typography variant="caption" color="text.secondary">
                             ID: {row.id}
-                          </Typography>
+                          </Typography> */}
                         </TableCell>
                         <TableCell>
-                          <Box display="flex" gap={0.5} flexWrap="wrap">
-                            {row.variables.slice(0, 3).map((variable, index) => (
+                          <Box display="flex" gap={0.5} flexWrap="nowrap">
+                            {row.variables.slice(0, 2).map((variable, index) => (
                               <Chip
                                 key={index}
                                 label={variable}
@@ -544,9 +545,9 @@ const TemplateContents = () => {
                                 sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
                               />
                             ))}
-                            {row.variables.length > 3 && (
+                            {row.variables.length > 2 && (
                               <Chip
-                                label={`+${row.variables.length - 3} more`}
+                                label={`+${row.variables.length - 2} more`}
                                 size="small"
                                 variant="outlined"
                                 color="default"
@@ -573,7 +574,7 @@ const TemplateContents = () => {
                           </Typography>
                         </TableCell>
                         <TableCell align="center">
-                          <Box display="flex" gap={0.5} justifyContent="center">
+                          <Box display="flex" gap={0.5} justifyContent="flex-start">
                             <Tooltip title="Preview Template">
                               <IconButton
                                 color="info"
@@ -671,7 +672,7 @@ const TemplateContents = () => {
               </Typography>
             </Grid>
             
-            <Grid item xs={12} md={4}>
+            {/* <Grid item xs={12} md={4}>
               <FormField
                 name="template_id"
                 label="Template ID"
@@ -683,9 +684,36 @@ const TemplateContents = () => {
                 formErrors={formErrors}
                 handleFieldChange={handleFieldChange}
               />
-            </Grid>
-            
+            </Grid> */}
+
             <Grid item xs={12} md={4}>
+              <TextField
+                select
+                fullWidth
+                label="Template"
+                name="template_id"
+                value={form.template_id}
+                onChange={(e) => handleFieldChange('template_id', e.target.value)}
+                helperText="Select the template"
+                error={formTouched.template_id && Boolean(formErrors.template_id)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Settings fontSize="small" />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                {templateData.map((template) => (
+                  <MenuItem key={template.id} value={template.id}>
+                    {template.name || `Template #${template.id}`}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
+            
+            {/* <Grid item xs={12} md={4}>
               <FormField
                 name="channel_id"
                 label="Channel ID"
@@ -697,7 +725,31 @@ const TemplateContents = () => {
                 formErrors={formErrors}
                 handleFieldChange={handleFieldChange}
               />
+            </Grid> */}
+
+
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth size="small" error={!!formErrors.channel_id}>
+                <InputLabel id="channel-select-label">Channel</InputLabel>
+                <Select
+                  labelId="channel-select-label"
+                  value={form.channel_id}
+                  onChange={(e) => handleFieldChange('channel_id', e.target.value)}
+                  label="Channel"
+                  startAdornment={<Timeline fontSize="small" sx={{ mr: 1 }} />}
+                >
+                  {channelData.map((channel) => (
+                    <MenuItem key={channel.id} value={channel.id}>
+                      {channel.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>
+                  {formErrors.channel_id || 'Communication channel identifier'}
+                </FormHelperText>
+              </FormControl>
             </Grid>
+
             
             <Grid item xs={12} md={4}>
               <FormField

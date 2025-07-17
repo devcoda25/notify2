@@ -15,10 +15,10 @@ import { fetchTemplates, fetchLanguages, addTemplate, deleteTemplate, showTempla
 import { config } from '../../Url';
 
 
-const Templates = () => {
+const Templates = ({fetchTemplateData, data}) => {
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     id: null, name: '', slug: '', description: '', status: 'active',
     tags: '', metadata: '', category_id: '', content_type_id: ''
@@ -148,18 +148,18 @@ const Templates = () => {
       .trim();
   };
 
-  const handleGetTemplates = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(fetchTemplates(), config);
-      setData(res.data?.data?.values || []);
-    } catch (error) {
-      // showNotification('Failed to fetch templates', 'error');
-      console.error('Error fetching templates:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleGetTemplates = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const res = await axios.get(fetchTemplates(), config);
+  //     setData(res.data?.data?.values || []);
+  //   } catch (error) {
+  //     // showNotification('Failed to fetch templates', 'error');
+  //     console.error('Error fetching templates:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   
 
   const handleGetLanguages = async () => {
@@ -177,7 +177,8 @@ const Templates = () => {
 
 
   useEffect(() => {
-    handleGetTemplates();
+    // handleGetTemplates();
+    fetchTemplateData();
     handleGetLanguages();
   }, []);
 
@@ -246,7 +247,7 @@ const Templates = () => {
       await axios.post(url, payload, config );
       
       setOpenDialog(false);
-      handleGetTemplates();
+      fetchTemplateData();
       showNotification(
         formData.id ? 'Template updated successfully' : 'Template created successfully'
       );
@@ -273,7 +274,7 @@ const Templates = () => {
     try {
       await axios.post(deleteTemplate(), { id: deleteId }, config );
       setOpenDelete(false);
-      handleGetTemplates();
+      fetchTemplateData();
       showNotification('Template deleted successfully');
     } catch (error) {
       showNotification('Failed to delete template', 'error');

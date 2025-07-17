@@ -361,7 +361,7 @@ const TemplateContentType = () => {
                 <TableCell sx={{ fontWeight: 600, color: 'text.primary' }}>Slug</TableCell>
                 <TableCell sx={{ fontWeight: 600, color: 'text.primary' }}>Description</TableCell>
                 <TableCell sx={{ fontWeight: 600, color: 'text.primary' }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: 600, color: 'text.primary' }} align="center">Actions</TableCell>
+                <TableCell sx={{ fontWeight: 600, color: 'text.primary' }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -437,7 +437,7 @@ const TemplateContentType = () => {
                         </RadioGroup>
                       </TableCell>
                       <TableCell sx={{ py: 2 }} align="center">
-                        <Stack direction="row" spacing={1} justifyContent="center">
+                        <Stack direction="row" spacing={1} justifyContent="flex-start">
                           <Tooltip title="View Details">
                             <IconButton
                               size="small"
