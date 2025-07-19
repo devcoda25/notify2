@@ -150,7 +150,7 @@ const FormField = ({ name, label, type = 'text', multiline = false, rows = 1, ic
   );
 };
 
-const TemplateContents = ({channelData, templateData}) => {
+const TemplateContents = ({channelData, templateData, languageData}) => {
   const theme = useTheme();
   const [templateContents, setTemplateContents] = useState([]);
   const [filteredContents, setFilteredContents] = useState([]);
@@ -189,9 +189,9 @@ const TemplateContents = ({channelData, templateData}) => {
     return errors;
   }, [form]);
 
-  const isFormValid = useMemo(() => {
-    return Object.keys(formErrors).length === 0;
-  }, [formErrors]);
+  // const isFormValid = useMemo(() => {
+  //   return Object.keys(formErrors).length === 0;
+  // }, [formErrors]);
 
   const handleFieldChange = useCallback((field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -279,10 +279,10 @@ const TemplateContents = ({channelData, templateData}) => {
     }, {});
     setFormTouched(allTouched);
 
-    if (!isFormValid) {
-      console.log('Please fix validation errors before saving', 'error');
-      return;
-    }
+    // if (!isFormValid) {
+    //   console.log('Please fix validation errors before saving', 'error');
+    //   return;
+    // }
 
     setSaving(true);
     try {
@@ -476,143 +476,164 @@ const TemplateContents = ({channelData, templateData}) => {
               }
             />
             
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow sx={{ '& .MuiTableCell-head': { fontWeight: 600, bgcolor: 'grey.50' } }}>
-                    <TableCell>Subject</TableCell>
-                    <TableCell>Variables</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Updated</TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {loading ? (
-                    <TableRow>
-                      <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
-                        <Stack alignItems="center" spacing={2}>
-                          <CircularProgress size={40} />
-                          <Typography color="text.secondary">Loading templates...</Typography>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ) : paginatedContents.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
-                        <Stack alignItems="center" spacing={2}>
-                          <Email sx={{ fontSize: 48, color: 'text.disabled' }} />
-                          <Typography color="text.secondary">No template contents found</Typography>
-                          <Button 
-                            variant="outlined" 
-                            startIcon={<Add />}
-                            onClick={() => handleOpen()}
-                            sx={{ borderRadius: 2 }}
-                          >
-                            Create Your First Template
-                          </Button>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    paginatedContents.map((row) => (
-                      <TableRow 
-                        key={row.id} 
-                        hover
-                        sx={{
-                          '&:hover': {
-                            bgcolor: alpha(theme.palette.primary.main, 0.04),
-                          },
-                        }}
-                      >
-                        <TableCell>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                            {row.subject}
-                          </Typography>
-                          {/* <Typography variant="caption" color="text.secondary">
-                            ID: {row.id}
-                          </Typography> */}
-                        </TableCell>
-                        <TableCell>
-                          <Box display="flex" gap={0.5} flexWrap="nowrap">
-                            {row.variables.slice(0, 2).map((variable, index) => (
-                              <Chip
-                                key={index}
-                                label={variable}
-                                size="small"
-                                variant="outlined"
-                                color="secondary"
-                                sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
-                              />
-                            ))}
-                            {row.variables.length > 2 && (
-                              <Chip
-                                label={`+${row.variables.length - 2} more`}
-                                size="small"
-                                variant="outlined"
-                                color="default"
-                              />
-                            )}
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={row.is_compiled ? 'Compiled' : 'Draft'}
-                            color={row.is_compiled ? 'success' : 'warning'}
-                            size="small"
-                            icon={row.is_compiled ? <Check /> : <Warning />}
-                            sx={{ fontWeight: 500 }}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" color="text.secondary">
-                            {new Date(row.updated_at).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Box display="flex" gap={0.5} justifyContent="flex-start">
-                            <Tooltip title="Preview Template">
-                              <IconButton
-                                color="info"
-                                onClick={() => handlePreview(row)}
-                                size="small"
-                                sx={{ borderRadius: 1.5 }}
-                              >
-                                <Visibility />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Edit Template">
-                              <IconButton
-                                color="primary"
-                                onClick={() => handleOpen(row)}
-                                size="small"
-                                sx={{ borderRadius: 1.5 }}
-                              >
-                                <Edit />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Delete Template">
-                              <IconButton
-                                color="error"
-                                onClick={() => handleDeleteClick(row.id)}
-                                size="small"
-                                sx={{ borderRadius: 1.5 }}
-                              >
-                                <Delete />
-                              </IconButton>
-                            </Tooltip>
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+           <TableContainer>
+  <Table size="small"> {/* Reduces row height */}
+    <TableHead>
+      <TableRow
+        sx={{
+          '& .MuiTableCell-head': {
+            fontWeight: 600,
+            bgcolor: 'grey.50',
+            py: 1 // reduced padding
+          }
+        }}
+      >
+        <TableCell>Subject</TableCell>
+        <TableCell>Variables</TableCell>
+        <TableCell>Status</TableCell>
+        <TableCell>Updated</TableCell>
+        <TableCell>Actions</TableCell>
+      </TableRow>
+    </TableHead>
+
+    <TableBody>
+      {loading ? (
+        <TableRow>
+          <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
+            <Stack alignItems="center" spacing={2}>
+              <CircularProgress size={32} />
+              <Typography color="text.secondary">Loading templates...</Typography>
+            </Stack>
+          </TableCell>
+        </TableRow>
+      ) : paginatedContents.length === 0 ? (
+        <TableRow>
+          <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
+            <Stack alignItems="center" spacing={2}>
+              <Email sx={{ fontSize: 44, color: 'text.disabled' }} />
+              <Typography color="text.secondary">No template contents found</Typography>
+              <Button
+                variant="outlined"
+                startIcon={<Add />}
+                onClick={() => handleOpen()}
+                sx={{ borderRadius: 2 }}
+              >
+                Create Your First Template
+              </Button>
+            </Stack>
+          </TableCell>
+        </TableRow>
+      ) : (
+        paginatedContents.map((row) => (
+          <TableRow
+            key={row.id}
+            hover
+            sx={{
+              '& td': { py: 1 }, // ⬅ reduced vertical padding for all body cells
+              '&:hover': {
+                bgcolor: alpha(theme.palette.primary.main, 0.04),
+              },
+            }}
+          >
+            <TableCell>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {row.subject}
+              </Typography>
+            </TableCell>
+
+            <TableCell sx={{ maxWidth: 160, whiteSpace: 'nowrap', overflow: 'hidden' }}>
+              <Box display="flex" gap={0.5} flexWrap="nowrap">
+                {row.variables.slice(0, 2).map((variable, index) => (
+                  <Chip
+                    key={index}
+                    label={variable}
+                    size="small"
+                    variant="outlined"
+                    color="secondary"
+                    sx={{
+                      fontFamily: 'monospace',
+                      fontSize: '0.65rem',
+                      height: 20,
+                      px: 0.5,
+                      maxWidth: 60,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}
+                  />
+                ))}
+                {row.variables.length > 2 && (
+                  <Chip
+                    label={`+${row.variables.length - 2}`}
+                    size="small"
+                    variant="outlined"
+                    color="default"
+                    sx={{ fontSize: '0.65rem', height: 20 }}
+                  />
+                )}
+              </Box>
+            </TableCell>
+
+            <TableCell>
+              <Chip
+                label={row.is_compiled ? 'Compiled' : 'Draft'}
+                color={row.is_compiled ? 'success' : 'warning'}
+                size="small"
+                icon={row.is_compiled ? <Check /> : <Warning />}
+                sx={{ fontWeight: 500 }}
+              />
+            </TableCell>
+
+            <TableCell>
+              <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap', fontSize: '0.75rem' }}>
+                {new Date(row.updated_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </Typography>
+            </TableCell>
+
+            <TableCell align="center">
+              <Box display="flex" gap={0.5} justifyContent="flex-start">
+                <Tooltip title="Preview Template">
+                  <IconButton
+                    color="info"
+                    onClick={() => handlePreview(row)}
+                    size="small"
+                    sx={{ borderRadius: 1.5 }}
+                  >
+                    <Visibility />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Edit Template">
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleOpen(row)}
+                    size="small"
+                    sx={{ borderRadius: 1.5 }}
+                  >
+                    <Edit />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete Template">
+                  <IconButton
+                    color="error"
+                    onClick={() => handleDeleteClick(row.id)}
+                    size="small"
+                    sx={{ borderRadius: 1.5 }}
+                  >
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </TableCell>
+          </TableRow>
+        ))
+      )}
+    </TableBody>
+  </Table>
+</TableContainer>
+
             
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
@@ -632,6 +653,8 @@ const TemplateContents = ({channelData, templateData}) => {
           </Card>
         </Grid>
       </Grid>
+
+      
 
       {/* Enhanced Add/Edit Dialog */}
      <Dialog 
@@ -672,98 +695,100 @@ const TemplateContents = ({channelData, templateData}) => {
               </Typography>
             </Grid>
             
-            {/* <Grid item xs={12} md={4}>
-              <FormField
-                name="template_id"
-                label="Template ID"
-                type="number"
-                icon={<Settings fontSize="small" />}
-                helperText="Unique identifier for the template"
-                form={form}
-                formTouched={formTouched}
-                formErrors={formErrors}
-                handleFieldChange={handleFieldChange}
-              />
-            </Grid> */}
+          <Grid item xs={12} md={4}>
+          <TextField
+            select
+            fullWidth
+            size="small"
+            label="Template"
+            name="template_id"
+            value={form.template_id}
+            onChange={(e) => handleFieldChange('template_id', e.target.value)}
+            helperText={
+              formTouched.template_id && formErrors.template_id
+                ? formErrors.template_id
+                : 'Select the template'
+            }
+            error={formTouched.template_id && Boolean(formErrors.template_id)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Settings fontSize="small" />
+                </InputAdornment>
+              ),
+            }}
+          >
+            {templateData.map((template) => (
+              <MenuItem key={template.id} value={template.id}>
+                {template.name || `Template #${template.id}`}
+              </MenuItem>
+            ))}
+          </TextField>
+          </Grid>
 
-            <Grid item xs={12} md={4}>
-              <TextField
-                select
-                fullWidth
-                label="Template"
-                name="template_id"
-                value={form.template_id}
-                onChange={(e) => handleFieldChange('template_id', e.target.value)}
-                helperText="Select the template"
-                error={formTouched.template_id && Boolean(formErrors.template_id)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Settings fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-              >
-                {templateData.map((template) => (
-                  <MenuItem key={template.id} value={template.id}>
-                    {template.name || `Template #${template.id}`}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              select
+              fullWidth
+              size="small"
+              label="Channel"
+              name="channel_id"
+              value={form.channel_id}
+              onChange={(e) => handleFieldChange('channel_id', e.target.value)}
+              helperText={
+                formTouched.channel_id && formErrors.channel_id
+                  ? formErrors.channel_id
+                  : 'Communication channel identifier'
+              }
+              error={formTouched.channel_id && Boolean(formErrors.channel_id)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Timeline fontSize="small" />
+                  </InputAdornment>
+                ),
+              }}
+            >
+              {channelData.map((channel) => (
+                <MenuItem key={channel.id} value={channel.id}>
+                  {channel.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
 
-            
-            {/* <Grid item xs={12} md={4}>
-              <FormField
-                name="channel_id"
-                label="Channel ID"
-                type="number"
-                icon={<Timeline fontSize="small" />}
-                helperText="Communication channel identifier"
-                form={form}
-                formTouched={formTouched}
-                formErrors={formErrors}
-                handleFieldChange={handleFieldChange}
-              />
-            </Grid> */}
+          <Grid item xs={12} md={4}>
+            <TextField
+              select
+              fullWidth
+              size="small"
+              label="Language"
+              name="language_id"
+              value={form.language_id}
+              onChange={(e) => handleFieldChange('language_id', e.target.value)}
+              helperText={
+                formTouched.language_id && formErrors.language_id
+                  ? formErrors.language_id
+                  : 'Language localization identifier'
+              }
+              error={formTouched.language_id && Boolean(formErrors.language_id)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Language fontSize="small" />
+                  </InputAdornment>
+                ),
+              }}
+            >
+              {languageData.map((lang) => (
+                <MenuItem key={lang.id} value={lang.id}>
+                  {lang.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
 
 
-            <Grid item xs={12} md={4}>
-              <FormControl fullWidth size="small" error={!!formErrors.channel_id}>
-                <InputLabel id="channel-select-label">Channel</InputLabel>
-                <Select
-                  labelId="channel-select-label"
-                  value={form.channel_id}
-                  onChange={(e) => handleFieldChange('channel_id', e.target.value)}
-                  label="Channel"
-                  startAdornment={<Timeline fontSize="small" sx={{ mr: 1 }} />}
-                >
-                  {channelData.map((channel) => (
-                    <MenuItem key={channel.id} value={channel.id}>
-                      {channel.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>
-                  {formErrors.channel_id || 'Communication channel identifier'}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-
-            
-            <Grid item xs={12} md={4}>
-              <FormField
-                name="language_id"
-                label="Language ID"
-                type="number"
-                icon={<Language fontSize="small" />}
-                helperText="Language localization identifier"
-                form={form}
-                formTouched={formTouched}
-                formErrors={formErrors}
-                handleFieldChange={handleFieldChange}
-              />
-            </Grid>
             
             <Grid item xs={12}>
               <FormField
@@ -930,7 +955,7 @@ const TemplateContents = ({channelData, templateData}) => {
             onClick={handleSave} 
             variant="contained" 
             size="large"
-            disabled={saving || !isFormValid}
+            disabled={saving}
             startIcon={saving ? <CircularProgress size={20} /> : <Check />}
             sx={{ 
               borderRadius: 2,

@@ -13,9 +13,11 @@ import {
 import axios from 'axios';
 import baseURL, { addContentType, deleteContentType, fetchContentTypes, showContentType, updateContentType } from '../../Url';
 import { config } from '../../Url';
+import { Search } from '@mui/icons-material';
 
-const TemplateContentType = () => {
-  const [data, setData] = useState([]);
+
+const TemplateContentType = ({fetchContentTypeData, data}) => {
+  // const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,6 +32,8 @@ const TemplateContentType = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
   const [page, setPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [notification, setNotification] = useState({ open: false, message: '', type: 'success' });
   const rowsPerPage = 5;
 
@@ -119,21 +123,21 @@ const TemplateContentType = () => {
     setTimeout(() => setNotification({ open: false, message: '', type: 'success' }), 4000);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(fetchContentTypes(), config);
-      setData(res.data?.data?.values || []);
-    } catch (error) {
-      showNotification('Failed to fetch data', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchData = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await axios.get(fetchContentTypes(), config);
+  //     setData(res.data?.data?.values || []);
+  //   } catch (error) {
+  //     showNotification('Failed to fetch data', 'error');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleDialogOpen = (item = null) => {
     setFormData(item ? { 
@@ -182,7 +186,7 @@ const TemplateContentType = () => {
 
       await axios.post(url, formData, config);
       setOpenDialog(false);
-      fetchData();
+      fetchContentTypeData();
       showNotification(
         formData.id ? 'Template updated successfully' : 'Template created successfully',
         'success'
@@ -199,7 +203,7 @@ const TemplateContentType = () => {
     try {
       await axios.post(deleteContentType(), { id: deleteId }, config);
       setOpenDelete(false);
-      fetchData();
+      fetchContentTypeData();
       showNotification('Template deleted successfully', 'success');
     } catch (error) {
       showNotification('Failed to delete template', 'error');
@@ -232,12 +236,18 @@ const TemplateContentType = () => {
 
     try {
       await axios.post(updateContentType(), payload, config);
-      fetchData();
+      fetchContentTypeData();
       showNotification(`Template ${isActive ? 'activated' : 'deactivated'} successfully`);
     } catch (error) {
       showNotification('Failed to update status', 'error');
     }
   };
+
+  const filteredData = data.filter((item) =>
+  item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  item.slug.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
   const ensureJSONString = (value) => {
     try {
@@ -328,6 +338,23 @@ const TemplateContentType = () => {
                 Manage your content type templates with ease
               </Typography>
             </Box>
+            <TextField
+            label="Search ContentTypes"
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search by name or slug"
+            sx={{ mt: 2, width: 300, minWidth:250 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+
             <Button
               variant="contained"
               size="large"
@@ -339,6 +366,7 @@ const TemplateContentType = () => {
                 fontWeight: 600,
                 px: 3,
                 py: 1,
+                mt:"12px",
                 boxShadow: 2,
                 '&:hover': {
                   boxShadow: 3,
@@ -347,6 +375,7 @@ const TemplateContentType = () => {
             >
               Add Template
             </Button>
+            
           </Box>
         </CardContent>
       </Card>
@@ -380,16 +409,16 @@ const TemplateContentType = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                data
+                filteredData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <TableRow key={row.id} hover sx={{ '&:hover': { backgroundColor: '#f8f9fa' } }}>
-                      <TableCell sx={{ py: 2 }}>
+                      <TableCell sx={{ py: 0.5 }}>
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
                           {row.name}
                         </Typography>
                       </TableCell>
-                      <TableCell sx={{ py: 2 }}>
+                      <TableCell sx={{ py: 0.5 }}>
                         <Chip
                           label={row.slug}
                           size="small"
@@ -397,7 +426,7 @@ const TemplateContentType = () => {
                           sx={{ fontFamily: 'monospace' }}
                         />
                       </TableCell>
-                      <TableCell sx={{ py: 2, maxWidth: 200 }}>
+                      <TableCell sx={{ py: 0.5, maxWidth: 200 }}>
                         <Typography
                           variant="body2"
                           sx={{
@@ -409,7 +438,7 @@ const TemplateContentType = () => {
                           {row.description || '—'}
                         </Typography>
                       </TableCell>
-                      <TableCell sx={{ py: 2 }}>
+                      <TableCell sx={{ py: 0.5 }}>
                         <RadioGroup
                           row
                           value={row.is_active ? 'true' : 'false'}
@@ -436,7 +465,7 @@ const TemplateContentType = () => {
                           />
                         </RadioGroup>
                       </TableCell>
-                      <TableCell sx={{ py: 2 }} align="center">
+                      <TableCell sx={{ py: 0.5 }} align="center">
                         <Stack direction="row" spacing={1} justifyContent="flex-start">
                           <Tooltip title="View Details">
                             <IconButton
@@ -479,7 +508,7 @@ const TemplateContentType = () => {
         
         <TablePagination
           component="div"
-          count={data.length}
+          count={filteredData.length} 
           page={page}
           onPageChange={(e, newPage) => setPage(newPage)}
           rowsPerPage={rowsPerPage}

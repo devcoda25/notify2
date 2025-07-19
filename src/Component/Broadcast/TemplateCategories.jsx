@@ -10,8 +10,8 @@ import axios from 'axios';
 import { addCategory, deleteCategory, fetchCategories, showCategory, updateCategory } from '../../Url';
 import { config } from '../../Url';
 
-const TemplateCategories = () => {
-  const [templateData, setTemplateData] = useState([]);
+const TemplateCategories = ({fetchCategoryData, categoryData}) => {
+  // const [categoryData, setcategoryData] = useState([]);
   const [formData, setFormData] = useState({
     id: null, name: '', slug: '', description: '',
     icon: '', color: '#4A90E2', is_active: true, sort_order: 1
@@ -45,7 +45,7 @@ const TemplateCategories = () => {
           return 'Category name must be less than 100 characters';
         }
         // Check for duplicate names (excluding current item during edit)
-        const isDuplicate = templateData.some(item => 
+        const isDuplicate = categoryData.some(item => 
           item.name.toLowerCase() === value.toLowerCase() && item.id !== allData.id
         );
         if (isDuplicate) {
@@ -67,7 +67,7 @@ const TemplateCategories = () => {
           return 'Slug must be less than 50 characters';
         }
         // Check for duplicate slugs (excluding current item during edit)
-        const isSlugDuplicate = templateData.some(item => 
+        const isSlugDuplicate = categoryData.some(item => 
           item.slug.toLowerCase() === value.toLowerCase() && item.id !== allData.id
         );
         if (isSlugDuplicate) {
@@ -142,18 +142,18 @@ const TemplateCategories = () => {
     return Object.keys(formErrors).length === 0;
   };
 
-  useEffect(() => {
-    GetTemplateCategories();
-  }, []);
+  // useEffect(() => {
+  //   GetTemplateCategories();
+  // }, []);
 
-  const GetTemplateCategories = async () => {
-    try {
-      const res = await axios.get(fetchCategories(), config);
-      setTemplateData(res.data?.data?.values || []);
-    } catch (err) {
-      console.error('Error fetching categories:', err);
-    }
-  };
+  // const GetTemplateCategories = async () => {
+  //   try {
+  //     const res = await axios.get(fetchCategories(), config);
+  //     setcategoryData(res.data?.data?.values || []);
+  //   } catch (err) {
+  //     console.error('Error fetching categories:', err);
+  //   }
+  // };
 
   const handleOpenDialog = (item = null) => {
     setFormData(item ? { ...item } : {
@@ -234,7 +234,7 @@ const TemplateCategories = () => {
 
       await axios.post(url, formData, config);
       handleCloseDialog();
-      GetTemplateCategories();
+      fetchCategoryData();
     } catch (err) {
       console.error("Error saving category:", err);
       setIsSubmitting(false);
@@ -245,7 +245,7 @@ const TemplateCategories = () => {
     try {
       await axios.post(deleteCategory(), { id: deleteId }, config );
       setOpenDeleteConfirm(false);
-      GetTemplateCategories();
+      fetchCategoryData();
     } catch (err) {
       console.error("Error deleting category:", err);
     }
@@ -263,19 +263,19 @@ const TemplateCategories = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const updated = templateData.find((item) => item.id === id);
+      const updated = categoryData.find((item) => item.id === id);
       if (!updated) return;
 
       const payload = { ...updated, is_active: newStatus };
 
       await axios.post(updateCategory(), payload, config);
-      GetTemplateCategories();
+      fetchCategoryData();
     } catch (err) {
       console.error("Error updating status:", err);
     }
   };
 
-  const filteredData = templateData.filter(item =>
+  const filteredData = categoryData.filter(item =>
     item.name.toLowerCase().includes(searchText.toLowerCase()) ||
     item.slug.toLowerCase().includes(searchText.toLowerCase()) 
   );
@@ -334,7 +334,7 @@ const TemplateCategories = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {templateData.length === 0 ? (
+            {categoryData.length === 0 ? (
                             <TableRow>
                               <TableCell colSpan={5} align="center" sx={{ py: 8 }}>
                                 <Typography variant="h6" color="text.secondary">

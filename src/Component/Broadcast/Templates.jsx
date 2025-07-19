@@ -13,14 +13,16 @@ import axios from 'axios';
 import baseURL, { addLanguage, deleteLanguage } from '../../Url';
 import { fetchTemplates, fetchLanguages, addTemplate, deleteTemplate, showTemplates, updateTemplate, setDefaultLanguage } from '../../Url';
 import { config } from '../../Url';
+import SearchIcon from '@mui/icons-material/Search';
 
 
-const Templates = ({fetchTemplateData, data}) => {
+
+const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categoryData, contentTypeData}) => {
 
   // const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    id: null, name: '', slug: '', description: '', status: 'active',
+    id: null, name: '', slug: '', description: '', status: '',
     tags: '', metadata: '', category_id: '', content_type_id: ''
   });
   const [formErrors, setFormErrors] = useState({});
@@ -31,9 +33,11 @@ const Templates = ({fetchTemplateData, data}) => {
   const [openDelete, setOpenDelete] = useState(false);
   const [page, setPage] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const rowsPerPage = 10;
 
-  const [languages, setLanguages] = useState([]);
+  // const [languages, setLanguages] = useState([]);
   const [languageLoading, setLanguageLoading] = useState(false);
   const [openLangDialog, setOpenLangDialog] = useState(false);
   const [showAddLang, setShowAddLang] = useState(false);
@@ -162,24 +166,24 @@ const Templates = ({fetchTemplateData, data}) => {
   // };
   
 
-  const handleGetLanguages = async () => {
-    try {
-      setLanguageLoading(true);
-      const res = await axios.get(fetchLanguages(), config );
-      setLanguages(res.data?.data?.values || []);
-    } catch (error) {
-      // showNotification('Failed to fetch languages', 'error');
-      console.error('Error fetching languages:', error);
-    } finally {
-      setLanguageLoading(false);
-    }
-  };
+  // const handleGetLanguages = async () => {
+  //   try {
+  //     setLanguageLoading(true);
+  //     const res = await axios.get(fetchLanguages(), config );
+  //     setLanguages(res.data?.data?.values || []);
+  //   } catch (error) {
+  //     // showNotification('Failed to fetch languages', 'error');
+  //     console.error('Error fetching languages:', error);
+  //   } finally {
+  //     setLanguageLoading(false);
+  //   }
+  // };
 
 
   useEffect(() => {
     // handleGetTemplates();
     fetchTemplateData();
-    handleGetLanguages();
+    // handleGetLanguages();
   }, []);
 
   // Dialog Handlers
@@ -192,7 +196,7 @@ const Templates = ({fetchTemplateData, data}) => {
       });
     } else {
       setFormData({ 
-        id: null, name: '', slug: '', description: '', status: 'active', 
+        id: null, name: '', slug: '', description: '', status: '', 
         tags: '', metadata: '', category_id: '', content_type_id: '' 
       });
     }
@@ -309,7 +313,7 @@ const Templates = ({fetchTemplateData, data}) => {
       await axios.post(addLanguage(), newLanguage, config );
       setOpenLangDialog(false);
       setShowAddLang(false);
-      handleGetLanguages();
+      fetchLanguageData();
       showNotification('Language added successfully');
       setNewLanguage({
         name: '',
@@ -332,7 +336,7 @@ const Templates = ({fetchTemplateData, data}) => {
   const handleDeleteLanguage = async (id) => {
     try {
       await axios.post(deleteLanguage(), { id }, config );
-      handleGetLanguages();
+      fetchLanguageData();
       showNotification('Language deleted successfully');
     } catch (error) {
       showNotification('Failed to delete language', 'error');
@@ -346,13 +350,19 @@ const Templates = ({fetchTemplateData, data}) => {
         id:langId
       }
       await axios.post(setDefaultLanguage(), payload, config );
-      handleGetLanguages();
+      fetchLanguageData();
       showNotification('Default language updated successfully');
     } catch (err) {
       showNotification('Failed to set default language', 'error');
       console.error("Failed to set default language", err);
     }
   };
+
+  const filteredData = data.filter((item) =>
+  item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  item.slug.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
   // Skeleton Loading Component
   const TableSkeleton = () => (
@@ -707,22 +717,38 @@ const Templates = ({fetchTemplateData, data}) => {
       {/* Templates Management */}
       <Card variant="outlined" sx={{ borderRadius: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <CardHeader
-          title={
-            <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
-              Templates
-            </Typography>
-          }
-          action={
-            <Button 
-              startIcon={<Add />} 
-              variant="contained" 
-              onClick={() => handleDialogOpen()}
-              sx={{ textTransform: 'none' }}
-            >
-              Add Template
-            </Button>
-          }
-        />
+  title={
+    <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+      Templates
+    </Typography>
+  }
+  action={
+    <Box sx={{ display: 'flex', gap: 1 }}>
+      <TextField
+        size="small"
+        placeholder="Search templates..."
+        variant="outlined"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        InputProps={{
+          startAdornment: (
+            <SearchIcon sx={{ mr: 1, color: 'action.active' }} />
+          )
+        }}
+        sx={{ width: 250 }}
+      />
+      <Button
+        startIcon={<Add />}
+        variant="contained"
+        onClick={() => handleDialogOpen()}
+        sx={{ textTransform: 'none' }}
+      >
+        Add Template
+      </Button>
+    </Box>
+  }
+/>
+
         <Divider />
         <CardContent sx={{ p: 0 }}>
           {loading ? (
@@ -749,7 +775,7 @@ const Templates = ({fetchTemplateData, data}) => {
                                               </TableCell>
                                             </TableRow>
                                           ) : (
-                  data.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((row) => (
+                  filteredData.slice(page * rowsPerPage, (page + 1) * rowsPerPage).map((row) => (
                     <TableRow key={row.id} hover>
                       <TableCell>
                         <Typography variant="body2" fontWeight={500}>
@@ -780,7 +806,8 @@ const Templates = ({fetchTemplateData, data}) => {
                       <TableCell>
                         <Chip 
                           label={row.status} 
-                          color={row.status === 'active' ? 'success' : 'default'} 
+                          // color={row.status === 'active' ? 'success' : 'default'}
+                          color={'primary'} 
                           size="small"
                           sx={{ fontWeight: 500 }}
                         />
@@ -823,14 +850,15 @@ const Templates = ({fetchTemplateData, data}) => {
             </TableContainer>
           )}
           <TablePagination
-            component="div"
-            count={data.length}
-            page={page}
-            onPageChange={(e, newPage) => setPage(newPage)}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[rowsPerPage]}
-            sx={{ borderTop: '1px solid', borderColor: 'divider' }}
-          />
+          component="div"
+          count={filteredData.length}
+          page={page}
+          onPageChange={(e, newPage) => setPage(newPage)}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[rowsPerPage]}
+          sx={{ borderTop: '1px solid', borderColor: 'divider' }}
+        />
+
         </CardContent>
       </Card>
 
@@ -878,7 +906,8 @@ const Templates = ({fetchTemplateData, data}) => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Category ID"
@@ -907,7 +936,51 @@ const Templates = ({fetchTemplateData, data}) => {
                 required
                 inputProps={{ min: 1 }}
               />
-            </Grid>
+            </Grid> */}
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            select
+            label="Category"
+            name="category_id"
+            value={formData.category_id}
+            onChange={handleInputChange}
+            error={!!formErrors.category_id}
+            helperText={formErrors.category_id}
+            variant="outlined"
+            required
+          >
+            {categoryData.map((category) => (
+              <MenuItem key={category.id} value={category.id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            select
+            label="Content Type"
+            name="content_type_id"
+            value={formData.content_type_id}
+            onChange={handleInputChange}
+            error={!!formErrors.content_type_id}
+            helperText={formErrors.content_type_id}
+            variant="outlined"
+            required
+          >
+            {contentTypeData.map((type) => (
+              <MenuItem key={type.id} value={type.id}>
+                {type.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+
+
             <Grid item xs={12}>
               <TextField
                 fullWidth

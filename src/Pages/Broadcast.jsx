@@ -9,7 +9,7 @@ import Templates from "../Component/Broadcast/Templates";
 import TemplateContentType from "../Component/Broadcast/TemplateContentType";
 import TemplateContents from "../Component/Broadcast/TemplateContents";
 import axios from "axios";
-import { config, fetchTemplates } from "../Url";
+import { config, fetchCategories, fetchContentTypes, fetchLanguages, fetchTemplates } from "../Url";
 import { fetchChannels } from "../Url";
 
 const Broadcast = (authUser) => {
@@ -17,6 +17,10 @@ const Broadcast = (authUser) => {
     const [state, setState] = useState("default")
     const [channelData, setChannelData] = useState([]);
     const [templateData, setTemplateData] = useState([]);
+    const [languageData, setLanguageData] = useState([]);
+    const [categoryData, setCategoryData]= useState([]);
+    const [contentTypeData, setContentTypeData]= useState([]);
+
 
 
     const handleNavigationClick = (e, content) => {
@@ -47,30 +51,58 @@ const Broadcast = (authUser) => {
 
   const fetchChannelData = async () => {
       try {
-        // setLoading(true);
         const res = await axios.get(fetchChannels(),config);
         setChannelData(res.data?.data?.values || []);
       } catch (error) {
         console.log('fetch error','Failed to load data')
       } finally {
-        // setLoading(false);
       }
     };
 
   const fetchTemplateData = async () => {
         try {
-        //   setLoading(true);
           const res = await axios.get(fetchTemplates(), config);
           setTemplateData(res.data?.data?.values || []);
         } catch (error) {
-          // showNotification('Failed to fetch templates', 'error');
           console.error('Error fetching templates:', error);
-        } finally {
-        //   setLoading(false);
         }
-      };
+    };
 
+  const fetchLanguageData = async () => {
+          try {
+            // setLanguageLoading(true);
+            const res = await axios.get(fetchLanguages(), config);
+            setLanguageData(res.data?.data?.values || []);
+          } catch (error) {
+            console.error('Error fetching languages:', error);
+          } 
+    };
 
+  const fetchCategoryData = async () => {
+    try {
+        const res = await axios.get(fetchCategories(), config);
+        setCategoryData(res.data?.data?.values || []);
+    } catch (err) {
+        console.error('Error fetching categories:', err);
+    }
+    };
+
+  const fetchContentTypeData = async () => {
+        try {
+          const res = await axios.get(fetchContentTypes(), config);
+          setContentTypeData(res.data?.data?.values || []);
+        } catch (error) {
+          console.log('Failed to fetch data', 'error')
+        }
+    };
+
+        useEffect(()=>{
+            fetchChannelData();
+            fetchTemplateData();
+            fetchLanguageData();
+            fetchCategoryData();
+            fetchContentTypeData();
+        },[])
 
 
     const renderContent = () => {
@@ -80,15 +112,32 @@ const Broadcast = (authUser) => {
             case 'TemplateLibrary':
                 return <TemplateLibrary />
             case 'Categories':
-                return <TemplateCategories />
+                return <TemplateCategories
+                fetchCategoryData= {fetchCategoryData} 
+                categoryData= {categoryData}/>
             case 'ContentTypes':
-                return <TemplateContentType />
+                return <TemplateContentType 
+                fetchContentTypeData={fetchContentTypeData}
+                data={contentTypeData}
+                />
             case 'Channels':
-                return <TemplateChannels fetchChannelData = {fetchChannelData} data = {channelData}/>
+                return <TemplateChannels
+                fetchChannelData = {fetchChannelData} 
+                data = {channelData}/>
             case 'Templates':
-                return <Templates fetchTemplateData = {fetchTemplateData} data = {templateData} />
+                return <Templates 
+                fetchTemplateData = {fetchTemplateData} 
+                fetchLanguageData ={fetchLanguageData}
+                languages={languageData}
+                data = {templateData} 
+                categoryData = {categoryData}
+                contentTypeData={contentTypeData}
+                />
             case 'TemplateContents':
-                return <TemplateContents channelData={channelData} templateData= {templateData} />
+                return <TemplateContents
+                channelData={channelData}
+                templateData= {templateData}
+                languageData ={languageData} />
             case 'BroadcastAnalytics':
                 return <BroadcastAnalytics />
             case 'ScheduledBroadcast':

@@ -391,153 +391,174 @@ const TemplateChannels = ({fetchChannelData, data}) => {
 
       {/* Data Table */}
     <Card elevation={2}>
-  <TableContainer>
-    <Table size="small" sx={{ '& th, & td': { py: 0.75, px: 1 }, minWidth: 650 }}>
-      <TableHead>
-        <TableRow sx={{ backgroundColor: alpha(theme.palette.primary.main, 0.05) }}>
-          {['Name', 'Slug', 'Type', 'Description', 'Formats', 'Status', 'Actions'].map((head, idx) => (
-            <TableCell key={idx} sx={{ fontWeight: 600, fontSize: '0.85rem' }}>{head}</TableCell>
-          ))}
+ <TableContainer>
+  <Table
+    size="small"
+    sx={{
+      minWidth: 650,
+      '& th, & td': {
+        py: 0.5,        
+        px: 1,          
+        fontSize: '0.95rem',
+        verticalAlign: 'middle',
+      },
+    }}
+  >
+    <TableHead>
+      <TableRow sx={{ backgroundColor: alpha(theme.palette.primary.main, 0.05) }}>
+        {['Name', 'Slug', 'Type', 'Description', 'Formats', 'Status', 'Actions'].map((head, idx) => (
+          <TableCell key={idx} sx={{ fontWeight: 600, fontSize: '2rem' }}>
+            {head}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+
+    <TableBody>
+      {loading ? (
+        <TableRow>
+          <TableCell colSpan={8} align="center" sx={{ py: 3 }}>
+            <CircularProgress size={20} />
+          </TableCell>
         </TableRow>
-      </TableHead>
-
-      <TableBody >
-        {loading ? (
-          <TableRow>
-            <TableCell colSpan={8} align="center" sx={{ py: 3 }}>
-              <CircularProgress size={24} />
+      ) : paginatedData.length === 0 ? (
+        <TableRow>
+          <TableCell colSpan={8} align="center" sx={{ py: 3 }}>
+            <Typography color="text.secondary" fontSize="0.75rem">
+              No channels found
+            </Typography>
+          </TableCell>
+        </TableRow>
+      ) : (
+        paginatedData.map((row) => (
+          <TableRow
+            key={row.id}
+            hover
+            sx={{ '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.02) } }}
+          >
+            <TableCell>
+              <Typography sx={{ fontSize: '0.8rem', fontWeight: 500 }}>{row.name}</Typography>
             </TableCell>
-          </TableRow>
-        ) : paginatedData.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={8} align="center" sx={{ py: 3 }}>
-              <Typography color="text.secondary" fontSize="0.75rem">No channels found</Typography>
+
+            <TableCell>
+              <Chip
+                label={row.slug}
+                variant="outlined"
+                size="small"
+                sx={{ fontSize: '0.8rem', height: 20 }}
+              />
             </TableCell>
-          </TableRow>
-        ) : (
-          paginatedData.map((row) => (
-            <TableRow key={row.id} hover sx={{ '&:hover': { backgroundColor: alpha(theme.palette.primary.main, 0.02) } }}>
-              <TableCell>
-                <Typography variant="body2" sx={{ fontSize: '0.85rem', fontWeight: 500 }}>{row.name}</Typography>
-              </TableCell>
 
-              <TableCell>
-                <Chip label={row.slug} variant="outlined" size="small" sx={{ fontSize: '0.75rem', height: 20 }} />
-              </TableCell>
+            <TableCell>
+              <Chip
+                label={row.type}
+                color="primary"
+                variant="outlined"
+                size="small"
+                sx={{ textTransform: 'capitalize', fontSize: '0.8rem', height: 20 }}
+              />
+            </TableCell>
 
-              <TableCell>
-                <Chip
-                  label={row.type}
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                  sx={{ textTransform: 'capitalize', fontSize: '0.75rem', height: 20 }}
-                />
-              </TableCell>
+            <TableCell sx={{ maxWidth: 160 }}>
+              <Typography
+                sx={{
+                  fontSize: '0.8rem',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {row.description || '—'}
+              </Typography>
+            </TableCell>
 
-              <TableCell sx={{ maxWidth: 160 }}>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontSize: '0.75rem',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  {row.description || '—'}
-                </Typography>
-              </TableCell>
-
-              <TableCell>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.25 }}>
-                  {Array.isArray(row.supported_formats) &&
-                    row.supported_formats.slice(0, 2).map((format, idx) => (
-                      <Chip
-                        key={idx}
-                        label={format.toUpperCase()}
-                        size="small"
-                        variant="outlined"
-                        sx={{ fontSize: '0.75rem', height: 20 }}
-                      />
-                    ))}
-                  {Array.isArray(row.supported_formats) && row.supported_formats.length > 2 && (
+            <TableCell>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.25 }}>
+                {Array.isArray(row.supported_formats) &&
+                  row.supported_formats.slice(0, 2).map((format, idx) => (
                     <Chip
-                      label={`+${row.supported_formats.length - 2}`}
+                      key={idx}
+                      label={format.toUpperCase()}
                       size="small"
                       variant="outlined"
-                      sx={{ fontSize: '0.75rem', height: 20 }}
+                      sx={{ fontSize: '0.8rem', height: 20 }}
                     />
-                  )}
-                </Box>
-              </TableCell>
+                  ))}
+                {row.supported_formats?.length > 2 && (
+                  <Chip
+                    label={`+${row.supported_formats.length - 2}`}
+                    size="small"
+                    variant="outlined"
+                    sx={{ fontSize: '0.8rem', height: 20 }}
+                  />
+                )}
+              </Box>
+            </TableCell>
 
-              {/* <TableCell>
-                <Chip
-                  label={row.priority}
-                  color={row.priority <= 3 ? 'success' : row.priority <= 7 ? 'warning' : 'error'}
-                  size="small"
-                  variant="outlined"
-                  sx={{ fontSize: '0.75rem', height: 20 }}
+            <TableCell>
+              <RadioGroup
+                row
+                value={row.is_active ? 'true' : 'false'}
+                onChange={(e) => handleStatusChange(row, e.target.value === 'true')}
+                sx={{
+                  '& .MuiFormControlLabel-root': { mr: 0.5 },
+                  '& .MuiFormControlLabel-label': { fontSize: '0.8rem' },
+                }}
+              >
+                <FormControlLabel
+                  value="true"
+                  control={<Radio size="small" color="success" />}
+                  label="Active"
                 />
-              </TableCell> */}
+                <FormControlLabel
+                  value="false"
+                  control={<Radio size="small" color="error" />}
+                  label="Inactive"
+                />
+              </RadioGroup>
+            </TableCell>
 
-              <TableCell>
-                <RadioGroup
-                  row
-                  value={row.is_active ? 'true' : 'false'}
-                  onChange={(e) => handleStatusChange(row, e.target.value === 'true')}
-                  sx={{
-                    justifyContent: 'flex-start',
-                    '& .MuiFormControlLabel-root': { marginRight: 0.5 },
-                    '& .MuiFormControlLabel-label': { fontSize: '0.75rem' }
-                  }}
-                >
-                  <FormControlLabel
-                    value="true"
-                    control={<Radio size="small" color="success" />}
-                    label="Active"
-                  />
-                  <FormControlLabel
-                    value="false"
-                    control={<Radio size="small" color="error" />}
-                    label="Inactive"
-                  />
-                </RadioGroup>
-              </TableCell>
+            <TableCell align="center">
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}>
+                <Tooltip title="View Details">
+                  <IconButton
+                    onClick={() => handleView(row.id)}
+                    size="small"
+                    sx={{ p: 0.4, color: 'info.main' }}
+                  >
+                    <Visibility fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Edit">
+                  <IconButton
+                    onClick={() => handleDialogOpen(row)}
+                    size="small"
+                    sx={{ p: 0.4, color: 'primary.main' }}
+                  >
+                    <Edit fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton
+                    onClick={() => {
+                      setDeleteId(row.id);
+                      setOpenDelete(true);
+                    }}
+                    size="small"
+                    sx={{ p: 0.4, color: 'error.main' }}
+                  >
+                    <Delete fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </TableCell>
+          </TableRow>
+        ))
+      )}
+    </TableBody>
+  </Table>
+</TableContainer>
 
-              <TableCell align="center">
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 0.5 }}>
-                  <Tooltip title="View Details">
-                    <IconButton onClick={() => handleView(row.id)} size="small" sx={{ p: 0.5, color: 'info.main' }}>
-                      <Visibility fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Edit">
-                    <IconButton onClick={() => handleDialogOpen(row)} size="small" sx={{ p: 0.5, color: 'primary.main' }}>
-                      <Edit fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Delete">
-                    <IconButton
-                      onClick={() => {
-                        setDeleteId(row.id);
-                        setOpenDelete(true);
-                      }}
-                      size="small"
-                      sx={{ p: 0.5, color: 'error.main' }}
-                    >
-                      <Delete fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </TableCell>
-            </TableRow>
-          ))
-        )}
-      </TableBody>
-    </Table>
-  </TableContainer>
 
   <TablePagination
     component="div"
