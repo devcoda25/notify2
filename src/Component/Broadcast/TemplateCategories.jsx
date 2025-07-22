@@ -32,115 +32,115 @@ const TemplateCategories = ({fetchCategoryData, categoryData}) => {
   const rowsPerPage = 5;
 
 
-  const validateField = (name, value, allData = formData) => {
-    switch (name) {
-      case 'name':
-        if (!value || value.trim().length === 0) {
-          return 'Category name is required';
-        }
-        if (value.trim().length < 2) {
-          return 'Category name must be at least 2 characters';
-        }
-        if (value.trim().length > 100) {
-          return 'Category name must be less than 100 characters';
-        }
-        // Check for duplicate names (excluding current item during edit)
-        const isDuplicate = categoryData.some(item => 
-          item.name.toLowerCase() === value.toLowerCase() && item.id !== allData.id
-        );
-        if (isDuplicate) {
-          return 'Category name already exists';
-        }
-        return '';
+  // const validateField = (name, value, allData = formData) => {
+  //   switch (name) {
+  //     case 'name':
+  //       if (!value || value.trim().length === 0) {
+  //         return 'Category name is required';
+  //       }
+  //       if (value.trim().length < 2) {
+  //         return 'Category name must be at least 2 characters';
+  //       }
+  //       if (value.trim().length > 100) {
+  //         return 'Category name must be less than 100 characters';
+  //       }
+  //       // Check for duplicate names (excluding current item during edit)
+  //       const isDuplicate = categoryData.some(item => 
+  //         item.name.toLowerCase() === value.toLowerCase() && item.id !== allData.id
+  //       );
+  //       if (isDuplicate) {
+  //         return 'Category name already exists';
+  //       }
+  //       return '';
 
-      case 'slug':
-        if (!value || value.trim().length === 0) {
-          return 'Slug is required';
-        }
-        if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
-          return 'Slug must contain only lowercase letters, numbers, and hyphens';
-        }
-        if (value.length < 2) {
-          return 'Slug must be at least 2 characters';
-        }
-        if (value.length > 50) {
-          return 'Slug must be less than 50 characters';
-        }
-        // Check for duplicate slugs (excluding current item during edit)
-        const isSlugDuplicate = categoryData.some(item => 
-          item.slug.toLowerCase() === value.toLowerCase() && item.id !== allData.id
-        );
-        if (isSlugDuplicate) {
-          return 'Slug already exists';
-        }
-        return '';
+  //     case 'slug':
+  //       if (!value || value.trim().length === 0) {
+  //         return 'Slug is required';
+  //       }
+  //       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) {
+  //         return 'Slug must contain only lowercase letters, numbers, and hyphens';
+  //       }
+  //       if (value.length < 2) {
+  //         return 'Slug must be at least 2 characters';
+  //       }
+  //       if (value.length > 50) {
+  //         return 'Slug must be less than 50 characters';
+  //       }
+  //       // Check for duplicate slugs (excluding current item during edit)
+  //       const isSlugDuplicate = categoryData.some(item => 
+  //         item.slug.toLowerCase() === value.toLowerCase() && item.id !== allData.id
+  //       );
+  //       if (isSlugDuplicate) {
+  //         return 'Slug already exists';
+  //       }
+  //       return '';
 
-      case 'description':
-        if (!value || value.trim().length === 0) {
-          return 'Description is required';
-        }
-        if (value.trim().length < 10) {
-          return 'Description must be at least 10 characters';
-        }
-        if (value.trim().length > 500) {
-          return 'Description must be less than 500 characters';
-        }
-        return '';
+  //     case 'description':
+  //       if (!value || value.trim().length === 0) {
+  //         return 'Description is required';
+  //       }
+  //       if (value.trim().length < 10) {
+  //         return 'Description must be at least 10 characters';
+  //       }
+  //       if (value.trim().length > 500) {
+  //         return 'Description must be less than 500 characters';
+  //       }
+  //       return '';
 
-      case 'icon':
-        if (!value || value.trim().length === 0) {
-          return 'Icon is required';
-        }
-        if (!/^fa-[a-zA-Z0-9-]+$/.test(value)) {
-          return 'Icon must be in format: fa-icon-name';
-        }
-        return '';
+  //     case 'icon':
+  //       if (!value || value.trim().length === 0) {
+  //         return 'Icon is required';
+  //       }
+  //       if (!/^fa-[a-zA-Z0-9-]+$/.test(value)) {
+  //         return 'Icon must be in format: fa-icon-name';
+  //       }
+  //       return '';
 
-      case 'color':
-        if (!value) {
-          return 'Color is required';
-        }
-        if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value)) {
-          return 'Please enter a valid hex color';
-        }
-        return '';
+  //     case 'color':
+  //       if (!value) {
+  //         return 'Color is required';
+  //       }
+  //       if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value)) {
+  //         return 'Please enter a valid hex color';
+  //       }
+  //       return '';
 
-      case 'sort_order':
-        if (!value && value !== 0) {
-          return 'Sort order is required';
-        }
-        const numValue = parseInt(value);
-        if (isNaN(numValue) || numValue < 0) {
-          return 'Sort order must be a positive number';
-        }
-        if (numValue > 1000) {
-          return 'Sort order must be less than 1000';
-        }
-        return '';
+  //     case 'sort_order':
+  //       if (!value && value !== 0) {
+  //         return 'Sort order is required';
+  //       }
+  //       const numValue = parseInt(value);
+  //       if (isNaN(numValue) || numValue < 0) {
+  //         return 'Sort order must be a positive number';
+  //       }
+  //       if (numValue > 1000) {
+  //         return 'Sort order must be less than 1000';
+  //       }
+  //       return '';
 
-      default:
-        return '';
-    }
-  };
+  //     default:
+  //       return '';
+  //   }
+  // };
 
-  const validateForm = (data = formData) => {
-    const newErrors = {};
-    const fields = ['name', 'slug', 'description', 'icon', 'color', 'sort_order'];
+  // const validateForm = (data = formData) => {
+  //   const newErrors = {};
+  //   const fields = ['name', 'slug', 'description', 'icon', 'color', 'sort_order'];
     
-    fields.forEach(field => {
-      const error = validateField(field, data[field], data);
-      if (error) {
-        newErrors[field] = error;
-      }
-    });
+  //   fields.forEach(field => {
+  //     const error = validateField(field, data[field], data);
+  //     if (error) {
+  //       newErrors[field] = error;
+  //     }
+  //   });
 
-    return newErrors;
-  };
+  //   return newErrors;
+  // };
 
-  const isFormValid = () => {
-    const formErrors = validateForm();
-    return Object.keys(formErrors).length === 0;
-  };
+  // const isFormValid = () => {
+  //   const formErrors = validateForm();
+  //   return Object.keys(formErrors).length === 0;
+  // };
 
   // useEffect(() => {
   //   GetTemplateCategories();
@@ -154,6 +154,80 @@ const TemplateCategories = ({fetchCategoryData, categoryData}) => {
   //     console.error('Error fetching categories:', err);
   //   }
   // };
+
+const validateField = (name, value, allData = formData) => {
+  const trimmed = typeof value === 'string' ? value.trim() : value;
+
+  switch (name) {
+    case 'name':
+      if (!trimmed) return 'Category name is required';
+      if (trimmed.length < 2) return 'Must be at least 2 characters';
+      if (trimmed.length > 100) return 'Must be less than 100 characters';
+      if (categoryData.some(item => item.name.toLowerCase() === trimmed.toLowerCase() && item.id !== allData.id)) {
+        return 'Category name already exists';
+      }
+      return '';
+
+    case 'slug':
+      if (!trimmed) return 'Slug is required';
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(trimmed)) {
+        return 'Use lowercase, numbers, hyphens only';
+      }
+      if (trimmed.length < 2) return 'Must be at least 2 characters';
+      if (trimmed.length > 50) return 'Must be less than 50 characters';
+      if (categoryData.some(item => item.slug.toLowerCase() === trimmed.toLowerCase() && item.id !== allData.id)) {
+        return 'Slug already exists';
+      }
+      return '';
+
+    case 'description':
+      if (!trimmed) return 'Description is required';
+      if (trimmed.length < 10) return 'Must be at least 10 characters';
+      if (trimmed.length > 500) return 'Must be less than 500 characters';
+      return '';
+
+    case 'icon':
+      if (!trimmed) return 'Icon is required';
+      if (!/^fa-[a-zA-Z0-9-]+$/.test(trimmed)) {
+        return 'Use format: fa-icon-name';
+      }
+      return '';
+
+    case 'color':
+      if (!trimmed) return 'Color is required';
+      if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(trimmed)) {
+        return 'Invalid hex code';
+      }
+      return '';
+
+    case 'sort_order':
+      if (trimmed === '' || trimmed === null || trimmed === undefined) return 'Sort order is required';
+      const num = parseInt(trimmed);
+      if (isNaN(num)) return 'Must be a number';
+      if (num < 0) return 'Must be ≥ 0';
+      if (num > 1000) return 'Must be ≤ 1000';
+      return '';
+
+    default:
+      return '';
+  }
+};
+
+const validateForm = (data = formData) => {
+  const fields = ['name', 'slug', 'description', 'icon', 'color', 'sort_order'];
+  const errors = {};
+  fields.forEach((field) => {
+    const error = validateField(field, data[field], data);
+    if (error) errors[field] = error;
+  });
+  return errors;
+};
+
+const isFormValid = () => {
+  const formErrors = validateForm();
+  return Object.keys(formErrors).length === 0;
+};
+
 
   const handleOpenDialog = (item = null) => {
     setFormData(item ? { ...item } : {
@@ -436,7 +510,7 @@ const TemplateCategories = ({fetchCategoryData, categoryData}) => {
         
         <DialogContent dividers sx={{ pb: 3 }}>
           {/* Show validation summary if there are errors */}
-          {Object.keys(errors).length > 0 && Object.keys(touched).length > 0 && (
+          {/* {Object.keys(errors).length > 0 && Object.keys(touched).length > 0 && (
             <Alert 
               severity="error" 
               sx={{ mb: 2 }}
@@ -444,7 +518,7 @@ const TemplateCategories = ({fetchCategoryData, categoryData}) => {
             >
               Please fix the following errors before submitting:
             </Alert>
-          )}
+          )} */}
 
           <TextField
             {...getFieldProps('name')}

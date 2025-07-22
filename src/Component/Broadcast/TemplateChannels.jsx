@@ -61,94 +61,200 @@ const TemplateChannels = ({fetchChannelData, data}) => {
 
 
 
+  // const validationRules = {
+  //   name: {
+  //     required: true,
+  //     minLength: 2,
+  //     maxLength: 100,
+  //     pattern: /^[a-zA-Z0-9\s\-_]+$/
+  //   },
+  //   slug: {
+  //     required: true,
+  //     minLength: 2,
+  //     maxLength: 50,
+  //     pattern: /^[a-z0-9\-_]+$/
+  //   },
+  //   type: {
+  //     required: true,
+  //     enum: channelTypes
+  //   },
+  //   description: {
+  //     maxLength: 500
+  //   },
+  //   priority: {
+  //     required: true,
+  //     min: 1,
+  //     max: 100
+  //   },
+  //   debug: {
+  //     min: 0,
+  //     max: 1
+  //   },
+  //   supported_formats: {
+  //     required: true,
+  //     minItems: 1
+  //   }
+  // };
+
+  // const validateField = (name, value) => {
+  //   const rules = validationRules[name];
+  //   if (!rules) return '';
+
+  //   if (rules.required && (!value || (Array.isArray(value) && value.length === 0))) {
+  //     return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+  //   }
+
+  //   if (rules.minLength && value.length < rules.minLength) {
+  //     return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.minLength} characters`;
+  //   }
+
+  //   if (rules.maxLength && value.length > rules.maxLength) {
+  //     return `${name.charAt(0).toUpperCase() + name.slice(1)} must not exceed ${rules.maxLength} characters`;
+  //   }
+
+  //   if (rules.pattern && !rules.pattern.test(value)) {
+  //     if (name === 'name') {
+  //       return 'Name can only contain letters, numbers, spaces, hyphens, and underscores';
+  //     }
+  //     if (name === 'slug') {
+  //       return 'Slug can only contain lowercase letters, numbers, hyphens, and underscores';
+  //     }
+  //   }
+
+  //   if (rules.enum && !rules.enum.includes(value)) {
+  //     return `Please select a valid ${name}`;
+  //   }
+
+  //   if (rules.min && value < rules.min) {
+  //     return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.min}`;
+  //   }
+
+  //   if (rules.max && value > rules.max) {
+  //     return `${name.charAt(0).toUpperCase() + name.slice(1)} must not exceed ${rules.max}`;
+  //   }
+
+  //   if (rules.minItems && Array.isArray(value) && value.length < rules.minItems) {
+  //     return `Please select at least ${rules.minItems} format(s)`;
+  //   }
+
+  //   return '';
+  // };
+
+  // const validateForm = () => {
+  //   const newErrors = {};
+  //   Object.keys(validationRules).forEach(field => {
+  //     const error = validateField(field, formData[field]);
+  //     if (error) newErrors[field] = error;
+  //   });
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
+
+
   const validationRules = {
-    name: {
-      required: true,
-      minLength: 2,
-      maxLength: 100,
-      pattern: /^[a-zA-Z0-9\s\-_]+$/
-    },
-    slug: {
-      required: true,
-      minLength: 2,
-      maxLength: 50,
-      pattern: /^[a-z0-9\-_]+$/
-    },
-    type: {
-      required: true,
-      enum: channelTypes
-    },
-    description: {
-      maxLength: 500
-    },
-    priority: {
-      required: true,
-      min: 1,
-      max: 100
-    },
-    debug: {
-      min: 0,
-      max: 1
-    },
-    supported_formats: {
-      required: true,
-      minItems: 1
-    }
-  };
+  name: {
+    required: true,
+    minLength: 2,
+    maxLength: 100,
+    pattern: /^[a-zA-Z0-9\s\-_]+$/,
+    message: 'Name can only contain letters, numbers, spaces, hyphens, and underscores'
+  },
+  slug: {
+    required: true,
+    minLength: 2,
+    maxLength: 50,
+    pattern: /^[a-z0-9\-_]+$/,
+    message: 'Slug can only contain lowercase letters, numbers, hyphens, and underscores'
+  },
+  type: {
+    required: true,
+    enum: channelTypes
+  },
+  description: {
+    maxLength: 500
+  },
+  priority: {
+    required: true,
+    min: 1,
+    max: 100
+  },
+  debug: {
+    min: 0,
+    max: 1
+  },
+  supported_formats: {
+    required: true,
+    minItems: 1
+  }
+};
 
-  const validateField = (name, value) => {
-    const rules = validationRules[name];
-    if (!rules) return '';
+const formatFieldLabel = (field) =>
+  field.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 
-    if (rules.required && (!value || (Array.isArray(value) && value.length === 0))) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
-    }
+const validateField = (field, value) => {
+  const rules = validationRules[field];
+  if (!rules) return '';
 
-    if (rules.minLength && value.length < rules.minLength) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.minLength} characters`;
-    }
+  const label = formatFieldLabel(field);
+  
+  // Handle null/undefined values properly
+  let trimmed = value;
+  if (value === null || value === undefined) {
+    trimmed = '';
+  } else if (typeof value === 'string') {
+    trimmed = value.trim();
+  }
+  // For arrays and other types, keep the original value
 
-    if (rules.maxLength && value.length > rules.maxLength) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} must not exceed ${rules.maxLength} characters`;
-    }
+  if (rules.required) {
+    const isEmpty = trimmed === '' || trimmed === null || trimmed === undefined || 
+                   (Array.isArray(trimmed) && trimmed.length === 0);
+    if (isEmpty) return `${label} is required`;
+  }
 
-    if (rules.pattern && !rules.pattern.test(value)) {
-      if (name === 'name') {
-        return 'Name can only contain letters, numbers, spaces, hyphens, and underscores';
-      }
-      if (name === 'slug') {
-        return 'Slug can only contain lowercase letters, numbers, hyphens, and underscores';
-      }
-    }
+  // Add null/undefined checks before accessing length
+  if (rules.minLength && trimmed && trimmed.length < rules.minLength) {
+    return `${label} must be at least ${rules.minLength} characters`;
+  }
 
-    if (rules.enum && !rules.enum.includes(value)) {
-      return `Please select a valid ${name}`;
-    }
+  if (rules.maxLength && trimmed && trimmed.length > rules.maxLength) {
+    return `${label} must not exceed ${rules.maxLength} characters`;
+  }
 
-    if (rules.min && value < rules.min) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} must be at least ${rules.min}`;
-    }
+  if (rules.pattern && trimmed && !rules.pattern.test(trimmed)) {
+    return rules.message || `${label} is invalid`;
+  }
 
-    if (rules.max && value > rules.max) {
-      return `${name.charAt(0).toUpperCase() + name.slice(1)} must not exceed ${rules.max}`;
-    }
+  if (rules.enum && !rules.enum.includes(trimmed)) {
+    return `Please select a valid ${label}`;
+  }
 
-    if (rules.minItems && Array.isArray(value) && value.length < rules.minItems) {
-      return `Please select at least ${rules.minItems} format(s)`;
-    }
+  if (rules.min !== undefined && trimmed !== '' && trimmed !== null && Number(trimmed) < rules.min) {
+    return `${label} must be at least ${rules.min}`;
+  }
 
-    return '';
-  };
+  if (rules.max !== undefined && trimmed !== '' && trimmed !== null && Number(trimmed) > rules.max) {
+    return `${label} must not exceed ${rules.max}`;
+  }
 
-  const validateForm = () => {
-    const newErrors = {};
-    Object.keys(validationRules).forEach(field => {
-      const error = validateField(field, formData[field]);
-      if (error) newErrors[field] = error;
-    });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  if (rules.minItems && Array.isArray(trimmed) && trimmed.length < rules.minItems) {
+    return `Please select at least ${rules.minItems} format(s)`;
+  }
+
+  return '';
+};
+const validateForm = () => {
+  const newErrors = {};
+  Object.keys(validationRules).forEach((field) => {
+    const error = validateField(field, formData[field]);
+    if (error) newErrors[field] = error;
+  });
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
+
 
   const generateSlug = (name) => {
     return name
@@ -204,8 +310,12 @@ const TemplateChannels = ({fetchChannelData, data}) => {
     if (item) {
       setFormData({
         ...item,
-        supported_formats: Array.isArray(item.supported_formats) ? item.supported_formats : []
-      });
+        supported_formats: Array.isArray(item.supported_formats) ? item.supported_formats : [],
+        name: item.name || '',
+        slug: item.slug || '',
+        type: item.type || '',
+        description: item.description || '',
+        });
     } else {
       setFormData({
         id: null,
@@ -262,10 +372,14 @@ const TemplateChannels = ({fetchChannelData, data}) => {
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      showNotification('Please correct the errors before submitting', 'error');
-      return;
-    }
+    const newTouched = Object.keys(formData).reduce((acc, key) => {
+    acc[key] = true;
+    return acc;
+  }, {});
+  setTouched(newTouched);
+
+  const isValid = validateForm(); // <- must update and check all errors
+  if (!isValid) return;
 
     try {
       setSubmitting(true);
@@ -584,184 +698,196 @@ const TemplateChannels = ({fetchChannelData, data}) => {
 
 
       {/* Add/Edit Dialog */}
-      <Dialog 
-        open={openDialog} 
-        onClose={handleDialogClose} 
-        maxWidth="md" 
-        fullWidth
-        PaperProps={{
-          sx: { borderRadius: 3 }
-        }}
-      >
-        <DialogTitle sx={{ 
-          fontWeight: 600, 
-          fontSize: '1.5rem',
-          borderBottom: 1,
-          borderColor: 'divider'
-        }}>
-          {formData?.id ? 'Edit Channel' : 'Add New Channel'}
-        </DialogTitle>
-        
-        <DialogContent sx={{ pt: 3 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Channel Name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                error={touched.name && !!errors.name}
-                helperText={touched.name && errors.name}
-                required
-                sx={{ mb: 2, mt:2 }}
-              />
-            </Grid>
-            
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                label="Slug"
-                name="slug"
-                value={formData.slug}
-                onChange={handleInputChange}
-                error={touched.slug && !!errors.slug}
-                helperText={touched.slug && errors.slug}
-                required
-                sx={{ mb: 2, mt:2 }}
-              />
-            </Grid>
+          <Dialog 
+      open={openDialog} 
+      onClose={handleDialogClose} 
+      maxWidth="md" 
+      fullWidth
+      PaperProps={{ sx: { borderRadius: 3 } }}
+    >
+      <DialogTitle sx={{ fontWeight: 600, fontSize: '1.5rem', borderBottom: 1, borderColor: 'divider' }}>
+        {formData?.id ? 'Edit Channel' : 'Add New Channel'}
+      </DialogTitle>
 
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth error={touched.type && !!errors.type}>
-                <InputLabel>Channel Type *</InputLabel>
-                <Select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  label="Channel Type *"
-                >
-                  {channelTypes.map(type => (
-                    <MenuItem key={type} value={type}>
-                      {type.charAt(0).toUpperCase() + type.slice(1)}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {touched.type && errors.type && (
-                  <FormHelperText>{errors.type}</FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
+      <DialogContent sx={{ pt: 3 }}>
+        <Grid container spacing={3}>
 
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Priority"
-                name="priority"
-                value={formData.priority}
-                onChange={handleInputChange}
-                error={touched.priority && !!errors.priority}
-                helperText={touched.priority && errors.priority}
-                required
-                inputProps={{ min: 1, max: 100 }}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="Description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                error={touched.description && !!errors.description}
-                helperText={touched.description && errors.description}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControl fullWidth error={touched.supported_formats && !!errors.supported_formats}>
-                <InputLabel>Supported Formats *</InputLabel>
-                <Select
-                  multiple
-                  name="supported_formats"
-                  value={formData.supported_formats}
-                  onChange={(e) => handleMultiSelectChange('supported_formats', e.target.value)}
-                  label="Supported Formats *"
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value.toUpperCase()} size="small" />
-                      ))}
-                    </Box>
-                  )}
-                >
-                  {supportedFormats.map(format => (
-                    <MenuItem key={format} value={format}>
-                      {format.toUpperCase()}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {touched.supported_formats && errors.supported_formats && (
-                  <FormHelperText>{errors.supported_formats}</FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <TextField
-                fullWidth
-                type="number"
-                label="Debug Level"
-                name="debug"
-                value={formData.debug}
-                onChange={handleInputChange}
-                error={touched.debug && !!errors.debug}
-                helperText={touched.debug && errors.debug}
-                inputProps={{ min: 0, max: 1 }}
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.is_active}
-                    onChange={(e) => handleInputChange({
-                      target: { name: 'is_active', value: e.target.checked }
-                    })}
-                    color="primary"
-                  />
-                }
-                label="Active Channel"
-                sx={{ mt: 2 }}
-              />
-            </Grid>
+          {/* Channel Name */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Channel Name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              onBlur={(e) => setTouched(prev => ({ ...prev, [e.target.name]: true }))}
+              error={touched.name && !!errors.name}
+              helperText={touched.name && errors.name}
+              required
+              sx={{ mb: 2, mt: 2 }}
+            />
           </Grid>
-        </DialogContent>
-        
-        <DialogActions sx={{ p: 3, borderTop: 1, borderColor: 'divider' }}>
-          <Button 
-            onClick={handleDialogClose}
-            startIcon={<Cancel />}
-            sx={{ textTransform: 'none' }}
-          >
-            Cancel
-          </Button>
-          <Button 
-            variant="contained" 
-            onClick={handleSubmit}
-            disabled={submitting}
-            startIcon={submitting ? <CircularProgress size={16} /> : <Save />}
-            sx={{ textTransform: 'none', px: 3 }}
-          >
-            {submitting ? 'Saving...' : 'Save Channel'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+          {/* Slug */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              label="Slug"
+              name="slug"
+              value={formData.slug}
+              onChange={handleInputChange}
+              onBlur={(e) => setTouched(prev => ({ ...prev, [e.target.name]: true }))}
+              error={touched.slug && !!errors.slug}
+              helperText={touched.slug && errors.slug}
+              required
+              sx={{ mb: 2, mt: 2 }}
+            />
+          </Grid>
+
+          {/* Channel Type */}
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth required error={touched.type && !!errors.type}>
+              <InputLabel>Channel Type</InputLabel>
+              <Select
+                name="type"
+                value={formData.type}
+                onChange={handleInputChange}
+                onBlur={() => setTouched(prev => ({ ...prev, type: true }))}
+                label="Channel Type"
+              >
+                {channelTypes.map(type => (
+                  <MenuItem key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </MenuItem>
+                ))}
+              </Select>
+              {touched.type && errors.type && (
+                <FormHelperText>{errors.type}</FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+
+          {/* Priority */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              type="number"
+              label="Priority"
+              name="priority"
+              value={formData.priority}
+              onChange={handleInputChange}
+              onBlur={(e) => setTouched(prev => ({ ...prev, [e.target.name]: true }))}
+              error={touched.priority && !!errors.priority}
+              helperText={touched.priority && errors.priority}
+              required
+              inputProps={{ min: 1, max: 100 }}
+            />
+          </Grid>
+
+          {/* Description */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              onBlur={(e) => setTouched(prev => ({ ...prev, [e.target.name]: true }))}
+              error={touched.description && !!errors.description}
+              helperText={touched.description && errors.description}
+              required
+            />
+          </Grid>
+
+          {/* Supported Formats */}
+          <Grid item xs={12}>
+            <FormControl fullWidth required error={touched.supported_formats && !!errors.supported_formats}>
+              <InputLabel>Supported Formats</InputLabel>
+              <Select
+                multiple
+                name="supported_formats"
+                value={formData.supported_formats}
+                onChange={(e) => handleMultiSelectChange('supported_formats', e.target.value)}
+                onBlur={() => setTouched(prev => ({ ...prev, supported_formats: true }))}
+                label="Supported Formats"
+                renderValue={(selected) => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((value) => (
+                      <Chip key={value} label={value.toUpperCase()} size="small" />
+                    ))}
+                  </Box>
+                )}
+              >
+                {supportedFormats.map(format => (
+                  <MenuItem key={format} value={format}>
+                    {format.toUpperCase()}
+                  </MenuItem>
+                ))}
+              </Select>
+              {touched.supported_formats && errors.supported_formats && (
+                <FormHelperText>{errors.supported_formats}</FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+
+          {/* Debug Level */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              fullWidth
+              type="number"
+              label="Debug Level"
+              name="debug"
+              value={formData.debug}
+              onChange={handleInputChange}
+              onBlur={(e) => setTouched(prev => ({ ...prev, [e.target.name]: true }))}
+              error={touched.debug && !!errors.debug}
+              helperText={touched.debug && errors.debug}
+              inputProps={{ min: 0, max: 1 }}
+            />
+          </Grid>
+
+          {/* Active Status */}
+          <Grid item xs={12} md={6}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.is_active}
+                  onChange={(e) => handleInputChange({
+                    target: { name: 'is_active', value: e.target.checked }
+                  })}
+                  color="primary"
+                />
+              }
+              label="Active Channel"
+              sx={{ mt: 2 }}
+            />
+          </Grid>
+
+        </Grid>
+      </DialogContent>
+
+      <DialogActions sx={{ p: 3, borderTop: 1, borderColor: 'divider' }}>
+        <Button 
+          onClick={handleDialogClose}
+          startIcon={<Cancel />}
+          sx={{ textTransform: 'none' }}
+        >
+          Cancel
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={handleSubmit}
+          disabled={submitting}
+          startIcon={submitting ? <CircularProgress size={16} /> : <Save />}
+          sx={{ textTransform: 'none', px: 3 }}
+        >
+          {submitting ? 'Saving...' : 'Save Channel'}
+        </Button>
+      </DialogActions>
+        </Dialog>
+
 
       {/* View Dialog */}
       <Dialog

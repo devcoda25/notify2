@@ -69,51 +69,67 @@ const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categ
     setNotification(prev => ({ ...prev, open: false }));
   };
 
-  const validateTemplateForm = () => {
-    const errors = {};
-    
-    if (!formData.name.trim()) {
-      errors.name = 'Template name is required';
-    } else if (formData.name.length < 3) {
-      errors.name = 'Template name must be at least 3 characters';
-    } else if (formData.name.length > 100) {
-      errors.name = 'Template name cannot exceed 100 characters';
-    }
+ const validateTemplateForm = () => {
+  const errors = {};
+  
+  // Template name validation
+  if (!formData.name.trim()) {
+    errors.name = 'Template name is required';
+  } else if (formData.name.length < 3) {
+    errors.name = 'Template name must be at least 3 characters';
+  } else if (formData.name.length > 100) {
+    errors.name = 'Template name cannot exceed 100 characters';
+  }
 
-    if (!formData.slug.trim()) {
-      errors.slug = 'Slug is required';
-    } else if (!/^[a-z0-9-_]+$/.test(formData.slug)) {
-      errors.slug = 'Slug can only contain lowercase letters, numbers, hyphens, and underscores';
-    } else if (formData.slug.length < 3) {
-      errors.slug = 'Slug must be at least 3 characters';
-    }
+  // Slug validation
+  if (!formData.slug.trim()) {
+    errors.slug = 'Slug is required';
+  } else if (!/^[a-z0-9-_]+$/.test(formData.slug)) {
+    errors.slug = 'Slug can only contain lowercase letters, numbers, hyphens, and underscores';
+  } else if (formData.slug.length < 3) {
+    errors.slug = 'Slug must be at least 3 characters';
+  }
 
-    if (!formData.category_id) {
-      errors.category_id = 'Category is required';
-    } else if (isNaN(formData.category_id) || formData.category_id <= 0) {
-      errors.category_id = 'Please select a valid category';
-    }
+  // Category validation
+  if (!formData.category_id) {
+    errors.category_id = 'Category is required';
+  } else if (isNaN(formData.category_id) || formData.category_id <= 0) {
+    errors.category_id = 'Please select a valid category';
+  }
 
-    if (!formData.content_type_id) {
-      errors.content_type_id = 'Content type is required';
-    } else if (isNaN(formData.content_type_id) || formData.content_type_id <= 0) {
-      errors.content_type_id = 'Please select a valid content type';
-    }
+  // Content type validation
+  if (!formData.content_type_id) {
+    errors.content_type_id = 'Content type is required';
+  } else if (isNaN(formData.content_type_id) || formData.content_type_id <= 0) {
+    errors.content_type_id = 'Please select a valid content type';
+  }
 
-    if (formData.tags && formData.tags.length > 500) {
-      errors.tags = 'Tags cannot exceed 500 characters';
+  // Status validation - handle empty string, null, undefined
+  if (!formData.status || formData.status.trim() === '') {
+    errors.status = 'Status is required';
+  } else {
+    const validStatuses = ['draft', 'review', 'published', 'archived'];
+    if (!validStatuses.includes(formData.status)) {
+      errors.status = 'Please select a valid status';
     }
+  }
 
-    if (formData.metadata) {
-      try {
-        JSON.parse(formData.metadata);
-      } catch (e) {
-        errors.metadata = 'Invalid JSON format';
-      }
+  // Tags validation
+  if (formData.tags && formData.tags.length > 500) {
+    errors.tags = 'Tags cannot exceed 500 characters';
+  }
+
+  // Metadata validation
+  if (formData.metadata) {
+    try {
+      JSON.parse(formData.metadata);
+    } catch (e) {
+      errors.metadata = 'Invalid JSON format';
     }
+  }
 
-    return errors;
-  };
+  return errors;
+};
 
   const validateLanguageForm = () => {
     const errors = {};
@@ -237,6 +253,7 @@ const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categ
 
     try {
       setSubmitting(true);
+
       // const payload = {
       //   name: formData.name.trim(),
       //   slug: formData.slug.trim(),
@@ -257,8 +274,6 @@ const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categ
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         metadata: formData.metadata ? JSON.parse(formData.metadata) : null
       };
-
-
 
       const url = formData.id ? updateTemplate() : addTemplate() ;
       await axios.post(url, payload, config );
@@ -1007,22 +1022,26 @@ const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categ
                 placeholder="Enter template description..."
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>Status</InputLabel>
-                <Select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleInputChange}
-                  label="Status"
-                >
-                  <MenuItem value="draft">Draft</MenuItem>
-                  <MenuItem value="review">Review</MenuItem>
-                  <MenuItem value="published">Published</MenuItem>
-                  <MenuItem value="archieved">Archieved</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+           <Grid item xs={12} sm={6}>
+  <FormControl fullWidth variant="outlined" error={!!formErrors.status} required>
+    <InputLabel>Status</InputLabel>
+    <Select
+      name="status"
+      value={formData.status}
+      onChange={handleInputChange}
+      label="Status"
+    >
+      <MenuItem value="draft">Draft</MenuItem>
+      <MenuItem value="review">Review</MenuItem>
+      <MenuItem value="published">Published</MenuItem>
+      <MenuItem value="archived">Archived</MenuItem>
+    </Select>
+    {formErrors.status && (
+      <FormHelperText>{formErrors.status}</FormHelperText>
+    )}
+  </FormControl>
+</Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth

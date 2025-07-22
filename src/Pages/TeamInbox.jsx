@@ -241,7 +241,8 @@ const TeamInbox = () => {
   };
 
   const handleCloseNewTicketsModal = () => {
-     setRecipients([]);
+    setRecipients([]);
+    setSelectedFiles([]);
     setState((prev) => ({ ...prev, openNewTicketsModal: false }));
   };
 

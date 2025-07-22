@@ -59,6 +59,7 @@ const TemplateContentType = ({fetchContentTypeData, data}) => {
         message: 'Description must be less than 500 characters'
       },
       field_schema: {
+        required: true,
         json: true,
         message: 'Field schema must be valid JSON'
       },
