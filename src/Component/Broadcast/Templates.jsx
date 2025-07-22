@@ -237,7 +237,18 @@ const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categ
 
     try {
       setSubmitting(true);
+      // const payload = {
+      //   name: formData.name.trim(),
+      //   slug: formData.slug.trim(),
+      //   category_id: parseInt(formData.category_id),
+      //   content_type_id: parseInt(formData.content_type_id),
+      //   status: formData.status,
+      //   tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+      //   metadata: formData.metadata ? JSON.parse(formData.metadata) : null
+      // };
+     
       const payload = {
+        ...(formData.id && { id: formData.id }), 
         name: formData.name.trim(),
         slug: formData.slug.trim(),
         category_id: parseInt(formData.category_id),
@@ -246,6 +257,8 @@ const Templates = ({fetchTemplateData, data, fetchLanguageData, languages, categ
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         metadata: formData.metadata ? JSON.parse(formData.metadata) : null
       };
+
+
 
       const url = formData.id ? updateTemplate() : addTemplate() ;
       await axios.post(url, payload, config );

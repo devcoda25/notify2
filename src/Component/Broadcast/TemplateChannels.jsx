@@ -304,7 +304,7 @@ const TemplateChannels = ({fetchChannelData, data}) => {
 
   const handleView = async (id) => {
     try {
-      setLoading(true);
+      // setLoading(true);
       const res = await axios.get(`${showChannel()}?id=${id}`, config);
       setViewData(res.data?.data);
       setOpenView(true);

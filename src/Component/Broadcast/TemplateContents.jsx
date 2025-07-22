@@ -18,7 +18,6 @@ import { alpha, useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { addContent, config, deleteContent, fetchContents, updateContent } from '../../Url';
 
-//  validation schema
 const validationSchema = {
   template_id: {
     required: true,
@@ -68,7 +67,6 @@ const validationSchema = {
   }
 };
 
-// validation function
 const validateField = (name, value, schema) => {
   const rules = schema[name];
   if (!rules) return null;
@@ -189,9 +187,9 @@ const TemplateContents = ({channelData, templateData, languageData}) => {
     return errors;
   }, [form]);
 
-  // const isFormValid = useMemo(() => {
-  //   return Object.keys(formErrors).length === 0;
-  // }, [formErrors]);
+  const isFormValid = useMemo(() => {
+    return Object.keys(formErrors).length === 0;
+  }, [formErrors]);
 
   const handleFieldChange = useCallback((field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -279,10 +277,10 @@ const TemplateContents = ({channelData, templateData, languageData}) => {
     }, {});
     setFormTouched(allTouched);
 
-    // if (!isFormValid) {
-    //   console.log('Please fix validation errors before saving', 'error');
-    //   return;
-    // }
+    if (!isFormValid) {
+      console.log('Please fix validation errors before saving', 'error');
+      return;
+    }
 
     setSaving(true);
     try {
@@ -330,6 +328,7 @@ const TemplateContents = ({channelData, templateData, languageData}) => {
       setSaving(false);
     }
   };
+
 
   const resetForm = () => {
     setForm({
@@ -632,7 +631,7 @@ const TemplateContents = ({channelData, templateData, languageData}) => {
       )}
     </TableBody>
   </Table>
-</TableContainer>
+           </TableContainer>
 
             
             <TablePagination

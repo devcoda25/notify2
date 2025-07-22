@@ -213,7 +213,7 @@ const TemplateContentType = ({fetchContentTypeData, data}) => {
   };
   
   const handleView = async (id) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const res = await axios.get(`${showContentType()}?id=${id}`, config);
       setViewData(res.data?.data);
