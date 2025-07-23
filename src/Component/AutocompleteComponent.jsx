@@ -34,7 +34,8 @@ const AutocompleteComponent = ({ options, value = [], onChange, placeholder, cus
 
                 options={options}
                 // value={value}
-                value={Array.isArray(value) ? value : [value]}
+                // value={Array.isArray(value) ? value : [value]}
+                value= {value}
                 disableClearable
                 onChange={onChange}
                 disabled={disabled}

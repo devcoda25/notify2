@@ -201,7 +201,7 @@ const YourTemplate = () => {
         const GetTemplateCategories = async () => {
         try {
             const res = await axios.get(fetchCategories(), config);
-            console.log("data", res.data?.data?.values)
+            // console.log("data", res.data?.data?.values)
             setTemplateData(res.data?.data?.values); 
         } catch (err) {
             console.error("Error fetching categories:", err);

@@ -509,17 +509,18 @@ const isFormValid = () => {
         </DialogTitle>
         
         <DialogContent dividers sx={{ pb: 3 }}>
-          {/* Show validation summary if there are errors */}
-          {/* {Object.keys(errors).length > 0 && Object.keys(touched).length > 0 && (
-            <Alert 
-              severity="error" 
-              sx={{ mb: 2 }}
-              icon={<Error />}
-            >
-              Please fix the following errors before submitting:
-            </Alert>
-          )} */}
 
+            {/* Show validation summary if there are errors */}
+            {/* {Object.keys(errors).length > 0 && Object.keys(touched).length > 0 && (
+              <Alert 
+                severity="error" 
+                sx={{ mb: 2 }}
+                icon={<Error />}
+              >
+                Please fix the following errors before submitting:
+              </Alert>
+            )} */}
+            
           <TextField
             {...getFieldProps('name')}
             margin="dense"

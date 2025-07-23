@@ -16,6 +16,9 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/mode/xml/xml";
 import "codemirror/theme/material.css";
 import { StayCurrentPortraitRoundedIcon, CheckIcon, ExpandMoreIcon, FormatUnderlinedRoundedIcon, DesktopWindowsRoundedIcon, ArrowBackIcon, DeleteOutlineIcon, AddCircleOutlineIcon, TagFacesIcon, FormatBoldIcon, FormatItalicIcon, StrikethroughSIcon } from "../Icon";
+import { AddYourTemplate, fetchLanguages } from "../../Url";
+import { config } from "../../Url";
+import axios from "axios";
 
 
 const mobileBackgroundImages = {
@@ -43,7 +46,7 @@ const colors = {
 
 const categoryOptions = ['Email', 'SMS', 'Platform', 'Whatsapp', 'Push'];
 const ticketTypeOptions = ['Red Notifications', 'Blue Notifications', 'Green Notifications', 'Yellow Notifications']
-const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
+// const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
 const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Call phone']
 const secondbuttonOptions = ['Quick replies'];
 const teamOptions = ['Support Heroes(Default team)']
@@ -52,7 +55,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
     const [state, setState] = useState({
         categoryData: categoryOptions[0],
         ticketTypeData: ticketTypeOptions[0],
-        languageData: languageOptions[0],
+        languageData: "english",
         buttonData: buttonOptions[1],
         secondButtonData: secondbuttonOptions[0],
         selectedValue: 'none',
@@ -83,11 +86,144 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
         isAddvarModalVisible: false,
         isHtmlAddvarVisible: false,
         code: '',
-        isFocused: false
+        // plainText:'',
+        isFocused: false,
+        languageData: null 
     });
 
+    const [templateData, setTemplateData]= useState({
+        TemplateName:"",
+        ChannelType:"Email",
+        TicketType:"Red Notifications",
+        Language:"English"
+    })
 
+    const [emailTemplateData, setEmailTemplateData]= useState({
+        Subject:"",
+        HtmlText: `
+          <!DOCTYPE html >
+          <html>
+            <head>
+              <title>{{ticket.subject}}</title>
+              <style type="text/css">
+                body {
+                  width: 100% !important;
+                  height: 100%;
+                  margin: 0 auto;
+                  line-height: 1.5em;
+                  font-size: 16px;
+                  background-color: #f3f7f9;
+                  color: #74787e;
+                  -webkit-text-size-adjust: none;
+                  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+                  box-sizing: border-box;
+                  margin-bottom: 25px;
+                }
+                a, p a, h2 a, h1 a, h3 a {
+                  color: #3869d4;
+                }
+                .email-masthead {
+                  padding: 25px 25px;
+                  text-align: center;
+                  background-color: #f3f7f9;
+                }
+                .email-masthead_name {
+                  font-size: 22px;
+                  font-weight: bold;
+                  color: #000000;
+                  text-decoration: none;
+                }
+                .email-body_inner {
+                  width: ${state.PreviewMode === "mobile" ? "290px" : "360px"};
+                  margin: 0 auto;
+                  background-color: #ffffff;
+                }
+                .content-cell {
+                  padding: 35px;
+                  max-width: 496px;
+                  overflow: hidden;
+                  word-wrap: break-word;
+                }
+                h1 {
+                  margin-top: 0;
+                  color: #000000;
+                  font-size: 18px;
+                  font-weight: bold;
+                  text-align: left;
+                }
+                p {
+                  margin-top: 0;
+                  color: #000000;
+                  font-size: 16px;
+                  line-height: 1.5em;
+                }
+              </style>
+            </head>
+            <body dir="auto">
+              <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center">
+                    <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
+                          <table class="email-body_inner" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td class="content-cell">
+                                <h1>Hi, Earl!!</h1>
+                                <p>Your case has been solved! Best regards, -- The Company</p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="header">
+                          <p>Previous messages:</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="email-body">
+                          <table class="email-body_inner history-email">
+                            <tr>
+                              <td class="content-cell">
+                                <h2><a>earl@example.com</a> wrote:</h2>
+                                <p>Hello, I have some difficult case here</p>
+                                <p class="history-date">Tue, 11/17/2020, 2:25 PM UTC</p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+          </html>
+         `,
+        PlainText:""
+    })
+    const [smsTemplateData, setSmsTemplateData]= useState({
+        PlainText:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    })
 
+    const [PlatformTemplateData, setPlatformTemplateData]= useState({
+        PlainText:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    })
+
+    const [PushTemplateData, setPushTemplateData]= useState({
+        BroadCastTitle:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
+        PlainText:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    })
+
+    const [WhatsappTemplateData, setWhatsappTemplateData]= useState({
+        BroadCastTitle:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
+        PlainText:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
+        FooterText:"",
+        SampleContent:""
+    })
+    
+    
     const [selectedColors, setSelectedColors] = useState({
         background: colors.background[0],
         textBox: colors.textBox[0],
@@ -106,7 +242,101 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
         }));
     };
 
+ const [languageOptions, setLanguageOptions] = useState([]);
 
+const fetchLanguageData = async () => {
+  try {
+    const res = await axios.get(fetchLanguages(), config);
+    const languageValues = res.data?.data?.values || [];
+
+    // Convert to dropdown options
+    const options = languageValues.map((lang) => ({
+      label: lang.name,
+      id: lang.id,
+    }));
+
+    setLanguageOptions(options);
+  } catch (error) {
+    console.error('Error fetching languages:', error);
+  }
+};
+
+const AddEmailTemplate = async()=>{
+   try {
+    const payload = {...templateData, ...emailTemplateData}
+    //   await axios.post(AddYourTemplate(), config)
+    console.log("Emailpayload", payload)
+   } catch (error) {
+    console.log("Error Adding Email Template", error)
+   }
+}
+const AddSmsTemplate = async()=>{
+   try {
+       const payload = {...templateData, ...smsTemplateData}
+    //   await axios.post(AddYourTemplate(), config)
+    console.log("Smspayload", payload)
+   } catch (error) {
+    console.log("Error Adding Sms Template", error)
+   }
+}
+const AddPlatformTemplate = async()=>{
+   try {
+       const payload = {...templateData, ...PlatformTemplateData}
+    //   await axios.post(AddYourTemplate(), config)
+    console.log("Platformpayload", payload)
+   } catch (error) {
+    console.log("Error Adding platform Template", error)
+   }
+}
+const AddPushTemplate = async()=>{
+   try {
+       const payload = {...templateData, ...PushTemplateData}
+    //   await axios.post(AddYourTemplate(), config)
+    console.log("Pushpayload", payload)
+   } catch (error) {
+    console.log("Error Adding Push Template", error)
+   }
+}
+const AddWhatsappTemplate = async()=>{
+   try {
+       const payload = {...templateData, ...WhatsappTemplateData}
+    //   await axios.post(AddYourTemplate(), config)
+    console.log("Whatsapppayload", payload)
+   } catch (error) {
+    console.log("Error Adding Whatsapp Template", error)
+   }
+}
+
+
+const handleSaveTemplate = () => {
+  switch (state.categoryData) {
+    case "Email":
+      AddEmailTemplate();
+      break;
+    case "SMS":
+      AddSmsTemplate();
+      break;
+    case "Platform":
+      AddPlatformTemplate();
+      break;
+    case "Whatsapp":
+      AddWhatsappTemplate()
+      break;
+    case "Push":
+      AddPushTemplate();
+      break;
+    default:
+      AddEmailTemplate();
+  }
+};
+
+
+
+useEffect(() => {
+  fetchLanguageData();
+}, []);
+
+     
     const handleBack=()=>{
         setIsOpenTemplateMessage(false);
     }
@@ -144,13 +374,13 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
 
 
     const handleSecondAddContent = () => {
-        if (state.secondAddButtonContent.length < 3) {
+        if (state.secondAddButtonContent?.length < 3) {
             updateState({ secondAddButtonContent: [...state.secondAddButtonContent, {}] });
         }
     };
 
     const handleFirstAddButtonContent = () => {
-        if (state.firstAddButtonContent.length < 3) {
+        if (state.firstAddButtonContent?.length < 3) {
             updateState({ firstAddButtonContent: [...state.firstAddButtonContent, {}] });
         }
     };
@@ -562,7 +792,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                     </div>
                     <div className="new_template_right">
                         <ButtonComponent label='Save as draft' customBtn='new_template_draftbtn' />
-                        <ButtonComponent label='Save and submit' />
+                        <ButtonComponent onClick={handleSaveTemplate} label='Save and submit' />
                     </div>
                 </div>
                 <div className="new_template_content">
@@ -570,43 +800,69 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                         <div className="left_header">
                             <div className="name_block_field">
                                 <div className="name_block_title">Template Name</div>
-                                <TextfieldComponent placeholder='Template Name' customStyle='template_input' />
+                                <TextfieldComponent placeholder='Template Name' customStyle='template_input' 
+                                value= {templateData.TemplateName}
+                                onChange={(e) =>setTemplateData((prev) => ({ ...prev, TemplateName: e.target.value }))}
+                                 />
                             </div>
-                            <div className="name_block_field">
+                            {/* <div className="name_block_field">
                                 <div className="name_block_title">Module Name</div>
                                 <TextfieldComponent placeholder='Module Name' customStyle='template_input' />
-                            </div>
+                            </div> */}
                             <div className="name_block_field">
                                 <div className="name_block_title">Channel</div>
                                 <AutocompleteComponent
-                                    options={categoryOptions}
-                                    value={state.categoryData}
-                                    onChange={(event, newValue) => updateState({ categoryData: newValue })}
-                                    customStyles={style.templateAutocompleteStyle}
+                                options={categoryOptions}
+                                value={templateData.ChannelType}
+                                onChange={(event, newValue) => {
+                                    setTemplateData((prev) => ({
+                                    ...prev,
+                                    ChannelType: newValue,
+                                    }));
+                                    setState((prev) => ({
+                                    ...prev,
+                                    categoryData: newValue,
+                                    }));
+                                }}
+                                customStyles={style.templateAutocompleteStyle}
                                 />
+
                             </div>
                             <div className="name_block_field">
                                 <div className="name_block_title">Ticket Type</div>
                                 <AutocompleteComponent
                                     options={ticketTypeOptions}
-                                    value={state.ticketTypeData}
-                                    onChange={(event, newValue) => updateState({ ticketTypeData: newValue })}
+                                    // value={state.ticketTypeData}
+                                    value={templateData.TicketType}
+                                    // onChange={(e)=>setEmailTemplateData({TicketType:e.target.value})}
+                                    onChange={(event, newValue) =>setTemplateData((prev) => ({ ...prev, TicketType: newValue }))}
                                     customStyles={style.templateAutocompleteStyle}
                                 />
                             </div>
                             <div className="name_block_field language_dropdown">
                                 <div className="name_block_title">Language</div>
-                                <AutocompleteComponent
+                                {/* <AutocompleteComponent
                                     options={languageOptions}
                                     value={state.languageData}
                                     onChange={(event, newValue) => updateState({ languageData: newValue })}
                                     customStyles={style.templateAutocompleteStyle}
+                                /> */}
+                                <AutocompleteComponent
+                                options={languageOptions}
+                                // value={state.languageData}
+                                    value={templateData.Language}
+                                    // onChange={(e)=>setEmailTemplateData({Language:e.target.value})}
+                                    onChange={(event, newValue) =>setTemplateData((prev) => ({ ...prev, Language: newValue }))}
+                                customStyles={style.templateAutocompleteStyle}
                                 />
+
                             </div>
                         </div>
                         <div className="broadcast_content">
                             {
-                                state.categoryData === 'Email' && (
+                                // state.categoryData === 'Email' && (
+                                templateData.ChannelType === 'Email' && (
+
                                     <>
                                         <div className="channel_email_content">
                                             <div className="email_text">How would you like to create your email template?</div>
@@ -627,10 +883,15 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                     <>
                                                         <div className="visual_builder_container">
                                                             <div className='textbox_container'>
-                                                                <label>Email template name</label>
-                                                                <TextfieldComponent placeholder='Name the email template' customStyle='new_tickets_textbox' />
+                                                                {/* <label>Email template name</label> */}
+                                                                <label>Subject</label>
+                                                                <TextfieldComponent 
+                                                                 placeholder='Name the email template' 
+                                                                 customStyle='new_tickets_textbox'
+
+                                                                  />
                                                             </div>
-                                                            <div className='textbox_container'>
+                                                            {/* <div className='textbox_container'>
                                                                 <label>Teams assigned to email template</label>
                                                                 <AutocompleteComponent
                                                                     placeholder='select who will use the email template'
@@ -639,7 +900,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                     onChange={(event, newValue) => updateState({ teamContent: newValue })}
                                                                     customStyles={style.newticketsAutocomplete}
                                                                 />
-                                                            </div>
+                                                            </div> */}
                                                             <Accordion sx={style.templateAccordionStyle}>
                                                                 <AccordionSummary
                                                                     expandIcon={<ExpandMoreIcon />}
@@ -794,10 +1055,16 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                     <>
                                                         <div className="html_editor">
                                                             <div className='textbox_container'>
-                                                                <label>Email template name</label>
-                                                                <TextfieldComponent placeholder='Name the email template' customStyle='new_tickets_textbox' />
+                                                                {/* <label>Email template name</label> */}
+                                                                <label>Subject</label>
+                                                                <TextfieldComponent 
+                                                                placeholder='Name the email template'
+                                                                 customStyle='new_tickets_textbox'
+                                                                  value={emailTemplateData.Subject}
+                                                                  onChange={(event, newValue) =>setEmailTemplateData((prev) => ({ ...prev, Subject: event.target.value }))}
+                                                                 />
                                                             </div>
-                                                            <div className='textbox_container'>
+                                                            {/* <div className='textbox_container'>
                                                                 <label>Teams assigned to email template</label>
                                                                 <AutocompleteComponent
                                                                     placeholder='select who will use the email template'
@@ -806,7 +1073,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                     onChange={(event, newValue) => updateState({ teamContent: newValue })}
                                                                     customStyles={style.newticketsAutocomplete}
                                                                 />
-                                                            </div>
+                                                            </div> */}
                                                             <div className="html_editor_header">
                                                                 <div className="html_editor_headerleft">
                                                                     <button className={`html_editor_btn ${state.activeTab === "html" ? "active" : ""}`}
@@ -814,9 +1081,9 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                     <button className={`html_editor_btn ${state.activeTab === "plain" ? "active" : ""}`}
                                                                         onClick={() => updateState({ activeTab: "plain" })} >Plain text</button>
                                                                 </div>
-                                                                <ButtonComponent label='+ Add variable' onClick={handleHtmlAddvarToggle} />
+                                                                {/* <ButtonComponent label='+ Add variable' onClick={handleHtmlAddvarToggle} /> */}
 
-                                                                {
+                                                                {/* {
                                                                     state.isHtmlAddvarVisible && (
                                                                         <div className="addvariable_modal">
                                                                             <ul>
@@ -833,7 +1100,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                         </div>
                                                                     )
 
-                                                                }
+                                                                } */}
                                                             </div >
                                                             <div className='htmleditor_code_container' >
                                                                 <div className="htmleditor_code_status">
@@ -844,7 +1111,9 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
 
                                                                     <div>
                                                                         <CodeMirror
-                                                                            value={state.code}
+                                                                            // value={state.code}
+                                                                            value={emailTemplateData.HtmlText}
+                                                                            onChange={(e) =>setEmailTemplateData((prev) => ({ ...prev, HtmlText: e.target.value }))}
                                                                             options={{
                                                                                 mode: "xml",
                                                                                 theme: "material",
@@ -862,7 +1131,18 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                 }
                                                                 {
                                                                     state.activeTab === 'plain' && (
-                                                                        <div>messages</div>
+                                                                        <div>
+                                                                            <textarea style={{
+                                                                                height:"100px", width:"300px"
+                                                                            }} name="" id="" 
+                                                                            // value={state.plainText}
+                                                                            // onChange={(event, newValue)=>updateState({plainText: newValue})}
+                                                                            value={emailTemplateData.PlainText}
+                                                                            onChange={(event, newValue) =>setEmailTemplateData((prev) => ({ ...prev, PlainText: event.target.value }))}
+                                                                            >
+
+                                                                            </textarea>
+                                                                        </div>
                                                                     )
                                                                 }
                                                             </div>
@@ -882,7 +1162,8 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                     // </div>
                                 )
                             }
-                            {["Whatsapp", "Push"].includes(state.categoryData) && (
+                            {/* {["Whatsapp", "Push"].includes(state.categoryData) && ( */}
+                            {["Whatsapp", "Push"].includes(templateData.ChannelType) && (
                                 <div className="platform_division">
                                     <div className="name_block_title">Broadcast title<span className="block_title_optional">(Optional)</span></div>
                                     <div className="block_comments">Highlight your brand here, use images or videos, to stand out</div>
@@ -891,11 +1172,11 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                             value={state.selectedValue}
                                             onChange={handleRadioChange}>
                                             <div className="checkbox_container">
-                                                <FormControlLabel value="none" control={<Radio sx={style.newTemplateRadiobtn} />} label="None" />
+                                                {/* <FormControlLabel value="none" control={<Radio sx={style.newTemplateRadiobtn} />} label="None" /> */}
                                                 <FormControlLabel value="text" control={<Radio sx={style.newTemplateRadiobtn} />} label="Text" className="radio_style" />
-                                                <FormControlLabel value="image" control={<Radio sx={style.newTemplateRadiobtn} />} label="Image" className="radio_style" />
-                                                <FormControlLabel value="video" control={<Radio sx={style.newTemplateRadiobtn} />} label="Video" className="radio_style" />
-                                                <FormControlLabel value="document" control={<Radio sx={style.newTemplateRadiobtn} />} label="Document" className="radio_style" />
+                                                {/* <FormControlLabel value="image" control={<Radio sx={style.newTemplateRadiobtn} />} label="Image" className="radio_style" /> */}
+                                                {/* <FormControlLabel value="video" control={<Radio sx={style.newTemplateRadiobtn} />} label="Video" className="radio_style" /> */}
+                                                {/* <FormControlLabel value="document" control={<Radio sx={style.newTemplateRadiobtn} />} label="Document" className="radio_style" /> */}
                                             </div>
                                         </RadioGroup>
 
@@ -903,8 +1184,11 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                     <div>
                                         {
                                             state.selectedValue === "text" && <div className="footer_container">
-                                                <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={state.text} onChange={handleInputChange} />
-                                                <div className="footer_text_count">{state.text.length}/60</div>
+                                                <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={PushTemplateData.PlainText} 
+                                                // onChange={handleInputChange} 
+                                                onChange={(e, prev)=>setPushTemplateData((prev) => ({ ...prev, PlainText: e.target.value }))}
+                                                />
+                                                <div className="footer_text_count">{PushTemplateData?.PlainText?.length}/60</div>
                                             </div>
                                         }
                                         {state.selectedValue === "image" && <div>
@@ -936,7 +1220,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                 />
 
                                             </div>
-                                            <div className="none_add_variables_btn" onClick={handleImageSelectAttribute}><AddCircleOutlineIcon />Add Variable</div>
+                                            {/* <div className="none_add_variables_btn" onClick={handleImageSelectAttribute}><AddCircleOutlineIcon />Add Variable</div> */}
                                         </div>}
                                         {state.selectedValue === "video" && <div>
                                             <p className="utility_header_media_type">(video:.mp4)</p>
@@ -1013,13 +1297,14 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                 </div>
                             )}
                             {
-                                state.categoryData !== 'Email' && (
+                                // state.categoryData !== 'Email' && (
+                                templateData.ChannelType === 'SMS' && (
                                     <div className="none_body_content">
                                         <div className="name_block_title">Body</div>
                                         <div className="block__comments">Make your messages personal using variables like
                                             <span>name</span> and get more replies!
                                         </div>
-                                        <div className="none_add_variables_btn none_body_add_var_btn" onClick={handleAddVariableButton}><AddCircleOutlineIcon />Add Variable</div>
+                                        {/* <div className="none_add_variables_btn none_body_add_var_btn" onClick={handleAddVariableButton}><AddCircleOutlineIcon />Add Variable</div> */}
                                         <div className="none_block_template_content">
                                             <div>
                                                 <div className="none_body_template_icons">
@@ -1033,14 +1318,137 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                     <FormatItalicIcon onClick={handleItalicIconClick} />
                                                     <StrikethroughSIcon onClick={handleStrikeIconClick} />
                                                     <div className="url_icon" onClick={handleTemplateInsertLink} ><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
-                                                    <div className="toolbar_counter">{state.textareaContent.length}/1024</div>
+                                                    <div className="toolbar_counter">{smsTemplateData?.PlainText?.length}/1024</div>
                                                 </div>
                                             </div>
                                             <div className="none_template_body_editor">
 
                                                 <textarea
-                                                    value={state.textareaContent}
-                                                    onChange={handleTextareaTextChange}
+                                                    value={smsTemplateData?.PlainText}
+                                                    onChange={(e, prev)=>setSmsTemplateData((prev) => ({ ...prev, PlainText: e.target.value }))}
+                                                    onFocus={handleTextareaFocus}
+                                                    rows="6"
+                                                    cols="50"
+                                                    className="body_textarea_content"
+
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                // state.categoryData !== 'Email' && (
+                                templateData.ChannelType === 'Platform' && (
+                                    <div className="none_body_content">
+                                        <div className="name_block_title">Body</div>
+                                        <div className="block__comments">Make your messages personal using variables like
+                                            <span>name</span> and get more replies!
+                                        </div>
+                                        {/* <div className="none_add_variables_btn none_body_add_var_btn" onClick={handleAddVariableButton}><AddCircleOutlineIcon />Add Variable</div> */}
+                                        <div className="none_block_template_content">
+                                            <div>
+                                                <div className="none_body_template_icons">
+                                                    <TagFacesIcon onClick={toggleEmojiPicker} />
+                                                    {state.showEmojiPicker && (
+                                                        <div className="emoji_picker_container">
+                                                            <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                                        </div>
+                                                    )}
+                                                    <FormatBoldIcon className="none_bold_icon" onClick={handleBoldIconClick} />
+                                                    <FormatItalicIcon onClick={handleItalicIconClick} />
+                                                    <StrikethroughSIcon onClick={handleStrikeIconClick} />
+                                                    <div className="url_icon" onClick={handleTemplateInsertLink} ><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
+                                                    <div className="toolbar_counter">{PlatformTemplateData?.PlainText?.length}/1024</div>
+                                                </div>
+                                            </div>
+                                            <div className="none_template_body_editor">
+
+                                                <textarea
+                                                    value={PlatformTemplateData?.PlainText}
+                                                    onChange={(e, prev)=>setPlatformTemplateData((prev) => ({ ...prev, PlainText: e.target.value }))}
+                                                    onFocus={handleTextareaFocus}
+                                                    rows="6"
+                                                    cols="50"
+                                                    className="body_textarea_content"
+
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                // state.categoryData !== 'Email' && (
+                                templateData.ChannelType === 'Whatsapp' && (
+                                    <div className="none_body_content">
+                                        <div className="name_block_title">Body</div>
+                                        <div className="block__comments">Make your messages personal using variables like
+                                            <span>name</span> and get more replies!
+                                        </div>
+                                        {/* <div className="none_add_variables_btn none_body_add_var_btn" onClick={handleAddVariableButton}><AddCircleOutlineIcon />Add Variable</div> */}
+                                        <div className="none_block_template_content">
+                                            <div>
+                                                <div className="none_body_template_icons">
+                                                    <TagFacesIcon onClick={toggleEmojiPicker} />
+                                                    {state.showEmojiPicker && (
+                                                        <div className="emoji_picker_container">
+                                                            <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                                        </div>
+                                                    )}
+                                                    <FormatBoldIcon className="none_bold_icon" onClick={handleBoldIconClick} />
+                                                    <FormatItalicIcon onClick={handleItalicIconClick} />
+                                                    <StrikethroughSIcon onClick={handleStrikeIconClick} />
+                                                    <div className="url_icon" onClick={handleTemplateInsertLink} ><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
+                                                    <div className="toolbar_counter">{smsTemplateData?.PlainText?.length}/1024</div>
+                                                </div>
+                                            </div>
+                                            <div className="none_template_body_editor">
+
+                                                <textarea
+                                                    value={smsTemplateData?.PlainText}
+                                                    onChange={(e, prev)=>setSmsTemplateData((prev) => ({ ...prev, PlainText: e.target.value }))}
+                                                    onFocus={handleTextareaFocus}
+                                                    rows="6"
+                                                    cols="50"
+                                                    className="body_textarea_content"
+
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            {
+                                // state.categoryData !== 'Email' && (
+                                templateData.ChannelType === 'Push' && (
+                                    <div className="none_body_content">
+                                        <div className="name_block_title">Body</div>
+                                        <div className="block__comments">Make your messages personal using variables like
+                                            <span>name</span> and get more replies!
+                                        </div>
+                                        {/* <div className="none_add_variables_btn none_body_add_var_btn" onClick={handleAddVariableButton}><AddCircleOutlineIcon />Add Variable</div> */}
+                                        <div className="none_block_template_content">
+                                            <div>
+                                                <div className="none_body_template_icons">
+                                                    <TagFacesIcon onClick={toggleEmojiPicker} />
+                                                    {state.showEmojiPicker && (
+                                                        <div className="emoji_picker_container">
+                                                            <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                                        </div>
+                                                    )}
+                                                    <FormatBoldIcon className="none_bold_icon" onClick={handleBoldIconClick} />
+                                                    <FormatItalicIcon onClick={handleItalicIconClick} />
+                                                    <StrikethroughSIcon onClick={handleStrikeIconClick} />
+                                                    <div className="url_icon" onClick={handleTemplateInsertLink} ><svg xmlns="http://www.w3.org/2000/svg" width="34" height="11" viewBox="0 0 34 11" fill="none"><path d="M8.9 5.30859C8.9 3.59859 10.29 2.20859 12 2.20859H16V0.308594H12C10.6739 0.308594 9.40215 0.835378 8.46447 1.77306C7.52678 2.71074 7 3.98251 7 5.30859C7 6.63468 7.52678 7.90645 8.46447 8.84413C9.40215 9.78181 10.6739 10.3086 12 10.3086H16V8.40859H12C10.29 8.40859 8.9 7.01859 8.9 5.30859ZM13 6.30859H21V4.30859H13V6.30859ZM22 0.308594H18V2.20859H22C23.71 2.20859 25.1 3.59859 25.1 5.30859C25.1 7.01859 23.71 8.40859 22 8.40859H18V10.3086H22C23.3261 10.3086 24.5979 9.78181 25.5355 8.84413C26.4732 7.90645 27 6.63468 27 5.30859C27 3.98251 26.4732 2.71074 25.5355 1.77306C24.5979 0.835378 23.3261 0.308594 22 0.308594Z" fill="#666666"></path><path d="M-7.80005e-08 6.99656L-1.74695e-07 4.78444L2.94949 4.78444L2.94949 3L5.84 5.8905L2.9495 8.78101L2.94949 6.99656L-7.80005e-08 6.99656Z" fill="#666666"></path><path d="M34 6.99656L34 4.78444L31.0505 4.78444L31.0505 3L28.16 5.8905L31.0505 8.78101L31.0505 6.99656L34 6.99656Z" fill="#666666"></path></svg></div>
+                                                    <div className="toolbar_counter">{PushTemplateData?.BroadCastTitle?.length}/1024</div>
+                                                </div>
+                                            </div>
+                                            <div className="none_template_body_editor">
+
+                                                <textarea
+                                                    value={PushTemplateData?.BroadCastTitle}
+                                                    onChange={(e, prev)=>setPushTemplateData((prev) => ({ ...prev, BroadCastTitle: e.target.value }))}
                                                     onFocus={handleTextareaFocus}
                                                     rows="6"
                                                     cols="50"
@@ -1054,19 +1462,22 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                             }
 
                             {
-                                state.categoryData === 'Whatsapp' && (
+                                // state.categoryData === 'Whatsapp' && (
+                                templateData.ChannelType === 'Whatsapp' && (
                                     <div className="none_footer_content">
                                         <div className="name_block_title">Footer<span className="block_title_optional">(Optional)</span></div>
                                         <div className="none_footer_comments">Footers are great to add any disclaimers or to add a thoughtful PS</div>
                                         <div className="footer_container">
-                                            <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={state.footerText} onChange={handleFooterInputChange} />
-                                            <div className="footer_text_count">{state.footerText.length}/60</div>
+                                            <TextfieldComponent placeholder='Enter Text' customStyle='template_input' value={WhatsappTemplateData.FooterText} 
+                                            onChange={(e)=>setWhatsappTemplateData((prev)=>({...prev, FooterText: e.target.value}))} />
+                                            <div className="footer_text_count">{WhatsappTemplateData?.FooterText?.length}/60</div>
                                         </div>
                                     </div>
                                 )
                             }
                             {
-                                ['Whatsapp', 'Platform', 'Push'].includes(state.categoryData) && (
+                                // ['Whatsapp', 'Platform', 'Push'].includes(state?.categoryData) && (
+                                ['Whatsapp', 'Platform', 'Push'].includes(templateData?.TicketType) && (
                                     <div className="none_button_content">
                                         <div className="name_block_title">Buttons<span className="block_title_optional">(Recommended)</span></div>
                                         <div className="none_button_comments">Insert buttons so your customers can take action and engage with your message! </div>
@@ -1080,7 +1491,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                 state.isActive && (
                                                     <>
                                                         <div className="none_button_group">
-                                                            {state.firstAddButtonContent.length === 0 && (
+                                                            {state?.firstAddButtonContent?.length === 0 && (
                                                                 <div className="buttondata_dropdown">
                                                                     <AutocompleteComponent
                                                                         options={buttonOptions}
@@ -1137,8 +1548,8 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                                 ))
                                                             }
 
-                                                            <div style={state.firstAddButtonContent.length > 0 ? { position: 'absolute', right: '0px' } : {}}>
-                                                                {state.firstAddButtonContent.length < 3 && (
+                                                            <div style={state.firstAddButtonContent?.length > 0 ? { position: 'absolute', right: '0px' } : {}}>
+                                                                {state.firstAddButtonContent?.length < 3 && (
                                                                     <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleFirstAddButtonContent} />
                                                                 )}
                                                             </div>
@@ -1172,7 +1583,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
 
                                                             }
 
-                                                            {state.secondAddButtonContent.length < 3 && (
+                                                            {state?.secondAddButtonContent?.length < 3 && (
                                                                 <ButtonComponent label='Add button' customBtn='new_template_draftbtn' onClick={handleSecondAddContent} />)}
                                                         </div>
 
@@ -1185,7 +1596,8 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                             }
 
                             {
-                                state.categoryData === 'Whatsapp' && (
+                                // state.categoryData === 'Whatsapp' && (
+                                templateData.ChannelType === 'Whatsapp' && (
                                     <>
                                         {
                                             state.isFocused && (
@@ -1193,7 +1605,9 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                     <div className="name_block_title">Sample Content</div>
                                                     <div className="none_sample_comments">Just enter sample content here (it doesn't need to be exact!)</div>
                                                     <div className="none_sample_content_textbox">
-                                                        <TextfieldComponent placeholder='Enter content for {{name}}' customStyle='template_input' />
+                                                        <TextfieldComponent value={WhatsappTemplateData.SampleContent} 
+                                                        onChange={(e)=>setWhatsappTemplateData((prev)=>({...prev, SampleContent: e.target.value}))}
+                                                        placeholder='Enter content for {{name}}' customStyle='template_input' />
                                                         <div className="none_sample_text_count">0/200</div>
                                                     </div>
                                                     <div className="none_sample_comments">Make sure not to include any actual user or customer information, and provide only sample content in your examples.</div>
@@ -1213,12 +1627,14 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                             <h3 className="preview_text">Preview </h3>
                             <span><StayCurrentPortraitRoundedIcon style={{ cursor: 'pointer', color: state.PreviewMode === 'mobile' ? 'green' : 'black' }} onClick={() => updateState({ PreviewMode: "mobile" })} />
                                 {
+                                    // state.categoryData !== 'SMS' && (
                                     state.categoryData !== 'SMS' && (
                                         <DesktopWindowsRoundedIcon style={{ cursor: 'pointer', color: state.PreviewMode === 'desktop' ? 'green' : 'black' }} onClick={() => updateState({ PreviewMode: 'desktop' })} />
                                     )
                                 }
                             </span></div>
                         {
+                            // state.categoryData === 'Email' ?
                             state.categoryData === 'Email' ?
                                 (
                                     <>
@@ -1306,6 +1722,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                 ) : (
                                     <div className="template_preview_svg"
                                         style={{
+                                            // backgroundImage: `url(${state.PreviewMode === 'mobile' ? mobileBackgroundImages[state.categoryData] : desktopBackgroundImages[state.categoryData]})`,
                                             backgroundImage: `url(${state.PreviewMode === 'mobile' ? mobileBackgroundImages[state.categoryData] : desktopBackgroundImages[state.categoryData]})`,
                                             width: state.PreviewMode === 'desktop' ? "112%" : "306px",
                                             height: state.PreviewMode === 'desktop' ? '43%' : '570px',
@@ -1314,6 +1731,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
 
                                         }}>
                                         {
+                                            // state.categoryData === 'Email' && (
                                             state.categoryData === 'Email' && (
                                                 <div className="email_subject" style={{
                                                     left: state.PreviewMode === 'desktop' ? "95px" : '45px',
@@ -1383,7 +1801,7 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
                                                 {state.isFocused && (
                                                     <div
                                                         dangerouslySetInnerHTML={{
-                                                            __html: state.textareaContent
+                                                            __html: smsTemplateData.PlainText
                                                                 .replace(/\*(.*?)\*/g, "<b>$1</b>")
                                                                 .replace(/(.*?)/g, "<i>$1</i>")
                                                                 .replace(/~(.*?)~/g, "<s>$1</s>"),

@@ -15,9 +15,9 @@ import {
 import TicketsCard from "../../src/Component/TeamInbox/TicketsCard";
 import SearchboxComponent from "../Component/SearchboxComponent";
 import ButtonComponent from "../Component/ButtonComponent";
-import TextfieldComponent from "../Component/TextfieldComponent";
+// import TextfieldComponent from "../Component/TextfieldComponent";
 import style from "../Component/MuiStyles/muiStyle";
-import Select from "react-select";
+// import Select from "react-select";
 import intiated from "../../src/Component/Assets/img/Intiated.png";
 import broadcast from "../../src/Component/Assets/img/Broadcast.png";
 import groups from "../../src/Component/Assets/img/Groups.png";
@@ -50,7 +50,7 @@ import {
   Input,
   Stack,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+// import CloseIcon from '@mui/icons-material/Close';
 
 const drawerWidth = 220;
 const collapsedWidth = 60;
@@ -252,146 +252,148 @@ const TeamInbox = () => {
       <Box sx={style.new_teaminbox_container}>
         {state.openNewTicketsModal && (
           <div className="modal-overlay">
-  <div className="new-ticket-container">
-    <div className="new-ticket-header">
-      <div>
-        <h2 className="new-ticket-title">New ticket</h2>
-      </div>
-      <div>
-        <button className="close-btn" onClick={handleCloseNewTicketsModal}>
-          <img src={closeIconPath} alt="close" width="20" height="20" />
-        </button>
-      </div>
-    </div>
+            <div className="new-ticket-container">
+              <div className="new-ticket-header">
+                <div>
+                  <h2 className="new-ticket-title">New ticket</h2>
+                </div>
+                <div>
+                  <button className="close-btn" onClick={handleCloseNewTicketsModal}>
+                    <img src={closeIconPath} alt="close" width="20" height="20" />
+                  </button>
+                </div>
+              </div>
 
-    <div className="new-ticket-content" style={{ overflowY: 'auto', maxHeight: '425px', paddingRight: 16 }}>
-      <div className="form-group">
-        <label>Subject</label>
-        <input
-          type="text"
-          placeholder="Enter Subject"
-          className="form-input"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-        />
-      </div>
+              <div className="new-ticket-content" style={{ overflowY: 'auto', maxHeight: '425px', paddingRight: 16 }}>
+                <div className="form-group">
+                  <label>Subject</label>
+                  <input
+                    type="text"
+                    placeholder="Enter Subject"
+                    className="form-input"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                  />
+                </div>
 
-      <div className="form-group">
-        <label>Target Module</label>
-        <select className="form-select" value={module} onChange={(e) => setModule(e.target.value)}>
-          <option value="">Select Target Module</option>
-          <option value="billing">Billing</option>
-          <option value="support">Support</option>
-          <option value="sales">Sales</option>
-        </select>
-        {/* <div className="horizontal-line"></div> */}
-      </div>
+              <div className="form-group">
+                <label>Target Module</label>
+                <select className="form-select" value={module} onChange={(e) => setModule(e.target.value)}>
+                  <option value="">Select Target Module</option>
+                  <option value="billing">Billing</option>
+                  <option value="support">Support</option>
+                  <option value="sales">Sales</option>
+                </select>
+                {/* <div className="horizontal-line"></div> */}
+              </div>
 
-      <div className="form-group">
-        <label>Channel</label>
-        <select className="form-select" value={channel} onChange={(e) => setChannel(e.target.value)}>
-          <option value="">Select Channel</option>
-          <option value="email">Email</option>
-          <option value="phone">Phone</option>
-          <option value="chat">Chat</option>
-        </select>
-        {/* <div className="horizontal-line"></div> */}
-      </div>
+              <div className="form-group">
+                <label>Channel</label>
+                <select className="form-select" value={channel} onChange={(e) => setChannel(e.target.value)}>
+                  <option value="">Select Channel</option>
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="chat">Chat</option>
+                </select>
+                {/* <div className="horizontal-line"></div> */}
+              </div>
 
-      <div className="recipient-section">
-        <div className="recipient-header">
-          <label>Recipient</label>
-        </div>
+              <div className="recipient-section">
+                <div className="recipient-header">
+                  <label>Recipient</label>
+                </div>
 
-        <div className="recipient-input-row">
-        <input
-          type="text"
-          placeholder="Add Recipient"
-          className="recipient-input"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-        />
-        <button className="add-btn" onClick={() => setOpenRecipientModal(true)}>
-          Add
-        </button>
-      </div>
-
-
-        {recipients.length > 0 && (
-          <div className="recipient-list">
-            <ul style={{ maxHeight: 100, overflowY: 'auto', marginTop: 4 }}>
-              {recipients.map((r, index) => (
-                <li key={index} style={{ marginTop: 4 }}>
-                  recipient: {r.sid}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div className="divider-section">
-          <span className="divider-text">Or</span>
-        </div>
-
-       <div className="file-upload-section">
-            <label className="file-upload-label">Upload csv/excel file</label>
-            <div className="file-upload-input-row">
+              <div className="recipient-input-row">
               <input
                 type="text"
-                className="selectFiles-input"
-                placeholder="Enter file description (optional)"
+                placeholder="Add Recipient"
+                className="recipient-input"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
               />
-              <button className="select-files-btn" onClick={handleUploadClick}>
-                Select Files
+              <button className="add-btn" onClick={() => setOpenRecipientModal(true)}>
+                Add
               </button>
             </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              multiple
-              onChange={handleFileChange}
-              accept=".csv,.xlsx,.xls"
-              style={{ display: "none" }}
-            />
-          </div>
 
-      {selectedFiles.length > 0 && (
+
+            {/* {recipients.length > 0 && (
+              <div className="recipient-list">
+                <ul style={{ maxHeight: 100, overflowY: 'auto', marginTop: 4 }}>
+                  {recipients.map((r, index) => (
+                    <li key={index} style={{ marginTop: 4 }}>
+                      recipient: {r.sid}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )} */}
+
+            <div className="divider-section">
+              <span className="divider-text">Or</span>
+            </div>
+
+          <div className="file-upload-section">
+                <label className="file-upload-label">Upload csv/excel file</label>
+                <div className="file-upload-input-row">
+                  <button className="select-files-btn" onClick={handleUploadClick}>
+                    Select Files
+                  </button>
+                  <input
+                    type="text"
+                    className="selectFiles-input"
+                    // placeholder="Enter file description (optional)"
+                    value={recipient}
+                    onChange={(e) => setRecipient(e.target.value)}
+                  />
+                </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  multiple
+                  onChange={handleFileChange}
+                  accept=".csv,.xlsx,.xls"
+                  style={{ display: "none" }}
+                />
+              </div>
+
+        {selectedFiles.length > 0 && (
             <div className="uploaded-files" style={{ marginTop: 12 }}>
               <ul style={{ maxHeight: 100, overflowY: 'auto', marginTop: 6 }}>
                 {selectedFiles.map((file, index) => (
                   <li key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
                     <span style={{ fontSize: 12 }}>{file.name}</span>
                     <button
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: 'red',
-                        cursor: 'pointer',
-                        fontWeight: 'bold',
-                      }}
                       onClick={() => handleRemoveFile(index)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 4,
+                      }}
+                      title="Remove"
                     >
-                      &#x2715;
+                      <img src="/icons/delete-icon.svg" alt="Delete" width="16" height="16" />
                     </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-      </div>
-    </div>
 
-    <div className="action-buttons" style={{ padding: '10px 44px' }}>
-      <button className="cancel-button" onClick={handleCloseNewTicketsModal}>
-        Cancel
-      </button>
-      <button className="submit-btn">
-        Submit
-      </button>
-    </div>
-  </div>
+
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+          </div>
+        </div>
+
+        <div className="action-buttons" style={{ padding: '10px 44px' }}>
+          <button className="cancel-button" onClick={handleCloseNewTicketsModal}>
+            Cancel
+          </button>
+          <button className="submit-btn">
+            Submit
+          </button>
+        </div>
+      </div>
           </div>
         )}
         <Drawer
