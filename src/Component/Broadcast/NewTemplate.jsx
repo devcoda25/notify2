@@ -16,7 +16,7 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/mode/xml/xml";
 import "codemirror/theme/material.css";
 import { StayCurrentPortraitRoundedIcon, CheckIcon, ExpandMoreIcon, FormatUnderlinedRoundedIcon, DesktopWindowsRoundedIcon, ArrowBackIcon, DeleteOutlineIcon, AddCircleOutlineIcon, TagFacesIcon, FormatBoldIcon, FormatItalicIcon, StrikethroughSIcon } from "../Icon";
-import { AddYourTemplate, fetchLanguages } from "../../Url";
+import { AddYourTemplate, fetchChannels, fetchLanguages } from "../../Url";
 import { config } from "../../Url";
 import axios from "axios";
 
@@ -45,6 +45,7 @@ const colors = {
 };
 
 const categoryOptions = ['Email', 'SMS', 'Platform', 'Whatsapp', 'Push'];
+// const categoryOptions = ["email", "sms", "push", "webhook", "slack", "discord"];
 const ticketTypeOptions = ['Red Notifications', 'Blue Notifications', 'Green Notifications', 'Yellow Notifications']
 // const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
 const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Call phone']
@@ -243,6 +244,8 @@ const NewTemplate = ({setIsOpenTemplateMessage}) => {
     };
 
  const [languageOptions, setLanguageOptions] = useState([]);
+ const [channelOptions, setChannelOptions] = useState([]);
+//  console.log("channelData", channelData)
 
 const fetchLanguageData = async () => {
   try {
@@ -261,6 +264,36 @@ const fetchLanguageData = async () => {
   }
 };
 
+
+  const fetchChannelData = async () => {
+      try {
+        const res = await axios.get(fetchChannels(),config);
+        const channelValues= res.data?.data?.values||[];
+        const options = channelValues.map((channel)=>({
+            label: channel.type,
+            id: channel.id
+        }))
+        setChannelOptions(options);
+      } catch (error) {
+        console.log('fetch error','Failed to load data')
+      } finally {
+      }
+    };
+
+    if (Array.isArray(channelOptions) && channelOptions.length > 0) {
+        console.log("channelOptions", channelOptions);
+    }
+    if (Array.isArray(languageOptions) && languageOptions.length > 0) {
+        console.log("languageOptions", languageOptions);
+    }
+
+    useEffect(() => {
+  fetchLanguageData();
+  fetchChannelData();
+}, []);
+
+
+
 const AddEmailTemplate = async()=>{
    try {
     const payload = {...templateData, ...emailTemplateData}
@@ -270,6 +303,7 @@ const AddEmailTemplate = async()=>{
     console.log("Error Adding Email Template", error)
    }
 }
+
 const AddSmsTemplate = async()=>{
    try {
        const payload = {...templateData, ...smsTemplateData}
@@ -332,9 +366,7 @@ const handleSaveTemplate = () => {
 
 
 
-useEffect(() => {
-  fetchLanguageData();
-}, []);
+
 
      
     const handleBack=()=>{
@@ -812,6 +844,7 @@ useEffect(() => {
                             <div className="name_block_field">
                                 <div className="name_block_title">Channel</div>
                                 <AutocompleteComponent
+                                // options={channelOptions}
                                 options={categoryOptions}
                                 value={templateData.ChannelType}
                                 onChange={(event, newValue) => {
@@ -1111,21 +1144,20 @@ useEffect(() => {
 
                                                                     <div>
                                                                         <CodeMirror
-                                                                            // value={state.code}
-                                                                            value={emailTemplateData.HtmlText}
-                                                                            onChange={(e) =>setEmailTemplateData((prev) => ({ ...prev, HtmlText: e.target.value }))}
-                                                                            options={{
-                                                                                mode: "xml",
-                                                                                theme: "material",
-                                                                                lineNumbers: true,
-                                                                                indentWithTabs: true,
-                                                                                smartIndent: true,
-                                                                                matchBrackets: true,
-                                                                            }}
-                                                                            onBeforeChange={(editor, data, value) => {
-                                                                                updateState({ code: value });
-                                                                            }}
+                                                                        value={emailTemplateData.HtmlText}
+                                                                        options={{
+                                                                            mode: "xml",
+                                                                            theme: "material",
+                                                                            lineNumbers: true,
+                                                                            indentWithTabs: true,
+                                                                            smartIndent: true,
+                                                                            matchBrackets: true,
+                                                                        }}
+                                                                        onBeforeChange={(editor, data, value) => {
+                                                                            setEmailTemplateData((prev) => ({ ...prev, HtmlText: value }));
+                                                                        }}
                                                                         />
+
                                                                     </div>
 
                                                                 }
