@@ -25,6 +25,10 @@ export function base(){
     return process.env.REACT_APP_API_URL + "/api/v1.0/web/notify/template";
 }
 
+export function coreBase(){
+    return process.env.REACT_APP_API_URL + "/api/v1.0/app/core/user/modules/user";
+}
+
 // Categories
 export function fetchCategories(){
     return base() + "/categories";
@@ -120,6 +124,16 @@ export function deleteContent(){
 }
 export function showContent(){
     return base() + "/content/show";
+}
+
+// New Template Page ( Your template )
+
+export function AddYourTemplate(){
+    return base() + "/client/template/store"
+}
+
+export function getModules(){
+    return coreBase()
 }
 
 
