@@ -44,7 +44,7 @@ const colors = {
     link: ["rgb(0, 89, 225)", "rgb(0, 63, 164)", "rgb(147, 0, 2)", "rgb(255, 255, 255)", "conic-gradient(rgb(0, 255, 255), rgb(255, 0, 255), rgb(255, 255, 0), rgb(0, 255, 255))"],
 };
 
-const categoryOptions = ['Email', 'SMS', 'Platform', 'Whatsapp', 'Push'];
+const categoryOptions = ['email', 'sms', 'platform', 'whatsapp', 'push'];
 // const categoryOptions = ["email", "sms", "push", "webhook", "slack", "discord"];
 const ticketTypeOptions = ['red', 'blue', 'green', 'yellow']
 // const languageOptions = ['English (US)', 'Afrikaans', 'Albanian'];
@@ -52,7 +52,7 @@ const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Cal
 const secondbuttonOptions = ['Quick replies'];
 const teamOptions = ['Support Heroes(Default team)']
 
-const NewTemplate = ({setIsOpenTemplateMessage}) => {
+const NewTemplate = ({setIsOpenTemplateMessage, selectedTemplate, setSelectedTemplate}) => {
     const [state, setState] = useState({
         categoryData: categoryOptions[0],
         ticketTypeData: ticketTypeOptions[0],
@@ -226,10 +226,6 @@ const defaultWhatsappTemplateData = {
   footer: "",
   header: ""
 };
-
-
-
-
 
     const [templateData, setTemplateData]= useState({
         template_name:"",
@@ -433,16 +429,14 @@ const fetchModules = async()=>{
     try {
         const res = await axios.get(getModules(), config);
         const modulesData = res.data?.data || [];
-        console.log("modulesData", modulesData)
+        // console.log("modulesData", modulesData)
 
        const options = modulesData.map((module) => ({
-  id: module.code, // use code as unique id
-  label: module.name, // for display
-  code: module.code, // keep original code
-}))
-setModuleOptions(options)
-
-        
+        id: module.code, 
+        label: module.name, 
+        code: module.code, 
+        }))
+        setModuleOptions(options)
     } catch (error) {
         console.log("error", error)
     }
@@ -462,6 +456,42 @@ setModuleOptions(options)
   fetchChannelData();
   fetchModules();
 }, []);
+
+useEffect(() => {
+  if (selectedTemplate) {
+    console.log("selectedTemplate", selectedTemplate);
+
+    const parsedContent = selectedTemplate.content
+      ? JSON.parse(selectedTemplate.content)
+      : { html: "", plain: "" };
+
+    setTemplateData({
+      template_name: selectedTemplate.template?.name || "",
+      subject: selectedTemplate.subject || "",
+      content: selectedTemplate.content || "",
+      ticket_type: selectedTemplate.ticket_type || "",
+      language_id: selectedTemplate.language?.id || "",
+      channel_type: selectedTemplate.channel?.name || "",
+      channel_id: selectedTemplate.channel?.id || "",
+      module_code: selectedTemplate.module_code || ""
+    });
+
+    if (selectedTemplate.channel?.name.toLowerCase() === "email") {
+      setEmailTemplateData({
+        subject: selectedTemplate.subject || "",
+        HtmlText: parsedContent.html || "",
+        PlainText: parsedContent.plain || ""
+      });
+    }
+
+    if (selectedTemplate.channel?.name.toLowerCase() === "sms") {
+      setSmsTemplateData({
+        plain_content: selectedTemplate.plain_content || "",
+      });
+    }
+  }
+}, [selectedTemplate]);
+
 
 const [formErrors, setFormErrors] = useState({});
 
@@ -614,12 +644,78 @@ const handleSaveTemplate = () => {
   }
 };
 
+const handleUpdateTemplate=()=>{
+    console.log("Update template")
+}
 
+// const handleUpdate = (template) => {
+//     console.log("Update", template);
+    
+//     setTemplateData({
+//         template_name: template.template_name || "",
+//         channel_id: template.channel_id || 1,
+//         ticket_type: template.ticket_type || "red",
+//         template_type: template.template_type || "plaintext",
+//         language_id: template.language_id || 1,
+//         module_code: template.module_code || "",
+//         id: template.id 
+//     });
 
+    
+//     const channelLabel = channelOptions.find(opt => opt.id === template.channel_id)?.label || '';
+//     setState((prev) => ({
+//         ...prev,
+//         categoryData: channelLabel.toLowerCase(),
+//         isUpdateMode: true 
+//     }));
 
+//     // Populate channel-specific template data based on channel type
+//     switch(channelLabel.toLowerCase()) {
+//         case 'email':
+//             setEmailTemplateData({
+//                 subject: template.email_data?.subject || "",
+//                 HtmlText: template.email_data?.html_content || emailTemplateData.HtmlText,
+//                 PlainText: template.email_data?.plain_text || ""
+//             });
+//             break;
+            
+//         case 'sms':
+//             setSmsTemplateData({
+//                 content: template.sms_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+//             });
+//             break;
+            
+//         case 'platform':
+//             setPlatformTemplateData({
+//                 content: template.platform_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+//             });
+//             break;
+            
+//         case 'push':
+//             setPushTemplateData({
+//                 subject: template.push_data?.subject || `Hi {{name}}`,
+//                 content: template.push_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+//             });
+//             break;
+            
+//         case 'whatsapp':
+//             setWhatsappTemplateData({
+//                 subject: template.whatsapp_data?.subject || `Hi {{name}}`,
+//                 content: template.whatsapp_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
+//                 footer: template.whatsapp_data?.footer || "",
+//                 header: template.whatsapp_data?.header || ""
+//             });
+//             break;
+            
+//         default:
+//             break;
+//     }
+    
+//     setIsOpenTemplateMessage(true);
+// };
 
-     
     const handleBack=()=>{
+        setSelectedTemplate(null);
         setIsOpenTemplateMessage(false);
     }
 
@@ -1074,7 +1170,7 @@ const handleSaveTemplate = () => {
                     </div>
                     <div className="new_template_right">
                         <ButtonComponent label='Save as draft' customBtn='new_template_draftbtn' />
-                        <ButtonComponent onClick={handleSaveTemplate} label='Save and submit' />
+                        <ButtonComponent onClick={selectedTemplate? handleSaveTemplate: handleUpdateTemplate} label={selectedTemplate? "update template":"Save and submit" } />
                     </div>
                 </div>
                 <div className="new_template_content">
@@ -1112,7 +1208,7 @@ const handleSaveTemplate = () => {
                                 <div className="name_block_title">Module Code</div>
                                    <AutocompleteComponent
                                 options={moduleOptions}
-                                getOptionLabel={(option) => option?.label || ''}  // display name
+                                getOptionLabel={(option) => option?.label || ''}  
                                 value={
                                     moduleOptions.find(opt => opt.id === templateData.module_code) || null
                                 }

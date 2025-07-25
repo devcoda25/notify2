@@ -132,6 +132,21 @@ export function AddYourTemplate(){
     return base() + "/client/template/store"
 }
 
+export function getAllTemplates(){
+    return base() + "/client/templates"
+}
+
+export function UpdateTemplatemodule(){
+    return base() + "/client/template/update"
+}
+
+export function deleteTemplatemodule(){
+    return base() + "/client/template/delete"
+}
+
+
+
+// API for get ev core Modules
 export function getModules(){
     return coreBase()
 }
