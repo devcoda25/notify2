@@ -16,7 +16,7 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/mode/xml/xml";
 import "codemirror/theme/material.css";
 import { StayCurrentPortraitRoundedIcon, CheckIcon, ExpandMoreIcon, FormatUnderlinedRoundedIcon, DesktopWindowsRoundedIcon, ArrowBackIcon, DeleteOutlineIcon, AddCircleOutlineIcon, TagFacesIcon, FormatBoldIcon, FormatItalicIcon, StrikethroughSIcon } from "../Icon";
-import { AddYourTemplate, fetchChannels, fetchLanguages, getModules } from "../../Url";
+import { AddYourTemplate, fetchChannels, fetchLanguages, getModules, UpdateTemplatemodule } from "../../Url";
 import { config } from "../../Url";
 import axios from "axios";
 
@@ -52,7 +52,7 @@ const buttonOptions = ['copy offer code', 'Visit website', 'Quick replies', 'Cal
 const secondbuttonOptions = ['Quick replies'];
 const teamOptions = ['Support Heroes(Default team)']
 
-const NewTemplate = ({setIsOpenTemplateMessage, selectedTemplate, setSelectedTemplate}) => {
+const NewTemplate = ({setIsOpenTemplateMessage, selectedTemplate, setSelectedTemplate, fetchAllTemplates}) => {
     const [state, setState] = useState({
         categoryData: categoryOptions[0],
         ticketTypeData: ticketTypeOptions[0],
@@ -233,7 +233,7 @@ const defaultWhatsappTemplateData = {
         ticket_type:"red",
         template_type:"plaintext",
         language_id:1,
-        module_code:""
+        module_code:"",
     })
 
     const [emailTemplateData, setEmailTemplateData]= useState({
@@ -359,7 +359,7 @@ const defaultWhatsappTemplateData = {
         subject:`Hi {{name}}`,
         content:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
         footer:"",
-        header:""
+        // header:""
     })
 
     
@@ -443,27 +443,21 @@ const fetchModules = async()=>{
 }
 
 
-
-    // if (Array.isArray(channelOptions) && channelOptions.length > 0) {
-    //     console.log("channelOptions", channelOptions);
-    // }
-    // if (Array.isArray(languageOptions) && languageOptions.length > 0) {
-    //     console.log("languageOptions", languageOptions);
-    // }
-
     useEffect(() => {
   fetchLanguageData();
   fetchChannelData();
   fetchModules();
 }, []);
 
+
 useEffect(() => {
   if (selectedTemplate) {
-    console.log("selectedTemplate", selectedTemplate);
-
-    const parsedContent = selectedTemplate.content
-      ? JSON.parse(selectedTemplate.content)
-      : { html: "", plain: "" };
+    const channel = selectedTemplate.channel?.name?.toLowerCase() || "";
+    console.log("channel name", channel)
+    const parsedContent =
+      channel === "email" && selectedTemplate.content
+        ? JSON.parse(selectedTemplate.content)
+        : { html: "", plain: "" };
 
     setTemplateData({
       template_name: selectedTemplate.template?.name || "",
@@ -473,20 +467,39 @@ useEffect(() => {
       language_id: selectedTemplate.language?.id || "",
       channel_type: selectedTemplate.channel?.name || "",
       channel_id: selectedTemplate.channel?.id || "",
-      module_code: selectedTemplate.module_code || ""
+      module_code: selectedTemplate.module_code || "",
     });
 
-    if (selectedTemplate.channel?.name.toLowerCase() === "email") {
+    setState((prev) => ({
+      ...prev,
+      categoryData: channel, 
+    }));
+
+    if (channel === "email") {
       setEmailTemplateData({
         subject: selectedTemplate.subject || "",
         HtmlText: parsedContent.html || "",
-        PlainText: parsedContent.plain || ""
+        PlainText: parsedContent.plain || "",
       });
-    }
-
-    if (selectedTemplate.channel?.name.toLowerCase() === "sms") {
+    } else if (channel === "sms") {
       setSmsTemplateData({
-        plain_content: selectedTemplate.plain_content || "",
+        content: selectedTemplate.content || "",
+      });
+    } else if (channel === "push notification") {
+      setPushTemplateData({
+        subject: selectedTemplate.subject || "",
+        content: selectedTemplate.content || "",
+      });
+    } else if (channel === "platform") {
+      setPlatformTemplateData({
+        content: selectedTemplate.content || "",
+      });
+    } else if (channel === "whatsapp") {
+      setWhatsappTemplateData({
+        subject: selectedTemplate.subject || "",
+        content: selectedTemplate.content || "",
+        footer: selectedTemplate.footer || "",
+        header: selectedTemplate.header || "",
       });
     }
   }
@@ -495,26 +508,7 @@ useEffect(() => {
 
 const [formErrors, setFormErrors] = useState({});
 
-
-// const AddEmailTemplate = async () => {
-//   try {
-//     const payload = {
-//       ...templateData,
-//       subject: emailTemplateData.subject.trim(),
-//       content: JSON.stringify({
-//         html: emailTemplateData.HtmlText,
-//         plain: emailTemplateData.PlainText
-//       })
-//     };
-
-//     await axios.post(AddYourTemplate(), payload, config);
-
-//     setTemplateData(defaultTemplateData);
-//     setEmailTemplateData(defaultEmailTemplateData);
-//   } catch (error) {
-//     console.log("Error Adding Email Template", error);
-//   }
-// };
+// Add Functions
 
 const AddEmailTemplate = async () => {
   try {
@@ -530,11 +524,11 @@ const AddEmailTemplate = async () => {
     await axios.post(AddYourTemplate(), payload, config);
 
     setTemplateData(defaultTemplateData);
+    fetchAllTemplates();
     setEmailTemplateData(defaultEmailTemplateData);
-    setFormErrors({}); // Clear errors
+    setFormErrors({}); 
 
   } catch (error) {
-    // Check if error is template_name exists
     if (
       error.response?.data?.error?.template_name?.length > 0
     ) {
@@ -616,11 +610,180 @@ const AddWhatsappTemplate = async () => {
 };
 
 
+// Update Functions
+
+const updateEmailTemplate = async () => {
+  try {
+    const payload = {
+      id: selectedTemplate.id,
+      ...templateData,
+      subject: emailTemplateData.subject.trim(),
+      content: JSON.stringify({
+        html: emailTemplateData.HtmlText,
+        plain: emailTemplateData.PlainText,
+      }),
+    };
+    console.log("payload",payload)
+
+    await axios.post(UpdateTemplatemodule(selectedTemplate.id), payload, config);
+
+    setTemplateData(defaultTemplateData);
+    fetchAllTemplates();
+    setEmailTemplateData(defaultEmailTemplateData);
+    setFormErrors({});
+  } catch (error) {
+    if (error.response?.data?.error?.template_name?.length > 0) {
+      setFormErrors({
+        template_name: "Template name already exists.",
+      });
+    } else {
+      console.log("Error Updating Email Template", error);
+    }
+  }
+};
+
+const updateSmsTemplate = async () => {
+  try {
+    console.log("update sms hitting");
+
+    if (!selectedTemplate?.id) {
+      console.error("Template ID is missing for update.");
+      return;
+    }
+
+    const payload = {
+      ...templateData,
+      ...smsTemplateData,
+      id: selectedTemplate.id,
+      subject:"Welcome to Our Service, {{var:user_name}}!", 
+    };
+
+    await axios.post(UpdateTemplatemodule(selectedTemplate.id), payload, config);
+
+    setTemplateData(defaultTemplateData);
+    setSmsTemplateData(defaultSmsTemplateData);
+    setFormErrors({});
+    fetchAllTemplates();
+  } catch (error) {
+    if (error.response?.data?.error?.template_name?.length > 0) {
+      setFormErrors({ template_name: "Template name already exists." });
+    } else if (error.response?.data?.error?.id?.length > 0) {
+      console.error("ID error:", error.response.data.error.id);
+      setFormErrors({ id: "Template ID is required for update." });
+    } else if (error.response?.data?.error?.subject?.length > 0) {
+      setFormErrors({ subject: "Subject must be a valid string." });
+    } else {
+      console.log("Error Updating SMS Template", error);
+    }
+  }
+};
+
+const updatePushTemplate = async () => {
+  try {
+
+    console.log("push api hitting")
+    if (!selectedTemplate?.id) {
+      console.error("Missing Template ID");
+      return;
+    }
+
+    const payload = {
+      ...templateData,
+      ...PushTemplateData,
+      id: selectedTemplate.id,
+    };
+
+    await axios.post(UpdateTemplatemodule(selectedTemplate.id), payload, config);
+
+    setTemplateData(defaultTemplateData);
+    setPushTemplateData({
+      subject: "",
+      content: "",
+    });
+    setFormErrors({});
+    fetchAllTemplates();
+  } catch (error) {
+    if (error.response?.data?.error?.template_name?.length > 0) {
+      setFormErrors({ template_name: "Template name already exists." });
+    } else {
+      console.log("Error Updating Push Template", error);
+    }
+  }
+};
+
+const updatePlatformTemplate = async () => {
+  try {
+    console.log("Updating Platform Template...");
+
+    if (!selectedTemplate?.id) {
+      console.error("Template ID is missing for update.");
+      return;
+    }
+
+    const payload = {
+      ...templateData,
+      ...PlatformTemplateData,
+      id: selectedTemplate.id,
+      subject:"Subject Name",
+    };
+
+    await axios.post(UpdateTemplatemodule(selectedTemplate.id), payload, config);
+
+    setTemplateData(defaultTemplateData);
+    setPlatformTemplateData(defaultPlatformTemplateData);
+    setFormErrors({});
+    fetchAllTemplates();
+  } catch (error) {
+    if (error.response?.data?.error?.template_name?.length > 0) {
+      setFormErrors({ template_name: "Template name already exists." });
+    } else if (error.response?.data?.error?.id?.length > 0) {
+      setFormErrors({ id: "Template ID is required for update." });
+    } else if (error.response?.data?.error?.subject?.length > 0) {
+      setFormErrors({ subject: "Subject must be a valid string." });
+    } else {
+      console.log("Error Updating Platform Template", error);
+    }
+  }
+};
+
+const updateWhatsappTemplate = async () => {
+  try {
+
+    console.log("update whatsapp hitting")
+    if (!selectedTemplate?.id) {
+      console.error("Missing Template ID");
+      return;
+    }
+
+    const payload = {
+      ...templateData,
+      ...WhatsappTemplateData,
+      id: selectedTemplate.id,
+    };
+
+    await axios.post(UpdateTemplatemodule(selectedTemplate.id), payload, config);
+
+    setTemplateData(defaultTemplateData);
+    setWhatsappTemplateData({
+      subject: "",
+      content: "",
+      header: "",
+      footer: "",
+    });
+    setFormErrors({});
+    fetchAllTemplates();
+  } catch (error) {
+    if (error.response?.data?.error?.template_name?.length > 0) {
+      setFormErrors({ template_name: "Template name already exists." });
+    } else {
+      console.log("Error Updating WhatsApp Template", error);
+    }
+  }
+};
 
 // console.log("channel_id", templateData.channel_id)
 // console.log("categoryData",state.categoryData)
 // console.log("languageId", templateData.language_id)
-
 
 const handleSaveTemplate = () => {
   switch (state.categoryData) {
@@ -634,9 +797,9 @@ const handleSaveTemplate = () => {
       AddPlatformTemplate();
       break;
     case "whatsapp":
-      AddWhatsappTemplate()
+      AddWhatsappTemplate();
       break;
-    case "push":
+    case "push notification":
       AddPushTemplate();
       break;
     default:
@@ -645,74 +808,28 @@ const handleSaveTemplate = () => {
 };
 
 const handleUpdateTemplate=()=>{
-    console.log("Update template")
+    console.log("category data",state.categoryData)
+    switch (state.categoryData) {
+        case "email":
+            updateEmailTemplate();
+            break;
+        case "sms":
+            updateSmsTemplate();
+            break;
+        case "push notification":
+            updatePushTemplate();
+            break;
+        case "platform":
+            updatePlatformTemplate();
+            break;
+        case "whatsapp":
+            updateWhatsappTemplate();
+            break;
+        default:
+            break;
+    }
 }
 
-// const handleUpdate = (template) => {
-//     console.log("Update", template);
-    
-//     setTemplateData({
-//         template_name: template.template_name || "",
-//         channel_id: template.channel_id || 1,
-//         ticket_type: template.ticket_type || "red",
-//         template_type: template.template_type || "plaintext",
-//         language_id: template.language_id || 1,
-//         module_code: template.module_code || "",
-//         id: template.id 
-//     });
-
-    
-//     const channelLabel = channelOptions.find(opt => opt.id === template.channel_id)?.label || '';
-//     setState((prev) => ({
-//         ...prev,
-//         categoryData: channelLabel.toLowerCase(),
-//         isUpdateMode: true 
-//     }));
-
-//     // Populate channel-specific template data based on channel type
-//     switch(channelLabel.toLowerCase()) {
-//         case 'email':
-//             setEmailTemplateData({
-//                 subject: template.email_data?.subject || "",
-//                 HtmlText: template.email_data?.html_content || emailTemplateData.HtmlText,
-//                 PlainText: template.email_data?.plain_text || ""
-//             });
-//             break;
-            
-//         case 'sms':
-//             setSmsTemplateData({
-//                 content: template.sms_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-//             });
-//             break;
-            
-//         case 'platform':
-//             setPlatformTemplateData({
-//                 content: template.platform_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-//             });
-//             break;
-            
-//         case 'push':
-//             setPushTemplateData({
-//                 subject: template.push_data?.subject || `Hi {{name}}`,
-//                 content: template.push_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-//             });
-//             break;
-            
-//         case 'whatsapp':
-//             setWhatsappTemplateData({
-//                 subject: template.whatsapp_data?.subject || `Hi {{name}}`,
-//                 content: template.whatsapp_data?.content || `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
-//                 footer: template.whatsapp_data?.footer || "",
-//                 header: template.whatsapp_data?.header || ""
-//             });
-//             break;
-            
-//         default:
-//             break;
-//     }
-    
-//     setIsOpenTemplateMessage(true);
-// };
 
     const handleBack=()=>{
         setSelectedTemplate(null);
@@ -1170,7 +1287,10 @@ const handleUpdateTemplate=()=>{
                     </div>
                     <div className="new_template_right">
                         <ButtonComponent label='Save as draft' customBtn='new_template_draftbtn' />
-                        <ButtonComponent onClick={selectedTemplate? handleSaveTemplate: handleUpdateTemplate} label={selectedTemplate? "update template":"Save and submit" } />
+                        <ButtonComponent
+                        onClick={selectedTemplate ? handleUpdateTemplate : handleSaveTemplate}
+                        label={selectedTemplate ? "Update Template" : "Save and Submit"}
+                        />
                     </div>
                 </div>
                 <div className="new_template_content">
@@ -1226,24 +1346,8 @@ const handleUpdateTemplate=()=>{
 
                             <div className="name_block_field">
                                 <div className="name_block_title">Channel</div>
-                                {/* <AutocompleteComponent
-                                // options={channelOptions}
-                                options={categoryOptions}
-                                value={templateData.channel_id}
-                                onChange={(event, newValue) => {
-                                    setTemplateData((prev) => ({
-                                    ...prev,
-                                    channel_id: newValue,
-                                    }));
-                                    setState((prev) => ({
-                                    ...prev,
-                                    categoryData: newValue,
-                                    }));
-                                }}
-                                customStyles={style.templateAutocompleteStyle}
-                                /> */}
-
-                                <AutocompleteComponent
+                               
+                               {/* <AutocompleteComponent
                                     options={channelOptions}
                                     getOptionLabel={(option) => option.label || ''}
                                     value={channelOptions.find(opt => opt.id === templateData.channel_id) || null}
@@ -1263,7 +1367,28 @@ const handleUpdateTemplate=()=>{
                                         }
                                     }}
                                     customStyles={style.templateAutocompleteStyle}
-                                    />
+                                    />*/}
+
+                                    <AutocompleteComponent
+                                        options={channelOptions}
+                                        getOptionLabel={(option) => option.label || ''}
+                                        value={channelOptions.find(opt => opt.id === templateData.channel_id) || null}
+                                        onChange={(event, newValue) => {
+                                            if (!selectedTemplate && newValue) { 
+                                            setTemplateData((prev) => ({
+                                                ...prev,
+                                                channel_id: newValue.id,
+                                            }));
+                                            setState((prev) => ({
+                                                ...prev,
+                                                categoryData: newValue.label,
+                                            }));
+                                            }
+                                        }}
+                                        disabled={Boolean(selectedTemplate)} 
+                                        customStyles={style.templateAutocompleteStyle}
+                                        />
+
 
 
                             </div>
@@ -1621,7 +1746,7 @@ const handleUpdateTemplate=()=>{
                                 )
                             }
                             {/* {["Whatsapp", "Push"].includes(state.categoryData) && ( */}
-                            {["whatsapp", "push"].includes(state.categoryData) && (
+                            {state.categoryData === "push notification" && (
                                 <div className="platform_division">
                                     <div className="name_block_title">Broadcast title<span className="block_title_optional">(Optional)</span></div>
                                     <div className="block_comments">Highlight your brand here, use images or videos, to stand out</div>
@@ -1649,11 +1774,152 @@ const handleUpdateTemplate=()=>{
                                                 onChange={(e) => {
                                                     const value = e.target.value;
                                                     setPushTemplateData((prev) => ({ ...prev, subject: value }));
-                                                    setWhatsappTemplateData((prev) => ({ ...prev, subject: value }));
                                                 }}
                                                 />
                                                 <div className="footer_text_count">
                                                 {PushTemplateData?.subject?.length}/60
+                                                </div>
+                                            </div>
+                                            )}
+
+                                        {state.selectedValue === "image" && <div>
+                                            <p className="utility_header_media_type">(Image: .jpeg, .png)</p>
+
+                                            {state.previewImage && (
+                                                <>
+                                                    <p><strong>Uploaded from PC:</strong>{state.previewImage.name}</p>
+                                                    <img
+                                                        src={state.previewImage.url}
+                                                        style={{ height: '200px' }} alt="Preview"
+
+                                                    />
+                                                </>
+                                            )}
+                                            <div className="header_media">
+                                                <div className="header_media_from_url">
+                                                    <div className="footer_container">
+                                                        <TextfieldComponent placeholder='https://cdn.clare.ai/wati/images/WATI_logo_square_2.png' customStyle='template_input' />
+                                                        <div className="footer_text_count">0/2000</div>
+                                                    </div>
+                                                </div>
+                                                <div className="header_media_or">or</div>
+                                                <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleImageButtonClick} />
+                                                <input accept="image/jpeg, image/jpg, image/png, video/mp4, application/pdf" id="image-button-file"
+                                                    type="file"
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleImageFileChange}
+                                                />
+
+                                            </div>
+                                            {/* <div className="none_add_variables_btn" onClick={handleImageSelectAttribute}><AddCircleOutlineIcon />Add Variable</div> */}
+                                        </div>}
+                                        {state.selectedValue === "video" && <div>
+                                            <p className="utility_header_media_type">(video:.mp4)</p>
+                                            {
+
+                                                state.videoPreview && (
+                                                    <>
+                                                        <p><strong>Uploaded from PC:</strong>{state.videoPreview.name}</p>
+                                                        <video
+                                                            src={state.videoPreview.url}
+                                                            controls
+                                                            style={{ maxHeight: '200px' }}
+                                                            alt="Preview Video"
+                                                        />
+                                                    </>
+                                                )
+                                            }
+                                            <div className="header_media">
+                                                <div className="header_media_from_url">
+                                                    <div className="footer_container">
+                                                        <TextfieldComponent placeholder='https://cdn.clare.ai/wati/videos/Wati.mp4' customStyle='template_input' />
+                                                        <div className="footer_text_count">0/2000</div>
+                                                    </div>
+                                                </div>
+                                                <div className="header_media_or">or</div>
+                                                <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleVideoButtonClick} />
+                                                <input
+                                                    accept="video/mp4, video/avi, video/mkv, video/webm"
+                                                    id="video-button-file"
+                                                    type="file"
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleVideoFileChange}
+                                                />
+
+
+                                            </div>
+                                        </div>}
+                                        {state.selectedValue === "document" && <div>
+                                            <p className="utility_header_media_type">(Document:.pdf)</p>
+                                            {
+                                                state.documentPreview && (
+                                                    <>
+                                                        <p><strong>Uploaded from PC:</strong>{state.documentPreview.name}</p>
+
+                                                        <object
+                                                            data={state.documentPreview.url}
+                                                            title="Document Preview"
+                                                        ></object>
+                                                    </>
+                                                )
+
+                                            }
+                                            <div className="header_media">
+                                                <div className="header_media_from_url">
+                                                    <div className="footer_container">
+                                                        <TextfieldComponent placeholder='https://cdn.clare.ai/wati/documents/Wati.pdf' customStyle='template_input' />
+                                                        <div className="footer_text_count">0/2000</div>
+                                                    </div>
+                                                </div>
+                                                <div className="header_media_or">or</div>
+                                                <ButtonComponent label='Upload Media' customBtn='new_template_draftbtn' onClick={handleDocumentButtonClick} />
+                                                <input
+                                                    accept=".pdf"
+                                                    id="document-button-file"
+                                                    type="file"
+                                                    aria-label="Upload"
+                                                    style={{ display: 'none' }}
+                                                    onChange={handleDocumentFileChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            )}
+
+                            {state.categoryData === "whatsapp" && (
+                                <div className="platform_division">
+                                    <div className="name_block_title">Broadcast title<span className="block_title_optional">(Optional)</span></div>
+                                    <div className="block_comments">Highlight your brand here, use images or videos, to stand out</div>
+                                    <div className="radios_container">
+                                        <RadioGroup
+                                            value={state.selectedValue}
+                                            onChange={handleRadioChange}>
+                                            <div className="checkbox_container">
+                                                {/* <FormControlLabel value="none" control={<Radio sx={style.newTemplateRadiobtn} />} label="None" /> */}
+                                                <FormControlLabel value="text" control={<Radio sx={style.newTemplateRadiobtn} />} label="Text" className="radio_style" />
+                                                {/* <FormControlLabel value="image" control={<Radio sx={style.newTemplateRadiobtn} />} label="Image" className="radio_style" /> */}
+                                                {/* <FormControlLabel value="video" control={<Radio sx={style.newTemplateRadiobtn} />} label="Video" className="radio_style" /> */}
+                                                {/* <FormControlLabel value="document" control={<Radio sx={style.newTemplateRadiobtn} />} label="Document" className="radio_style" /> */}
+                                            </div>
+                                        </RadioGroup>
+
+                                    </div>
+                                    <div>
+                                        {state.selectedValue === "text" && (
+                                            <div className="footer_container">
+                                                <TextfieldComponent
+                                                placeholder="Enter Text"
+                                                customStyle="template_input"
+                                                value={WhatsappTemplateData.subject}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    setWhatsappTemplateData((prev) => ({ ...prev, subject: value }));
+                                                }}
+                                                />
+                                                <div className="footer_text_count">
+                                                {WhatsappTemplateData?.subject?.length}/60
                                                 </div>
                                             </div>
                                             )}
@@ -1889,7 +2155,7 @@ const handleUpdateTemplate=()=>{
                             }
                             {
                                 // state.categoryData !== 'Email' && (
-                                state.categoryData === 'push' && (
+                                state.categoryData === "push notification" && (
                                     <div className="none_body_content">
                                         <div className="name_block_title">Body</div>
                                         <div className="block__comments">Make your messages personal using variables like

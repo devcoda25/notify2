@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, TableContainer, Paper
+  Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, TableContainer, Paper, Dialog, DialogTitle, DialogContent, Button, DialogActions
 } from "@mui/material";
 import { Visibility, Edit, Delete } from "@mui/icons-material";
-import { config, getAllTemplates } from "../../Url";
+import { config, deleteTemplatemodule, getAllTemplates } from "../../Url";
 import NewTemplate from "./NewTemplate";
 
 const templates = [
@@ -52,6 +52,9 @@ const TemplateLibrary = () => {
   const [isOpenTemplateMessage, setIsOpenTemplateMessage] = useState(false);
   const [templateData, setTemplateData] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [templateToDelete, setTemplateToDelete] = useState(null);
+
 
 
   const handleCategoryClick = (category) => {
@@ -89,23 +92,49 @@ const TemplateLibrary = () => {
   };
 
 const handleUpdate = (template) => {
+  console.log("template", template)
   setSelectedTemplate(template); 
   setIsOpenTemplateMessage(true); 
 };
 
 
-  const handleDelete = (templateId) => {
-    console.log("Delete", templateId);
-  };
+ const confirmDelete = async () => {
+  try {
+    const payload = { id: templateToDelete }; 
+    await axios.post(deleteTemplatemodule(), payload, config);
+
+    setTemplateData((prev) => prev.filter(t => t.id !== templateToDelete));
+    setDeleteDialogOpen(false);
+    setTemplateToDelete(null);
+  } catch (error) {
+    console.error("Error deleting template:", error);
+  }
+};
+
 
   return (
-    <div>
+    <div> 
+          <Dialog
+              open={deleteDialogOpen}
+              onClose={() => setDeleteDialogOpen(false)}
+            >
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContent>
+              Are you sure you want to delete this template? This action cannot be undone.
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button color="error" onClick={confirmDelete}>Delete</Button>
+            </DialogActions>
+          </Dialog>
+
       {isOpenTemplateMessage ? (
         <NewTemplate
           isOpenTemplateMessage={isOpenTemplateMessage}
           setIsOpenTemplateMessage={setIsOpenTemplateMessage}
           selectedTemplate={selectedTemplate}
           setSelectedTemplate={setSelectedTemplate}
+          fetchAllTemplates ={fetchAllTemplates}
         />
       ) : (
         <div className="Template_librabry-Container">
@@ -250,9 +279,15 @@ const handleUpdate = (template) => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Delete">
-                            <IconButton onClick={() => handleDelete(template.id)} size="small">
-                              <Delete color="error" />
-                            </IconButton>
+                            <IconButton
+                            onClick={() => {
+                              setTemplateToDelete(template.id);
+                              setDeleteDialogOpen(true);
+                            }}
+                            size="small"
+                          >
+                            <Delete color="error" />
+                          </IconButton>
                           </Tooltip>
                         </TableCell>
                       </TableRow>
