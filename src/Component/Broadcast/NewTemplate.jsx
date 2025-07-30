@@ -101,131 +101,131 @@ const NewTemplate = ({setIsOpenTemplateMessage, selectedTemplate, setSelectedTem
         language_id: 1,
         };
 
-const defaultEmailTemplateData = {
-  subject: "",
-  HtmlText: `
-          <!DOCTYPE html >
-          <html>
-            <head>
-              <title>{{ticket.subject}}</title>
-              <style type="text/css">
-                body {
-                  width: 100% !important;
-                  height: 100%;
-                  margin: 0 auto;
-                  line-height: 1.5em;
-                  font-size: 16px;
-                  background-color: #f3f7f9;
-                  color: #74787e;
-                  -webkit-text-size-adjust: none;
-                  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-                  box-sizing: border-box;
-                  margin-bottom: 25px;
-                }
-                a, p a, h2 a, h1 a, h3 a {
-                  color: #3869d4;
-                }
-                .email-masthead {
-                  padding: 25px 25px;
-                  text-align: center;
-                  background-color: #f3f7f9;
-                }
-                .email-masthead_name {
-                  font-size: 22px;
-                  font-weight: bold;
-                  color: #000000;
-                  text-decoration: none;
-                }
-                .email-body_inner {
-                  width: ${state.PreviewMode === "mobile" ? "290px" : "360px"};
-                  margin: 0 auto;
-                  background-color: #ffffff;
-                }
-                .content-cell {
-                  padding: 35px;
-                  max-width: 496px;
-                  overflow: hidden;
-                  word-wrap: break-word;
-                }
-                h1 {
-                  margin-top: 0;
-                  color: #000000;
-                  font-size: 18px;
-                  font-weight: bold;
-                  text-align: left;
-                }
-                p {
-                  margin-top: 0;
-                  color: #000000;
-                  font-size: 16px;
-                  line-height: 1.5em;
-                }
-              </style>
-            </head>
-            <body dir="auto">
-              <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td align="center">
-                    <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
-                          <table class="email-body_inner" align="center" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td class="content-cell">
-                                <h1>Hi, Earl!!</h1>
-                                <p>Your case has been solved! Best regards, -- The Company</p>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="header">
-                          <p>Previous messages:</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="email-body">
-                          <table class="email-body_inner history-email">
-                            <tr>
-                              <td class="content-cell">
-                                <h2><a>earl@example.com</a> wrote:</h2>
-                                <p>Hello, I have some difficult case here</p>
-                                <p class="history-date">Tue, 11/17/2020, 2:25 PM UTC</p>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </body>
-          </html>
-         `,
-  PlainText: ""
-};
+    const defaultEmailTemplateData = {
+    subject: "",
+    HtmlText: `
+            <!DOCTYPE html >
+            <html>
+                <head>
+                <title>{{ticket.subject}}</title>
+                <style type="text/css">
+                    body {
+                    width: 100% !important;
+                    height: 100%;
+                    margin: 0 auto;
+                    line-height: 1.5em;
+                    font-size: 16px;
+                    background-color: #f3f7f9;
+                    color: #74787e;
+                    -webkit-text-size-adjust: none;
+                    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+                    box-sizing: border-box;
+                    margin-bottom: 25px;
+                    }
+                    a, p a, h2 a, h1 a, h3 a {
+                    color: #3869d4;
+                    }
+                    .email-masthead {
+                    padding: 25px 25px;
+                    text-align: center;
+                    background-color: #f3f7f9;
+                    }
+                    .email-masthead_name {
+                    font-size: 22px;
+                    font-weight: bold;
+                    color: #000000;
+                    text-decoration: none;
+                    }
+                    .email-body_inner {
+                    width: ${state.PreviewMode === "mobile" ? "290px" : "360px"};
+                    margin: 0 auto;
+                    background-color: #ffffff;
+                    }
+                    .content-cell {
+                    padding: 35px;
+                    max-width: 496px;
+                    overflow: hidden;
+                    word-wrap: break-word;
+                    }
+                    h1 {
+                    margin-top: 0;
+                    color: #000000;
+                    font-size: 18px;
+                    font-weight: bold;
+                    text-align: left;
+                    }
+                    p {
+                    margin-top: 0;
+                    color: #000000;
+                    font-size: 16px;
+                    line-height: 1.5em;
+                    }
+                </style>
+                </head>
+                <body dir="auto">
+                <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td align="center">
+                        <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
+                            <table class="email-body_inner" align="center" cellpadding="0" cellspacing="0">
+                                <tr>
+                                <td class="content-cell">
+                                    <h1>Hi, Earl!!</h1>
+                                    <p>Your case has been solved! Best regards, -- The Company</p>
+                                </td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="header">
+                            <p>Previous messages:</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="email-body">
+                            <table class="email-body_inner history-email">
+                                <tr>
+                                <td class="content-cell">
+                                    <h2><a>earl@example.com</a> wrote:</h2>
+                                    <p>Hello, I have some difficult case here</p>
+                                    <p class="history-date">Tue, 11/17/2020, 2:25 PM UTC</p>
+                                </td>
+                                </tr>
+                            </table>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+                </table>
+                </body>
+            </html>
+            `,
+    PlainText: ""
+    };
 
-const defaultSmsTemplateData = {
-  content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-};
+    const defaultSmsTemplateData = {
+    content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    };
 
-const defaultPlatformTemplateData = {
-  content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-};
+    const defaultPlatformTemplateData = {
+    content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    };
 
-const defaultPushTemplateData = {
-  subject: `Hi {{name}}`,
-  content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-};
+    const defaultPushTemplateData = {
+    subject: `Hi {{name}}`,
+    content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    };
 
-const defaultWhatsappTemplateData = {
-  subject: `Hi {{name}}`,
-  content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
-  footer: "",
-  header: ""
-};
+    const defaultWhatsappTemplateData = {
+    subject: `Hi {{name}}`,
+    content: `Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
+    footer: "",
+    header: ""
+    };
 
     const [templateData, setTemplateData]= useState({
         template_name:"",
@@ -342,28 +342,90 @@ const defaultWhatsappTemplateData = {
         PlainText:""
     });
 
-    const [smsTemplateData, setSmsTemplateData]= useState({
-        content:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-    })
+    // const [smsTemplateData, setSmsTemplateData]= useState({
+    //     content:`Hi {{sms}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    // })
 
-    const [PlatformTemplateData, setPlatformTemplateData]= useState({
-        content:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-    })
+    // const [PlatformTemplateData, setPlatformTemplateData]= useState({
+    //     content:`Hi {{platform}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    // })
 
-    const [PushTemplateData, setPushTemplateData]= useState({
-        subject:`Hi {{name}}`,
-        content:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
-    })
+    // const [PushTemplateData, setPushTemplateData]= useState({
+    //     subject:`Hi {{push}}`,
+    //     content:`Hi {{push}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`
+    // })
 
-    const [WhatsappTemplateData, setWhatsappTemplateData]= useState({
-        subject:`Hi {{name}}`,
-        content:`Hi {{name}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
-        footer:"",
-        // header:""
-    })
+    // const [WhatsappTemplateData, setWhatsappTemplateData]= useState({
+    //     subject:`Hi {{whatsapp}}`,
+    //     content:`Hi {{whatsapp}},\n\nReminder to confirm your appointment with us! Please click the link below.\n\nThank you`,
+    //     footer:"",
+    //     header:""
+    // })
 
+const [smsTemplateData, setSmsTemplateData] = useState({
+    content: `Hi {{sms}},
+
+Reminder to confirm your appointment with us! Please click the link below.
+
+Thank you`
+});
+
+const [PlatformTemplateData, setPlatformTemplateData] = useState({
+    content: `Hi {{platform}},
+
+Reminder to confirm your appointment with us! Please click the link below.
+
+Thank you`
+});
+
+const [PushTemplateData, setPushTemplateData] = useState({
+    subject: `Appointment Reminder`,
+    content: `Hi {{push}},
+
+Reminder to confirm your appointment with us! Please click the link below.
+
+Thank you`
+});
+
+const [WhatsappTemplateData, setWhatsappTemplateData] = useState({
+    subject: `Appointment Reminder`,
+    content: `Hi {{whatsapp}},
+
+Reminder to confirm your appointment with us! Please click the link below.
+
+Thank you`,
+    footer: "Reply STOP to opt out",
+    header: "Appointment Reminder"
+});
+
+// Helper function to get the appropriate template data based on category
+const getTemplateData = (category) => {
+    switch(category?.toLowerCase()) {
+        case 'sms':
+            return smsTemplateData;
+        case 'whatsapp':
+            return WhatsappTemplateData;
+        case 'push':
+            return PushTemplateData;
+        case 'platform':
+            return PlatformTemplateData;
+        default:
+            return smsTemplateData;
+    }
+};
+
+// Helper function to format content for preview (handles line breaks and formatting)
+const formatContentForPreview = (content) => {
+    if (!content) return '';
     
-    
+    return content
+        .replace(/\n/g, '<br/>') // Convert line breaks to HTML
+        .replace(/\*(.*?)\*/g, "<b>$1</b>") // Bold formatting
+        .replace(/_(.*?)_/g, "<i>$1</i>") // Italic formatting
+        .replace(/~(.*?)~/g, "<s>$1</s>") // Strikethrough formatting
+        .replace(/\{\{(\w+)\}\}/g, '<span style="color: #007bff; font-weight: bold;">[$1]</span>'); // Highlight placeholders
+};
+
     const [selectedColors, setSelectedColors] = useState({
         background: colors.background[0],
         textBox: colors.textBox[0],
@@ -407,17 +469,18 @@ const fetchLanguageData = async () => {
  const fetchChannelData = async () => {
   try {
     const res = await axios.get(fetchChannels(), config);
+    // console.log("channel Options", res)
     const channelValues = res.data?.data?.values || [];
-
+    // console.log("channel Values", channelValues)
     const filtered = channelValues.filter(
-      (channel) => channel.type !== 'web' && channel.type !== 'api'
+      (channel) => channel.slug !== 'web' && channel.slug !== 'api'
     );
 
     const options = filtered.map((channel) => ({
-        label: channel.type,
+        label: channel.slug,
         id: channel.id,
     }));
-
+    // console.log("options", options)
     setChannelOptions(options);
   } catch (error) {
     console.log('fetch error', 'Failed to load data');
@@ -453,7 +516,7 @@ const fetchModules = async()=>{
 useEffect(() => {
   if (selectedTemplate) {
     const channel = selectedTemplate.channel?.name?.toLowerCase() || "";
-    console.log("channel name", channel)
+    // console.log("channel name", channel)
     const parsedContent =
       channel === "email" && selectedTemplate.content
         ? JSON.parse(selectedTemplate.content)
@@ -623,12 +686,13 @@ const updateEmailTemplate = async () => {
         plain: emailTemplateData.PlainText,
       }),
     };
-    console.log("payload",payload)
+    // console.log("payload",payload)
 
     await axios.post(UpdateTemplatemodule(selectedTemplate.id), payload, config);
 
     setTemplateData(defaultTemplateData);
     fetchAllTemplates();
+    handleBack();
     setEmailTemplateData(defaultEmailTemplateData);
     setFormErrors({});
   } catch (error) {
@@ -644,7 +708,7 @@ const updateEmailTemplate = async () => {
 
 const updateSmsTemplate = async () => {
   try {
-    console.log("update sms hitting");
+    // console.log("update sms hitting");
 
     if (!selectedTemplate?.id) {
       console.error("Template ID is missing for update.");
@@ -664,6 +728,7 @@ const updateSmsTemplate = async () => {
     setSmsTemplateData(defaultSmsTemplateData);
     setFormErrors({});
     fetchAllTemplates();
+    handleBack();
   } catch (error) {
     if (error.response?.data?.error?.template_name?.length > 0) {
       setFormErrors({ template_name: "Template name already exists." });
@@ -681,7 +746,7 @@ const updateSmsTemplate = async () => {
 const updatePushTemplate = async () => {
   try {
 
-    console.log("push api hitting")
+    // console.log("push api hitting")
     if (!selectedTemplate?.id) {
       console.error("Missing Template ID");
       return;
@@ -702,6 +767,7 @@ const updatePushTemplate = async () => {
     });
     setFormErrors({});
     fetchAllTemplates();
+    handleBack();
   } catch (error) {
     if (error.response?.data?.error?.template_name?.length > 0) {
       setFormErrors({ template_name: "Template name already exists." });
@@ -713,7 +779,7 @@ const updatePushTemplate = async () => {
 
 const updatePlatformTemplate = async () => {
   try {
-    console.log("Updating Platform Template...");
+    // console.log("Updating Platform Template...");
 
     if (!selectedTemplate?.id) {
       console.error("Template ID is missing for update.");
@@ -733,6 +799,7 @@ const updatePlatformTemplate = async () => {
     setPlatformTemplateData(defaultPlatformTemplateData);
     setFormErrors({});
     fetchAllTemplates();
+    handleBack();
   } catch (error) {
     if (error.response?.data?.error?.template_name?.length > 0) {
       setFormErrors({ template_name: "Template name already exists." });
@@ -749,7 +816,7 @@ const updatePlatformTemplate = async () => {
 const updateWhatsappTemplate = async () => {
   try {
 
-    console.log("update whatsapp hitting")
+    // console.log("update whatsapp hitting")
     if (!selectedTemplate?.id) {
       console.error("Missing Template ID");
       return;
@@ -772,6 +839,7 @@ const updateWhatsappTemplate = async () => {
     });
     setFormErrors({});
     fetchAllTemplates();
+    handleBack();
   } catch (error) {
     if (error.response?.data?.error?.template_name?.length > 0) {
       setFormErrors({ template_name: "Template name already exists." });
@@ -808,7 +876,7 @@ const handleSaveTemplate = () => {
 };
 
 const handleUpdateTemplate=()=>{
-    console.log("category data",state.categoryData)
+    // console.log("category data",state.categoryData)
     switch (state.categoryData) {
         case "email":
             updateEmailTemplate();
@@ -891,6 +959,7 @@ const handleUpdateTemplate=()=>{
             firstAddButtonContent: state.firstAddButtonContent.filter((_, i) => i !== index),
         });
     };
+
     //first add and delete reply button
     // const handleAddReplybtn = () => {
     //     setShowContent(false);
@@ -1367,7 +1436,7 @@ const handleUpdateTemplate=()=>{
                                         }
                                     }}
                                     customStyles={style.templateAutocompleteStyle}
-                                    />*/}
+                                    /> */}
 
                                     <AutocompleteComponent
                                         options={channelOptions}
@@ -1405,12 +1474,6 @@ const handleUpdateTemplate=()=>{
                             </div>
                             <div className="name_block_field language_dropdown">
                                 <div className="name_block_title">Language</div>
-                                {/* <AutocompleteComponent
-                                    options={languageOptions}
-                                    value={state.languageData}
-                                    onChange={(event, newValue) => updateState({ languageData: newValue })}
-                                    customStyles={style.templateAutocompleteStyle}
-                                /> */}
                                 {/* <AutocompleteComponent
                                 options={languageOptions}
                                 // value={state.languageData}
@@ -1716,7 +1779,7 @@ const handleUpdateTemplate=()=>{
                                                                     state.activeTab === 'plain' && (
                                                                         <div>
                                                                             <textarea style={{
-                                                                                height:"100px", width:"300px"
+                                                                                height:"100px", width:"300px", marginLeft:"10px", marginTop:"20px", marginBottom:"20px", padding:"20px"
                                                                             }} name="" id="" 
                                                                             // value={state.plainText}
                                                                             // onChange={(event, newValue)=>updateState({plainText: newValue})}
@@ -2532,16 +2595,76 @@ const handleUpdateTemplate=()=>{
                                                 {/* {isFocused && (
                 <div>{textareaContent}</div>
             )} */}
-                                                {state.isFocused && (
-                                                    <div
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: smsTemplateData.content
-                                                                .replace(/\*(.*?)\*/g, "<b>$1</b>")
-                                                                .replace(/(.*?)/g, "<i>$1</i>")
-                                                                .replace(/~(.*?)~/g, "<s>$1</s>"),
-                                                        }}
-                                                    />
-                                                )}
+                                                
+                                               
+                        {state.isFocused && (
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: formatContentForPreview(getTemplateData(state.categoryData).content)
+                                }}
+                                style={{
+                                    lineHeight: '1.4',
+                                    marginBottom: '10px',
+                                    wordWrap: 'break-word'
+                                }}
+                            />
+                        )}
+
+                        {!state.isFocused && (
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: formatContentForPreview(getTemplateData(state.categoryData).content)
+                                }}
+                                style={{
+                                    lineHeight: '1.4',
+                                    marginBottom: '10px',
+                                    wordWrap: 'break-word'
+                                }}
+                            />
+                        )}
+
+                        {state.categoryData === 'whatsapp' && WhatsappTemplateData.header && (
+                            <div 
+                                className="whatsapp-header"
+                                style={{
+                                    fontSize: '12px',
+                                    color: '#666',
+                                    marginBottom: '8px',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {WhatsappTemplateData.header}
+                            </div>
+                        )}
+
+                        {state.categoryData === 'whatsapp' && WhatsappTemplateData.footer && (
+                            <div 
+                                className="whatsapp-footer"
+                                style={{
+                                    fontSize: '11px',
+                                    color: '#888',
+                                    marginTop: '8px',
+                                    borderTop: '1px solid #eee',
+                                    paddingTop: '6px'
+                                }}
+                            >
+                                {WhatsappTemplateData.footer}
+                            </div>
+                        )}
+
+                        {(state.categoryData === 'push notification' || state.categoryData === 'whatsapp') && (
+                            <div 
+                                className="notification-subject"
+                                style={{
+                                    fontSize: '13px',
+                                    fontWeight: 'bold',
+                                    marginBottom: '6px',
+                                    color: '#333'
+                                }}
+                            >
+                                {state.categoryData === 'push notification' ? PushTemplateData.subject : WhatsappTemplateData.subject}
+                            </div>
+                        )}
                                                 <div>
                                                     {
                                                         state.firstAddButtonContent.map((_, index) => (
