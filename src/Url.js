@@ -16,11 +16,10 @@
 //     'X-MUID': 'mut_XHujrA2WUG51hx3uOLL8'
 //   };
 
-  const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
+   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
 
 export const config = { headers, withCredentials: true } 
-
 export function base(){
     return process.env.REACT_APP_API_URL + "/api/v1.0/web/notify/template";
 }
@@ -63,7 +62,24 @@ export function showContentType(){
     return base() + "/content-type/show";
 }
 
-// channels
+// Variables
+export function fetchvarVariables(){
+    return base() + "/variables";
+}
+export function addVariable(){
+    return base() + "/variable/store";
+}
+export function editVariable(){
+    return base() + "/variable/update";
+}
+export function deleteVariable(){
+    return base() + "/variable/delete";
+}
+export function showVariable(id) {
+    return base() + `/variable/show?id=${id}`;
+}
+
+
 export function fetchChannels(){
     return base() + "/channels";
 }
@@ -155,9 +171,6 @@ export function getModules(){
 
 
 const Url = () => {
-
-
-
   return (
     <div>
 
