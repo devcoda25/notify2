@@ -104,7 +104,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     backgroundColor: "#02CD8D",
   },
   "& .MuiSwitch-track": {
-    borderRadius: 26 / 2,
+    borderRadius: 16 / 2,
     backgroundColor: "#E9E9EA",
     opacity: 1,
     transition: theme.transitions.create(["background-color"], {
@@ -214,7 +214,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     //     <Box sx={{ display: "flex", mb: 2 }}>
     //       <Avatar src={senderimg} sx={{ mr: 1, width: 32, height: 32 }} />
     //       <Box>
-    //         <Paper sx={{ p: 1.5, maxWidth: 350, borderRadius: 2 }}>
+    //         <Paper sx={{ p: 1.5, maxWidth: 350, borderRadius: 1 }}>
     //           <Typography sx={{ color: "#1D2739" }} variant="body2">
     //             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
     //             eiusmod tempor incididunt ut labore et dolore magna aliqua
@@ -266,7 +266,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     //             p: 1.5,
     //             maxWidth: 350,
     //             bgcolor: "#E8F5E9",
-    //             borderRadius: 2,
+    //             borderRadius: 1,
     //           }}
     //         >
     //           <Typography sx={{ color: "#1D2739" }} variant="body2">
@@ -302,7 +302,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
     //     {/* Another left message */}
     //     <Box sx={{ display: "flex", mb: 2 }}>
     //       <Avatar src={senderimg} sx={{ mr: 1, width: 32, height: 32 }} />
-    //       <Paper sx={{ p: 1.5, maxWidth: 350, borderRadius: 2 }}>
+    //       <Paper sx={{ p: 1.5, maxWidth: 350, borderRadius: 1 }}>
     //         <Typography sx={{ color: "#1D2739" }} variant="body2">
     //           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
     //           eiusmod tempor incididunt ut labore et dolore magna aliqua
@@ -785,7 +785,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
       sx={{
         p: { xs: 1, sm: 1.5 },
         maxWidth: { xs: "calc(100% - 40px)", sm: 400 },
-        borderRadius: 2,
+        borderRadius: 1,
       }}
     >
       {/* Header Row */}
@@ -896,7 +896,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
         p: { xs: 1, sm: 1.5 },
         maxWidth: { xs: "calc(100% - 40px)", sm: 400 },
         bgcolor: "#FFFFFF",
-        borderRadius: 2,
+        borderRadius: 1,
         marginLeft: "auto",
       }}
     >
@@ -1023,7 +1023,7 @@ export default function TicketsChat({ handleOpenSidePanel }) {
       sx={{
         p: { xs: 1, sm: 1.5 },
         maxWidth: { xs: "calc(100% - 40px)", sm: 400 },
-        borderRadius: 2,
+        borderRadius: 1,
       }}
     >
       {/* Header Row */}

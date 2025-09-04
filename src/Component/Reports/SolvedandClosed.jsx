@@ -8,14 +8,14 @@ const solvedandClosed = [
         name: "Solved",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "green",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 20,
     },
     {
         name: "Closed",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "rgb(118, 118, 128)",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 20,
     }
 

@@ -9,7 +9,7 @@ const ticketReports = [
         name: "Data",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 4,],
         color: "green",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 40,
     },
 ];

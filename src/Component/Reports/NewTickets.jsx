@@ -11,7 +11,7 @@ const breakdownSeries = [
         name: "Data",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "green",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 40,
     },
 ];
@@ -28,21 +28,21 @@ const sourceSeries = [
         name: "Source A",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "red",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 15,
     },
     {
         name: "Source B",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "yellow",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 15,
     },
     {
         name: "Source C",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "green",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 15,
     },
 ];

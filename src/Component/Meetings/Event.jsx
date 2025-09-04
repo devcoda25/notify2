@@ -35,7 +35,7 @@ const styles = {
         bottom: 20,
         right: '33%',
         boxShadow: 3,
-        borderRadius: 2,
+        borderRadius: 1,
         border: '1px solid rgb(0 105 255 / 50%)',
         background: 'rgb(242, 248, 255)',
         padding: 2,

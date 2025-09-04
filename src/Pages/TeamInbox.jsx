@@ -840,7 +840,7 @@ const TeamInbox = () => {
         '& .MuiDialog-paper': {
           width: '580px', 
           maxWidth: '580px',
-          borderRadius: 2,
+          borderRadius: 1,
         },
       }}
     >

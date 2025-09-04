@@ -11,7 +11,7 @@ const firstResponseTime = [
         name: "Data",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "green",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 40,
     },
 ];

@@ -8,14 +8,14 @@ const resolutionTime = [
         name: "Ticket creation",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "blue",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 20,
     },
     {
         name: "Assignment to agent",
         data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
         color: "green",
-        borderRadius: 2,
+        borderRadius: 1,
         pointWidth: 20,
     },
 

@@ -70,8 +70,8 @@ const Navbar = () => {
       icons:TeaminboxImg
     },
     { 
-      path: `/u/${authUser}/Dialer`, 
-      label: 'Dialer', 
+      path: `/u/${authUser}/dialer`, 
+      label: 'Dailer', 
       icons:ClickImg
       // icon: <SignalCellularAltIcon /> 
     },

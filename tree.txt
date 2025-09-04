@@ -1,0 +1,349 @@
+.
+├── package.json
+├── package-lock.json
+├── public
+│   ├── assets
+│   │   ├── css
+│   │   │   ├── ***
+│   │   ├── fonts
+│   │   │   ├── ***
+│   │   │   └── webfonts
+│   │   │       ├── ****
+│   │   ├── images
+│   │   │   ├── ****
+│   │   └── teaminbox
+│   │       ├── css
+│   │       │   ├── ***
+│   │       │   ├── fonts
+│   │       │   │   ├── ***
+│   │       │   ├── ***
+│   │       ├── fonts
+│   │       │   ├── ****
+│   │       ├── images
+│   │       │   ├── ***
+│   │       │   ├── resource
+│   │       │   │   ├── ***
+│   │       │   ├── sprite-skin-flat.png
+│   │       │   ├── typing-loading.gif
+│   │       │   └── up-arrow.png
+│   │       └── js
+│   │           ├── app.js
+│   │           ├── bootstrap.min.js
+│   │           ├── common.js
+│   │           └── jquery-2.1.3.js
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── service-worker.js
+├── README.md
+├── src
+│   ├── alerts
+│   │   ├── CallAlertsController.jsx
+│   │   └── demoSim.jsx
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── Component
+│   │   ├── AccountDetails
+│   │   │   ├── AccountSettings.jsx
+│   │   │   ├── BillingInformation.jsx
+│   │   │   ├── SwitchPlan.jsx
+│   │   │   └── YourPlan.jsx
+│   │   ├── Analytics
+│   │   │   ├── InboxAnalyticsGraph
+│   │   │   │   ├── CountofTags.jsx
+│   │   │   │   ├── MessageDeleiveryStatus.jsx
+│   │   │   │   ├── SendandreceivedMessages.jsx
+│   │   │   │   ├── Sendmessagebytype.jsx
+│   │   │   │   ├── TicketCoversationbyType.jsx
+│   │   │   │   ├── TicketDuration.jsx
+│   │   │   │   ├── TicketStatusCount.jsx
+│   │   │   │   └── TicketStatusOvertime.jsx
+│   │   │   ├── InboxAnalytics.jsx
+│   │   │   └── WhatsapAds.jsx
+│   │   ├── Assets
+│   │   │   ├── css
+│   │   │   │   └── SampleTemplate.css
+│   │   │   ├── font
+│   │   │   │   ├── ***
+│   │   │   └── img
+│   │   │       ├── ****
+│   │   │       ├── Contact
+│   │   │       │   ├── ***
+│   │   │       ├── ***
+│   │   │       ├── TeamInbox
+│   │   │       │   ├── ***
+│   │   │       ├── ***
+│   │   ├── assigneddrop.js
+│   │   ├── AssigneeDrop.js
+│   │   ├── AutocompleteComponent.jsx
+│   │   ├── Automation
+│   │   │   ├── Chatbots
+│   │   │   │   ├── Card.jsx
+│   │   │   │   ├── EditChatbotPage.jsx
+│   │   │   │   ├── EditNavContent.jsx
+│   │   │   │   ├── OperationItemContent.jsx
+│   │   │   │   └── Sidebar
+│   │   │   │       ├── AssignToTeamModal.jsx
+│   │   │   │       ├── AssignToUserModal.jsx
+│   │   │   │       ├── BaseModal.jsx
+│   │   │   │       ├── ButtonsModal.jsx
+│   │   │   │       ├── ChatbotTextEditor.jsx
+│   │   │   │       ├── ConditionModal.jsx
+│   │   │   │       ├── ListModal.jsx
+│   │   │   │       ├── MessageOption.jsx
+│   │   │   │       ├── QuestionModal.jsx
+│   │   │   │       ├── SetTagsModal.jsx
+│   │   │   │       ├── SetTimeDelayModal.jsx
+│   │   │   │       ├── TemplatesModal.jsx
+│   │   │   │       ├── TriggerChatbotModal.jsx
+│   │   │   │       ├── UpdateAttributesModal.jsx
+│   │   │   │       ├── UpdateChatModal.jsx
+│   │   │   │       ├── VariablesDropdown.jsx
+│   │   │   │       ├── WebhookModal.jsx
+│   │   │   │       └── WhatsappFlowModal.jsx
+│   │   │   ├── Chatbots.js
+│   │   │   ├── DefaultAction.js
+│   │   │   ├── KeywordAction.js
+│   │   │   ├── Nextstep.js
+│   │   │   ├── NextSteps
+│   │   │   │   ├── AssigntoTeamComponent.jsx
+│   │   │   │   ├── AssigntoUserComponent.jsx
+│   │   │   │   ├── CatalogComponent.jsx
+│   │   │   │   ├── ChatbotsComponent.jsx
+│   │   │   │   ├── ContactComponent.jsx
+│   │   │   │   ├── DocumentComponent.jsx
+│   │   │   │   ├── ImageComponent.jsx
+│   │   │   │   ├── Modal
+│   │   │   │   │   ├── EditAssigntoTeamModal.jsx
+│   │   │   │   │   ├── EditAssigntoUserModal.jsx
+│   │   │   │   │   ├── EditCaptionModal.jsx
+│   │   │   │   │   ├── EditContactAttributeModal.jsx
+│   │   │   │   │   ├── EditNotificationModal.jsx
+│   │   │   │   │   ├── EditTextModal.jsx
+│   │   │   │   │   └── KeywordBaseModal.jsx
+│   │   │   │   ├── SendNotificationComponent.jsx
+│   │   │   │   ├── SequenceComponent.jsx
+│   │   │   │   ├── StickerComponent.jsx
+│   │   │   │   ├── TemplateComponent.jsx
+│   │   │   │   ├── TextComponent.jsx
+│   │   │   │   └── VideoComponent.jsx
+│   │   │   ├── PopupModal
+│   │   │   │   ├── Chatbot
+│   │   │   │   │   ├── ChatbotTimerModal.jsx
+│   │   │   │   │   ├── CopyandAddModal.jsx
+│   │   │   │   │   ├── FallbackMessageModal.jsx
+│   │   │   │   │   ├── FlowTemplates.jsx
+│   │   │   │   │   └── NotificationModal.jsx
+│   │   │   │   ├── DefaultAction
+│   │   │   │   │   ├── WorkingHoursRow.jsx
+│   │   │   │   │   └── Workinghourssettings.jsx
+│   │   │   │   ├── KeywordAction
+│   │   │   │   │   └── AddKeywordModalComponent.jsx
+│   │   │   │   ├── Rule
+│   │   │   │   │   ├── ActionPropertiesModal.jsx
+│   │   │   │   │   ├── ActionSelect.jsx
+│   │   │   │   │   ├── FilterPropertiesModal.jsx
+│   │   │   │   │   ├── NewRuleModal.jsx
+│   │   │   │   │   └── TriggerPropertiesModal.jsx
+│   │   │   │   ├── Sequence
+│   │   │   │   │   ├── AddSequenceModal.jsx
+│   │   │   │   │   └── MessageSettingModal.jsx
+│   │   │   │   └── Whatsappflows
+│   │   │   │       ├── FeedbackFormModal.jsx
+│   │   │   │       └── LeadGenerationModal.jsx
+│   │   │   ├── Replymaterial.js
+│   │   │   ├── Routing.js
+│   │   │   ├── Rules.js
+│   │   │   ├── Sequence.js
+│   │   │   └── Whatsappflows.js
+│   │   ├── Broadcast
+│   │   │   ├── BroadcastAnalytics.jsx
+│   │   │   ├── BroadcastBody.js
+│   │   │   ├── ImageSelectAttribute.jsx
+│   │   │   ├── NewBroadcastTemplate.jsx
+│   │   │   ├── NewTemplate.jsx
+│   │   │   ├── ScheduledBroadcast.jsx
+│   │   │   ├── SelectAttributeModal.jsx
+│   │   │   ├── TemplateCategories.jsx
+│   │   │   ├── TemplateChannels.jsx
+│   │   │   ├── TemplateContents.jsx
+│   │   │   ├── TemplateContentType.jsx
+│   │   │   ├── TemplateLibrary.jsx
+│   │   │   ├── Templates.jsx
+│   │   │   ├── Variables.jsx
+│   │   │   └── YourTemplate.jsx
+│   │   ├── ButtonComponent.jsx
+│   │   ├── CheckboxComponent.jsx
+│   │   ├── Contactus
+│   │   │   └── ContactFilter.js
+│   │   ├── CustomDatePicker.jsx
+│   │   ├── CustomPagination.jsx
+│   │   ├── dailer
+│   │   │   ├── AgentProfileCard.jsx
+│   │   │   ├── dialingPlan
+│   │   │   │   ├── CallScript.jsx
+│   │   │   │   ├── CampaignDetails.jsx
+│   │   │   │   ├── CRMFormPane.jsx
+│   │   │   │   ├── CRMPanel.jsx
+│   │   │   │   ├── EngagementOverview.jsx
+│   │   │   │   ├── EscalationDetailsDialog.jsx
+│   │   │   │   ├── EscalationPanel.jsx
+│   │   │   │   ├── FieldRenderer.jsx
+│   │   │   │   ├── index.jsx
+│   │   │   │   ├── InteractionForm.jsx
+│   │   │   │   ├── OfferDetails.jsx
+│   │   │   │   ├── QualityAssurance.jsx
+│   │   │   │   ├── ScriptPanel.jsx
+│   │   │   │   └── TargetAudience.jsx
+│   │   │   ├── DialingPlanPanel.jsx
+│   │   │   ├── DispositionPanel.jsx
+│   │   │   ├── hoverScroll.jsx
+│   │   │   ├── index.js
+│   │   │   ├── lead
+│   │   │   │   ├── index.js
+│   │   │   │   ├── LeadActivityPanel.jsx
+│   │   │   │   ├── LeadIdentityCard.jsx
+│   │   │   │   ├── LeadNotificationsPanel.jsx
+│   │   │   │   ├── LeadOverviewHeader.jsx
+│   │   │   │   ├── LeadProfileOverview.jsx
+│   │   │   │   └── NotificationViewDialog.jsx
+│   │   │   ├── LeftNav.jsx
+│   │   │   ├── NextCallCard.jsx
+│   │   │   ├── ServiceEngagementCard.jsx
+│   │   │   ├── Softphone
+│   │   │   │   ├── CallControls.jsx
+│   │   │   │   ├── CallEventLog.jsx
+│   │   │   │   ├── CallTimer.jsx
+│   │   │   │   ├── CountryPicker.jsx
+│   │   │   │   ├── DialerLogPanel.jsx
+│   │   │   │   ├── DialPad.jsx
+│   │   │   │   ├── DTMFPad.jsx
+│   │   │   │   ├── IconButtonAnimated.jsx
+│   │   │   │   ├── index.js
+│   │   │   │   ├── InlineCallToast.jsx
+│   │   │   │   ├── phoneUtils.jsx
+│   │   │   │   ├── QualityPill.jsx
+│   │   │   │   ├── RecordingTimer.jsx
+│   │   │   │   ├── ScenarioCallView.jsx
+│   │   │   │   ├── ShimmerGlitch.jsx
+│   │   │   │   ├── SignalMeters.jsx
+│   │   │   │   ├── SoftphoneCard.jsx
+│   │   │   │   ├── SoftphoneKeypad.jsx
+│   │   │   │   ├── useAudioMeters.jsx
+│   │   │   │   ├── useDialerShortcuts.jsx
+│   │   │   │   ├── VolumeBar.jsx
+│   │   │   │   └── WrapUpChip.jsx
+│   │   │   └── store
+│   │   │       └── useDialerStore.js
+│   │   ├── Data.json
+│   │   ├── DeleteModal.jsx
+│   │   ├── Dropdown.jsx
+│   │   ├── Footer
+│   │   │   └── Footer.js
+│   │   ├── humburgerdiv.jsx
+│   │   ├── Icon.js
+│   │   ├── Meetings
+│   │   │   ├── Analytic.jsx
+│   │   │   ├── Availability.jsx
+│   │   │   ├── CopyMeetingLink.jsx
+│   │   │   ├── CreateNewMeetingComponent.jsx
+│   │   │   ├── CustomButton.jsx
+│   │   │   ├── CustomDatePicker.jsx
+│   │   │   ├── CustomDropdown.jsx
+│   │   │   ├── DataSpecificHoursComponent.jsx
+│   │   │   ├── EditEvent.jsx
+│   │   │   ├── EditEventType.jsx
+│   │   │   ├── EditQuestionModal.jsx
+│   │   │   ├── Event.jsx
+│   │   │   ├── EventType.jsx
+│   │   │   ├── EventTypeMenu.jsx
+│   │   │   ├── LocationSelector.jsx
+│   │   │   ├── MeetingHistory.jsx
+│   │   │   ├── Meeting.jsx
+│   │   │   ├── OneononeMeeting.jsx
+│   │   │   ├── ScheduleOptions.jsx
+│   │   │   ├── SelectDateandTimeComponent.jsx
+│   │   │   ├── SelectEventLocation.jsx
+│   │   │   ├── TextEditor.jsx
+│   │   │   ├── TimeZoneMenu.jsx
+│   │   │   ├── VariableBox.jsx
+│   │   │   ├── WeeklyHours.jsx
+│   │   │   └── WorkingHoursModal.jsx
+│   │   ├── MuiStyles
+│   │   │   └── muiStyle.js
+│   │   ├── Navbar
+│   │   │   ├── MoreDropDown.js
+│   │   │   └── Navbar.js
+│   │   ├── newpopup.js
+│   │   ├── Popup
+│   │   │   ├── AttributePopup.js
+│   │   │   └── SampleTemplate.js
+│   │   ├── Reporter.js
+│   │   ├── Reports
+│   │   │   ├── AccordionTable.jsx
+│   │   │   ├── AuditLog.jsx
+│   │   │   ├── ChartComponent.jsx
+│   │   │   ├── FirstResponseTime.jsx
+│   │   │   ├── GenerateReport.jsx
+│   │   │   ├── HandlingTimebyStatus.jsx
+│   │   │   ├── NewTickets.jsx
+│   │   │   ├── ResolutionTime.jsx
+│   │   │   ├── SolvedandClosed.jsx
+│   │   │   ├── TicketReports.jsx
+│   │   │   ├── TicketSatisfaction.jsx
+│   │   │   └── TimeGridChart.jsx
+│   │   ├── SearchboxComponent.jsx
+│   │   ├── Style.css
+│   │   ├── TableComponent.jsx
+│   │   ├── teamburgerMenu.jsx
+│   │   ├── TeamInbox
+│   │   │   ├── ChatInputToolbar.jsx
+│   │   │   ├── CustomAccordion.jsx
+│   │   │   ├── Editorbox.jsx
+│   │   │   ├── TicketsCard.jsx
+│   │   │   ├── TicketsChat.jsx
+│   │   │   └── TicketSidePanel.jsx
+│   │   ├── TeamInboxAccordin.jsx
+│   │   ├── TextfieldComponent.jsx
+│   │   ├── TicketType.js
+│   │   ├── TimePickerComponent.jsx
+│   │   ├── ToggleSwitch.jsx
+│   │   └── UserManagement
+│   │       └── PopupModal
+│   │           ├── AddTeamModal.jsx
+│   │           ├── AddUserModal.jsx
+│   │           └── UserBaseModal.jsx
+│   ├── index.css
+│   ├── index.js
+│   ├── Layouts
+│   │   └── baselayouts.jsx
+│   ├── logo.svg
+│   ├── Modal.js
+│   ├── Pages
+│   │   ├── AccountDetails.jsx
+│   │   ├── Analytics.js
+│   │   ├── automations.jsx
+│   │   ├── Broadcast.jsx
+│   │   ├── contactus.jsx
+│   │   ├── Dailer.jsx
+│   │   ├── Login.jsx
+│   │   ├── Meetings.jsx
+│   │   ├── Reports.jsx
+│   │   ├── TeamInbox.jsx
+│   │   ├── test.html
+│   │   └── UserManagement.jsx
+│   ├── push
+│   │   └── pushClient.js
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   ├── styles
+│   │   └── dailer.css
+│   ├── swRegistration.js
+│   ├── theme
+│   │   └── dialerTheme.js
+│   └── Url.js
+└── tree.txt

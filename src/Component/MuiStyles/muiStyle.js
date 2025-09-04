@@ -314,7 +314,7 @@ const style = {
     fontSize: 20
   },
   oneonone_select_container: {
-    borderRadius: 2,
+    borderRadius: 1,
     width: '100%',
     '& .MuiOutlinedInput-notchedOutline': {
       border: '1px solid #c9c9cd',
@@ -334,7 +334,7 @@ const style = {
   //edit location modal -->oneonone
   editlocation_modal: {
     width: '400px',
-    borderRadius: 2,
+    borderRadius: 1,
   },
   editlocation_heading: {
     color: '#0a2540',
@@ -490,7 +490,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    borderRadius: 2,
+    borderRadius: 1,
     p: 2,
     width: '38%',
     maxHeight: '90vh',
@@ -527,7 +527,7 @@ const style = {
   },
   meetingcomment_list:{
    p: 1,
-  borderRadius: 2,
+  borderRadius: 1,
   '&:hover .actions': { visibility: 'visible' },
  '&:hover': { backgroundColor: '#f9f9f9' },
   position: 'relative'
