@@ -88,7 +88,7 @@ const Navbar = () => {
       // icon: <PiBroadcastDuotone /> 
     },
     { 
-      path: `/u/${authUser}/contactus`, 
+      path: `/u/${authUser}/contacts`, 
       label: 'Contacts', 
       icons:ContactImg
       // icon: <RiContactsBook2Line /> 

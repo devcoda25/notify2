@@ -245,7 +245,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/u/:authUser/contactus"
+            path="/u/:authUser/contacts"
             element={
               <AuthUserRoute>
                 <Contacts />
