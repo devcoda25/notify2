@@ -6,7 +6,7 @@ import {
 import { keyframes } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import { AlertTriangle } from 'lucide-react';
-import { useDialerStore } from './store/useDialerStore';
+import { useDialerStore } from '../store/useDialerStore';
 
 /* ---------- helpers ---------- */
 const hms = (ms) => {

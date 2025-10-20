@@ -1,7 +1,7 @@
 // /src/Component/dailer/Softphone/WrapUpChip.jsx
 import { Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { useDialerStore } from "../store/useDialerStore";
+import { useDialerStore } from "../../store/useDialerStore";
 
 function msToSec(ms) { return Math.max(0, Math.round((ms || 0) / 1000)); }
 

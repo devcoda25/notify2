@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 export default function useAudioMeters() {
   const setMic = (v) => useDialerStore.setState({ micLevel: v });

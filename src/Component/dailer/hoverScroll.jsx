@@ -1,4 +1,4 @@
-// /src/Component/dailer/styles/hoverScroll.js
+// /src/Component/dailer/hoverScroll.js
 
 /**
  * Hover-to-show scrollbar styles for MUI `sx` prop.

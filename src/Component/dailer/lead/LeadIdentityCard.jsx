@@ -20,7 +20,6 @@ export default function LeadIdentityCard({ lead, embedded = false }) {
       <Grid container spacing={1.5}>
         <Row icon={User} label="Gender" value={lead.gender} />
         <Row icon={Info} label="Age" value={lead.ageYears ? `${lead.ageYears} Years` : "—"} />
-        <Row icon={Building2} label="Company" value={lead.company} />
         <Row icon={Globe2} label="Timezone" value={lead.timezone} />
         <Row icon={BadgeCheck} label="Lead ID" value={lead?.ids?.leadId} />
         <Row icon={BadgeCheck} label="CRM ID" value={lead?.ids?.crmId} />

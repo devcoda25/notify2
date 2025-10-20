@@ -1,0 +1,117 @@
+
+[
+  {
+    "id": "mtg_01JW8ZK9J4R9A3",
+    "eventTypeId": "evt_15min_intro",
+    "host": { "ownerType": "user", "ownerId": "usr_alpha" },
+    "poolId": null,
+    "invitee": {
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com",
+      "timezone": "America/New_York"
+    },
+    "attendees": [
+      {
+        "type": "host",
+        "userId": "usr_alpha",
+        "name": "Alpha Alpha",
+        "email": "alpha.evzone@gmail.com"
+      },
+      {
+        "type": "invitee",
+        "name": "Jane Doe",
+        "email": "jane.doe@example.com"
+      }
+    ],
+    "start": "2025-09-23T14:00:00Z",
+    "end": "2025-09-23T14:15:00Z",
+    "timezone": "Africa/Kampala",
+    "location": { "type": "google_meet", "link": "https://meet.google.com/abc-defg-hij" },
+    "status": "scheduled",
+    "createdAt": "2025-09-20T10:12:00Z",
+    "updatedAt": "2025-09-20T10:12:00Z",
+    "rescheduleUrl": "https://cal.example.com/r/mtg_01JW8ZK9J4R9A3",
+    "cancelUrl": "https://cal.example.com/c/mtg_01JW8ZK9J4R9A3",
+    "source": "calendly",
+    "notes": "Intro chat about Notify integration",
+    "remindersApplied": "rem_policy_basic"
+  },
+  {
+    "id": "mtg_01JW8ZK9Q9V7N8",
+    "eventTypeId": "evt_30min_demo",
+    "host": { "ownerType": "pool", "ownerId": "pool_solutions_rr" },
+    "poolId": "pool_solutions_rr",
+    "invitee": {
+      "name": "Samuel Kim",
+      "email": "sam.kim@prospect.io",
+      "timezone": "Europe/London"
+    },
+    "attendees": [
+      {
+        "type": "host",
+        "userId": "usr_ana",
+        "name": "Ana",
+        "email": "ana@example.com"
+      },
+      {
+        "type": "invitee",
+        "name": "Samuel Kim",
+        "email": "sam.kim@prospect.io"
+      }
+    ],
+    "start": "2025-09-25T09:30:00Z",
+    "end": "2025-09-25T10:00:00Z",
+    "timezone": "UTC",
+    "location": { "type": "zoom", "link": "https://zoom.us/j/1234567890?pwd=xyz" },
+    "status": "scheduled",
+    "createdAt": "2025-09-21T08:45:00Z",
+    "updatedAt": "2025-09-21T08:45:00Z",
+    "rescheduleUrl": "https://cal.example.com/r/mtg_01JW8ZK9Q9V7N8",
+    "cancelUrl": "https://cal.example.com/c/mtg_01JW8ZK9Q9V7N8",
+    "source": "routing-form:sales-qual",
+    "notes": "Product demo + Q&A",
+    "remindersApplied": "rem_policy_demo"
+  },
+  {
+    "id": "mtg_01JW8ZKA1Y3B2F",
+    "eventTypeId": "evt_60min_collective",
+    "host": { "ownerType": "pool", "ownerId": "pool_creative_collective" },
+    "poolId": "pool_creative_collective",
+    "invitee": {
+      "name": "Miriam N.",
+      "email": "miriam@edu-labs.org",
+      "timezone": "Africa/Nairobi"
+    },
+    "attendees": [
+      {
+        "type": "host",
+        "userId": "usr_alpha",
+        "name": "Alpha Alpha",
+        "email": "alpha.evzone@gmail.com"
+      },
+      {
+        "type": "host",
+        "userId": "usr_karthick",
+        "name": "Karthick",
+        "email": "karthick@hepto.dev"
+      },
+      {
+        "type": "invitee",
+        "name": "Miriam N.",
+        "email": "miriam@edu-labs.org"
+      }
+    ],
+    "start": "2025-09-27T12:00:00Z",
+    "end": "2025-09-27T13:00:00Z",
+    "timezone": "Africa/Kampala",
+    "location": { "type": "in_person", "address": "Victoire Hub, Kampala" },
+    "status": "scheduled",
+    "createdAt": "2025-09-22T06:10:00Z",
+    "updatedAt": "2025-09-22T06:10:00Z",
+    "rescheduleUrl": "https://cal.example.com/r/mtg_01JW8ZKA1Y3B2F",
+    "cancelUrl": "https://cal.example.com/c/mtg_01JW8ZKA1Y3B2F",
+    "source": "manual",
+    "notes": "Curriculum brainstorming (Creativity project)",
+    "remindersApplied": "rem_policy_long"
+  }
+]

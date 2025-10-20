@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 export default function InlineCallToast() {
   const toast = useDialerStore((s) => s.inlineToast);

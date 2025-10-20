@@ -1,131 +1,190 @@
-// routes/BaseLayouts.jsx
-import React, { useEffect, useState } from "react";
+// Path: /src/routes/BaseLayouts.jsx
+import React from "react";
 import {
   BrowserRouter,
   Navigate,
   Route,
   Routes,
+  Outlet,
   useLocation,
   useParams,
+  useNavigate,
 } from "react-router-dom";
 import { Box } from "@mui/material";
 
+import Navbar from "../Component/Navbar/Navbar";
+import BootGate from "../boot/BootGate";
+
+// App sections
 import TeamInbox from "../Pages/TeamInbox";
 import Meetings from "../Pages/Meetings";
-import Broadcast from "../Pages/Broadcast";
-import Navbar from "../Component/Navbar/Navbar";
-import ContactUs from "../Pages/contactus";
+import Templates from "../Pages/Templates";
+import Contacts from "../Pages/Contacts";
 import Automations from "../Pages/automations";
 import Analytics from "../Pages/Analytics";
 import UserManagement from "../Pages/UserManagement";
 import AccountDetails from "../Pages/AccountDetails";
+import Login from "../Pages/Login";
 import Reports from "../Pages/Reports";
 import CopyMeetingLink from "../Component/Meetings/CopyMeetingLink";
-import EditEventType from "../Component/Meetings/EditEventType";
-import Event from "../Component/Meetings/Event";
 import Meeting from "../Component/Meetings/Meeting";
 import Availability from "../Component/Meetings/Availability";
-import Analytic from "../Component/Meetings/Analytic";
 import OneononeMeeting from "../Component/Meetings/OneononeMeeting";
 import EditEvent from "../Component/Meetings/EditEvent";
-import Login from "../Pages/Login";
 import MeetingHistory from "../Component/Meetings/MeetingHistory";
 import EditChatbotPage from "../Component/Automation/Chatbots/EditChatbotPage";
 import DailerPage from "../Pages/Dailer";
 
-// NEW: call alerts glue
+// Public booking/live pages
+import BookingPage from "../Component/Meetings/public/BookingPage";
+import ReschedulePage from "../Component/Meetings/public/ReschedulePage";
+import CancelPage from "../Component/Meetings/public/CancelPage";
+import LivePage from "../Component/Meetings/public/LivePage";
+import LiveLeft from "../Component/Meetings/public/LiveLeft";
+import LiveInvalid from "../Component/Meetings/public/LiveInvalid";
+
+// Call alerts (internal only)
 import CallMiniWindow from "../alerts/CallMiniWindow";
 import CallAlertsController from "../alerts/CallAlertsController";
 
-const NAVBAR_H_DESKTOP = 64; // px
-const NAVBAR_H_MOBILE = 56; // px
+const NAVBAR_H_DESKTOP = 64;
+const NAVBAR_H_MOBILE = 56;
 
+// ===== DEV FLAG: allow bootstrapping session auth from /u/:authUser path =====
+// Turn this to false in production to force real sign-in via /console/pass
+const ALLOW_PATH_BOOTSTRAP = true;
+
+/** ---------- Layouts ---------- **/
+
+// Never mount Navbar/overlays on public pages to avoid any flash.
+const PublicLayout = () => (
+  <Box sx={{ pt: 0 }}>
+    <Outlet />
+  </Box>
+);
+
+// Private layout always shows Navbar and internal overlays.
+const PrivateLayout = ({ agentId }) => (
+  <>
+    <Navbar />
+    <Box sx={{ pt: { xs: `${NAVBAR_H_MOBILE}px`, md: `${NAVBAR_H_DESKTOP}px` } }}>
+      <Box sx={{ position: "fixed", zIndex: 1600, left: 16, bottom: 16 }}>
+        <CallAlertsController agentId={agentId || "me"} minimal />
+      </Box>
+      <CallMiniWindow />
+      <Outlet />
+    </Box>
+  </>
+);
+
+/** Guard for /u/:authUser/* routes → punts to /console/pass if unauthenticated */
 const AuthUserRoute = ({ children }) => {
-  const { authUser } = useParams();
+  const { authUser: pathAuthUser } = useParams();
   const location = useLocation();
 
-  if (!authUser) {
-    return <Navigate to="/" replace state={{ from: location }} />;
+  // Already authenticated?
+  const hasAuthFlag = sessionStorage.getItem("auth") === "true";
+
+  // If we allow path bootstrap (dev), and a path user is present, adopt it into session
+  if (!hasAuthFlag && ALLOW_PATH_BOOTSTRAP && pathAuthUser) {
+    sessionStorage.setItem("auth", "true");
+    sessionStorage.setItem("authUser", pathAuthUser);
+  }
+
+  const authed =
+    sessionStorage.getItem("auth") === "true" ||
+    Boolean(sessionStorage.getItem("authUser"));
+
+  if (!authed || !pathAuthUser) {
+    // Prefer sending people to the sign-in, with return path
+    const next = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/console/pass?next=${next}`} replace />;
   }
   return children;
 };
 
+/** Optional: normalize repeated slashes BEFORE routes resolve */
+const SlashNormalizer = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    const cleaned = location.pathname.replace(/\/{2,}/g, "/");
+    if (cleaned !== location.pathname) {
+      navigate({ pathname: cleaned, search: location.search }, { replace: true });
+    }
+  }, [location.pathname, location.search, navigate]);
+  return null;
+};
+
 const AppRoutes = () => {
   const location = useLocation();
-  const [authUser, setAuthUser] = useState(() => {
+  const [authUser, setAuthUser] = React.useState(() => {
     const stored = sessionStorage.getItem("authUser");
     if (stored) return stored;
     const params = new URLSearchParams(window.location.search);
     return params.get("x_authuser");
   });
 
-  // keep authUser in sessionStorage if URL changes
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+  // capture x_authuser -> session (highest priority)
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
     const x_authuser = params.get("x_authuser");
     if (x_authuser && x_authuser !== authUser) {
       setAuthUser(x_authuser);
       sessionStorage.setItem("authUser", x_authuser);
-      // eslint-disable-next-line no-console
-      console.log("x_authuser", x_authuser);
+      sessionStorage.setItem("auth", "true");
     }
-  }, [location.search]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [location.search, authUser]);
 
-  // Tell the SW when the app is visible/hidden (so it only notifies on *new* calls when hidden)
-  useEffect(() => {
-    const postVis = async (state) => {
-      try {
-        if (navigator.serviceWorker?.controller) {
-          navigator.serviceWorker.controller.postMessage({
-            type: "APP_VISIBILITY",
-            state,
-          });
-        } else if ("serviceWorker" in navigator) {
-          const reg = await navigator.serviceWorker.ready;
-          reg?.active?.postMessage({ type: "APP_VISIBILITY", state });
-        }
-      } catch { }
-    };
-
-    const send = () => postVis(document.visibilityState);
-    send(); // initial
-    document.addEventListener("visibilitychange", send);
-    return () => document.removeEventListener("visibilitychange", send);
-  }, []);
-
-  const hideNavbarPaths = ["/hepto"];
-  const shouldHideNavbar = hideNavbarPaths.some((path) =>
-    location.pathname.startsWith(path)
-  );
+  // Also, if we’re inside /u/:authUser and session has no user yet, adopt the path (when dev flag is on)
+  React.useEffect(() => {
+    if (!ALLOW_PATH_BOOTSTRAP) return;
+    const match = location.pathname.match(/^\/u\/([^/]+)/);
+    if (match && !sessionStorage.getItem("authUser")) {
+      const fromPath = match[1];
+      sessionStorage.setItem("authUser", fromPath);
+      sessionStorage.setItem("auth", "true");
+      setAuthUser(fromPath);
+    }
+  }, [location.pathname]);
 
   return (
     <>
-      {!shouldHideNavbar && <Navbar />}
+      {/* Keep URL tidy */}
+      <SlashNormalizer />
 
-      {/* Offset all pages so they start BELOW the fixed navbar */}
-      <Box
-        sx={{
-          pt: shouldHideNavbar
-            ? 0
-            : { xs: `${NAVBAR_H_MOBILE}px`, md: `${NAVBAR_H_DESKTOP}px` },
-        }}
-      >
-        {/* --- Always-on alert helpers (mounted at app root) --- */}
-        {/* Minimal opt-in chip appears until notifications are granted; SW also gets registered here */}
-        <Box sx={{ position: "fixed", zIndex: 1600, left: 16, bottom: 16 }}>
-          <CallAlertsController agentId={authUser || "me"} minimal />
-        </Box>
-        {/* The floating 3CX-like mini window that shows on NEW CALL while app/tab is visible */}
-        <CallMiniWindow />
+      <Routes>
+        {/* Root → send to sign-in (cleaner than invalid for first touch) */}
+        <Route path="/" element={<Navigate to="/console/pass" replace />} />
 
-        <Routes>
-          {/* Root redirect */}
-          <Route
-            path="/"
-            element={<Navigate to={`/u/${authUser || "default"}`} replace />}
-          />
+        {/* ---------- Public layout (NO NAVBAR, NO OVERLAYS) ---------- */}
+        <Route element={<PublicLayout />}>
+          {/* Booking */}
+          <Route path="/book/:slug" element={<BookingPage />} />
+          <Route path="/book/:bookingId/reschedule" element={<ReschedulePage />} />
+          <Route path="/book/:bookingId/cancel" element={<CancelPage />} />
 
-          {/* Auth user routes */}
+          {/* Live (invite-only) */}
+          <Route path="/live" element={<LiveInvalid />} />
+          <Route path="/live/invalid" element={<LiveInvalid />} />
+          <Route path="/live/:roomId/left" element={<LiveLeft />} />
+          <Route path="/live/:roomId" element={<LivePage />} />
+
+          {/* Optional alias */}
+          <Route path="/meet/:slug" element={<BookingPage />} />
+
+          {/* Public one-off */}
+          <Route path="/hepto" element={<CopyMeetingLink />} />
+
+          {/* Explicit public invalid */}
+          <Route path="/invalid" element={<LiveInvalid />} />
+
+          {/* Sign-in route */}
+          <Route path="/console/pass" element={<Login />} />
+        </Route>
+
+        {/* ---------- Private layout (NAVBAR + OVERLAYS) ---------- */}
+        <Route element={<PrivateLayout agentId={authUser} />}>
           <Route
             path="/u/:authUser"
             element={
@@ -134,7 +193,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/teaminbox"
             element={
@@ -143,7 +201,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/dialer"
             element={
@@ -152,7 +209,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/chatbots"
             element={
@@ -161,7 +217,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/extended"
             element={
@@ -171,8 +226,9 @@ const AppRoutes = () => {
             }
           />
 
+          {/* Meetings module (wildcard) */}
           <Route
-            path="/u/:authUser/meetings"
+            path="/u/:authUser/meetings/*"
             element={
               <AuthUserRoute>
                 <Meetings />
@@ -181,23 +237,21 @@ const AppRoutes = () => {
           />
 
           <Route
-            path="/u/:authUser/broadcast"
+            path="/u/:authUser/templates"
             element={
               <AuthUserRoute>
-                <Broadcast authUser={authUser} />
+                <Templates authUser={authUser} />
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/contactus"
             element={
               <AuthUserRoute>
-                <ContactUs />
+                <Contacts />
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/automations"
             element={
@@ -206,7 +260,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/analytics"
             element={
@@ -215,7 +268,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/reports"
             element={
@@ -224,7 +276,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/userManagement"
             element={
@@ -233,7 +284,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/accountdetails"
             element={
@@ -242,7 +292,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/meetinghistory"
             element={
@@ -251,7 +300,6 @@ const AppRoutes = () => {
               </AuthUserRoute>
             }
           />
-
           <Route
             path="/u/:authUser/editchatbotpage"
             element={
@@ -261,62 +309,30 @@ const AppRoutes = () => {
             }
           />
 
-          {/* Meeting-related routes that might not need auth user in URL */}
-          <Route path="/hepto" element={<CopyMeetingLink />} />
-          <Route path="/edit-event" element={<EditEventType />} />
+          {/* Misc internal (kept inside private shell) */}
           <Route path="/edit-eventtype" element={<EditEvent />} />
           <Route path="/one-on-one" element={<OneononeMeeting />} />
-          <Route path="/event-types" element={<Event />} />
           <Route path="/meet" element={<Meeting />} />
           <Route path="/availability" element={<Availability />} />
-          <Route path="/analytic" element={<Analytic />} />
+        </Route>
 
-          {/* Catch all */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Box>
+        {/* Catch all → invalid */}
+        <Route path="*" element={<Navigate to="/invalid" replace />} />
+      </Routes>
     </>
   );
 };
 
 const BaseLayouts = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const checkAuth = () => {
-      const params = new URLSearchParams(window.location.search);
-      const x_authuser = params.get("x_authuser");
-      const sessionAuth = sessionStorage.getItem("auth") === "true";
-
-      if (x_authuser) {
-        sessionStorage.setItem("auth", "true");
-        sessionStorage.setItem("authUser", x_authuser);
-        setIsAuthenticated(true);
-      } else if (sessionAuth) {
-        setIsAuthenticated(true);
-      }
-      setLoading(false);
-    };
-
-    checkAuth();
-  }, []);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    sessionStorage.setItem("auth", "true");
-  };
-
-  if (loading) return <div>Loading...</div>;
+  // Flip this to true when you actually need to BLOCK on async bootstrap.
+  const ENABLE_BLOCKING_BOOTSTRAP = true;
 
   return (
-    <BrowserRouter>
-      {isAuthenticated || window.location.pathname === "/hepto" ? (
+    <BootGate block={ENABLE_BLOCKING_BOOTSTRAP}>
+      <BrowserRouter>
         <AppRoutes />
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
-    </BrowserRouter>
+      </BrowserRouter>
+    </BootGate>
   );
 };
 

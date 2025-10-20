@@ -1,5 +1,5 @@
 import { Paper, Stack, Typography } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 export default function CallEventLog() {
   const log = useDialerStore(s => s.log);

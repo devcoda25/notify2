@@ -11,7 +11,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import { useDialerStore } from "../store/useDialerStore";
+import { useDialerStore } from "../../store/useDialerStore";
 import InteractionForm from "./InteractionForm";
 
 /* === Resize logs panel height here === */

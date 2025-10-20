@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import RecordingTimer from './RecordingTimer';
 import CallTimer from './CallTimer';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 import SoftphoneKeypad from './SoftphoneKeypad';
 import SignalMeters from './SignalMeters';
 import VolumeBar from './VolumeBar';

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Grid, Button } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 const KEYS = ['1','2','3','4','5','6','7','8','9','*','0','#'];
 

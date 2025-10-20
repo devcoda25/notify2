@@ -1,5 +1,5 @@
 import { Chip, Tooltip } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 export default function QualityPill() {
   const { rttMs, jitterMs, mos } = useDialerStore(s => s.metrics) || {};

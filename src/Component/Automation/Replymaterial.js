@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Nextstep from './Nextstep';
-import NewTemplate from '../Broadcast/NewTemplate';
+// import NewTemplate from '../Broadcast/NewTemplate';
 
 const buttonData = [
   {
@@ -114,7 +114,8 @@ const Replymaterial = () => {
     <>
       {
         isOpenYourTemplate ? (
-          <NewTemplate />
+          // <NewTemplate />
+            <div> hy </div>
         ) : (
           <div className='keyword_action_container'>
             <div className='keyword_editor'>

@@ -1,0 +1,48 @@
+
+[
+  {
+    "id": "rem_policy_basic",
+    "name": "Basic (email only)",
+    "appliesTo": { "eventTypeIds": ["evt_15min_intro"] },
+    "channels": ["email"],
+    "steps": [
+      { "offsetMinutes": -1440, "channel": "email", "template": "reminder_24h" },
+      { "offsetMinutes": -60, "channel": "email", "template": "reminder_1h" }
+    ],
+    "reschedule": { "enabled": true },
+    "cancellation": { "enabled": true },
+    "createdAt": "2025-09-10T07:30:00Z",
+    "updatedAt": "2025-09-20T07:30:00Z"
+  },
+  {
+    "id": "rem_policy_demo",
+    "name": "Demo (email + SMS)",
+    "appliesTo": { "eventTypeIds": ["evt_30min_demo"] },
+    "channels": ["email", "sms"],
+    "steps": [
+      { "offsetMinutes": -2880, "channel": "email", "template": "reminder_48h" },
+      { "offsetMinutes": -120, "channel": "sms", "template": "sms_2h" },
+      { "offsetMinutes": -15, "channel": "sms", "template": "sms_15m" }
+    ],
+    "smsOptInRequired": true,
+    "reschedule": { "enabled": true },
+    "cancellation": { "enabled": true },
+    "createdAt": "2025-09-10T07:45:00Z",
+    "updatedAt": "2025-09-20T07:45:00Z"
+  },
+  {
+    "id": "rem_policy_long",
+    "name": "Workshops / Long",
+    "appliesTo": { "eventTypeIds": ["evt_60min_collective"] },
+    "channels": ["email"],
+    "steps": [
+      { "offsetMinutes": -10080, "channel": "email", "template": "reminder_7d" },
+      { "offsetMinutes": -1440, "channel": "email", "template": "reminder_24h" },
+      { "offsetMinutes": -120, "channel": "email", "template": "reminder_2h" }
+    ],
+    "reschedule": { "enabled": false },
+    "cancellation": { "enabled": true },
+    "createdAt": "2025-09-12T12:30:00Z",
+    "updatedAt": "2025-09-19T12:30:00Z"
+  }
+]

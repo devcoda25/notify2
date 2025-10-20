@@ -7,7 +7,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useTheme } from "@mui/material/styles";
-import { useDialerStore } from "../store/useDialerStore";
+import { useDialerStore } from "../../store/useDialerStore";
 
 /* --------- soft import the script runner (with upload button) --------- */
 let CallScript = null;

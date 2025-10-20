@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Tag as TagIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { useDialerStore } from "./store/useDialerStore";
+import { useDialerStore } from "../store/useDialerStore";
 
 const TYPE_OPTIONS = ["normal", "escalated", "conference", "dropped", "client hangup", "transferred"];
 const RESULT_OPTIONS = [

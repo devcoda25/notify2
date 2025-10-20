@@ -206,14 +206,7 @@ const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
         });
     };
 
-    // const handleDeleteConfirm = () => {
-    //     if (state.rowIndexToDelete !== null) {
-    //         updateState({
-    //             chatbotData: state.chatbotData.filter((_, index) => index !== state.rowIndexToDelete),
-    //         });
-    //     }
-    //     handleDeleteCloseModal();
-    // };
+
 
     const handleOpenCopyModal = () => {
         updateState({ isOpenCopyModal: true });

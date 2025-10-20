@@ -1,158 +1,210 @@
+/* @refresh skip */  // tell the dev plugin to skip react-refresh transform for THIS file
+
+// /src/alerts/CallAlertsController.jsx
 import { useEffect, useRef, useState } from "react";
 import { Chip, Stack, Tooltip } from "@mui/material";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import NotificationsOffOutlinedIcon from "@mui/icons-material/NotificationsOffOutlined";
+import PictureInPictureAltOutlinedIcon from "@mui/icons-material/PictureInPictureAltOutlined";
+
 import { registerServiceWorker } from "../swRegistration";
 import { ensurePermission, subscribePush, unsubscribePush } from "../push/pushClient";
-import { useDialerStore } from "../Component/dailer/store/useDialerStore";
+// NOTE: your store lives under 'dailer' per your tree
+import { useDialerStore } from "../Component/store/useDialerStore";
 
-/**
- * Responsibilities:
- * - Register SW and wire message channel
- * - Gate notifications on permission
- * - Optionally register push (if your pushClient is configured); otherwise just use SW postMessage
- * - Keep SW informed about page visibility so it only notifies for NEW calls when hidden
- * - Forward notification actions into the dialer UI (focus call, etc.)
- */
+import CallMiniWindowPiP from "./CallMiniWindowPiP";
+import CallMiniWindow from "./CallMiniWindow";
 
 export default function CallAlertsController({ agentId, minimal = true }) {
-  const { focusCallById } = useDialerStore((s) => ({
-    focusCallById: s.focusCallById, // route UI to call screen by id
-  }));
+  const { focusCallById } = useDialerStore((s) => ({ focusCallById: s.focusCallById }));
 
   const [reg, setReg] = useState(null);
-  const [perm, setPerm] = useState(typeof Notification !== "undefined" ? Notification.permission : "default");
-  const subscribedRef = useRef(false);
+  const [perm, setPerm] = useState(() =>
+    typeof Notification !== "undefined" ? Notification.permission : "default"
+  );
+  const [pipSupported] = useState(
+    () => typeof window !== "undefined" && "documentPictureInPicture" in window
+  );
 
-  // Keep SW in sync with page visibility
+  const subscribedRef = useRef(false);
+  const pipRef = useRef(null); // CallMiniWindowPiP
+  const [inlineCall, setInlineCall] = useState(null); // in-tab fallback
+
   useEffect(() => {
-    const sendVisibility = (state) => {
-      if (navigator.serviceWorker?.controller) {
-        navigator.serviceWorker.controller.postMessage({ type: "APP_VISIBILITY", state });
+    let visibilityHandler = null;
+    let messageHandler = null;
+    let aborted = false;
+
+    const setup = async () => {
+      try {
+        const r = await registerServiceWorker();
+        if (aborted) return;
+        setReg(r);
+
+        // Post visibility
+        const postVis = () =>
+          navigator.serviceWorker?.controller?.postMessage({
+            type: "APP_VISIBILITY",
+            state: document.visibilityState,
+          });
+
+        visibilityHandler = postVis;
+        postVis();
+        document.addEventListener("visibilitychange", visibilityHandler);
+
+        // SW messages
+        messageHandler = (ev) => {
+          const msg = ev?.data || {};
+          if (msg.type === "CALL_ALERT") {
+            const call = msg.payload;
+            if (pipSupported && pipRef.current?.isSupported?.()) {
+              pipRef.current.openOrUpdate?.(call);
+            } else {
+              setInlineCall(call);
+            }
+          }
+          if (msg.type === "CALL_ALERT_ACTION") {
+            const { _intent, callId, payload } = msg;
+            focusCallById?.(callId, payload);
+          }
+        };
+
+        navigator.serviceWorker?.addEventListener?.("message", messageHandler);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn("CallAlertsController setup failed:", e);
       }
     };
-    const onVis = () => sendVisibility(document.visibilityState);
-    const onFocus = () => sendVisibility("visible");
-    const onBlur = () => sendVisibility(document.visibilityState || "hidden");
 
-    document.addEventListener("visibilitychange", onVis);
-    window.addEventListener("focus", onFocus);
-    window.addEventListener("blur", onBlur);
-
-    // Initial push
-    sendVisibility(document.visibilityState || "visible");
+    setup();
 
     return () => {
-      document.removeEventListener("visibilitychange", onVis);
-      window.removeEventListener("focus", onFocus);
-      window.removeEventListener("blur", onBlur);
+      aborted = true;
+      if (visibilityHandler) document.removeEventListener("visibilitychange", visibilityHandler);
+      if (messageHandler) navigator.serviceWorker?.removeEventListener?.("message", messageHandler);
     };
-  }, []);
+  }, [pipSupported, focusCallById]);
 
-  // DEV-ONLY helper so you can trigger calls from the console
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "development") return;
-    const expose = async (overrides = {}) => {
-      await navigator.serviceWorker.ready; // ensure SW ready
-      if (!navigator.serviceWorker.controller) {
-        console.warn("[demo] SW has no controller yet. Refresh once after first install.");
-      }
-      const callId = overrides.callId || ("demo-" + Date.now());
-      const payload = {
-        callId,
-        callerName: overrides.callerName || "Demo Caller",
-        phoneMasked: overrides.phoneMasked || "+256••• ••3456",
-        priority: overrides.priority || "P2",
-        deepLink: overrides.deepLink || `/?pop=call&callId=${callId}`,
-        notifyIfVisible: !!overrides.notifyIfVisible,
-        ttlSec: overrides.ttlSec ?? 45,
-      };
-      navigator.serviceWorker.controller?.postMessage({
-        type: "SIMULATE_NEW_CALL",
-        payload,
-      });
-    };
-    window.simulateIncomingCall = expose;
-    return () => { delete window.simulateIncomingCall; };
-  }, []);
+  // Minimal mode: if permission granted, keep only the hidden PiP target mounted
+  if (minimal && perm === "granted") {
+    return (
+      <>
+        <CallMiniWindowPiP
+          ref={pipRef}
+          onAnswer={(call) => focusCallById?.(call?.callId, call)}
+          onOpen={(call) => focusCallById?.(call?.callId, call)}
+          onClosed={() => {}}
+        />
+        {!pipSupported && inlineCall && (
+          <CallMiniWindow
+            open={!!inlineCall}
+            call={inlineCall}
+            onAnswer={() => focusCallById?.(inlineCall?.callId, inlineCall)}
+            onOpen={() => focusCallById?.(inlineCall?.callId, inlineCall)}
+            onClose={() => setInlineCall(null)}
+          />
+        )}
+      </>
+    );
+  }
 
-  // Register SW + wire message listener
-  useEffect(() => {
-    (async () => {
-      const r = await registerServiceWorker();
-      setReg(r);
-
-      const handler = (ev) => {
-        const msg = ev?.data || {};
-        if (msg.type === "CALL_ALERT_ACTION") {
-          // From notification click buttons
-          const { intent, callId, payload } = msg;
-          // For now: route to call view; you can branch on intent if needed
-          if (callId) focusCallById?.(callId, payload);
-        } else if (msg.type === "CALL_ALERT") {
-          // SW also broadcasts arrivals; use for inline toasts if you like
-          const { callId, payload } = msg;
-          // Optionally show a lightweight in-app toast
-          // e.g., useDialerStore.getState().showInlineCallToast?.(callId, payload)
-        }
-      };
-
-      navigator.serviceWorker?.addEventListener("message", handler);
-      return () => navigator.serviceWorker?.removeEventListener("message", handler);
-    })();
-  }, [focusCallById]);
-
-  // Minimal opt-in UI: hide if permission granted and minimal=true
-  if (minimal && perm === "granted") return null;
-
-  const enable = async () => {
-    // Ask user for system permission
+  const enableSystemAlerts = async () => {
     const p = await ensurePermission();
     setPerm(p);
-
-    // Optional push subscription (client-only mode can skip if you haven't wired VAPID/server)
-    if (p === "granted" && reg && !subscribedRef.current) {
+    if (p !== "granted" || !reg) return;
+    if (!subscribedRef.current) {
       try {
-        await subscribePush?.(reg, agentId || "me"); // NO-OP if not implemented
+        await subscribePush(reg, agentId || "me");
         subscribedRef.current = true;
       } catch (e) {
-        console.warn("[CallAlerts] subscribePush skipped/failed:", e?.message || e);
+        // eslint-disable-next-line no-console
+        console.error("subscribePush failed:", e);
       }
     }
   };
 
-  const disable = async () => {
+  const disableSystemAlerts = async () => {
     if (!reg) return;
-    try { await unsubscribePush?.(reg, agentId || "me"); } catch { }
+    try {
+      await unsubscribePush(reg, agentId || "me");
+    } catch {}
     subscribedRef.current = false;
   };
 
+  const armPiP = async () => {
+    if (!pipSupported) return;
+    try {
+      await pipRef.current?.openOrUpdate?.({
+        callId: "arm-" + Date.now(),
+        callerName: "Ready for floating alerts",
+        phoneMasked: "",
+        priority: "P3",
+      });
+      await pipRef.current?.close?.();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn("PiP arm failed:", e);
+    }
+  };
+
   return (
-    <Stack direction="row" spacing={1}>
-      {perm !== "granted" ? (
-        <Tooltip title="Enable system notifications for NEW calls (even if the app is backgrounded)">
-          <Chip
-            size="small"
-            variant="outlined"
-            color="primary"
-            icon={<NotificationsActiveOutlinedIcon />}
-            label="Enable Call Alerts"
-            onClick={enable}
-            sx={{ borderRadius: 1, cursor: "pointer" }}
-          />
-        </Tooltip>
-      ) : (
-        <Tooltip title="Disable call alerts on this device">
-          <Chip
-            size="small"
-            variant="outlined"
-            icon={<NotificationsOffOutlinedIcon />}
-            label="Alerts Enabled"
-            onClick={disable}
-            sx={{ borderRadius: 1, cursor: "pointer" }}
-          />
-        </Tooltip>
+    <>
+      <Stack direction="row" spacing={1}>
+        {perm !== "granted" ? (
+          <Tooltip title="Enable system notifications for new calls (works even if app is backgrounded)">
+            <Chip
+              size="small"
+              variant="outlined"
+              color="primary"
+              icon={<NotificationsActiveOutlinedIcon />}
+              label="Enable Call Alertsxxx"
+              onClick={enableSystemAlerts}
+              sx={{ borderRadius: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        ) : (
+          <Tooltip title="Disable call alerts on this device">
+            <Chip
+              size="small"
+              variant="outlined"
+              icon={<NotificationsOffOutlinedIcon />}
+              label="Alerts Enabled"
+              onClick={disableSystemAlerts}
+              sx={{ borderRadius: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        )}
+
+        {pipSupported && (
+          <Tooltip title="Enable floating mini window (Document Picture-in-Picture)">
+            <Chip
+              size="small"
+              variant="outlined"
+              icon={<PictureInPictureAltOutlinedIcon />}
+              label="Enable Floating Window"
+              onClick={armPiP}
+              sx={{ borderRadius: 1, cursor: "pointer" }}
+            />
+          </Tooltip>
+        )}
+      </Stack>
+
+      {/* PiP target + fallback inline mini window */}
+      <CallMiniWindowPiP
+        ref={pipRef}
+        onAnswer={(call) => focusCallById?.(call?.callId, call)}
+        onOpen={(call) => focusCallById?.(call?.callId, call)}
+        onClosed={() => {}}
+      />
+      {!pipSupported && inlineCall && (
+        <CallMiniWindow
+          open={!!inlineCall}
+          call={inlineCall}
+          onAnswer={() => focusCallById?.(inlineCall?.callId, inlineCall)}
+          onOpen={() => focusCallById?.(inlineCall?.callId, inlineCall)}
+          onClose={() => setInlineCall(null)}
+        />
       )}
-    </Stack>
+    </>
   );
 }

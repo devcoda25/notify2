@@ -1,0 +1,51 @@
+
+[
+  {
+    "id": "usr_alpha",
+    "name": "Alpha Alpha",
+    "email": "alpha.evzone@gmail.com",
+    "role": "owner",
+    "timezone": "Africa/Kampala",
+    "avatarUrl": "https://i.pravatar.cc/150?img=1",
+    "status": "active",
+    "integrations": {
+      "calendars": ["google:alpha.evzone@gmail.com"],
+      "video": ["google_meet"]
+    },
+    "workingHoursProfileId": "avl_usr_alpha_default",
+    "createdAt": "2025-09-07T08:00:00Z",
+    "updatedAt": "2025-09-20T08:00:00Z"
+  },
+  {
+    "id": "usr_ana",
+    "name": "Ana",
+    "email": "ana@example.com",
+    "role": "admin",
+    "timezone": "Africa/Kampala",
+    "avatarUrl": "https://i.pravatar.cc/150?img=2",
+    "status": "active",
+    "integrations": {
+      "calendars": ["google:ana@example.com"],
+      "video": ["zoom"]
+    },
+    "workingHoursProfileId": "avl_usr_ana_default",
+    "createdAt": "2025-09-07T08:00:00Z",
+    "updatedAt": "2025-09-20T08:00:00Z"
+  },
+  {
+    "id": "usr_karthick",
+    "name": "Karthick",
+    "email": "karthick@hepto.dev",
+    "role": "contributor",
+    "timezone": "Asia/Kolkata",
+    "avatarUrl": "https://i.pravatar.cc/150?img=3",
+    "status": "active",
+    "integrations": {
+      "calendars": ["google:karthick@hepto.dev"],
+      "video": ["google_meet"]
+    },
+    "workingHoursProfileId": null,
+    "createdAt": "2025-09-12T09:00:00Z",
+    "updatedAt": "2025-09-19T11:00:00Z"
+  }
+]

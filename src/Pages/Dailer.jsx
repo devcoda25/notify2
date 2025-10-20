@@ -1,6 +1,6 @@
 // /src/pages/DailerPage.jsx
 import { ThemeProvider, CssBaseline, Container, Stack, Box } from '@mui/material';
-import { dialerTheme } from '../theme/dialerTheme';
+import { notifyTheme } from '../theme/notifyTheme';
 import {
   AgentProfileCard,
   ServiceEngagementCard,
@@ -9,7 +9,7 @@ import {
 } from '../Component/dailer';
 import SoftphoneCard from '../Component/dailer/Softphone/SoftphoneCard';
 import { useEffect } from 'react';
-import { useDialerStore } from '../Component/dailer/store/useDialerStore';
+import { useDialerStore } from '../Component/store/useDialerStore';
 import { DialingPlanPanel } from '../Component/dailer/dialingPlan';
 import LeftNav from '../Component/dailer/LeftNav';
 
@@ -35,7 +35,7 @@ export default function DailerPage() {
   const RIGHT_RAIL = 420;
 
   return (
-    <ThemeProvider theme={dialerTheme}>
+    <ThemeProvider theme={notifyTheme}>
       <CssBaseline />
       <Container maxWidth={false} disableGutters sx={{ py: 1 }}>
         {/* fixed left navigation */}

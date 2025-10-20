@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Card, CardHeader, CardContent, Tabs, Tab, Box } from "@mui/material";
-import { useDialerStore } from "./store/useDialerStore";
+import { useDialerStore } from "../store/useDialerStore";
 import { LeadOverviewHeader } from "./lead";
 import LeadProfileOverview from "./lead/LeadProfileOverview";
 import LeadActivityPanel from "./lead/LeadActivityPanel";

@@ -1,7 +1,7 @@
 // /src/Component/dailer/Softphone/CallControls.jsx
 import { Stack, Tooltip, IconButton } from '@mui/material';
 import { Mic, MicOff, PauseCircle, PlayCircle, Hash, Voicemail, PhoneOff } from 'lucide-react';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 export default function CallControls() {
   const callStatus   = useDialerStore(s => s.callStatus);

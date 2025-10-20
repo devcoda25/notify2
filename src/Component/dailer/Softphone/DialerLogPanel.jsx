@@ -1,6 +1,6 @@
 // /src/Component/dailer/DialerLogPanel.jsx
 import { Card, CardContent, Stack, Typography, Divider, Box } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 import { hoverScroll } from '../hoverScroll'; // ⬅️ import reusable style
 
 export default function DialerLogPanel({ height = 700, sx = {} }) {

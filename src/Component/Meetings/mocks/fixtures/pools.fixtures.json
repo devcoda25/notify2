@@ -1,0 +1,35 @@
+
+[
+  {
+    "id": "pool_solutions_rr",
+    "name": "Solutions Team • Round Robin",
+    "type": "round_robin",
+    "slug": "solutions",
+    "members": [
+      { "userId": "usr_alpha", "weight": 1, "isActive": true },
+      { "userId": "usr_ana", "weight": 1, "isActive": true }
+    ],
+    "distribution": "longest_idle",
+    "timezone": "UTC",
+    "routingRules": [
+      { "if": { "field": "company_size", "op": "gte", "value": 100 }, "routeTo": ["usr_alpha"] }
+    ],
+    "createdAt": "2025-09-09T08:00:00Z",
+    "updatedAt": "2025-09-20T07:00:00Z"
+  },
+  {
+    "id": "pool_creative_collective",
+    "name": "Creativity Project • Collective",
+    "type": "collective",
+    "slug": "creative",
+    "members": [
+      { "userId": "usr_alpha", "required": true },
+      { "userId": "usr_karthick", "required": true }
+    ],
+    "distribution": "all_required",
+    "timezone": "Africa/Kampala",
+    "routingRules": [],
+    "createdAt": "2025-09-12T10:00:00Z",
+    "updatedAt": "2025-09-19T10:00:00Z"
+  }
+]

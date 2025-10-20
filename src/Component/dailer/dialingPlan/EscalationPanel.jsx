@@ -10,7 +10,7 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useDialerStore } from "../store/useDialerStore";
+import { useDialerStore } from "../../store/useDialerStore";
 import EscalationDetailsDialog from "./EscalationDetailsDialog";
 
 /* =================== TUNABLES =================== */

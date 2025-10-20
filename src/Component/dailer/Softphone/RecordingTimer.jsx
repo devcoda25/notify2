@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Chip } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 function fmt(ms) {
   const total = Math.max(0, Math.floor(ms / 1000));

@@ -14,7 +14,7 @@ import ScenarioCallView from './ScenarioCallView';
 import SignalMeters from './SignalMeters';
 import VolumeBar from './VolumeBar';
 import useAudioMeters from './useAudioMeters';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 import { detectAndFormat, sanitizeDialInput } from './phoneUtils'; // ← no fmtDuration import
 import CountryPicker from './CountryPicker';
 import { useEffect, useMemo, useRef, useState } from 'react';

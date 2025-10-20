@@ -15,7 +15,7 @@ let useDialerStoreSafe = () => ({ dialingPlan: null });
 try {
   // optional import – won’t crash if path changes during early wiring
   // eslint-disable-next-line global-require, import/no-unresolved
-  const { useDialerStore } = require("./store/useDialerStore");
+  const { useDialerStore } = require("../store/useDialerStore");
   useDialerStoreSafe = useDialerStore;
 } catch { }
 

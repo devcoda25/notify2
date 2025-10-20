@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { memo } from 'react';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 function barsFromMetrics({ mos, rttMs }) {
   if (mos != null) return mos >= 4.1 ? 4 : mos >= 3.8 ? 3 : mos >= 3.4 ? 2 : mos >= 3.0 ? 1 : 0;

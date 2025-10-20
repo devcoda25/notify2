@@ -1,112 +1,70 @@
-import React,{useState} from "react";
-import SearchboxComponent from "../SearchboxComponent";
-import { KeyboardArrowDownIcon,KeyboardArrowUpIcon } from "../Icon";
-// import  {
-//     Menu,
-//     List,
-//     ListItem,
-//     ListItemText,
-//     TextField,
-//     Typography
-//   } from "@mui/material";
+// Path: src/Component/Meetings/TimeZoneMenu.jsx
+import React, { useMemo } from "react";
+import { TextField, MenuItem, ListSubheader, Typography } from "@mui/material";
+import { COMMON_TZS } from "./constants/booking.constants";
 
-// const TimeZoneMenu = ({ anchorEl, open, onClose, onSelect  }) => {
+/**
+ * Lightweight timezone selector for client-only flows.
+ *
+ * Props:
+ * - value: string (IANA tz)
+ * - onChange: (tz: string) => void
+ * - label?: string
+ * - fullWidth?: boolean
+ * - options?: string[]        // optional override list
+ * - includeSystemOption?: boolean  // include the browser's current tz at the top (default: true)
+ */
+export default function TimeZoneMenu({
+  value,
+  onChange,
+  label = "Timezone",
+  fullWidth = true,
+  options,
+  includeSystemOption = true,
+}) {
+  const systemTZ = useMemo(() => {
+    try {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    } catch {
+      return "UTC";
+    }
+  }, []);
 
-//     const timeZones = [
-//       { region: "AFRICA", zones: ["Africa/Cairo", "Central Africa Time", "West Africa Time", "Africa/Windhoek"] },
-//       { region: "ASIA", zones: ["Jordan Time"] },
-//     ];
-//     const [searchTerm, setSearchTerm] = useState("");
-  
-//     // Filter time zones based on search
-//     const filteredZones = timeZones.map((group) => ({
-//       region: group.region,
-//       zones: group.zones.filter((zone) => zone.toLowerCase().includes(searchTerm.toLowerCase())),
-//     }));
-  
-//     return (
-//       <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-//         <div className="timezone">
-        
-//           <TextField
-//             variant="outlined"
-//             placeholder="Search..."
-//             fullWidth
-//             size="small"
-//             value={searchTerm}
-//             onChange={(e) => setSearchTerm(e.target.value)}
-//             className="textfield"
-            
-//           />
-  
-//           {/* Time Zones List */}
-//           <List  className='list'>
-//             {filteredZones.map((group) =>
-//               group.zones.length > 0 ? (
-//                 <div key={group.region}>
-//                   <Typography variant="body2" className='listitem'>
-//                     {group.region}
-//                   </Typography>
-//                   {group.zones.map((zone) => (
-//                     <ListItem button key={zone}  onClick={() => onSelect(zone)}>
-//                       <ListItemText primary={zone} secondary="1:42pm" />
-//                     </ListItem>
-//                   ))}
-//                 </div>
-//               ) : null
-//             )}
-//           </List>
-//         </div>
-//       </Menu>
-//     );
-//   };
-//   export default TimeZoneMenu;
+  const list = useMemo(() => {
+    const base = Array.isArray(options) && options.length ? options : COMMON_TZS;
+    // Ensure uniqueness and optionally prepend system tz
+    const out = new Set(base);
+    if (includeSystemOption) out.add(systemTZ);
+    // Keep a friendly small list; move system tz to the front if present
+    const arr = Array.from(out);
+    // If system tz is present, make it first
+    arr.sort((a, b) => (a === systemTZ ? -1 : b === systemTZ ? 1 : a.localeCompare(b)));
+    return arr;
+  }, [options, systemTZ, includeSystemOption]);
 
-const TimezoneDropdown = ({ options, selectedValue, onSelect, placeholder = "Select...", showSearch = true }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
-  const handleSelect = (label) => {
-      onSelect(label);
-      setShowDropdown(false);
-  };
-
-  const filteredOptions = options.filter((tz) =>
-      tz.label.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const displayTz = value && list.includes(value) ? value : (includeSystemOption ? systemTZ : list[0]);
 
   return (
-      <div className="country_timezone_wrapper">
-          <div className="selected_timezone" onClick={toggleDropdown}>
-              {selectedValue || placeholder}
-              {showDropdown ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </div>
-
-          {showDropdown && (
-              <div className="dropdown">
-                  {showSearch && (
-                      <SearchboxComponent
-                          placeholder="Search..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                      />
-                  )}
-                  <div className="dropdown_list">
-                      {filteredOptions.map((tz) => (
-                          <div
-                              key={tz.label}
-                              className={`dropdown_item ${tz.label === selectedValue ? "active" : ""}`}
-                              onClick={() => handleSelect(tz.label)}
-                          >
-                              <span>{tz.label}</span>
-                              <span className="time">{tz.time}</span>
-                          </div>
-                      ))}
-                  </div>
-              </div>
-          )}
-      </div>
+    <TextField
+      select
+      label={label}
+      value={displayTz}
+      onChange={(e) => onChange?.(e.target.value)}
+      fullWidth={fullWidth}
+      size="small"
+    >
+      {includeSystemOption && (
+        <ListSubheader>
+          <Typography variant="caption">
+            System: {systemTZ}
+          </Typography>
+        </ListSubheader>
+      )}
+      {list.map((tz) => (
+        <MenuItem key={tz} value={tz}>
+          {tz}
+        </MenuItem>
+      ))}
+    </TextField>
   );
-};
-export default TimezoneDropdown;
+}

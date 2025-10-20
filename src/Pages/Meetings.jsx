@@ -1,416 +1,172 @@
-import React, { useState } from "react";
-import { Dialog, DialogTitle, DialogContent, IconButton, Grid, Button } from "@mui/material";
-import AutocompleteComponent from "../Component/AutocompleteComponent";
-import TimePickerComponent from "../Component/TimePickerComponent";
-import EventType from "../Component/Meetings/EventType";
+// Path: /src/Pages/Meetings.jsx
+import React, { useState, Suspense } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { notifyTheme } from '../theme/notifyTheme';
 import {
-    ArrowBackIosIcon,
-    CloseIcon,
-    AddCircleOutlineIcon,
-    ContentCopyIcon,
-    FmdGoodOutlinedIcon,
-    LocalPhoneOutlinedIcon
-} from '../../src/Component/Icon';
-import CustomButton from "../Component/Meetings/CustomButton";
-import style from "../Component/MuiStyles/muiStyle";
+  Box,
+  Stack,
+  IconButton,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
+import { Menu } from "lucide-react";
+import { ThemeProvider } from '@mui/material';
 
-const styles = {
-    timePickerStyles: {
-        background: 'white',
-        border: '1px solid #a6bbd1',
-        "& .MuiOutlinedInput-root": {
-            "&:hover fieldset": {
-                border: "2px solid #006bff",
-            },
-            "&.Mui-focused fieldset": {
-                border: "2px solid #006bff",
-            },
-        },
-    },
-    iconStyle: {
-        marginLeft: '10px',
-        cursor: "pointer",
-        width: "16px",
-        height: "16px"
-    },
-    buttonStyles: (selected) => ({
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-start",
+import MeetingsLeftNav from "../Component/Meetings/layout/MeetingsLeftNav";
+import MeetingsContentFrame from "../Component/Meetings/layout/MeetingsContentFrame";
+
+/** Desk */
+import MyMeetingsView from "../Component/Meetings/views/Desk/MyMeetingsView";
+import JoinNowView from "../Component/Meetings/views/Desk/JoinNowView";
+import MyAttendanceView from "../Component/Meetings/views/Desk/MyAttendanceView";
+
+/** Focus */
+import PoolSchedulesView from "../Component/Meetings/views/Focus/PoolSchedulesView";
+import SpecialMeetingsView from "../Component/Meetings/views/Focus/SpecialMeetingsView";
+import FollowUpsView from "../Component/Meetings/views/Focus/FollowUpsView";
+
+/** Review */
+import RecordingsView from "../Component/Meetings/views/Review/RecordingsView";
+import ScorecardsView from "../Component/Meetings/views/Review/ScorecardsView";
+import CalibrationView from "../Component/Meetings/views/Review/CalibrationView";
+import DisputesView from "../Component/Meetings/views/Review/DisputesView";
+
+/** Organize */
+import CreateMeetingWizard from "../Component/Meetings/views/Organize/CreateMeetingWizard";
+import EventTypesView from "../Component/Meetings/views/Organize/EventTypesView";
+import AgentPoolsView from "../Component/Meetings/views/Organize/AgentPoolsView";
+import AvailabilityRoutingView from "../Component/Meetings/views/Organize/AvailabilityRoutingView";
+
+/** My Setup */
+import CalendarConnectionsView from "../Component/Meetings/views/MySetup/CalendarConnectionsView";
+import EmailPairingView from "../Component/Meetings/views/MySetup/EmailPairingView";
+import PreferencesDevicesView from "../Component/Meetings/views/MySetup/PreferencesDevicesView";
+import PersonalLinkPoolsView from "../Component/Meetings/views/MySetup/PersonalLinkPoolsView";
+
+/** Systems */
+import CalendarIntegrationsView from "../Component/Meetings/views/Systems/CalendarIntegrationsView";
+import ConferencingNodesView from "../Component/Meetings/views/Systems/ConferencingNodesView";
+import ReminderPoliciesView from "../Component/Meetings/views/Systems/ReminderPoliciesView";
+import SecurityRetentionView from "../Component/Meetings/views/Systems/SecurityRetentionView";
+
+/** Chronicle */
+import BookingLogsView from "../Component/Meetings/views/Chronicle/BookingLogsView";
+import AuditTrailView from "../Component/Meetings/views/Chronicle/AuditTrailView";
+
+function NotFound() {
+  return (
+    <Stack gap={2}>
+      <Typography variant="h6" sx={{ m: 0 }}>
+        Not Found
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ m: 0 }}>
+        The page you’re looking for doesn’t exist.
+      </Typography>
+    </Stack>
+  );
+}
+
+/**
+ * Meetings entry page (app shell for the Meetings module).
+ * Mounted at: /u/:authUser/meetings/*
+ */
+export default function Meetings() {
+  const theme = useTheme();
+  const mdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleMobile = () => setMobileOpen((v) => !v);
+  const closeMobile = () => setMobileOpen(false);
+
+  const NAV_W = 264;
+
+  return (
+    <ThemeProvider theme={notifyTheme}>
+    <Box
+      sx={{
         width: "100%",
-        padding: "12px",
-        border: selected ? "2px solid #0057FF" : "1px solid #ccc",
-        backgroundColor: selected ? "#F0F7FF" : "#fff",
-        textTransform: "none",
-        borderRadius: "8px",
-        fontSize: "15px",
-        fontWeight: "bold",
-        gap: "10px",
-        color: selected ? "#0057FF" : "black",
-        cursor: "pointer",
-        "&:hover": {
-            border: "2px solid #0057FF",
-            background: 'white'
-        },
-    }),
-}
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        color: "text.primary",
+      }}
+    >
+      {/* Left nav (permanent on md+, temporary drawer on xs/sm) */}
+      <MeetingsLeftNav
+        navWidth={NAV_W}
+        mobileOpen={mobileOpen}
+        onCloseMobile={closeMobile}
+        title="Meetings"
+      />
 
-const locations = [
-    { id: 'zoom', name: 'Zoom', icon: '/assets/images/Zoom.svg' },
-    { id: 'googlemeet', name: 'Google Meet', icon: "/assets/images/Googlemeet.svg" },
-    { id: 'teams', name: 'Microsoft Teams', icon: '/assets/images/Teams.svg' },
-    { id: 'notify', name: 'Notify', icon: '' },
-    { id: 'inperson', name: 'In-person', icon: FmdGoodOutlinedIcon },
-    { id: 'call', name: 'Phone call', icon: LocalPhoneOutlinedIcon }
-]
+      {/* Content area padded by MeetingsContentFrame (respects --nav-w) */}
+      <MeetingsContentFrame>
+        {!mdUp && (
+          <Stack direction="row" justifyContent="flex-start" sx={{ mb: 1 }}>
+            <Tooltip title="Open menu">
+              <IconButton onClick={toggleMobile} size="small" aria-label="Open meetings menu">
+                <Menu size={18} />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        )}
 
-const CalendarButton = ({ imageSrc, name, onClick, isConnected, isSelected }) => {
-    return (
-        <button 
-            className={`button_calendar ${isSelected ? 'selected' : ''}`} 
-            onClick={onClick}
-            style={{
-                border: isSelected ? '2px solid #0057FF' : '1px solid #ccc',
-                backgroundColor: isSelected ? '#F0F7FF' : '#fff',
-                color: isSelected ? '#0057FF' : '#000',
-                boxShadow: isSelected ? '0 2px 8px rgba(0, 87, 255, 0.2)' : 'none'
-            }}
+        <Suspense
+          fallback={
+            <Stack alignItems="center" justifyContent="center" sx={{ py: 6 }}>
+              <CircularProgress />
+            </Stack>
+          }
         >
-            <img className="calendar_image" src={imageSrc} alt={`${name} Logo`} />
-            <div className="calendar_name">{name}</div>
-            <div className={`connect_btn ${isConnected ? "Connected" : ""}`}>
-                {isConnected ? "Connected" : "Connect"}
-            </div>
-        </button>
-    );
-};
+          <Routes>
+            {/* Default: land on Desk/My */}
+            <Route index element={<Navigate to="desk/my" replace />} />
 
-const Meetings = () => {
-    const mailAccountOptions = ['hepto@gmail.com'];
-    const [state, setState] = useState({
-        selectedCalendar: null,
-        selectedCalendarType: null, 
-        showConfirmation: false,
-        showCalendarModal: false,
-        showEditModal: false,
-        mailAccount: mailAccountOptions[0],
-        showWeeklyHours: false,
-        showLocation: false,
-        selectedLocation: 'googlemeet',
-        showEventType: false,
-    });
+            {/* Desk */}
+            <Route path="desk/my" element={<MyMeetingsView />} />
+            <Route path="desk/join" element={<JoinNowView />} />
+            <Route path="desk/attendance" element={<MyAttendanceView />} />
 
-    const updateState = (newState) => {
-        setState((prevState) => ({ ...prevState, ...newState }));
-    };
+            {/* Focus */}
+            <Route path="focus/pools" element={<PoolSchedulesView />} />
+            <Route path="focus/special" element={<SpecialMeetingsView />} />
+            <Route path="focus/followups" element={<FollowUpsView />} />
 
-    const handlerCalendarSelect = (imageSrc, name) => {
-        updateState({ 
-            selectedCalendar: { imageSrc, name },
-            selectedCalendarType: name 
-        });
-    };
+            {/* Review */}
+            <Route path="review/recordings" element={<RecordingsView />} />
+            <Route path="review/scorecards" element={<ScorecardsView />} />
+            <Route path="review/calibration" element={<CalibrationView />} />
+            <Route path="review/disputes" element={<DisputesView />} />
 
-    const handleNextClick = () => {
-        if (!state.showConfirmation) {
-            updateState({ showConfirmation: true });
-        } else if (!state.showWeeklyHours) {
-            updateState({ showWeeklyHours: true });
-        } else if (!state.showLocation) {
-            updateState({ showLocation: true });
-        } else if (!state.showEventType) {
-            updateState({ showEventType: true });
-        }
-    };
+            {/* Organize */}
+            <Route path="organize/wizard" element={<CreateMeetingWizard />} />
+            <Route path="organize/event-types" element={<EventTypesView />} />
+            <Route path="organize/pools" element={<AgentPoolsView />} />
+            <Route path="organize/availability" element={<AvailabilityRoutingView />} />
 
-    const handleBackClick = () => {
-        if (state.showLocation) {
-            updateState({ showLocation: false });
-        } else if (state.showWeeklyHours) {
-            updateState({ showWeeklyHours: false });
-        } else if (state.showConfirmation) {
-            updateState({ showConfirmation: false });
-        }
-    };
+            {/* My Setup */}
+            <Route path="my/calendar" element={<CalendarConnectionsView />} />
+            <Route path="my/email" element={<EmailPairingView />} />
+            <Route path="my/preferences" element={<PreferencesDevicesView />} />
+            <Route path="my/personal" element={<PersonalLinkPoolsView />} />
 
-    const [meetingHours, setMeetingHours] = useState({
-        Sunday: [{ from: "09:00", to: "17:00", available: true }],
-        Monday: [{ from: "09:00", to: "17:00", available: true }],
-        Tuesday: [{ from: "09:00", to: "17:00", available: true }],
-        Wednesday: [{ from: "09:00", to: "17:00", available: true }],
-        Thursday: [{ from: "09:00", to: "17:00", available: true }],
-        Friday: [{ from: "09:00", to: "17:00", available: true }],
-        Saturday: [{ from: "09:00", to: "17:00", available: true }],
-    });
+            {/* Systems */}
+            <Route path="systems/calendar" element={<CalendarIntegrationsView />} />
+            <Route path="systems/conferencing" element={<ConferencingNodesView />} />
+            <Route path="systems/reminders" element={<ReminderPoliciesView />} />
+            <Route path="systems/security" element={<SecurityRetentionView />} />
 
-    const handleRemoveSlot = (day, index) => {
-        setMeetingHours((prev) => {
-            const updateSlots = prev[day].filter((_, i) => i !== index);
-            return { ...prev, [day]: updateSlots }
-        })
-    }
+            {/* Chronicle */}
+            <Route path="chronicle/bookings" element={<BookingLogsView />} />
+            <Route path="chronicle/audit" element={<AuditTrailView />} />
 
-    const handleAddSlot = (day) => {
-        setMeetingHours((prevHours) => ({
-            ...prevHours,
-            [day]: [...prevHours[day], { from: "09:00", to: "17:00", available: true }],
-        }));
-    };
-
-    return (
-        <>
-            <div className='maincontent'>
-                {
-                    state.showEventType && <EventType />
-                }
-                {
-                    !state.showEventType && (
-                        <div className="meetings_container">
-                            <div className="left_container">
-                                <div className="left_content">
-                                    {
-                                        !state.showConfirmation && !state.showWeeklyHours && !state.showLocation ? (
-                                            <>
-                                                <h1 className="heading">Set up the calendar that will be used to check for existing events</h1>
-                                                <div className="calendar_container">
-                                                    <CalendarButton
-                                                        imageSrc="/assets/images/google_calendar.svg"
-                                                        name="Google Calendar"
-                                                        onClick={() => handlerCalendarSelect("/assets/images/google_calendar.svg", "Google Calendar")}
-                                                        isSelected={state.selectedCalendarType === "Google Calendar"}
-                                                    />
-                                                    <CalendarButton
-                                                        imageSrc="/assets/images/outlook.svg"
-                                                        name="Outlook Calendar"
-                                                        onClick={() => handlerCalendarSelect("/assets/images/outlook.svg", "Outlook Calendar")}
-                                                        isSelected={state.selectedCalendarType === "Outlook Calendar"}
-                                                    />
-                                                    <CalendarButton
-                                                        imageSrc="/assets/images/exchange.svg"
-                                                        name="Exchange Calendar"
-                                                        onClick={() => handlerCalendarSelect("/assets/images/exchange.svg", "Exchange Calendar")}
-                                                        isSelected={state.selectedCalendarType === "Exchange Calendar"}
-                                                    />
-                                                </div>
-                                            </>
-                                        ) : state.showConfirmation && !state.showWeeklyHours && !state.showLocation ? (
-                                            <>
-                                                <h1 className="heading">Set up how your calendar will be used</h1>
-                                                <div className="calendar_container">
-                                                    <h2>Your Calendar</h2>
-                                                    <CalendarButton
-                                                        imageSrc={state.selectedCalendar.imageSrc}
-                                                        name={state.selectedCalendar.name}
-                                                        isConnected={true} />
-                                                    <button className="select_different_calendar_btn" onClick={() => updateState({ showCalendarModal: true })}>Use a different calendar</button>
-                                                    <div className="check_conflicts">
-                                                        <h2>Check for conflicts</h2>
-                                                        <p>Select calendar(s) to check for conflicts to prevent double bookings.</p>
-                                                        <ul>
-                                                            <li>hepto@gmail.com</li>
-                                                        </ul>
-                                                        <button className="select_different_calendar_btn" onClick={() => updateState({ showEditModal: true })}>Edit</button>
-
-                                                    </div>
-                                                    <div className="add_calendar">
-                                                        <h2>Add Calendar</h2>
-                                                        <p>Select the calendar you would like to add new events to as they’re scheduled.</p>
-                                                        <AutocompleteComponent
-                                                            options={mailAccountOptions}
-                                                            value={state.mailAccount}
-                                                            onChange={(event, newValue) => updateState({ mailAccount: newValue })}
-                                                            customStyles={{...style.newticketsAutocomplete,width:'50%'}}
-                                                        />
-                                                        <div className="deleting_event_container">
-                                                            <input type='checkbox' /><span className="deleting_event">Deleting or declining an event in your calendar will also cancel it in Calendly.</span>
-                                                        </div>
-                                                    </div>
-                                                    {
-                                                        state.showCalendarModal && (
-                                                            <>
-                                                                <Dialog open={state.showCalendarModal} onClose={() => updateState({ showCalendarModal: false })} className="select_different_calendar">
-                                                                    <DialogTitle>
-                                                                        <h2>Use a different calendar</h2>
-                                                                        <IconButton
-                                                                            onClick={() => updateState({ showCalendarModal: false })}
-                                                                            style={{ position: 'absolute', right: 8, top: 8, color: 'black' }}
-                                                                        >
-                                                                            <CloseIcon />
-                                                                        </IconButton>
-                                                                        <p>Switching to a different calendar won't change how you sign in. You can modify this later.</p>
-                                                                    </DialogTitle>
-                                                                    <DialogContent>
-                                                                        <div className="calendar_container">
-                                                                            <CalendarButton
-                                                                                imageSrc="/assets/images/google_calendar.svg"
-                                                                                name="Google Calendar"
-                                                                                onClick={() => handlerCalendarSelect("/assets/images/google_calendar.svg", "Google Calendar")}
-                                                                            />
-                                                                            <CalendarButton
-                                                                                imageSrc="/assets/images/outlook.svg"
-                                                                                name="Outlook Calendar"
-                                                                                onClick={() => handlerCalendarSelect("/assets/images/outlook.svg", "Outlook Calendar")} />
-                                                                            <CalendarButton
-                                                                                imageSrc="/assets/images/exchange.svg"
-                                                                                name="Exchange Calendar"
-                                                                                onClick={() => handlerCalendarSelect("/assets/images/exchange.svg", "Exchange Calendar")} />
-                                                                        </div>
-                                                                    </DialogContent>
-
-                                                                </Dialog>
-                                                            </>
-                                                        )
-                                                    }
-                                                    {
-                                                        state.showEditModal && (
-                                                            <>
-                                                                <Dialog open={state.showEditModal} onClose={() => updateState({ showEditModal: false })} className="calendar_edit_modal">
-                                                                    <DialogTitle>
-                                                                        <h2>Check for conflicts</h2>
-                                                                        <p>Select calendar(s) to check for conflicts to prevent double bookings.</p>
-                                                                    </DialogTitle>
-                                                                    <DialogContent>
-                                                                        <div>
-                                                                            <input type='checkbox' /><span className="mail_id">hepto@gmail.com</span>
-
-                                                                        </div>
-                                                                        <div className="button_container">
-                                                                            <button className="cancelbutton" onClick={() => updateState({ showEditModal: false })}>Cancel</button>
-                                                                            <button className="updatebutton" onClick={() => updateState({ showEditModal: false })}>Update</button>
-                                                                        </div>
-                                                                    </DialogContent>
-
-                                                                </Dialog>
-                                                            </>
-                                                        )
-                                                    }
-                                                </div>
-                                            </>
-                                        ) : state.showWeeklyHours && !state.showLocation ? (
-                                            <div className="weekly_hours">
-                                                <h1 className="heading">When are you available to meet with people?</h1>
-                                                <p>You'll only be booked during these times (you can change these times and add other schedules later)</p>
-                                                <div className="calendar_container">
-                                                    <h2>Weekly hours</h2>
-                                                    <p>Set when you are typically available for meetings</p>
-
-                                                    <div>
-                                                        {
-                                                            Object.entries(meetingHours).map(([day, slots], dayIndex) => (
-                                                                <div key={dayIndex} className='setmeeting_hours_container'>
-                                                                    <div className="day">{day.charAt(0)}</div>
-                                                                    <div className="set_time_container">
-                                                                        {
-                                                                            slots.length > 0 && slots[0].available ? (
-                                                                                slots.map((slot, index) => (
-                                                                                    <div key={index} className='set_time'>
-
-                                                                                        <TimePickerComponent
-                                                                                            initialValue={slot.from}
-                                                                                            disabled={false}
-                                                                                            customStyles={styles.timePickerStyles}
-
-                                                                                        />
-                                                                                        <span style={{ margin: "0 5px" }}>—</span>
-                                                                                        <TimePickerComponent
-                                                                                            initialValue={slot.from}
-                                                                                            disabled={false}
-                                                                                            customStyles={styles.timePickerStyles}
-
-                                                                                        />
-                                                                                        <CloseIcon onClick={() => handleRemoveSlot(day, index)} style={styles.iconStyle} />
-
-                                                                                        {index === 0 && (
-                                                                                            <>
-                                                                                                <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={styles.iconStyle} />
-                                                                                                <ContentCopyIcon style={styles.iconStyle} />
-                                                                                            </>
-                                                                                        )}
-
-                                                                                    </div>
-                                                                                ))
-                                                                            ) : (
-                                                                                <> <span style={{ color: "gray" }}>Unavailable
-                                                                                    <AddCircleOutlineIcon onClick={() => handleAddSlot(day)} style={styles.iconStyle} /></span>
-                                                                                </>
-                                                                            )
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <div>
-                                                    <h1 className="heading">How would you like to meet with people?</h1>
-                                                    <p>Set a meeting location for your first scheduling link. You can always change this later.</p>
-                                                    <div className="calendar_container">
-                                                        <Grid container spacing={2}>
-                                                            {
-                                                                locations.map((location) => (
-                                                                    <Grid item xs={6} key={location.id}>
-                                                                        <Button sx={styles.buttonStyles(state.selectedLocation === location.id)} onClick={() => updateState({ selectedLocation: location.id })}>
-                                                                            {typeof location.icon === "string" && location.icon ? (
-                                                                                <img src={location.icon} alt={location.name} width="20" height="20" />
-                                                                            ) : location.icon ? (
-                                                                                React.createElement(location.icon)
-                                                                            ) : null}
-                                                                            {location.name}
-                                                                        </Button>
-                                                                    </Grid>
-                                                                ))
-                                                            }
-                                                        </Grid>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )
-                                    }
-
-                                    <div className="footer_button">
-                                        {state.showConfirmation && 
-      
-                                        <CustomButton variant="text" onClick={handleBackClick} icon={<ArrowBackIosIcon/>}>Back</CustomButton>
-                                        }
-                                        {state.selectedCalendar ? (
-
-                                            <CustomButton variant="contained" onClick={handleNextClick} >Next</CustomButton>
-                                        ):(
-                                            
-                                            <CustomButton disabled variant="contained" onClick={handleNextClick} >Next</CustomButton>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="right_container">
-                                {!state.showWeeklyHours && !state.showLocation ? (
-                                    <div>
-                                        <div className="calendar_connection">
-                                            <img src='/assets/images/calendarconnection.svg' alt="Calendar Connection" />
-                                        </div>
-                                        <img src='/assets/images/calendar.svg' className="right_calendar" alt="Calendar" />
-                                    </div>
-                                ) : state.showWeeklyHours && !state.showLocation ? (
-                                    <div>
-                                        <img src='/assets/images/availability.svg' alt="Availability" className="availability_image" />
-                                    </div>
-                                ) : (
-
-                                    <div>
-                                        <img src='/assets/images/Location.svg' />
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )
-                }
-
-            </div>
-        </>
-    )
+            {/* Catch-all */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </MeetingsContentFrame>
+    </Box></ThemeProvider>
+  );
 }
-export default Meetings;

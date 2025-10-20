@@ -1,6 +1,6 @@
 // /src/Component/dailer/Softphone/DTMFPad.jsx
 import { Grid, Button, Paper } from '@mui/material';
-import { useDialerStore } from '../store/useDialerStore';
+import { useDialerStore } from '../../store/useDialerStore';
 
 const keys = ['1','2','3','4','5','6','7','8','9','*','0','#'];
 

@@ -82,8 +82,8 @@ const Navbar = () => {
       // icon: <EventIcon /> 
     },
     { 
-      path: `/u/${authUser}/broadcast`, 
-      label: 'Broadcast', 
+      path: `/u/${authUser}/templates`, 
+      label: 'Templates', 
       icons:BroadcastImg
       // icon: <PiBroadcastDuotone /> 
     },

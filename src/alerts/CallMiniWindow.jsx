@@ -1,5 +1,5 @@
 // /src/alerts/CallMiniWindow.jsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import {
   Paper, Stack, Typography, IconButton, Button, Avatar, Chip, Box, Tooltip
 } from "@mui/material";
@@ -8,7 +8,7 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { keyframes } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
-import { useDialerStore } from "../Component/dailer/store/useDialerStore";
+import { useDialerStore } from "../Component/store/useDialerStore";
 
 /* ==== Visuals borrowed from AgentProfileCard ==== */
 const ringShimmer = keyframes`
@@ -49,8 +49,8 @@ export default function CallMiniWindow() {
   const ringBase = theme.palette.mode === 'dark'
     ? (theme.palette.info?.main || '#00BCD4')
     : (theme.palette.primary?.main || '#3F51B5');
-  const ringRGBA = (a) => toRGBA(ringBase, a);
-  const ringPulseKF = useMemo(() => makeRingPulse((a) => ringRGBA(a)), [ringBase]);
+  const ringRGBA = useCallback((a) => toRGBA(ringBase, a), [ringBase]);
+  const ringPulseKF = useMemo(() => makeRingPulse((a) => ringRGBA(a)), [ringRGBA]);
 
   const { startCall, setNumber, focusCallById } = useDialerStore(s => ({
     startCall: s.startCall,

@@ -1,0 +1,30 @@
+{
+  "tmpl_otp_login": {
+    "templateId": "tmpl_otp_login",
+    "state": "Approved",
+    "decision": "approved",
+    "reason": null,
+    "submittedAt": "2025-06-02T08:00:00.000Z",
+    "inReviewAt": "2025-06-02T09:00:00.000Z",
+    "decidedAt": "2025-06-02T12:00:00.000Z",
+    "slaSeconds": 86400,
+    "history": [
+      { "at": "2025-06-02T08:00:00.000Z", "state": "Submitted" },
+      { "at": "2025-06-02T09:00:00.000Z", "state": "In-Review" },
+      { "at": "2025-06-02T12:00:00.000Z", "state": "Approved" }
+    ]
+  },
+  "tmpl_weekend_promo": {
+    "templateId": "tmpl_weekend_promo",
+    "state": "Submitted",
+    "decision": null,
+    "reason": null,
+    "submittedAt": "2025-09-05T11:12:00.000Z",
+    "inReviewAt": null,
+    "decidedAt": null,
+    "slaSeconds": 172800,
+    "history": [
+      { "at": "2025-09-05T11:12:00.000Z", "state": "Submitted", "note": "WA Marketing" }
+    ]
+  }
+}

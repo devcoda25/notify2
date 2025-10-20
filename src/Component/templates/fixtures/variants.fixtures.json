@@ -1,0 +1,69 @@
+[
+  {
+    "template_id": "tmpl_otp_login",
+    "channel": "sms",
+    "themeId": "plain",
+    "content_type": "text",
+    "snapshot": {
+      "body": "Your OTP is {{otp_code}}. It expires in {{otp_ttl}} minutes.",
+      "buttons": [],
+      "media": null
+    },
+    "updatedAt": "2025-08-31T10:00:00.000Z"
+  },
+  {
+    "template_id": "tmpl_otp_login",
+    "channel": "whatsapp",
+    "themeId": "wa_basic",
+    "content_type": "json",
+    "snapshot": {
+      "header": "Your EVzone code",
+      "body": "Code: *{{otp_code}}*\nExpires in {{otp_ttl}} minutes.",
+      "footer": "Do not share this code.",
+      "buttons": [
+        { "type": "copy", "label": "Copy Code", "payload": "{{otp_code}}" }
+      ]
+    },
+    "updatedAt": "2025-08-31T10:00:00.000Z"
+  },
+  {
+    "template_id": "tmpl_payment_receipt",
+    "channel": "email",
+    "themeId": "cards_grid",
+    "content_type": "html",
+    "snapshot": {
+      "subject": "Receipt for Order {{order_id}}",
+      "header": "Thanks for your payment, {{user_name}}",
+      "body": "<p>We received <b>{{amount}}</b> for order <b>{{order_id}}</b>.</p>",
+      "footer": "<p>Need help? <a href='{{support_url}}'>Contact support</a></p>",
+      "attachments": []
+    },
+    "updatedAt": "2025-08-10T09:45:00.000Z"
+  },
+  {
+    "template_id": "tmpl_emergency_outage",
+    "channel": "push",
+    "themeId": "compact",
+    "content_type": "json",
+    "snapshot": {
+      "title": "Service Outage",
+      "body": "We’re investigating connectivity issues. Next update in 30 min.",
+      "actions": [{ "type": "open_url", "label": "Status Page", "url": "{{status_url}}" }],
+      "sound": true
+    },
+    "updatedAt": "2025-08-30T12:00:00.000Z"
+  },
+  {
+    "template_id": "tmpl_weekend_promo",
+    "channel": "platform",
+    "themeId": "simple_box",
+    "content_type": "json",
+    "snapshot": {
+      "header": "Weekend Deals",
+      "body": "Get {{discount}} off with code {{promo_code}}. Ends {{end_date}}.",
+      "buttons": [{ "type": "open_url", "label": "Shop Now", "url": "{{promo_url}}" }],
+      "media": { "type": "image", "src": "/assets/images/Analytics.png" }
+    },
+    "updatedAt": "2025-09-05T11:10:00.000Z"
+  }
+]

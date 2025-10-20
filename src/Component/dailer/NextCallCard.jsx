@@ -1,5 +1,5 @@
 import { Card, CardContent, Stack, Avatar, Typography, Chip, Button } from '@mui/material';
-import { useDialerStore } from './store/useDialerStore'; // adjust if needed
+import { useDialerStore } from '../store/useDialerStore'; // adjust if needed
 
 export default function NextCallCard() {
   const { nextLead, shuffleNextLead, setNumber, startCall } = useDialerStore(s => ({
@@ -40,13 +40,13 @@ export default function NextCallCard() {
           <Stack direction="row" spacing={1}><Typography variant="caption">Last Call</Typography><Typography variant="body2">{nextLead?.lastCall}</Typography></Stack>
 
           <Stack direction="row" spacing={1}>
-            <Button onClick={dialNext} variant="contained" sx={{ flex: 1, textTransform:'none' }}>
+            <Button onClick={dialNext} variant="contained" sx={{ flex: 1, textTransform: 'none' }}>
               Dial Next
             </Button>
-            <Button onClick={shuffleNextLead} variant="outlined" sx={{ textTransform:'none' }}>
+            <Button onClick={shuffleNextLead} variant="outlined" sx={{ textTransform: 'none' }}>
               Shuffle
             </Button>
-            <Button onClick={skip} variant="text" sx={{ textTransform:'none' }}>
+            <Button onClick={skip} variant="text" sx={{ textTransform: 'none' }}>
               Skip
             </Button>
           </Stack>

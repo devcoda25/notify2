@@ -7,7 +7,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import TipsAndUpdatesOutlinedIcon from "@mui/icons-material/TipsAndUpdatesOutlined";
 import KeyboardAltOutlinedIcon from "@mui/icons-material/KeyboardAltOutlined";
 import { keyframes } from "@mui/system";
-import { useDialerStore } from "../store/useDialerStore";
+import { useDialerStore } from "../../store/useDialerStore";
 
 /* === TUNABLES (match CRMFormPane’s spirit) ============================== */
 const CONTENT_MAX_WIDTH = "90%";     // center column width cap
