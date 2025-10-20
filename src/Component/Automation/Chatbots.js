@@ -1,349 +1,326 @@
-import React, { useState } from 'react'
-import DeleteModal from '../DeleteModal';
-import CopyandAddModal from './PopupModal/Chatbot/CopyandAddModal';
-import FlowTemplates from './PopupModal/Chatbot/FlowTemplates';
-import NotificationModal from './PopupModal/Chatbot/NotificationModal';
-import FallbackMessageModal from './PopupModal/Chatbot/FallbackMessageModal';
-import ChatbotTimerModal from './PopupModal/Chatbot/ChatbotTimerModal';
-import CustomPagination from '../CustomPagination';
-import SearchboxComponent from '../SearchboxComponent';
-import ButtonComponent from '../ButtonComponent';
-import TableComponent from '../TableComponent';
-import { useNavigate } from 'react-router-dom';
-import { useLocation, useParams } from 'react-router-dom';
-import { useMemo } from 'react';
+import React, { useMemo, useState } from "react";
+import {
+  Box,
+  Stack,
+  Typography,
+  Button,
+  IconButton,
+  TextField,
+  InputAdornment,
+  Chip,
+  Paper,
+  Tooltip,
+  Divider,
+} from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
+import { Search, Upload, PlayCircle } from "lucide-react";
 
-const initialTableData = [
-    {
-        id: 1, name: 'catalog', triggered: 0, stepsFinished: 0, finished: 0, modifiedOn: ['created 8 months ago', 'updated 8 months ago']
-    },
-    {
-        id: 2, name: 'ratings', triggered: 35, stepsFinished: 139, finished: 35, modifiedOn: ['created 24 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 3, name: 'cancel_order', triggered: 117, stepsFinished: 768, finished: 117, modifiedOn: ['created 25 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 4, name: 'reschedule_order', triggered: 17, stepsFinished: 86, finished: 17, modifiedOn: ['created 25 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 5, name: 'dispatch', triggered: 34, stepsFinished: 67, finished: 34, modifiedOn: ['created 25 months ago', 'updated 24 months ago']
-    },
-    {
-        id: 6, name: 'payment_process', triggered: 154, stepsFinished: 909, finished: 154, modifiedOn: ['created 27 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 7, name: 'rides-flow', triggered: 333, stepsFinished: 1441, finished: 333, modifiedOn: ['created 27 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 8, name: 'soon_to_be_closed', triggered: 266, stepsFinished: 295, finished: 266, modifiedOn: ['created 34 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 9, name: 'Buy_EV_Market', triggered: 14, stepsFinished: 43, finished: 14, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 10, name: 'Sell_EV_market', triggered: 6, stepsFinished: 21, finished: 6, modifiedOn: ['created 34 months ago', 'updated 32 months ago']
-    },
-    {
-        id: 11, name: 'EV Market', triggered: 35, stepsFinished: 130, finished: 35, modifiedOn: ['created 34 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 12, name: 'Receive_parcel(food)', triggered: 18, stepsFinished: 112, finished: 18, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 13, name: 'Book_for_someone_a_ride_now', triggered: 25, stepsFinished: 164, finished: 25, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 14, name: 'deliver_a_parcel_now', triggered: 22, stepsFinished: 117, finished: 22, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 15, name: 'Charge point operator', triggered: 8, stepsFinished: 54, finished: 8, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 16, name: 'Agent enrollment', triggered: 54, stepsFinished: 260, finished: 54, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 17, name: 'Investor', triggered: 25, stepsFinished: 115, finished: 25, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 18, name: 'Charging', triggered: 117, stepsFinished: 402, finished: 117, modifiedOn: ['created 34 months ago', 'updated 23 months ago']
-    },
-    {
-        id: 19, name: 'Become a driver', triggered: 22, stepsFinished: 86, finished: 22, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 20, name: 'Charge point ownership', triggered: 12, stepsFinished: 63, finished: 12, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 21, name: 'Fleet_ownership', triggered: 10, stepsFinished: 42, finished: 10, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
-    {
-        id: 22, name: 'Other_options', triggered: 540, stepsFinished: 1250, finished: 540, modifiedOn: ['created 34 months ago', 'updated 33 months ago']
-    },
+import DeleteModal from "../DeleteModal";
+import CopyandAddModal from "./PopupModal/Chatbot/CopyandAddModal";
+import FlowTemplates from "./PopupModal/Chatbot/FlowTemplates";
+import NotificationModal from "./PopupModal/Chatbot/NotificationModal";
+import FallbackMessageModal from "./PopupModal/Chatbot/FallbackMessageModal";
+import ChatbotTimerModal from "./PopupModal/Chatbot/ChatbotTimerModal";
+import CustomPagination from "../CustomPagination";
+import TableComponent from "../TableComponent";
 
-]
+import { useFlowsStore } from "./Chatbots/flowbuilder/store/flows";
 
-const Chatbots = ({ handleEditChatbotbutton, onSave }) => {
-    const [state, setState] = useState({
-        chatbotData: initialTableData,
-        searchChatbots: '',
-        page: 0,
-        rowsPerPage: 5,
-        isOpenFallbackMessage: false,
-        isOpenChatbotTimer: false,
-        isOpenDeleteModal: false,
-        rowIndexToDelete: null,
-        isOpenCopyModal: false,
-        isOpenTemplatePage: false,
-        isOpenNotificationModal: false,
-    });
-    const navigate = useNavigate();
+const Chatbots = ({ handleEditChatbotbutton }) => {
+  const theme = useTheme();
 
-     const location = useLocation();
-      const { authUser: routeAuthUser } = useParams();
-      
-      const authUser = useMemo(() => {
-        if (routeAuthUser) {
-          return routeAuthUser;
-        }
-        
-        const regex = /\/u\/([^/]+)/;
-        const match = location.pathname.match(regex);
-        return match ? match[1] : '0';
-      }, [routeAuthUser, location.pathname]);
-   
+  const { flows, deleteFlow, setActiveFlow } = useFlowsStore();
 
-   const updateState = (updatedValues) => {
-        setState((prev) => ({ ...prev, ...updatedValues }));
-    };
+  const [state, setState] = useState({
+    searchChatbots: "",
+    page: 0,
+    rowsPerPage: 5,
+    isOpenFallbackMessage: false,
+    isOpenChatbotTimer: false,
+    isOpenDeleteModal: false,
+    rowIndexToDelete: null,
+    isOpenCopyModal: false,
+    isOpenTemplatePage: false,
+    isOpenNotificationModal: false,
+  });
 
-    // handle pagination and filter
-    const handleChangePage = (event, newPage) => {
-        updateState({ page: newPage });
-    };
+  const updateState = (patch) => setState((s) => ({ ...s, ...patch }));
 
-    const handleChangeRowPerPage = (event) => {
-        updateState({
-            rowsPerPage: parseInt(event.target.value, 10),
-            page: 0
-        });
-    };
+  /** ---------- Derived ---------- */
+  const limit = 20; // if this comes from settings, swap it in
+  const countLabel = useMemo(
+    () => `${flows.length}/${limit}`,
+    [flows.length]
+  );
 
-    // const handlePreviousPage = () => {
-    //     if (state.page > 0) {
-    //         updateState({ page: state.page - 1 });
-    //     }
-    // };
+  const filtered = useMemo(() => {
+    const q = state.searchChatbots.trim().toLowerCase();
+    if (!q) return flows;
+    return flows.filter((f) => (f.title || "").toLowerCase().includes(q));
+  }, [flows, state.searchChatbots]);
 
-    // const handleNextPage = () => {
-    //     if (state.page < Math.ceil(state.chatbotData.length / state.rowsPerPage) - 1) {
-    //         updateState({ page: state.page + 1 });
-    //     }
-    // };
+  const pageRows = useMemo(
+    () =>
+      filtered.slice(
+        state.page * state.rowsPerPage,
+        state.page * state.rowsPerPage + state.rowsPerPage
+      ),
+    [filtered, state.page, state.rowsPerPage]
+  );
 
-   
-    // const filterChatbots = state.chatbotData.filter(row =>
-    //     row.name.toLowerCase().includes(state.searchChatbots.toLowerCase())
-    // );
+  /** ---------- Handlers ---------- */
+  const handleChangePage = (_, newPage) => updateState({ page: newPage });
 
-    
+  const handleChangeRows = (e) =>
+    updateState({ rowsPerPage: parseInt(e.target.value, 10) || 5, page: 0 });
 
-    // const paginatedChatbotsData = filterChatbots.slice(
-    //     state.page * state.rowsPerPage,
-    //     state.page * state.rowsPerPage + state.rowsPerPage
-    // );
-    //addchatbot --> template
-    
-    const handleTemplatePage = () => {
-        updateState({ isOpenTemplatePage: true });
-    };
+  const openTemplates = () => updateState({ isOpenTemplatePage: true });
+  const openNotification = () =>
+    updateState({ isOpenNotificationModal: true, isOpenTemplatePage: false });
+  const closeNotification = () =>
+    updateState({ isOpenNotificationModal: false });
 
-    const handleNotificationModal = () => {
-        updateState({
-            isOpenNotificationModal: true,
-            isOpenTemplatePage: false,
-        });
-    };
+  const openFallback = () => updateState({ isOpenFallbackMessage: true });
+  const closeFallback = () => updateState({ isOpenFallbackMessage: false });
 
-    const handleCloseNotificationModal = () => {
-        updateState({ isOpenNotificationModal: false });
-    };
+  const openTimer = () => updateState({ isOpenChatbotTimer: true });
+  const closeTimer = () => updateState({ isOpenChatbotTimer: false });
 
-    const handleFallbackMessage = () => {
-        updateState({ isOpenFallbackMessage: true });
-    };
+  const openCopy = () => updateState({ isOpenCopyModal: true });
+  const closeCopy = () => updateState({ isOpenCopyModal: false });
+  const saveCopy = () =>
+    updateState({ isOpenCopyModal: false, isOpenNotificationModal: true });
 
-    const handleCloseFallbackMessage = () => {
-        updateState({ isOpenFallbackMessage: false });
-    };
+  const openDelete = (flowId) =>
+    updateState({ rowIndexToDelete: flowId, isOpenDeleteModal: true });
+  const closeDelete = () =>
+    updateState({ rowIndexToDelete: null, isOpenDeleteModal: false });
+  const confirmDelete = () => {
+    if (state.rowIndexToDelete !== null) deleteFlow(state.rowIndexToDelete);
+    closeDelete();
+  };
 
-    const handleSaveFallbackMessage = () => {
-        updateState({ isOpenFallbackMessage: false });
-    };
-    const handleChatbotTimer = () => {
-        updateState({ isOpenChatbotTimer: true });
-    };
+  const handleEdit = (flowId) => {
+    setActiveFlow(flowId);
+    handleEditChatbotbutton?.();
+  };
 
-    const handleCloseChatbotTimer = () => {
-        updateState({ isOpenChatbotTimer: false });
-    };
+  // FlowTemplates needs a save callback even if you only navigate afterwards
+  const handleSaveTemplate = () =>
+    updateState({ isOpenTemplatePage: false, isOpenNotificationModal: true });
 
-    const handleSaveChatbotTimer = () => {
-        updateState({ isOpenChatbotTimer: false });
-    };
+  /** ---------- Columns for TableComponent ---------- */
+  const columns = [
+    { id: "name", label: "Name" },
+    { id: "triggered", label: "Triggered" },
+    { id: "stepsFinished", label: "Steps Finished" },
+    { id: "finished", label: "Finished" },
+    { id: "modifiedOn", label: "Modified On" },
+  ];
 
-    const handleDeleteCloseModal = () => {
-        updateState({
-            rowIndexToDelete: null,
-            isOpenDeleteModal: false
-        });
-    };
-
-    const handleDeleteOpenModal = (index) => {
-        updateState({
-            rowIndexToDelete: index,
-            isOpenDeleteModal: true
-        });
-    };
-
-
-
-    const handleOpenCopyModal = () => {
-        updateState({ isOpenCopyModal: true });
-    };
-
-    const handleCloseCopy = () => {
-        updateState({ isOpenCopyModal: false });
-    };
-
-    const handleSaveCopy = () => {
-        updateState({
-            isOpenCopyModal: false,
-            isOpenNotificationModal: true
-        });
-    };
-
-    const handleSave = (chatbotName) => {
-        onSave(chatbotName);
-    };
-
-    const handleEdit = ()=>{
-        navigate(`/u/${authUser}/editchatbotpage`)
+  const renderCell = (row, column) => {
+    if (column.id === "name") {
+      return (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Typography variant="body2" fontWeight={600} noWrap>
+            {row.name || row.title}
+          </Typography>
+        </Stack>
+      );
     }
-   
-   const chatbotColumn = [
-        {
-            id: 'name', label: 'Name'
-        },
-        {
-            id: 'triggered', label: 'Triggered'
-        },
-        {
-            id: 'stepsFinished', label: 'Steps Finished'
-        },
-        {
-            id: 'finished', label: 'Finished'
-        },
-        {
-            id: 'modifiedOn', label: 'Modified On'
-        },
-       
-    ]
-    const customRenderCell = (row, column) => {
-        switch (column.id) {
-            case 'name':
-                return (
-                    <div className='chatbots_name_fieldcontainer'>
-                        <div className='chatbots_name_field'>{row.name}</div>
-                    </div>
-                );
-           
+    return row[column.id];
+  };
 
-            default:
-                return row[column.id];
-        }
-    };
-
+  /** ---------- Layout ---------- */
+  if (state.isOpenTemplatePage) {
     return (
-        <>
-            {
-                state.isOpenDeleteModal && (<DeleteModal show={state.isOpenDeleteModal} onClose={handleDeleteCloseModal}
-                    // onConfirm={handleDeleteConfirm} 
-                    msg='Do you want to remove this chatbot?' />)
-            }
-            {
-                state.isOpenNotificationModal &&
-                <NotificationModal show={state.isOpenNotificationModal} msg='The limit on chatbots is reached and the chatbot cannot be created.' value='20' onClose={handleCloseNotificationModal} />
-            }
-            {
-                state.isOpenFallbackMessage &&
-                <FallbackMessageModal show={state.isOpenFallbackMessage} onClose={handleCloseFallbackMessage} onSave={handleSaveFallbackMessage} />
-            }
-            {
-                state.isOpenChatbotTimer &&
-                <ChatbotTimerModal show={state.isOpenChatbotTimer} onClose={handleCloseChatbotTimer} onSave={handleSaveChatbotTimer} />
-            }
-            {
-                state.isOpenCopyModal &&
-                <CopyandAddModal show={state.isOpenCopyModal} onClose={handleCloseCopy} onSave={handleSaveCopy}
-                    placeholder="Chatbot Name"
-                    buttonLabel="Copy" />
-            }
-            {
-                state.isOpenTemplatePage ?
-                    <FlowTemplates onEdit={handleEdit} handleNotificationModal={handleNotificationModal} handleEditChatbotbutton={handleEditChatbotbutton} onSave={handleSave} /> :
+      <FlowTemplates
+        onEdit={handleEdit}
+        handleNotificationModal={openNotification}
+        handleEditChatbotbutton={handleEditChatbotbutton}
+        onSave={handleSaveTemplate}
+      />
+    );
+  }
 
-                    <div className='chatbots_container'>
-                          <div className='chatbots_header'>
-                             <div className='chatbots_header_div1'>
-                                 <h3 class="header__title">Chatbots<p class="header__title_count">(22/20)</p></h3>
-                            <div className='header__search'>
-                                <div className='search__input'>
-                                    <SearchboxComponent value={state.searchChatbots} onChange={(e) => updateState({ searchChatbots: e.target.value })} customSearch='custom__search_box' placeholder='Search...' />
+  return (
+    <>
+      {/* Modals */}
+      {state.isOpenDeleteModal && (
+        <DeleteModal
+          show={state.isOpenDeleteModal}
+          onClose={closeDelete}
+          onConfirm={confirmDelete}
+          msg="Do you want to remove this chatbot?"
+        />
+      )}
 
-                                </div>
-                            </div>
-                            <a href="https://www.youtube.com/watch?v=zNCNTsGDbXM" target="_blank" className='note-watch-tutorial'><div class="watch-tutorial-content"><svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="13.5" cy="13.5" r="13.5" fill="#269CFE"></circle><path d="M17.8691 12.6344C18.5358 13.0193 18.5358 13.9815 17.8691 14.3664L12.0648 17.7176C11.3981 18.1025 10.5648 17.6214 10.5648 16.8516L10.5648 10.1493C10.5648 9.37948 11.3981 8.89836 12.0648 9.28326L17.8691 12.6344Z" fill="white"></path></svg><span class="watch-tutorial__text">Watch Tutorial</span></div></a>
-                            <ButtonComponent label='Fallback Message' onClick={handleFallbackMessage} customBtn='cancel_button_style chatbot_header_btn' />
-                            <ButtonComponent label='Chatbot Timer' onClick={handleChatbotTimer} customBtn='cancel_button_style chatbot_header_btn' />
-                            <button className='header_import_btn'><svg className="importicon" viewBox="-0.5 -3.2 16 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 3.828V15H7V3.828L3.757 7.071L2.343 5.657L8 0L13.657 5.657L12.243 7.071L9 3.828ZM0 14H2V18H14V14H16V18C16 19.1 15.1 20 14 20H2C0.9 20 0 19.037 0 18V14Z" fill="#666666"></path></svg></button>
-                                </div>
-                        <div className='chatbots_header_div2'>
-                            <ButtonComponent customBtn={"add_chatbot_button"} label='Add Chatbot' onClick={handleTemplatePage} />
-                        </div>
+      {state.isOpenNotificationModal && (
+        <NotificationModal
+          show={state.isOpenNotificationModal}
+          msg="The limit on chatbots is reached and the chatbot cannot be created."
+          value={String(limit)}
+          onClose={closeNotification}
+        />
+      )}
 
-                        </div>
-                        <div className='chatbots__body__content'>
-                            <div className='chatbots__list__table'>
-                      
-                                 <TableComponent
-                                 authUser = {authUser}
-                                columns={chatbotColumn}
-                                data={state.chatbotData}
-                                customRenderCell={customRenderCell}
-                                onDelete={handleDeleteOpenModal}
-                                showCopy={true}
-                                onEdit={handleEdit}
-                                onCopy={handleOpenCopyModal}
-                                actionHeaderLabel="Actions"
-                                />
+      {state.isOpenFallbackMessage && (
+        <FallbackMessageModal
+          show={state.isOpenFallbackMessage}
+          onClose={closeFallback}
+          onSave={closeFallback}
+        />
+      )}
 
-                            </div>
-                            <div className='chatbots__pagination'>
-                                <CustomPagination
-                                    count={state.chatbotData.length}
-                                    rowsPerPage={state.rowsPerPage}
-                                    page={state.page}
-                                    onPageChange={handleChangePage}
-                                    onRowsPerPageChange={handleChangeRowPerPage}
-                                />
+      {state.isOpenChatbotTimer && (
+        <ChatbotTimerModal
+          show={state.isOpenChatbotTimer}
+          onClose={closeTimer}
+          onSave={closeTimer}
+        />
+      )}
 
-                            </div>
-                        </div>
-                    </div>
-            }
-        </>
-    )
-}
+      {state.isOpenCopyModal && (
+        <CopyandAddModal
+          show={state.isOpenCopyModal}
+          onClose={closeCopy}
+          onSave={saveCopy}
+          placeholder="Chatbot Name"
+          buttonLabel="Copy"
+        />
+      )}
+
+      {/* Header */}
+      <Paper
+        elevation={0}
+        sx={{
+          p: { xs: 1.25, sm: 1.5 },
+          mb: 1.5,
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.25}
+          alignItems={{ xs: "flex-start", sm: "center" }}
+        >
+          {/* Left group: title + search + tutorial */}
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={1}
+            alignItems={{ xs: "flex-start", md: "center" }}
+            sx={{ flex: 1, minWidth: 0 }}
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="h6" fontWeight={700}>
+                Chatbots
+              </Typography>
+              <Chip
+                size="small"
+                label={countLabel}
+                sx={{
+                  bgcolor: alpha(theme.palette.primary.main, 0.12),
+                  color: theme.palette.primary.dark,
+                }}
+              />
+            </Stack>
+
+            <TextField
+              size="small"
+              placeholder="Search chatbots…"
+              value={state.searchChatbots}
+              onChange={(e) => updateState({ searchChatbots: e.target.value, page: 0 })}
+              sx={{
+                minWidth: { xs: "100%", md: 280 },
+                "& .MuiInputBase-root": { height: 40 },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search size={16} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <Tooltip title="Watch tutorial">
+              <Button
+                variant="text"
+                size="small"
+                startIcon={<PlayCircle size={18} />}
+                href="https://www.youtube.com/watch?v=zNCNTsGDbXM"
+                target="_blank"
+                rel="noreferrer"
+                sx={{ px: 1 }}
+              >
+                Watch Tutorial
+              </Button>
+            </Tooltip>
+          </Stack>
+
+          {/* Right group: actions */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Button variant="outlined" size="small" onClick={openFallback}>
+              Fallback Message
+            </Button>
+            <Button variant="outlined" size="small" onClick={openTimer}>
+              Chatbot Timer
+            </Button>
+
+            <Tooltip title="Import">
+              <IconButton size="small">
+                <Upload size={18} />
+              </IconButton>
+            </Tooltip>
+
+            <Button
+              variant="contained"
+              size="small"
+              onClick={openTemplates}
+              sx={{ minWidth: 120 }}
+            >
+              Add Chatbot
+            </Button>
+          </Stack>
+        </Stack>
+      </Paper>
+
+      {/* Table */}
+      <Paper
+        elevation={0}
+        sx={{
+          borderRadius: 2,
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Box sx={{ p: { xs: 1, sm: 1.25 } }}>
+          <TableComponent
+            columns={columns}
+            data={pageRows}
+            customRenderCell={renderCell}
+            onDelete={openDelete}
+            showCopy
+            onEdit={handleEdit}
+            onCopy={openCopy}
+            actionHeaderLabel="Actions"
+          />
+        </Box>
+
+        <Divider />
+
+        <Box sx={{ p: 1 }}>
+          <CustomPagination
+            count={filtered.length}
+            rowsPerPage={state.rowsPerPage}
+            page={state.page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRows}
+          />
+        </Box>
+      </Paper>
+    </>
+  );
+};
 
 export default Chatbots;

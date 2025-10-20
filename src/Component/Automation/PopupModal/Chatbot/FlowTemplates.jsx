@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import CopyandAddModal from "./CopyandAddModal";
+import { useFlowsStore } from '../../../Automation/Chatbots/flowbuilder/store/flows';
 import ButtonComponent from "../../../ButtonComponent";
 import AutocompleteComponent from "../../../AutocompleteComponent";
 import Catalog from '../../../Assets/img/Catalog.jpeg';
@@ -34,7 +35,8 @@ const initialTemplateData = [
 
 ]
 
-const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSave, onEdit }) => {
+const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onEdit }) => {
+    const { createNewFlow } = useFlowsStore();
     const [content, setContent] = useState('All');
     const [showAddChatbotModal, setShowAddChatbotModal] = useState(false);
 
@@ -50,14 +52,14 @@ const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSav
         setShowAddChatbotModal(false);
     }
 
-    const handleSave = (chatbotName) => {
+    const handleSave = async (chatbotName) => {
+        await createNewFlow({ title: chatbotName });
         handleCloseChatbotModal();
         handleEditChatbotbutton();
-        onSave(chatbotName);
     };
 
-    const handleEdit=()=>{
-        onEdit();
+    const handleEdit=(flowId)=>{
+        onEdit(flowId);
     }
     return (
         <>
@@ -131,7 +133,7 @@ const FlowTemplates = ({ handleNotificationModal, handleEditChatbotbutton, onSav
 
                 </div>
             </div>
-            <CopyandAddModal show={showAddChatbotModal} onClose={handleCloseChatbotModal} onEdit={handleEdit} onSave={handleSave} placeholder="Chatbot Name"
+            <CopyandAddModal show={showAddChatbotModal} onClose={handleCloseChatbotModal} onSave={handleSave} placeholder="Chatbot Name"
                 buttonLabel="Add" />
         </>
     )

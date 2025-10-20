@@ -1,6 +1,5 @@
 // Path: /src/Component/Meetings/public/LiveInvalid.jsx
 import React, { useState } from "react";
-import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../../../theme/notifyTheme";
 
@@ -35,8 +34,6 @@ export default function LiveInvalid() {
   const maybeBadCode = lastSegment && lastSegment !== "invalid" ? lastSegment : "";
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
 
       <Stack sx={{ maxWidth: 960, mx: "auto", px: 2, py: { xs: 4, md: 6 } }} gap={3}>
         {/* Alert block */}
@@ -163,6 +160,5 @@ export default function LiveInvalid() {
           </Typography>
         </Paper>
       </Stack>
-    </ThemeProvider>
   );
 }

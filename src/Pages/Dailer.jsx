@@ -1,6 +1,5 @@
 // /src/pages/DailerPage.jsx
-import { ThemeProvider, CssBaseline, Container, Stack, Box } from '@mui/material';
-import { notifyTheme } from '../theme/notifyTheme';
+import {  Container, Stack, Box } from '@mui/material';
 import {
   AgentProfileCard,
   ServiceEngagementCard,
@@ -35,8 +34,6 @@ export default function DailerPage() {
   const RIGHT_RAIL = 420;
 
   return (
-    <ThemeProvider theme={notifyTheme}>
-      <CssBaseline />
       <Container maxWidth={false} disableGutters sx={{ py: 1 }}>
         {/* fixed left navigation */}
         <LeftNav />
@@ -205,6 +202,5 @@ export default function DailerPage() {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 }

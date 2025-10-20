@@ -1,0 +1,304 @@
+
+/* Custom styles for PropertiesPanel */
+
+.properties-panel-root {
+  position: fixed;
+  top: 0; right: 0;
+  width: 420px;
+  max-width: 92vw;
+  height: 100%;
+  background: var(--bs-card-bg);
+  border-left: 1px solid var(--bs-border-color);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  box-shadow: -14px 0 40px rgba(0,0,0,.15);
+  z-index: 40;
+}
+
+/* ProseMirror global styles */
+.properties-panel-root :global(.ProseMirror) {
+  outline: none;
+  caret-color: currentColor;
+}
+.properties-panel-root :global(.ProseMirror ul),
+.properties-panel-root :global(.ProseMirror ol) {
+  padding-inline-start: 1.5rem;
+  list-style: revert;
+}
+
+.properties-panel-root :global(.ProseMirror table) {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    color: var(--bs-body-color);
+}
+
+.properties-panel-root :global(.ProseMirror .resizing) {
+  border: 2px solid var(--bs-primary); /* Using primary color for ring */
+}
+
+.properties-panel-root :global(.ProseMirror th),
+.properties-panel-root :global(.ProseMirror td) {
+  border: 1px solid var(--bs-border-color);
+  padding: 0.5em;
+  min-width: 1em;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+  color: var(--bs-body-color);
+}
+
+.properties-panel-root :global(.ProseMirror th) {
+  font-weight: bold;
+  text-align: left;
+  background-color: var(--bs-secondary-bg);
+}
+.properties-panel-root :global(.ProseMirror .selectedCell:after) {
+    z-index: 2;
+    position: absolute;
+    content: "";
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: rgba(var(--bs-primary-rgb), 0.1);
+    pointer-events: none;
+}
+.properties-panel-root :global(.ProseMirror .grip-column) {
+    width: 8px;
+    top: 0;
+    right: -4px;
+    position: absolute;
+    background-color: var(--bs-border-color);
+    cursor: col-resize;
+}
+.properties-panel-root :global(.ProseMirror .grip-column:hover) {
+    background-color: var(--bs-primary); /* Using primary color for ring */
+}
+
+
+/* Header */
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+.title-wrap { display: grid; gap: 2px; }
+.panel-title { margin: 0; font-size: 16px; font-weight: 700; color: var(--bs-card-color); }
+.panel-subtitle { margin: 0; font-size: 12px; color: var(--bs-secondary-color); }
+.panel-close-btn {
+  font-size: 20px; line-height: 18px;
+  height: 28px; width: 28px;
+  display: grid; place-items: center;
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-sm);
+  background: var(--bs-body-bg); color: var(--bs-body-color); cursor: pointer;
+}
+
+/* Tabs */
+.nav-tabs-custom {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  padding: 6px;
+  border-bottom: 1px solid var(--bs-border-color);
+  scrollbar-width: none; /* Firefox */
+}
+.nav-tabs-custom::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.nav-link-custom {
+  height: 32px; padding: 0 10px; white-space: nowrap;
+  background: rgba(var(--bs-primary-rgb), 0.1);
+  color: var(--bs-primary);
+  border: 1px solid rgba(var(--bs-primary-rgb), 0.2);
+  border-radius: var(--bs-border-radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+}
+.nav-link-custom:hover {
+    background: rgba(var(--bs-primary-rgb), 0.2);
+}
+.nav-link-active-custom {
+    background: var(--bs-primary);
+    color: var(--bs-white);
+    border-color: var(--bs-primary);
+}
+.nav-link-active-custom:hover {
+    background: rgba(var(--bs-primary-rgb), 0.9);
+}
+
+/* Body */
+.panel-body-custom { overflow: auto; padding: 16px; }
+
+/* Footer */
+.panel-footer-custom {
+  border-top: 1px solid var(--bs-border-color);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; gap: 10px;
+  background: var(--bs-body-bg);
+}
+
+.text-success-custom { color: var(--bs-success); font-size: 12px; }
+.text-muted-custom { color: var(--bs-secondary-color); font-size: 12px; }
+
+.problems-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; } /* Re-using from ConditionalLogicTab */
+.problem-item { display: grid; grid-template-columns: 100px 1fr; gap: 8px; } /* Re-using from ConditionalLogicTab */
+.problem-field { color: var(--bs-secondary-color); font-size: 12px; } /* Re-using from ConditionalLogicTab */
+.problem-msg { color: var(--bs-danger); font-size: 12px; } /* Re-using from ConditionalLogicTab */
+
+/* Shared form styles */
+.tab-body-grid { display: grid; gap: 24px; } /* Re-using from ConditionalLogicTab */
+.field-grid { display: grid; gap: 6px; } /* Re-using from ConditionalLogicTab */
+.field-narrow-grid { display: grid; gap: 6px; min-width: 140px; } /* Re-using from ConditionalLogicTab */
+
+
+.row-grid-custom { display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: end; } /* Re-using from ConditionalLogicTab */
+.row-header-flex { display: flex; align-items: center; justify-content: space-between; } /* Re-using from ConditionalLogicTab */
+.subhead-custom { margin: 0; font-size: 14px; font-weight: 600; color: var(--bs-body-color); } /* Re-using from ConditionalLogicTab */
+
+.list-grid-custom { display: grid; gap: 6px; padding: 0; margin: 0; list-style: none; } /* Re-using from ConditionalLogicTab */
+.list-item-grid-custom { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; } /* Re-using from ConditionalLogicTab */
+.list-item-two-grid-custom { display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; align-items: center; } /* Re-using from ConditionalLogicTab */
+
+
+.text-danger-custom { color: var(--bs-danger); font-size: 12px; } /* Re-using from ConditionalLogicTab */
+.text-warning-custom { color: var(--bs-warning); font-size: 12px; } /* Re-using from ConditionalLogicTab */
+
+.info-row-flex { display: flex; gap: 8px; align-items: center; } /* Re-using from ConditionalLogicTab */
+
+.details-custom { border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius-lg); padding: 8px; } /* Re-using from ConditionalLogicTab */
+.attach-row-padding { padding-top: 4px; } /* Re-using from ConditionalLogicTab */
+
+
+/* New styles for Rich Text Editor and Attachments */
+.editor-area-bg {
+    background-color: var(--bs-body-bg);
+    padding: 0;
+}
+
+.attachment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.attachment-card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background-color: var(--bs-secondary-bg);
+    border-radius: var(--bs-border-radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--bs-border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease-in-out;
+}
+.attachment-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+.attachment-card:hover .attachment-card-hover {
+    opacity: 1;
+}
+
+.attachment-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.attachment-icon {
+    flex-grow: 1;
+    display: grid;
+    place-items: center;
+    color: var(--bs-secondary-color);
+    padding: 1rem;
+}
+
+.attachment-label {
+    font-size: 12px;
+    padding: 6px 8px;
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgba(var(--bs-body-bg-rgb), 0.8);
+    border-top: 1px solid var(--bs-border-color);
+    backdrop-filter: blur(2px);
+}
+
+.attachment-overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--bs-white); /* Assuming primary-foreground maps to white */
+    background-color: rgba(var(--bs-primary-rgb), 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.attachment-delete {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(var(--bs-card-bg-rgb), 0.8);
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-secondary-color);
+    border-radius: 999px;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+}
+.attachment-card:hover .attachment-delete {
+    opacity: 1;
+}
+.attachment-delete:hover {
+    background: var(--bs-danger);
+    color: var(--bs-white); /* Assuming destructive-foreground maps to white */
+    transform: scale(1.1);
+}
+
+.attachment-card-hover {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.editor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid var(--bs-border-color);
+}
+.footer-actions {
+    display: flex;
+    gap: 8px;
+}
+
+
+/* Mobile: bottom sheet */
+@media (max-width: 768px) {
+  .properties-panel-root-mobile {
+    width: 100%;
+    left: 0; right: 0;
+    top: auto; bottom: 0; height: min(82vh, 720px);
+    border-left: none; border-top: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius-lg) var(--bs-border-radius-lg) 0 0;
+  }
+}

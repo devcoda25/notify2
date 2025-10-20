@@ -1,6 +1,5 @@
 export { default as SoftphoneCard }     from './SoftphoneCard';
 export { default as SoftphoneKeypad }   from './SoftphoneKeypad';
-
 export { default as CallControls }      from './CallControls';
 export { default as CallScript }        from '../dialingPlan/CallScript';
 export { default as CallTimer }         from './CallTimer';

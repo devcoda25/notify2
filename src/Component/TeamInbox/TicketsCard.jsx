@@ -16,6 +16,8 @@ import {
 import { FlagIcon } from "../Icon";
 
 const TicketsCard = ({
+  id,
+  isActive,
   title,
   checkboxLabel,
   status,
@@ -47,7 +49,7 @@ const TicketsCard = ({
   };
 
   const handleOpen = () => {
-    handleOpenChat();
+    handleOpenChat(id);
   };
 
   const open = Boolean(anchorEl);
@@ -57,15 +59,17 @@ const TicketsCard = ({
       onClick={handleOpen}
       sx={{
         background: "#F8F8F8",
-        border: "1px solid #ccc",
+        border: isActive ? "1px solid #1976d2" : "1px solid #ccc",
         borderRadius: "10px",
         padding: "8px",
         margin: "8px 0",
-        // minWidth: { xs: '100%', sm: '260px' },
         minWidth: { xs: '100%', sm: '280px', md:'280px', lg:'280px', xl:'280px' },
         maxWidth: "100%",
         transition: "all 0.3s ease-in-out",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+        boxShadow: isActive ? "0 4px 12px rgba(25, 118, 210, 0.3)" : "0 2px 6px rgba(0,0,0,0.05)",
+        fontSize: '14px',
+        color: '#000000',
+        
       }}
     >
       <Popover
@@ -77,7 +81,9 @@ const TicketsCard = ({
           horizontal: "left",
         }}
       >
-        <Box sx={{ padding: "4px 4px" }}>
+        <Box sx={{ padding: "4px 4px" ,
+          fontSize: '20px',
+        }}>
           <List sx={{ p: 0 }}>
             {avatars.map((avatar, idx) => (
               <ListItem key={idx}>
@@ -100,14 +106,14 @@ const TicketsCard = ({
         gap={1}
       >
         {/* Left */}
-        <Box display="flex" flexDirection="column" gap={0.5}>
-          <Typography fontWeight="bold" variant="body2">
+        <Box display="flex" flexDirection="column" gap={0.5} >
+          <Typography fontWeight="bold" variant="body2" fontSize={12} sx={{ color: '#000000' }}>
             {title}
           </Typography>
 
           <Box display="flex" alignItems="center" gap={0.5}>
             <img height="14px" width="14px" src={logo[0].src} alt="wplogo" />
-            <Typography variant="caption" color="text.disabled" fontSize={11}>
+            <Typography variant="caption" color="text.disabled" fontSize={12} >
               {logo[0].logo_name}
             </Typography>
           </Box>
@@ -188,7 +194,7 @@ const TicketsCard = ({
 
       {/* Description */}
       <Box mt={1} p={1} bgcolor="white" borderRadius={2}>
-        <Typography variant="body2" color="#595959" fontSize={12}>
+        <Typography variant="body2"  sx={{ fontSize: '12px' }}>
           {description}
         </Typography>
       </Box>

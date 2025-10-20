@@ -1,0 +1,14 @@
+
+/* Custom styles for KeyValueEditor */
+
+.key-value-grid {
+  display: grid;
+  gap: 6px;
+}
+
+.key-value-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 6px;
+  align-items: center;
+}
