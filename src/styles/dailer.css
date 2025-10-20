@@ -1,0 +1,20 @@
+/* ===== Purple design tokens ===== */
+:root {
+  --purple-50:  #f8f6ff;
+  --purple-100: #ece4ff;
+  --purple-200: #d4c4ff;
+  --purple-300: #b19aff;
+  --purple-400: #906eff;
+  --purple-500: #6f3cff; /* main */
+  --purple-700: #4421a1;
+  --text-light: #ffffff;
+}
+
+/* subtle alert on status change */
+@keyframes shimmerDialer {
+  0%,100% { opacity:.25 }
+  50%     { opacity:1 }
+}
+.call-state-change {
+  animation: shimmerDialer 1s ease-in-out 2;
+}

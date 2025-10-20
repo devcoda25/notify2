@@ -1,0 +1,195 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000000d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  .sampleTemplateHead{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(230, 227, 227);
+    padding-bottom: .5rem;
+  }
+  .sampleTemplateHeadP{
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .sampleTemplateSearchInput{
+    position: relative;
+    width: 287px;
+  }
+  .sampleTemplateSearch{
+    width: 78%;
+    padding: .7rem; 
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline-color: rgb(35, 164, 85);
+    font-size: .75rem;
+    font-weight: 300;
+    margin-left: 2rem;
+
+  }
+  .sampleTemplateSubNavs{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+  }
+  .sampleTemplateSubNav1{
+    display: flex;
+    gap: 1rem;
+    font-size: .9rem;
+    font-weight: 500;
+  }
+  .sampleTemplateSubNav1 p:hover{
+    color: rgb(35, 164, 85);
+  }
+  .sampleTemplateSubNav2{
+    display: flex;
+    align-items: center;
+  }
+  .sampleTemplatebtn{
+    padding: .5rem;
+    width: 110%;
+    border: none;
+    background-color: rgb(35, 164, 85);
+    border-radius: .2rem;
+    color: white;
+  }
+  .festivalBtn{
+    border: none;
+    background-color: rgb(143, 143, 245);
+    padding: .3rem;
+    border-radius: .2rem;
+  }
+  .sampleTemplateCont{
+   display: flex;
+   align-items: center; 
+  }
+  .sampleTempFestival{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  /* .sampleTempWholeCont{
+    display: flex;
+  } */
+  .item__body-preview{
+    color: rgb(102, 102, 102);
+    overflow: hidden;
+    max-width: 250px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 12px;
+}
+.choose-template__list{
+  max-height: 89%;
+  padding-right: 10px;
+  padding-top: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.choose-template__item{
+  padding: 10px 15px;
+  margin-bottom: 25px;
+  width: 45%;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(245, 246, 250);
+  border-radius: 5px;
+}
+.item__top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item__bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item__name-container{
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.item__name{
+  font-size: 1rem;
+  font-weight: 600;
+  max-width: 230px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.item__bottom{
+  padding: 5px 10px;
+  border-radius: 5px;
+  /* background-color: rgba(38, 156, 254, 0.1); */
+  color: rgb(38, 156, 254);
+  font-size: 12px;
+}
+.eUNntY{
+  padding: 4px;
+  background: white;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 9px;
+}
+.kZhSXp{
+  --color: #23a455;
+    /* background: rgba(35, 164, 85, 0.05); */
+    color: var(--color);
+    /* padding: 0.5rem 1.5rem; */
+    border-radius: 5px;
+    cursor: pointer;
+    border-width: 1px;
+    border-color: rgb(35, 164, 85);
+    border-style: solid;
+    font-size: 12px;
+    transition: box-shadow 0.3s ease 0s;
+    min-width: 100px;
+    width: auto;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.item__category{
+  padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgba(38, 156, 254, 0.1);
+    color: rgb(38, 156, 254);
+    font-size: 12px;
+}
+.UapIP{
+  cursor: pointer;
+  color: rgb(65, 131, 196);
+  margin: 0px;
+  font-size: .9rem;
+}
+.sampleTempArrowIcon{
+  position: absolute;
+  top: 12px;
+  left: 1rem;
+  border: 1px solid gray;
+  padding: .5rem;
+  border-radius: 2.2rem;
+  background: gainsboro;
+  border: none;
+}

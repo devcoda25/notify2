@@ -1,0 +1,242 @@
+import React from 'react'
+import { RxCross2 } from "react-icons/rx";
+import { IoIosLink } from "react-icons/io";
+
+const AttributePopup = ({onClose,ChooseVariable}) => {
+
+  const attributes = [
+    {
+      title:'contact',
+      values:[
+        {name:'actual_fare'},
+        {name:'actual_estimate'},
+        {name:'additional_items'},
+        {name:'address_ount'},
+        {name:'agent'},
+        {name:'agent_name'},
+        {name:'airport'},
+        {name:'airport_name'},
+        {name:'amount'},
+        {name:'application_link'},
+        {name:'avatar_link'},
+        {name:'base_fare'},
+        {name:'booking_date'},
+        {name:'booking_fee'},
+        {name:'booking_id'},
+        {name:'c_contact'},
+        {name:'c_name'},
+        {name:'cancel_fee'},
+        {name:'cancel_fees'},
+        {name:'cancel_reason'},
+        {name:'cancel_response'},
+        {name:'cancelled_time'},
+        {name:'car'},
+        {name:'car_make'},
+        {name:'car_modal'},
+        {name:'car_model'},
+        {name:'car_type'},
+        {name:'carnumber'},
+        {name:'charge'},
+        {name:'charge_point_name'},
+        {name:'charging_level'},
+        {name:'charging_standard_1'},
+        {name:'charging_standard_2'},
+        {name:'co'},
+        {name:'color'},
+        {name:'company_name'},
+        {name:'completed_name'},
+        {name:'completed_count'},
+        {name:'connected_format'},
+        {name:'contect_no'},
+        {name:'cost'},
+        {name:'cp_name'},
+        {name:'cps'},
+        {name:'cs_name'},
+        {name:'cs_s'},
+        {name:'cs_type'},
+        {name:'customer_destination'},
+        {name:'customer_location'},
+        {name:'customer_name'},
+        {name:'dashboard_url'},
+        {name:'date'},
+        {name:'date_time'},
+        {name:'destination'},
+        {name:'details'},
+        {name:'dispatch_date'},
+        {name:'drive_name'},
+        {name:'driver'},
+        {name:'driver_name'},
+        {name:'driver_number'},
+        {name:'driver_phone_no'},
+        {name:'driver_phone_number'},
+        {name:'drop_off'},
+        {name:'duration'},
+        {name:'eat'},
+        {name:'email'},
+        {name:'est_distance'},
+        {name:'est_time'},
+        {name:'estimate_charge'},
+        {name:'estimated_charge'},
+        {name:'estimated_cost'},
+        {name:'eta'},
+        {name:'extras'},
+        {name:'failed_reason'},
+        {name:'fair_estimate'},
+        {name:'flight_no'},
+        {name:'guidelines_link'},
+        {name:'incomplete_count'},
+        {name:'invoice'},
+        {name:'licence_plate'},
+        {name:'license_no'},
+        {name:'license_plate'},
+        {name:'link'},
+        {name:'locate_link'},
+        {name:'location'},
+        {name:'location_drop_off'},
+        {name:'manufacturer_name'},
+        {name:'max_power_1'},
+        {name:'max_power_2'},
+        {name:'method'},
+        {name:'model'},
+        {name:'name'},
+        {name:'number'},
+        {name:'number_plate'},
+        {name:'number_plate'},
+        {name:'operator_name'},
+        {name:'operator_phone'},
+        {name:'order_id'},
+        {name:'order_type'},
+        {name:'p_date_time'},
+        {name:'passenger_name'},
+        {name:'passenger_sms'},
+        {name:'password'},
+        {name:'patient_name'},
+        {name:'patient_sms'},
+        {name:'pay_message'},
+        {name:'pay_method'},
+        {name:'payment_mode'},
+        {name:'payment_failed_reason'},
+        {name:'payment_id'},
+        {name:'payment_method'},
+        {name:'payment_token'},
+        {name:'phone'},
+        {name:'phone_number'},
+        {name:'pick_up'},
+        {name:'pickup_time'},
+        {name:'place_name'},
+        {name:'pname'},
+        {name:'power_phase'},
+        {name:'power_type'},
+        {name:'psms'},
+        {name:'quotation_link'},
+        {name:'rating_response'},
+        {name:'reason'},
+        {name:'receipt'},
+        {name:'rescedule_response'},
+        {name:'rescedule_date'},
+        {name:'rescedule_fees'},
+        {name:'rescedule_response'},
+        {name:'rescedule_body'},
+        {name:'ride_category'},
+        {name:'ride_date'},
+        {name:'ride_tracker'},
+        {name:'ride_type'},
+        {name:'safty_link'},
+        {name:'service_fee'},
+        {name:'service_type'},
+        {name:'session_link'},
+        {name:'sms'},
+        {name:'someones_contact'},
+        {name:'someones_name'},
+        {name:'team'},
+        {name:'text_number'},
+        {name:'time'},
+        {name:'time_left'},
+        {name:'time_gap'},
+        {name:'time_left'},
+        {name:'time_range'},
+        {name:'total_cost'},
+        {name:'track_link'},
+        {name:'track_your_ride'},
+        {name:'unit'},
+        {name:'units'},
+        {name:'updated_time'},
+        {name:'userid'},
+        {name:'username'},
+        {name:'vehicle_details'},
+        {name:'vehicles'}
+      ]
+    },
+    {
+      title:'Shopify',
+      values:[
+        {name:'shop_name'},
+        {name:'abandoned_checkout_url'},
+        {name:'abandoned_checkout_url_partial_variable'},
+        {name:'order_status_url'},
+        {name:'order_status_url_partial_variable'},
+        {name:'order_number'},
+        {name:'discount_code'},
+        {name:'total_price'},
+        {name:'tracking_url'},
+        {name:'tracking_company'},
+        {name:'tracking_number'},
+        {name:'show_whatsapp'},
+        {name:'show_whatsapp_url'},
+        {name:'code_cancel_url'},
+        {name:'code_confirm_url'},
+        {name:'code_cancel_url_partial_variable'},
+        {name:'code_confirm_url_partial_variable'},
+        {name:'first_name'},
+        {name:'last_name'},
+        {name:'shop_number'},
+        {name:'product_details'},
+        {name:'customer_details'},
+        {name:'catalog_checkout_url'},
+        {name:'catalog_checkout_url_partial_variable'},
+        {name:'tracking_partial_variable'},
+      ]
+    },
+    {
+      title:'Woocommerce',
+      values:[
+        {name:'shop_name'},
+        {name:'abandoned_checkout_url'},
+        {name:'abandoned_checkout_url_partial_variable'},
+        {name:'order_status_url'},
+        {name:'order_status_url_partial_variable'},
+        {name:'order_number'},
+        {name:'discount_code'},
+        {name:'total_price'},
+        {name:'shop_whatsapp'},
+        {name:'shop_whatsapp_url'}
+      ]
+    }
+  ];
+
+  return (
+    <div className="modal-backdrop">
+      <div className="atrrPopup-content">
+        <div className='popupNav'>
+          <div className='AddNav'>
+            <p className='popupNavHead'>Select attributes</p>
+            <a href='https://live-6053.wati.io/6053/contacts' target='_blank'><IoIosLink /> Go to contacts</a>
+          </div>
+          <p className="close-button" onClick={onClose}><RxCross2 /></p>
+        </div>
+        {attributes.map((attributeGroup, index) => (
+          <div key={index} className='AddNavContactCont'>
+            <h5>{attributeGroup.title}</h5>
+            <div className='AttributeContactCont'>
+              {attributeGroup.values.map((value, valueIndex) => (
+                <p key={valueIndex} onClick={()=>ChooseVariable(value.name)}>{value.name}</p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default AttributePopup;

@@ -1,0 +1,2 @@
+Name,CountryCode,Phone,AllowBroadcast,AllowSMS,Attribute 1,Attribute 2
+WATI Test,852,64318721,TRUE,TRUE,value 1,value 2

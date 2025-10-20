@@ -1,0 +1,599 @@
+.your-emails li {
+  padding: 0 15px !important;
+  border-left: #fff solid 5px;
+}
+
+.your-emails>li:hover {
+  background: #e9f6ee;
+  border-left: #23a455 solid 5px;
+}
+
+.ticket-title {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ticket-title h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.ticket-title p {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 0 !important;
+}
+
+.email>span {
+  float: left !important;
+  padding-top: 12px !important;
+  margin-right: 5px !important;
+}
+
+.hum-clock i {
+  color: #999 !important;
+  font-size: 24px !important;
+}
+
+.hub-alert {
+  color: #f00 !important;
+  font-size: 24px !important;
+}
+/* .hum-avator{
+  margin-top: 2px;
+} */
+.hum-avator img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+
+.alert-count {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #fff !important;
+  font-size: 14px !important;
+  padding: 4px 4px 4px 7px !important;
+  display: block;
+  float: right !important;
+  font-weight: 600 !important;
+  line-height: 0 !important;
+  margin-top: 14px;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 222px !important;
+  top: 105px !important;
+  z-index: 9999 !important;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #a90000;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+  Sidebar wrapper styles
+  Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+  */
+
+/* General sidebar styles */
+.bm-menu {
+  background: #fff !important;
+  padding:0 !important;
+  font-size: 1.15em;
+  border-top-left-radius: 20px;
+  box-shadow: -25px 0px 20px -20px rgba(151, 151, 151, 0.45);
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.mail-create-date {
+  margin-left: 20px;
+  clear: left !important;
+  margin-bottom: 0 !important;
+  display: inline-block;
+}
+
+.mail-create-date span {
+  margin-right: 10px;
+}
+
+.mail-time {
+  border-left: #666 solid 1px;
+  padding-left: 10px;
+}
+
+.inbox-control {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+}
+.team-hum-avator{
+  width: 26px;
+}
+.team-hum-avator img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-left: -5px;
+  border: #fff solid 2px;
+}
+
+.status-upload {
+  /* width: 95% !important; */
+}
+
+.mail-send-btn {
+  float: right;
+}
+
+.mail-send-btn span {
+  margin-right: 10px;
+  margin-top: 15px;
+  float: left;
+}
+
+.inline-form {
+  margin-top: 0 !important;
+}
+
+.inline-form>label {
+  background: #fff;
+  color: #777;
+  font-size: 14px !important;
+  font-weight: normal;
+  padding: 1px 19px;
+  position: absolute;
+  right: 10px;
+  text-transform: uppercase;
+  top: 12px !important;
+}
+
+.color-222 {
+  color: #222 !important;
+}
+
+.white-bg {
+  background: #fff !important;
+}
+
+.feed-tittle {
+  width: 100%;
+  padding-bottom: 0 !important;
+}
+
+.feed-tittle span {
+  color: #222 !important;
+  /* margin-right: 30px !important; */
+}
+
+.timeline-detail {
+  /* border: #999 solid 1px; */
+}
+
+.custom-todo {
+  padding: 1px 5px !important;
+}
+
+.w-90 {
+  width: 90% !important;
+}
+
+.green-color {
+  color: #07cb57 !important;
+}
+
+.down-arrow-btn {
+  position: absolute;
+  right: 20px;
+  top: 30px;
+}
+
+.down-arrow-btn i {
+  color: #999 !important;
+}
+
+/* .divider{
+  height:30px;
+  clear: both;
+} */
+
+.w-80 {
+  max-width: 80%;
+}
+
+.dropdownsection {
+  margin-bottom: 20px;
+}
+
+.dropdownsection h6 {
+  margin-bottom: 12px;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 14px !important;
+  font-weight: 600;
+}
+
+.amimation {
+  transition: 0.5s;
+  transform: translate3d(50%, 0px, 0px);
+}
+
+.widget-title h6 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ticket-filter-contain {
+  /* position: fixed; */
+  position:absolute;
+  z-index: 9;
+  background: #fff;
+  left: 18rem;
+}
+
+.ticket-filter-body {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.ticket-filters {
+  position: fixed;
+  padding: 15px;
+  width: 320px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: #fff;
+}
+
+.ticket-filter-btn button {
+  background: none !important;
+  color: #6f6f6f !important;
+  border: none !important;
+  position: relative;
+}
+
+.ticket-filter-title {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ticket-sub-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+}
+
+.ticket-filter-footer button {
+  background: #0d6efd !important;
+  color: #fff !important;
+}
+
+.ticket-filter-footer button:hover {
+  background: #0b5ed7 !important;
+}
+
+.ticket-filter-footer {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.input-btn {
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.name-this {
+  width: 50% !important;
+}
+
+.todo-line {
+  padding: 0 10px;
+}
+
+.todoinprogress-contain {
+  display: inline-flex;
+  margin-bottom: 5px;
+  padding: 10px 5px 0 5px;
+  /* width: 200px; */
+}
+
+.todoicons {
+  margin-right: 15px;
+}
+
+.todo-text h4 {
+  margin-bottom: 5px;
+}
+
+.todoarrow-right {}
+
+.ticket-view-accordin {
+  width: 200px;
+  height: 500px;
+  position: absolute;
+  left:15px;
+  top: 20px; 
+ /* padding-top: 1rem;*/
+}
+
+/******** Main wrapper control ******/
+#page-wrap {
+  /* position: relative;
+  left: 205px; */
+}
+
+.ticketview {
+  width: 65%;
+  left: 225px !important;
+}
+.ticket-view-dropdown{
+  margin-bottom: 0 !important;
+}
+.ticket-view-dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 28px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ticket-view-dropdown li:hover {
+  background: #0069d9;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: #0069d9 0px 1px 2px 0px
+}
+
+.ticket-view-dropdown li span {
+  padding: 2px 7px;
+  background: #fff;
+  border-radius: 5px;
+  color: #0b2040;
+}
+
+.accordion-item {
+  background: none !important;
+  border: none !important;
+}
+
+.accordion-button {
+  background: none !important;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px !important;
+}
+
+.accordion-header {
+  background: #dfe0df;
+  border-radius: 10px;
+ }
+/* .accordion-header .accordion-button:not(.collapsed)::after{
+  transform: rotate(-360deg) !important;
+} */
+.acc-icon-text{
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.acc-icon-text i{
+  font-size: 20px;
+  margin-right: 10px;
+}
+.acc-icon-text svg{
+margin-right: 10px;
+stroke:#666666;
+
+}
+.accordion-button:not(.collapsed) {
+  color: #0b2040 !important;
+}
+.accordion-body{
+  padding: 0.5rem !important;
+}
+.ticketview-open {
+  cursor: pointer;
+}
+.ticketview-open i{
+  font-size: 16px !important;
+}
+.close-line {
+  min-height: 100%;
+  position: absolute;
+  width: 3px;
+  right: 0px;
+  z-index: 9;
+}
+
+.close-line:hover {
+  background-color: #0b5ed7;
+}
+
+.allleftnavclose {
+  width: 100% !important;
+}
+
+.all-close-arrow-btn {
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px;
+  background: #fff;
+  border: #ccc solid 1px;
+  /* position: relative;
+  top:26px;
+  left: -20px;
+  z-index: 99999; */
+  position: absolute;
+  /* left: -13px; */
+  left:-19px;
+  width: 24px;
+  min-height: 100%;
+  border-top-left-radius: 10px;
+  z-index: 99;
+}
+
+@media only screen and (max-width: 1536px) {
+  .bm-menu-wrap{
+    left: 225px;
+  }
+  .main-content {
+    width: 80%;
+  }
+
+  .ticketview {
+   /* width: 65% !important; */
+   width: 61% !important;
+  
+  }
+}
+
+@media only screen and (max-width: 1920px) {
+  .bm-menu-wrap{
+    left: 225px;
+  }
+  .main-content {
+    /* width: 80%; */
+    width:78%;
+   
+  }
+
+  .ticketview {
+    width: 72%;
+  }
+}
+.ticket-view-accordin .accordion-item:first-of-type .accordion-button{
+  border: None !important;
+  box-shadow: none !important;
+}
+/* .accordion-button {
+  position: relative;
+  padding-left: 3rem; 
+}
+
+.accordion-button::after {
+  font-size: 1.2rem; 
+  position: absolute;
+  left: 1rem; 
+  top: 50%;
+  transform: translateY(-50%);
+} */
+
+.btrr-20{
+  border-top-right-radius: 20px !important;
+}
+.custom-nav-tab{
+  justify-content: left !important;
+}
+.support-ticket-sec .tab-content{
+  padding: 0 !important;
+}
+.nav-tabs .nav-link.active{
+  border-bottom: #037dfd solid 2px !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+.nav-tabs .nav-link{
+  padding-left: 0 !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  padding-right: 15px !important;
+  font-weight: 600;
+  margin-right: 20px;
+}
+.txt-11{
+  font-size: 11px;
+}
+.task-felid{
+  width: 97% !important;
+}
+.task-felid .accordion-header{
+  background: #fff !important;
+  border-radius:0 !important;
+  border-top: #b8b7ad solid 1px !important;
+  border-left:none !important;
+  border-right:none !important;
+  border-bottom:none !important;
+}
+.ptb20{
+  padding: 19px 10px !important;
+}
+.p-20{
+  padding: 20px !important;
+}
+.tooltip-attach img{
+  height: 18px;
+}
+.ask-kb{
+  margin-left: 10px;
+}
+.light-grey-bg{
+  background: #e4e4e4;
+}
+.border-left{
+  border-left: 1px solid #e7e7e7;
+}
+.border-radius-5 button{
+  border-radius: .5rem !important;
+}
+.close-content{
+  margin-right: 15px !important;
+}
+.close-content i{
+  padding: 5px 8px;
+  border-radius: 50%;
+}
+.tic-view-chat{
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
