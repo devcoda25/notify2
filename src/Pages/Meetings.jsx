@@ -84,7 +84,6 @@ export default function Meetings() {
   const NAV_W = 264;
 
   return (
-    <ThemeProvider theme={notifyTheme}>
     <Box
       sx={{
         width: "100%",
@@ -167,6 +166,7 @@ export default function Meetings() {
           </Routes>
         </Suspense>
       </MeetingsContentFrame>
-    </Box></ThemeProvider>
+    </Box>
   );
 }
+

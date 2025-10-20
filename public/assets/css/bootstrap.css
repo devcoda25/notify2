@@ -2984,7 +2984,11 @@ textarea.form-control-lg {
   border-radius: .2rem
 }
 
+<<<<<<< HEAD
 .input-group-lg>.form-select,
+=======
+.input-group-lg>.form-select, 
+>>>>>>> charlie-work
 .input-group-sm>.form-select {
   padding-right: 3rem
 }
@@ -14418,7 +14422,11 @@ fieldset:disabled .btn {
   /* flex-wrap: nowrap; */
   align-items: center;
   justify-content: space-between;
+<<<<<<< HEAD
   background-color: rgb(245, 246, 250);
+=======
+  
+>>>>>>> charlie-work
 }
 
 .chatbots_container .chatbots_header_div1{
@@ -14442,7 +14450,11 @@ fieldset:disabled .btn {
   font-weight: 600;
   font-size: 20px;
   line-height: 30px;
+<<<<<<< HEAD
   margin-right: 85px;
+=======
+ 
+>>>>>>> charlie-work
 }
 
 .chatbots_container .header__title_count {

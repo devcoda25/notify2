@@ -86,7 +86,7 @@ const CopyandAddModal = ({
           <div class="keywordfooter__delete">
                            <ButtonComponent
                                 label={buttonLabel}
-                                onClick={handleEdit}
+                                onClick={handleSave}
                                 disabled={isDisabled}
                                 customBtn={isDisabled && 'copy_disabled'}
                             />

@@ -63,9 +63,7 @@ export default function LiveLeft() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-
+<>
       <Stack sx={{ maxWidth: 960, mx: "auto", px: 2, py: { xs: 4, md: 6 } }} gap={3}>
         {/* Header card */}
         <Paper
@@ -220,7 +218,6 @@ export default function LiveLeft() {
             Submit
           </Button>
         </DialogActions>
-      </Dialog>
-    </ThemeProvider>
+      </Dialog></>
   );
 }

@@ -10,7 +10,8 @@ import {
   useParams,
   useNavigate,
 } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { notifyTheme } from "../theme/notifyTheme";
 
 import Navbar from "../Component/Navbar/Navbar";
 import BootGate from "../boot/BootGate";
@@ -240,7 +241,7 @@ const AppRoutes = () => {
             path="/u/:authUser/templates"
             element={
               <AuthUserRoute>
-                <Templates authUser={authUser} />
+                <Templates />
               </AuthUserRoute>
             }
           />
@@ -256,7 +257,7 @@ const AppRoutes = () => {
             path="/u/:authUser/automations"
             element={
               <AuthUserRoute>
-                <Automations authUser={authUser} />
+                <Automations />
               </AuthUserRoute>
             }
           />
@@ -329,9 +330,13 @@ const BaseLayouts = () => {
 
   return (
     <BootGate block={ENABLE_BLOCKING_BOOTSTRAP}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      {/* 🔮 App-wide theme (Navbar + all routes) */}
+      <ThemeProvider theme={notifyTheme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </ThemeProvider>
     </BootGate>
   );
 };

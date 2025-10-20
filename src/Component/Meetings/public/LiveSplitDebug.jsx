@@ -1,8 +1,5 @@
 import React from "react";
 import { Stack, Box } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import theme from "../../../theme/notifyTheme";
 import LiveApp from "../components/notify-live";
 import { RoleProvider } from "./live-sync/RoleContext";
 import { LiveBusProvider } from "./live-sync/LiveBusContext";
@@ -11,8 +8,6 @@ import { useParams } from "react-router-dom";
 export default function LiveSplitDebug() {
   const { roomId } = useParams();
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
       <Stack direction="row" sx={{ height: "100vh" }}>
         <Box sx={{ flex: 1, borderRight: 1, borderColor: "divider" }}>
           <RoleProvider role="host">
@@ -29,6 +24,5 @@ export default function LiveSplitDebug() {
           </RoleProvider>
         </Box>
       </Stack>
-    </ThemeProvider>
   );
 }

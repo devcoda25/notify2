@@ -1,0 +1,503 @@
+
+
+.root { 
+  position: relative; 
+  height: 100%;
+  width: 100%;
+}
+
+
+  
+
+.canvas { 
+  height: 100%; 
+  background-color: var(--bg-color, #fdfdfd);
+}
+
+.canvas :global(.react-flow__background) {
+    --line-color: hsl(215 20% 88%);
+    background-color: var(--bg-color, #fdfdfd);
+}
+.canvas :global(.react-flow__background) .react-flow__pattern circle {
+  fill: var(--line-color);
+  opacity: 0.5;
+}
+
+
+.toolbar {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.btn {
+  height: 32px; 
+  padding: 0 10px; 
+  border-radius: 8px; 
+  cursor: pointer;
+  border: 1px solid hsl(var(--border)); 
+  background: hsl(var(--bg-elevated)); 
+  color: hsl(var(--text));
+}
+
+.badge {
+  position: absolute; 
+  top: 8px; 
+  right: 8px; 
+  z-index: 40;
+  padding: 2px 8px; 
+  border-radius: 999px; 
+  font-size: 12px;
+  background: hsl(var(--bg-panel)); 
+  border: 1px solid hsl(var(--border)); 
+  color: hsl(var(--text-muted));
+}
+
+.spinner {
+  position: absolute; 
+  inset: 0; 
+  z-index: 30; 
+  display: grid; 
+  place-items: center;
+  background: hsla(var(--background), 0.5);
+  backdrop-filter: blur(1px);
+  font-size: 13px; 
+  color: hsl(var(--text));
+}
+
+.panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.panelBtn {
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.panelBtn:hover {
+    background: hsl(var(--accent));
+}
+.panelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: hsl(var(--card));
+}
+
+.baseNode,
+.subflow,
+.groupBox {
+  border-radius: 6px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--card-foreground));
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  width: 320px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.messageNode {
+    width: 380px;
+}
+
+.baseNode:hover,
+.subflow:hover,
+.groupBox:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+
+.nodeHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid hsl(var(--border));
+  background: var(--node-color, hsl(--primary));
+  color: white;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.headerLeft { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+.nodeIcon { color: white; }
+.nodeTitle { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nodeMore { background: transparent ;
+   border: none;
+    color: white; 
+    opacity: 0.7; 
+    cursor: pointer;
+     margin-left: auto;
+      padding: 4px;
+       border-radius: 4px; }
+.nodeMore:hover { opacity: 1; background: hsla(0,0%,100%,0.15); }
+
+.nodeBody { 
+  padding: 12px 14px; 
+  color: hsl(var(--muted-foreground)); 
+  font-size: 14px; 
+}
+.nodeBody p { margin: 0; }
+
+.handle {
+  width: 10px;
+  height: 10px;
+  background: hsl(var(--accent));
+  border: 2px solid hsl(var(--card));
+  box-shadow: 0 0 0 1.5px hsl(var(--border));
+  border-radius: 999px;
+}
+
+.handleLabel {
+    position: absolute;
+    right: 18px;
+    font-size: 11px;
+    color: hsl(var(--muted-foreground));
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.groupBox {
+  background: hsl(var(--muted));
+  padding: 6px;
+}
+.groupHeader {
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  padding: 6px 8px;
+}
+.groupBody {
+  padding: 8px;
+  color: hsl(var(--muted-foreground));
+  font-size: 12px;
+}
+
+.controls {
+    @apply flex bg-card border border-border rounded-lg shadow-lg;
+}
+.controls button {
+    @apply w-10 h-10 p-0 border-r border-border last:border-r-0 hover:bg-accent hover:text-accent-foreground;
+}
+.controls button svg {
+    @apply w-5 h-5;
+}
+
+.messageNodeBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0px !important;
+}
+
+.messagePart {
+  position: relative;
+}
+
+.messageContent {
+  position: relative;
+  background: hsl(var(--background));
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid hsl(var(--border));
+}
+
+.messageContent:hover {
+  border-color: hsl(var(--accent));
+}
+
+.messageTextarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  resize: none;
+  font-size: 14px;
+  color: hsl(var(--foreground));
+  padding: 0;
+  min-height: 20px;
+  line-height: 1.4;
+  overflow: hidden;
+}
+.messageTextarea:focus {
+  outline: none;
+}
+
+.mediaGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.attachmentTile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background-color: hsl(var(--muted));
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid hsl(var(--border));
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.attachmentTile:hover {
+  border-color: hsl(var(--accent));
+}
+
+.attachmentTileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+}
+.attachmentTileIcon {
+  flex-grow: 1;
+  display: grid;
+  place-items: center;
+  color: hsl(var(--muted-foreground));
+}
+
+.attachmentTileLabel {
+    background-color: hsla(0,0%,100%,0.8);
+    backdrop-filter: blur(2px);
+    font-size: 11px;
+    padding: 2px 6px;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-top: 1px solid hsl(var(--border));
+}
+
+.mediaGridMore {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+}
+
+
+.deletePartButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: hsl(var(--card) / 0.8);
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  border-radius: 999px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0;
+  z-index: 10;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  backdrop-filter: blur(2px);
+}
+
+.attachmentTile:hover .deletePartButton {
+  opacity: 1;
+}
+
+.deletePartButton:hover {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  border-color: hsl(var(--destructive) / 0.3);
+  transform: scale(1.1);
+}
+
+.addPartButtons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px;
+}
+.addPartButtons > button {
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+    border-color: hsl(var(--primary) / 0.2);
+    font-weight: 500;
+}
+.addPartButtons > button:hover {
+    background-color: hsl(var(--primary) / 0.2);
+}
+
+.conditionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.conditionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background-color: hsl(var(--muted));
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid hsl(var(--border));
+}
+
+.orDivider {
+    position: relative;
+    text-align: center;
+    color: hsl(var(--muted-foreground));
+    font-size: 11px;
+    font-weight: 600;
+    margin: 8px 0;
+}
+.orDivider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background-color: hsl(var(--border));
+    z-index: 1;
+}
+.orDivider > span {
+    position: relative;
+    z-index: 2;
+    background-color: hsl(var(--card));
+    padding: 0 8px;
+}
+
+.branchRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 8px;
+  background-color: hsl(var(--background));
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.branchCondition {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buttonsNodeBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.buttonsQuestion {
+  font-size: 14px;
+  color: hsl(var(--foreground));
+  margin-bottom: 8px;
+}
+
+.buttonsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.buttonItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+.buttonInput {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: hsl(var(--foreground));
+  font-size: 14px;
+}
+.buttonInput:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.buttonHandle {
+  width: 12px !important;
+  height: 12px !important;
+  background: #22c55e !important; /* green-500 */
+  border: 2px solid hsl(var(--muted)) !important;
+  box-shadow: 0 0 0 1px hsl(var(--border));
+  border-radius: 999px;
+  right: 12px !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+
+.edgebuttonWrapper {
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+:global(.react-flow__edge:hover) .edgebuttonWrapper {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.edgebutton {
+    width: 24px;
+    height: 24px;
+    background: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+    border: 1px solid hsl(var(--card));
+    cursor: pointer;
+    border-radius: 99px;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+}
+.edgebutton:hover {
+    box-shadow: 0 0 0 2px hsl(var(--card)), 0 0 0 4px hsl(var(--destructive));
+}
+
+/* Attachment styles */
+.attachmentList {
+  @apply flex flex-wrap gap-2 p-1;
+}
+
+.attachmentListEditor {
+  @apply bg-muted/50 rounded-b-md;
+}
+
+.attachmentItem {
+  @apply relative inline-flex items-center justify-center rounded-lg border border-border shadow-sm cursor-pointer transition-all hover:border-primary hover:shadow-md;
+  width: 80px; /* 64px thumb + 16px padding */
+  height: 80px;
+}
+
+.attachmentThumbnail {
+  @apply w-16 h-16 object-cover rounded-md flex-shrink-0 bg-muted;
+}
+
+.attachmentIconWrapper {
+    @apply w-16 h-16 flex-shrink-0 grid place-items-center bg-muted rounded-md;
+}
+ 

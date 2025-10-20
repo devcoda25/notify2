@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Grid, Slider } from '@mui/material';
-// import NewTemplate from '../Broadcast/NewTemplate';
+import NewTemplate from '../Broadcast/NewTemplate';
 import AddKeywordModalComponent from './PopupModal/KeywordAction/AddKeywordModalComponent';
 import Nextstep from './Nextstep';
 import ButtonComponent from '../ButtonComponent';

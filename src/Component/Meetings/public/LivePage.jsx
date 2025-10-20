@@ -1,7 +1,5 @@
 import React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import theme, { notifyTheme } from "../../../theme/notifyTheme";
 import LiveApp from "../components/notify-live";
 
@@ -26,8 +24,6 @@ export default function LivePage() {
   const activeTheme = theme || notifyTheme;
 
   return (
-    <ThemeProvider theme={activeTheme}>
-      <CssBaseline />
       <RoleProvider role={role}>
         <LiveBusProvider roomId={roomId}>
           <LiveApp
@@ -40,6 +36,5 @@ export default function LivePage() {
           />
         </LiveBusProvider>
       </RoleProvider>
-    </ThemeProvider>
   );
 }
