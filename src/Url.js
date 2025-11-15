@@ -24,6 +24,8 @@ export function base(){
     return process.env.REACT_APP_API_URL + "/api/v1.0/web/notify/template";
 }
 
+export const CONTACTS_API_BASE_URL = 'http://localhost:7440/api/v1.0/web/notify/contacts'; // Updated API base URL for contacts
+
 export function coreBase(){
     return process.env.REACT_APP_API_URL + "/api/v1.0/app/core/user/modules/user";
 }

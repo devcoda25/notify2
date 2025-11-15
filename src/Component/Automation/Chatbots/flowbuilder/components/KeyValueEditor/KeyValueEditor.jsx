@@ -1,11 +1,13 @@
 import React from 'react';
-import styles from './keyValueEditor.module.css';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
+import { Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { Trash2 } from 'lucide-react';
 
 export default function KeyValueEditor({
-  label, items, onChange, placeholderKey = 'key', placeholderValue = 'value'
+  label,
+  items = [],
+  onChange,
+  placeholderKey = 'key',
+  placeholderValue = 'value'
 }) {
   const update = (idx, patch) => {
     const next = items.map((r, i) => (i === idx ? { ...r, ...patch } : r));
@@ -15,30 +17,36 @@ export default function KeyValueEditor({
   const remove = (idx) => onChange(items.filter((_, i) => i !== idx));
 
   return (
-    <div className={styles.root}>
-      {label && <div className={styles.label}>{label}</div>}
-      <div className={styles.rows}>
+    <Stack spacing={1}>
+      {label && <Typography variant="caption" color="text.secondary">{label}</Typography>}
+      <Stack spacing={1}>
         {items.map((r, i) => (
-          <div key={i} className={styles.row}>
-            <Input
+          <Stack direction="row" spacing={1} key={i} alignItems="center">
+            <TextField
               placeholder={placeholderKey}
               value={r.key}
               onChange={(e) => update(i, { key: e.target.value })}
+              size="small"
+              fullWidth
             />
-            <Input
+            <TextField
               placeholder={placeholderValue}
               value={r.value}
               onChange={(e) => update(i, { value: e.target.value })}
+              size="small"
+              fullWidth
             />
-            <Button variant="ghost" size="icon" onClick={() => remove(i)} aria-label="Remove">
-                <Trash2 className="h-4 w-4"/>
-            </Button>
-          </div>
+            <IconButton onClick={() => remove(i)} aria-label="Remove item">
+                <Trash2 size={16} />
+            </IconButton>
+          </Stack>
         ))}
-      </div>
-      <Button variant="outline" size="sm" onClick={add} type="button" className="mt-2 w-fit">
-        + Add
-      </Button>
-    </div>
+      </Stack>
+      <Box>
+        <Button variant="outlined" size="small" onClick={add} type="button">
+          + Add
+        </Button>
+      </Box>
+    </Stack>
   );
 }

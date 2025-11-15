@@ -1,8 +1,7 @@
-import React from 'react'
-import styles from '../conditional-logic.module.css'
-import { humanDelay } from '../utils.js'
-
-function cn(...xs) { return xs.filter(Boolean).join(' ') }
+import React from 'react';
+import { Box, Paper, Typography, Chip, IconButton, Tooltip } from '@mui/material';
+import { ArrowUp, ArrowDown, Copy, X, Eye, EyeOff } from 'lucide-react';
+import { humanDelay } from '../utils.js';
 
 export default function BranchRow({
   branch,
@@ -15,37 +14,56 @@ export default function BranchRow({
   onRemove,
   onToggleDisabled
 }) {
-  return (
-    <div
-      className={cn(styles.row, selected && styles.rowActive, branch.disabled && styles.rowDisabled)}
-      role="button"
-      tabIndex={0}
-      onClick={onSelect}
-      onKeyDown={(e) => { if (e.key === 'Enter') onSelect() }}
-      data-branch-id={branch.id}
-      title="Click to edit"
-    >
-      <div className={styles.rowLeft}>
-        <div className={styles.rowTitle}>
-          <span className={styles.badge}>{branch.isElse ? 'ELSE' : (idx === 0 ? 'IF' : 'ELSE IF')}</span>
-          <span className={styles.rowLabel}>{branch.label || '(unnamed)'}</span>
-        </div>
-        <div className={styles.rowMeta}>
-          {!branch.isElse && <span className={styles.metaItem} title={branch.condition}>{branch.condition || '—'}</span>}
-          <span className={styles.metaItem}>Delay: {humanDelay(branch.delay)}</span>
-          {branch.target && <span className={styles.metaItem}>→ {branch.target}</span>}
-        </div>
-      </div>
 
-      <div className={styles.rowActions}>
-        <button className={styles.mini} onClick={(e) => { e.stopPropagation(); onMoveUp() }} title="Move up" aria-label="Move up">↑</button>
-        <button className={styles.mini} onClick={(e) => { e.stopPropagation(); onMoveDown() }} title="Move down" aria-label="Move down">↓</button>
-        <button className={styles.mini} onClick={(e) => { e.stopPropagation(); onDuplicate() }} title="Duplicate" aria-label="Duplicate">⎘</button>
-        <button className={styles.mini} onClick={(e) => { e.stopPropagation(); onToggleDisabled() }} title={branch.disabled ? 'Enable' : 'Disable'} aria-label="Toggle">
-          {branch.disabled ? 'Enable' : 'Disable'}
-        </button>
-        <button className={styles.removeBtn} onClick={(e) => { e.stopPropagation(); onRemove() }} title="Remove" aria-label="Remove">✕</button>
-      </div>
-    </div>
-  )
+  const handleAction = (e, action) => {
+    e.stopPropagation();
+    action();
+  };
+
+  return (
+    <Paper
+      elevation={selected ? 3 : 1}
+      onClick={onSelect}
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: '1fr auto',
+        gap: 1,
+        alignItems: 'center',
+        p: '8px 10px',
+        cursor: 'pointer',
+        opacity: branch.disabled ? 0.6 : 1,
+        border: selected ? 2 : 1,
+        borderColor: selected ? 'primary.main' : 'divider',
+        '&:hover': {
+          backgroundColor: 'action.hover'
+        }
+      }}
+    >
+      <Box sx={{ display: 'grid', gap: 0.5, overflow: 'hidden' }}>
+        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+          <Chip size="small" label={branch.isElse ? 'ELSE' : (idx === 0 ? 'IF' : 'ELSE IF')} />
+          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+            {branch.label || '(unnamed)'}
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'inline-flex', flexWrap: 'wrap', gap: 1, color: 'text.secondary', fontSize: 12 }}>
+          {!branch.isElse && 
+            <Typography variant="caption" noWrap title={branch.condition} sx={{ maxWidth: 300 }}>
+              {branch.condition || '—'}
+            </Typography>
+          }
+          <Typography variant="caption">Delay: {humanDelay(branch.delay)}</Typography>
+          {branch.target && <Typography variant="caption">→ {branch.target}</Typography>}
+        </Box>
+      </Box>
+
+      <Box sx={{ display: 'inline-flex', gap: 0.5 }}>
+        <Tooltip title="Move up"><IconButton size="small" onClick={(e) => handleAction(e, onMoveUp)}><ArrowUp size={16} /></IconButton></Tooltip>
+        <Tooltip title="Move down"><IconButton size="small" onClick={(e) => handleAction(e, onMoveDown)}><ArrowDown size={16} /></IconButton></Tooltip>
+        <Tooltip title="Duplicate"><IconButton size="small" onClick={(e) => handleAction(e, onDuplicate)}><Copy size={16} /></IconButton></Tooltip>
+        <Tooltip title={branch.disabled ? 'Enable' : 'Disable'}><IconButton size="small" onClick={(e) => handleAction(e, onToggleDisabled)}>{branch.disabled ? <EyeOff size={16} /> : <Eye size={16} />}</IconButton></Tooltip>
+        <Tooltip title="Remove"><IconButton size="small" onClick={(e) => handleAction(e, onRemove)}><X size={16} /></IconButton></Tooltip>
+      </Box>
+    </Paper>
+  );
 }

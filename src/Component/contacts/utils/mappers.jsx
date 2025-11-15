@@ -9,13 +9,60 @@ import { FIELD_META } from "./schema";
  */
 export function normalizeContact(input, opts = {}) {
     const c = { ...(input || {}) };
-    if (c.name) c.name = String(c.name).trim();
-    if (c.email) c.email = String(c.email).trim();
-    if (c.phone) c.phone = normalizePhone(String(c.phone));
-    c.attributes = Array.isArray(c.attributes) ? c.attributes.map(a => ({
+
+    // Extract primary contact info from contactInfos array
+    const primaryContactInfo = c.contactInfos?.find(info => info.label === 'Primary') || c.contactInfos?.[0] || {};
+
+    c.name = String(c.fullName || c.name || '').trim();
+    c.email = String(primaryContactInfo.email || '').trim();
+    c.phone = normalizePhone(String(primaryContactInfo.phoneNumber || ''));
+
+    // Process devices array
+    const devicesAll = Array.isArray(c.devices) ? c.devices.map(d => d.deviceType).filter(Boolean) : [];
+    const deviceMostUsed = Array.isArray(c.devices) ? c.devices.find(d => d.isMostUsed)?.deviceType || "" : "";
+    c.devices = {
+        all: devicesAll,
+        mostUsed: deviceMostUsed,
+    };
+
+    // Process services array
+    const servicesConsumed = Array.isArray(c.services) ? c.services.map(s => s.serviceType).filter(Boolean) : [];
+    const serviceMostUsed = Array.isArray(c.services) ? c.services.find(s => s.isMostUsed)?.serviceType || "" : "";
+    c.services = {
+        consumed: servicesConsumed,
+        mostUsed: serviceMostUsed,
+    };
+
+    // Process preferences array into preferredChannel and optIn
+    let preferredChannel = "";
+    const optIn = { email: false, sms: false, whatsapp: false, calls: false }; // Default all to false
+
+    if (Array.isArray(c.preferences) && c.preferences.length > 0) {
+        // Assuming the first preference in the array is the primary one for preferredChannel
+        preferredChannel = c.preferences[0].preferenceChannel || "";
+
+        // Build optIn based on preferenceChannel values
+        c.preferences.forEach(pref => {
+            if (pref.preferenceChannel) {
+                optIn[pref.preferenceChannel.toLowerCase()] = true;
+            }
+        });
+    }
+    c.preferredChannel = preferredChannel;
+    c.optIn = optIn;
+
+    // Process attributes array
+    c.attributes = Array.isArray(c.attribute) ? c.attribute.map(a => ({ // Note: using c.attribute here as per your response
         key: String(a?.key || "").trim(),
         value: String(a?.value || "").trim(),
     })).filter(a => a.key && a.value) : [];
+
+    // Process languages array (assuming it's directly on the contact object or within preferences)
+    c.languages = Array.isArray(c.languages) ? c.languages : (c.preferences?.[0]?.languages || []); // Take from first preference if available
+
+    // Add party details if available
+    c.party = c.party || {};
+
     if (opts.origin === "upload") c._origin = "upload";
     if (opts.origin === "db") c._origin = "db";
     if (opts.sheet) c._sheet = opts.sheet;

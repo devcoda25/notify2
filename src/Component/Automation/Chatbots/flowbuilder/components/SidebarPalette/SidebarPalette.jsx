@@ -1,118 +1,120 @@
-
 import React, { useMemo } from 'react';
 import { SECTION_DATA } from './sections-data';
 import * as LucideIcons from 'lucide-react';
-import { cn } from '../../lib/utils';
-import styles from './sidebar-palette.module.css';
+import {
+    Box,
+    Grid,
+    Paper,
+    Stack,
+    Tooltip,
+    Typography
+} from '@mui/material';
 
 export default function SidebarPalette({
-  onDragStart,
-  onItemClick,
-  filterChannels,
-  className,
+    onDragStart,
+    onItemClick,
+    filterChannels,
 }) {
-  
-  const allItems = useMemo(() => {
-    let items = SECTION_DATA.flatMap(sec => sec.items);
-    if (!filterChannels || filterChannels.length === 0) return items;
-    
-    const allowed = new Set(filterChannels);
-    return items.filter((it) => !it.channels || it.channels.some((c) => allowed.has(c)));
-  }, [filterChannels]);
 
+    const allItems = useMemo(() => {
+        let items = SECTION_DATA.flatMap(sec => sec.items);
+        if (!filterChannels || filterChannels.length === 0) return items;
 
-  function toPayload(it) {
-    return { 
-        key: it.key, 
-        label: it.label, 
-        icon: it.icon,
-        type: it.type, 
-        color: it.color, 
-        description: it.description,
-        content: it.content,
-        quickReplies: it.quickReplies,
-    };
-  }
+        const allowed = new Set(filterChannels);
+        return items.filter((it) => !it.channels || it.channels.some((c) => allowed.has(c)));
+    }, [filterChannels]);
 
+    function toPayload(it) {
+        return {
+            key: it.key,
+            label: it.label,
+            icon: it.icon,
+            type: it.type,
+            color: it.color,
+            description: it.description,
+            content: it.content,
+            quickReplies: it.quickReplies,
+        };
+    }
 
-  function handleDragStart(e, item) {
-    const payload = toPayload(item);
-    e.dataTransfer.effectAllowed = 'copy';
-    e.dataTransfer.setData('application/x-flow-node', JSON.stringify(payload));
-    e.dataTransfer.setData('text/plain', item.label);
-    
-    const ghost = document.createElement('div');
-    ghost.className = "flex flex-col items-center justify-center text-center gap-2 p-3 rounded-lg shadow-xl bg-card text-card-foreground border border-border";
-    ghost.style.width = '130px';
-    ghost.style.position = 'absolute';
-    ghost.style.top = '-1000px';
+    function handleDragStart(e, item) {
+        const payload = toPayload(item);
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('application/x-flow-node', JSON.stringify(payload));
+        e.dataTransfer.setData('text/plain', item.label);
+        onDragStart?.(e, payload);
+    }
 
-    const iconContainer = document.createElement('div');
-    iconContainer.className = "w-10 h-10 rounded-full grid place-items-center bg-primary/10 flex-shrink-0";
-    
-    const Icon = LucideIcons[item.icon] || LucideIcons.HelpCircle;
-    
-    const iconElement = document.createElement('div');
-    iconElement.style.color = 'hsl(var(--primary))';
-    iconElement.innerHTML = `<!-- Approximating icon, actual SVG might differ -->`;
-    iconContainer.appendChild(iconElement);
+    function handleItemClick(item) {
+        const payload = toPayload(item);
+        onItemClick?.(payload);
+    }
 
-    const labelElement = document.createElement('span');
-    labelElement.className = "text-sm font-medium leading-snug";
-    labelElement.innerText = item.label;
+    return (
+        <Stack component="nav" spacing={2} aria-label="Node palette">
+            {SECTION_DATA.map(section => {
+                const sectionItems = section.items.filter(item => allItems.some(ai => ai.key === item.key));
+                if (sectionItems.length === 0) return null;
 
-    ghost.appendChild(iconContainer);
-    ghost.appendChild(labelElement);
-
-    document.body.appendChild(ghost);
-    e.dataTransfer.setDragImage(ghost, 75, 40);
-
-    setTimeout(() => {
-      document.body.removeChild(ghost);
-    }, 0);
-    
-    onDragStart(e, payload);
-  }
-
-  function handleItemClick(item) {
-    const payload = toPayload(item);
-    onItemClick?.(payload);
-  }
-  
-  return (
-    <nav className={cn("  flex flex-col gap-4 overflow-y ")} aria-label="Node palette">
-        {SECTION_DATA.map(section => (
-            <div key={section.key}>
-                <h3 className="text-sm font-medium  mb-2 px-2">{section.title}</h3>
-                <div className="grid grid-cols-2 gap-2">
-                    {section.items.map(item => {
-                        const Icon = typeof item.icon === 'string' ? LucideIcons[item.icon] ?? LucideIcons.HelpCircle : item.icon;
-                        const isVisible = !filterChannels || filterChannels.length === 0 || !item.channels || item.channels.some(c => filterChannels.includes(c));
-                        
-                        if (!isVisible) return null;
-
-                        return (
-                        <button
-                            key={item.key}
-                            type="button"
-                            className={styles.paletteItem}
-                            style={{'--item-color': item.color}}
-                            draggable
-                            onDragStart={(e) => handleDragStart(e, item)}
-                            onClick={() => handleItemClick(item)}
-                            aria-label={`Add ${item.label}`}
-                            title={`${item.label}${item.description ? ` - ${item.description}`:''}`}
-                        >
-                            <div className={styles.paletteItemIconWrapper}>
-                                <Icon className={styles.paletteItemIcon} />
-                            </div>
-                            <span className={styles.paletteItemLabel}>{item.label}</span>
-                        </button>
-                        )
-                    })}
-                </div>
-            </div>
-        ))}
-    </nav>
-  );
+                return (
+                    <Box key={section.key}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1, px: 1, color: 'black' }}>
+                            {section.title}
+                        </Typography>
+                        <Grid container spacing={1}>
+                            {sectionItems.map(item => {
+                                const Icon = typeof item.icon === 'string' ? LucideIcons[item.icon] ?? LucideIcons.HelpCircle : item.icon;
+                                
+                                return (
+                                     <Grid item xs={6} key={item.key}>
+                                        <Tooltip title={`${item.label}${item.description ? ` - ${item.description}` : ''}`} placement="top">
+                                            <Paper
+                                                variant="outlined"
+                                                draggable
+                                                onDragStart={(e) => handleDragStart(e, item)}
+                                                onClick={() => handleItemClick(item)}
+                                                aria-label={`Add ${item.label}`}
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    height: 70,
+                                                    // width: 70,
+                                                    textAlign: 'center',
+                                                    p: 1,
+                                                    cursor: 'grab',
+                                                    userSelect: 'none',
+                                                    transition: (theme) => theme.transitions.create(['box-shadow', 'border-color']),
+                                                    '&:hover': {
+                                                        boxShadow: 2,
+                                                        borderColor: 'primary.light'
+                                                    },
+                                                    '&:active': {
+                                                        cursor: 'grabbing',
+                                                        transform: 'scale(0.98)'
+                                                    }
+                                                }}
+                                            >
+                                                <Box sx={{
+                                                    width: 32, height: 32, borderRadius: '50%', display: 'grid', placeItems: 'center',
+                                                    color: '#6f3cff',
+                                                    mb: 0.5
+                                                }}>
+                                                    <Icon size={20} />
+                                                </Box>
+                                                <Typography sx={{ fontSize: '0.6rem', fontWeight: 500, lineHeight: 1.2, color: 'black' }}>
+                                                    {item.label}
+                                                </Typography>
+                                            </Paper>
+                                        </Tooltip>
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </Box>
+                );
+            })}
+        </Stack>
+    );
 }

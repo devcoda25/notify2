@@ -1,52 +1,63 @@
-
 import React, { useMemo, useState } from 'react';
-// import styles from '../test-console.module.css';
-import clsx from 'clsx';
-import { Button } from '../../ui/button';
-import { Input } from '../../ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-const styles = ""
-export default function TracePanel({
-  trace, onClear
-}) {
-  const [q, setQ] = useState('');
-  const [typeFilter, setTypeFilter] = useState('all-types');
+import {
+    Box,
+    FormControl,
+    InputAdornment,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography
+} from '@mui/material';
+import { Search } from 'lucide-react';
 
-  const types = useMemo(() => {
-    const s = new Set(trace.map(t => t.type).filter(Boolean));
-    return ['all-types', ...Array.from(s)];
-  }, [trace]);
+export default function TracePanel({ trace, onClear }) {
+    const [q, setQ] = useState('');
+    const [typeFilter, setTypeFilter] = useState('all-types');
 
-  const filtered = useMemo(() => trace.filter(t => {
-    if (typeFilter && typeFilter !== 'all-types' && t.type !== typeFilter) return false;
-    if (!q) return true;
-    const line = `${t.type} ${t.nodeId ?? ''} ${t.nodeLabel ?? ''} ${t.result ?? ''} ${JSON.stringify(t.data ?? {})}`.toLowerCase();
-    return line.includes(q.toLowerCase());
-  }), [trace, q, typeFilter]);
+    const types = useMemo(() => {
+        const s = new Set(trace.map(t => t.type).filter(Boolean));
+        return ['all-types', ...Array.from(s)];
+    }, [trace]);
 
-  return (
-    <div className={styles.traceRoot}>
-      <div className={styles.traceToolbar}>
-        <Input className="h-8" placeholder="Search trace…" value={q} onChange={(e) => setQ(e.target.value)} />
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
-            <SelectTrigger className="w-[120px] h-8 text-xs"><SelectValue placeholder="All types"/></SelectTrigger>
-            <SelectContent>
-                {types.map(t => <SelectItem key={t} value={t}>{t === 'all-types' ? 'All types' : t}</SelectItem>)}
-            </SelectContent>
-        </Select>
-      </div>
+    const filtered = useMemo(() => trace.filter(t => {
+        if (typeFilter && typeFilter !== 'all-types' && t.type !== typeFilter) return false;
+        if (!q) return true;
+        const line = `${t.type} ${t.nodeId ?? ''} ${t.nodeLabel ?? ''} ${t.result ?? ''} ${JSON.stringify(t.data ?? {})}`.toLowerCase();
+        return line.includes(q.toLowerCase());
+    }), [trace, q, typeFilter]);
 
-      <div className={styles.traceScroll}>
-        {filtered.length === 0 && <div className={styles.muted}>No trace events.</div>}
-        {filtered.map((line, idx) => (
-          <div key={idx} className={clsx(styles.traceLine, line.type === 'error' && styles.traceError)}>
-            <span className={styles.traceTs}>{new Date(line.ts).toLocaleTimeString()}</span>
-            {line.nodeId && <span className={styles.traceNode}>[{line.nodeId}{line.nodeLabel ? ` • ${line.nodeLabel}` : ''}]</span>}
-            <span className={styles.traceType}>{line.type}</span>
-            {line.result && <span className={styles.traceMsg}>— {line.result}</span>}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <Stack sx={{ height: '100%' }}>
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
+                <TextField
+                    fullWidth
+                    size="small"
+                    placeholder="Search trace…"
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start"><Search size={16} /></InputAdornment>,
+                    }}
+                />
+                <FormControl size="small" sx={{ minWidth: 120 }}>
+                    <Select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                        {types.map(t => <MenuItem key={t} value={t}>{t === 'all-types' ? 'All types' : t}</MenuItem>)}
+                    </Select>
+                </FormControl>
+            </Stack>
+
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 1, fontFamily: 'monospace', fontSize: 12 }}>
+                {filtered.length === 0 && <Typography variant="body2" sx={{ color: 'text.secondary', textAlign: 'center', p: 2 }}>No trace events.</Typography>}
+                {filtered.map((line, idx) => (
+                    <Stack key={idx} direction="row" spacing={1} sx={{ color: line.type === 'error' ? 'error.main' : 'text.primary' }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>{new Date(line.ts).toLocaleTimeString()}</Typography>
+                        {line.nodeId && <Typography variant="caption" sx={{ color: 'primary.main' }}>[{line.nodeId}{line.nodeLabel ? ` • ${line.nodeLabel}` : ''}]</Typography>}
+                        <Typography variant="caption" sx={{ fontWeight: 'bold' }}>{line.type}</Typography>
+                        {line.result && <Typography variant="caption" sx={{ whiteSpace: 'pre-wrap' }}>— {line.result}</Typography>}
+                    </Stack>
+                ))}
+            </Box>
+        </Stack>
+    );
 }

@@ -1,61 +1,94 @@
-
 import React from 'react';
-// import styles from '../test-console.module.css';
-import clsx from 'clsx';
-import { Button } from '../../ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
+import {
+    Box,
+    Chip,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    IconButton,
+    MenuItem,
+    Select,
+    Stack,
+    Tooltip,
+    Typography
+} from '@mui/material';
 import { Play, Pause, SkipForward, RotateCcw, Binary, Download } from 'lucide-react';
-import { Checkbox } from '../../ui/checkbox';
-import { Label } from '../../ui/label';
-const styles = ""
+
 export default function Toolbar({
-  channel, setChannel,
-  status,
-  onPlay, onPause, onStep, onRestart,
-  onClearChat, onClearTrace,
-  onToggleContext, onExportTrace,
-  autoScroll, onAutoScrollChange,
+    channel, setChannel,
+    status,
+    onPlay, onPause, onStep, onRestart,
+    onClearChat, onClearTrace,
+    onToggleContext, onExportTrace,
+    autoScroll, onAutoScrollChange,
 }) {
-  const CHANNELS = ['whatsapp','sms','email','push','voice','slack','teams','telegram'];
-  const busy = status === 'running';
+    const CHANNELS = ['whatsapp', 'sms', 'email', 'push', 'voice', 'slack', 'teams', 'telegram'];
+    const busy = status === 'running';
 
-  return (
-    <div className={styles.toolbar}>
-      <div className={styles.group}>
-        <Select value={channel} onValueChange={(v) => setChannel(v)}>
-            <SelectTrigger className="w-[120px] h-9">
-                <SelectValue/>
-            </SelectTrigger>
-            <SelectContent>
-                {CHANNELS.map(ch => <SelectItem key={ch} value={ch}>{ch.charAt(0).toUpperCase() + ch.slice(1)}</SelectItem>)}
-            </SelectContent>
-        </Select>
-      </div>
+    const statusColors = {
+        running: 'success',
+        paused: 'warning',
+        waiting: 'warning',
+        idle: 'default',
+        stopped: 'error'
+    };
 
-      <div className={styles.group}>
-        {status !== 'running' ? (
-          <Button size="sm" variant="outline" onClick={onPlay} disabled={busy} title="Play"><Play className="h-4 w-4"/></Button>
-        ) : (
-          <Button size="sm" variant="outline" onClick={onPause} disabled={!busy} title="Pause"><Pause className="h-4 w-4"/></Button>
-        )}
-        <Button size="sm" variant="outline" onClick={onStep} disabled={true} title="Step (Not implemented)"><SkipForward className="h-4 w-4"/></Button>
-        <Button size="sm" variant="outline" onClick={onRestart} title="Restart"><RotateCcw className="h-4 w-4"/></Button>
-      </div>
-      
-      <div className="flex-grow" />
+    return (
+        <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 0.5, borderBottom: 1, borderColor: 'divider' }}>
+            <FormControl size="small" sx={{ minWidth: 110 }}>
+                <Select value={channel} onChange={(e) => setChannel(e.target.value)} sx={{ fontSize: '0.8rem' }}>
+                    {CHANNELS.map(ch => <MenuItem key={ch} value={ch} sx={{ fontSize: '0.8rem' }}>{ch.charAt(0).toUpperCase() + ch.slice(1)}</MenuItem>)}
+                </Select>
+            </FormControl>
 
-      <div className={styles.group}>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="autoscroll" checked={autoScroll} onCheckedChange={(c) => onAutoScrollChange(!!c)} />
-            <Label htmlFor="autoscroll" className="text-xs font-normal">Auto-scroll</Label>
-          </div>
-        <Button size="sm" variant="outline" onClick={onToggleContext}><Binary className="h-4 w-4 mr-1"/> Context</Button>
-        <Button size="sm" variant="outline" onClick={onExportTrace}><Download className="h-4 w-4 mr-1"/> Export Trace</Button>
-      </div>
+            <Stack direction="row" spacing={0.25}>
+                {status !== 'running' ? (
+                    <Tooltip title="Play">
+                        <span>
+                            <IconButton size="small" onClick={onPlay} disabled={busy}><Play size={16} /></IconButton>
+                        </span>
+                    </Tooltip>
+                ) : (
+                    <Tooltip title="Pause">
+                        <span>
+                            <IconButton size="small" onClick={onPause} disabled={!busy}><Pause size={16} /></IconButton>
+                        </span>
+                    </Tooltip>
+                )}
+                <Tooltip title="Step (Not implemented)">
+                    <span>
+                        <IconButton size="small" onClick={onStep} disabled={true}><SkipForward size={16} /></IconButton>
+                    </span>
+                </Tooltip>
+                <Tooltip title="Restart">
+                    <span>
+                        <IconButton size="small" onClick={onRestart}><RotateCcw size={16} /></IconButton>
+                    </span>
+                </Tooltip>
+            </Stack>
 
-      <span className={clsx(styles.badge, status === 'running' && styles.badgeGreen, status === 'paused' && styles.badgeOrange, status === 'waiting' && styles.badgeOrange)}>
-        {status.toUpperCase()}
-      </span>
-    </div>
-  );
+            <Box sx={{ flexGrow: 1 }} />
+
+            <Stack direction="row" spacing={0.5} alignItems="center">
+                <FormControlLabel
+                    control={<Checkbox id="autoscroll" checked={autoScroll} onChange={(e) => onAutoScrollChange(e.target.checked)} size="small" />}
+                    label={<Typography variant="caption" sx={{ fontSize: '0.7rem' }}>Auto-scroll</Typography>}
+                    sx={{ mr: 0.5 }}
+                />
+                <Tooltip title="Toggle Context Editor">
+                    <IconButton size="small" onClick={onToggleContext}><Binary size={16} /></IconButton>
+                </Tooltip>
+                 <Tooltip title="Export Trace">
+                    <IconButton size="small" onClick={onExportTrace}><Download size={16} /></IconButton>
+                </Tooltip>
+            </Stack>
+
+            <Chip
+                size="small"
+                label={status.toUpperCase()}
+                color={statusColors[status] || 'default'}
+                sx={{ ml: 1, minWidth: 70, fontSize: '0.7rem' }}
+            />
+        </Stack>
+    );
 }

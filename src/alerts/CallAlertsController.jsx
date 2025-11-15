@@ -149,7 +149,7 @@ export default function CallAlertsController({ agentId, minimal = true }) {
 
   return (
     <>
-      <Stack direction="row" spacing={1}>
+      {/* <Stack direction="row" spacing={1}>
         {perm !== "granted" ? (
           <Tooltip title="Enable system notifications for new calls (works even if app is backgrounded)">
             <Chip
@@ -187,7 +187,7 @@ export default function CallAlertsController({ agentId, minimal = true }) {
             />
           </Tooltip>
         )}
-      </Stack>
+      </Stack> */}
 
       {/* PiP target + fallback inline mini window */}
       <CallMiniWindowPiP

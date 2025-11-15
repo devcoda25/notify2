@@ -210,7 +210,7 @@ export default function AttachmentsManager({
     <Box
       ref={dropRef}
       sx={{
-        minHeight: "100vh",
+        minHeight: "30vh",
         display: "grid",
         placeItems: "center",
         px: 2,

@@ -200,7 +200,8 @@ export default function ContactDetailsDrawer({
               {/* Extra helpful fields */}
               <Row icon={BadgeCheck} label="Lead ID" value={contact?.ids?.leadId} />
               <Row icon={BadgeCheck} label="CRM ID" value={contact?.ids?.crmId} />
-              <Row icon={Globe2} label="Timezone" value={contact?.timezone || "—"} />
+              <Row icon={Building2} label="Account Name" value={contact?.party?.name || "—"} />
+              <Row icon={Globe2} label="Timezone" value={contact?.timezone || contact?.party?.timezone || "—"} />
               <Row icon={MapPin} label="Location" value={location || "—"} />
               <Row icon={CalendarClock} label="Joined" value={fmtDate(joinedAt)} />
               <Row icon={Timer} label="Last Active" value={fmtDateTime(lastActiveAt)} />

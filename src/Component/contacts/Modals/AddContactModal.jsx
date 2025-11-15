@@ -1,4 +1,3 @@
-// /src/Component/contacts/modals/AddContactModal.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
@@ -255,18 +254,41 @@ export default function AddContactModal({ open, onClose, onSubmit }) {
       } catch { onField("phone", ""); }
     }
 
-    const payload = {
-      ...form,
-      // legacy CSVs for any downstream compatibility
-      languagesCsv: (form.languages || []).join(", "),
-      devicesCsv: (form.devices || []).join(", "),
-      servicesCsv: (form.services || []).join(", "),
-    };
-
-    const errs = validateContact(payload);
+    const errs = validateContact(form);
     setErrors(errs);
     if (!isValid(errs)) return;
-    onSubmit?.({ ...payload, _origin: "db" });
+
+    const contactInfos = [];
+    if (form.email || form.phone) {
+      contactInfos.push({
+        email: form.email,
+        phoneNumber: form.phone,
+        countryIso: form.countryIso,
+        nationalPhone: form.nationalPhone,
+        label: 'Primary',
+      });
+    }
+
+    const preferences = form.preferredChannels.map(channel => ({
+      preferenceChannel: channel,
+      languages: form.languages,
+    }));
+
+    const payload = {
+      fullName: form.name,
+      title: form.title,
+      attribute: form.attributes,
+      devices: form.devices.map(d => ({ deviceType: d })),
+      services: form.services.map(s => ({ serviceType: s, isMostUsed: s === form.serviceMostUsed })),
+      contactInfos,
+      preferences,
+      meta: {
+        deviceMostUsed: form.deviceMostUsed,
+        serviceMostUsed: form.serviceMostUsed,
+      },
+    };
+
+    onSubmit?.(payload);
   };
 
   return (
@@ -392,6 +414,8 @@ export default function AddContactModal({ open, onClose, onSubmit }) {
               )}
             />
           </Grid>
+
+          
 
           {/* Opt-in chips generated from Preferred */}
           <Grid item xs={12}>

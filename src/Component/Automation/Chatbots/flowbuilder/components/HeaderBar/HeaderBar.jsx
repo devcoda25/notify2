@@ -100,7 +100,6 @@ export default function HeaderBar({
     [availableChannels]
   );
 
-  const headerId = useId();
   const selectedMeta = allChannels.filter((c) => channels.includes(c.id));
   const MAX_BADGES = 4;
   const overflow = Math.max(0, selectedMeta.length - MAX_BADGES);
@@ -137,29 +136,25 @@ export default function HeaderBar({
     <Paper
       elevation={0}
       className={className}
-      aria-labelledby={headerId}
       sx={{
         px: { xs: 1, sm: 1.5, md: 2 },
         py: 1,
         mb: 1.5,
-        borderRadius: 2,
+        borderRadius: 0,
         border: `1px solid ${theme.palette.divider}`,
         bgcolor: "background.paper",
       }}
     >
-      <Typography id={headerId} variant="srOnly">
-        Flow Builder Header
-      </Typography>
-
       <Stack
-        direction={{ xs: "column", md: "row" }}
-        alignItems={{ xs: "stretch", md: "center" }}
+        direction="row"
+        alignItems="center"
         spacing={1}
+        flexWrap="wrap" // Allow wrapping on very small screens
       >
         {/* LEFT cluster */}
         <Stack
-          direction={{ xs: "column", lg: "row" }}
-          alignItems={{ xs: "stretch", lg: "center" }}
+          direction="row"
+          alignItems="center"
           spacing={1}
           sx={{ flex: 1, minWidth: 0 }}
         >
@@ -168,7 +163,7 @@ export default function HeaderBar({
             variant="outlined"
             onClick={(e) => setFlowsAnchorEl(e.currentTarget)}
             endIcon={<ChevronDown size={16} />}
-            sx={{ height: 36 }}
+            sx={{ height: 36, flexShrink: 0 }}
           >
             Flows
           </Button>
@@ -217,7 +212,7 @@ export default function HeaderBar({
             aria-haspopup="listbox"
             aria-expanded={openChannels}
             endIcon={<ChevronDown size={16} />}
-            sx={{ height: 36 }}
+            sx={{ height: 36, flexShrink: 0 }}
           >
             Channels
           </Button>
@@ -272,7 +267,7 @@ export default function HeaderBar({
 
           {/* WA context */}
           {channels.includes("whatsapp") && onWaContextChange && (
-            <FormControl size="small" sx={{ minWidth: 160 }}>
+            <FormControl size="small" sx={{ minWidth: 160, flexShrink: 0 }}>
               <Select
                 value={waContext ?? "template"}
                 onChange={(e) => onWaContextChange(e.target.value)}
@@ -285,18 +280,21 @@ export default function HeaderBar({
           )}
 
           {/* Title */}
-          <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Box sx={{ minWidth: 0, flex: 1, display: 'flex', alignItems: 'center' }}>
             {editing ? (
               <TextField
                 inputRef={inputRef}
-                fullWidth
                 size="small"
                 value={currentTitle}
                 onChange={(e) => setCurrentTitle(e.target.value)}
                 onBlur={(e) => commitTitle(e.target.value)}
                 onKeyDown={onTitleKeyDown}
                 inputProps={{ maxLength: 50, "aria-label": "Flow title" }}
-                sx={{ "& .MuiInputBase-root": { height: 36 } }}
+                sx={{ 
+                  "& .MuiInputBase-root": { height: 36 },
+                  minWidth: 200,
+                  maxWidth: 400,
+                }}
               />
             ) : (
               <Button
@@ -348,7 +346,7 @@ export default function HeaderBar({
             size="small"
             onClick={onTest}
             startIcon={<TestTube size={16} />}
-            sx={{ height: 36 }}
+            sx={{ height: 36, flexShrink: 0 }}
           >
             Test Flow
           </Button>
@@ -359,7 +357,7 @@ export default function HeaderBar({
               size="small"
               onClick={onSaveClick}
               startIcon={<Save size={16} />}
-              sx={{ height: 36 }}
+              sx={{ height: 36, flexShrink: 0 }}
             >
               Save
             </Button>

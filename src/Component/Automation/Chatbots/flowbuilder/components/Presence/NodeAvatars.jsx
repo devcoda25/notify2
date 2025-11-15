@@ -1,32 +1,47 @@
-import React, { useCallback, useMemo } from 'react'
-import styles from './presence.module.css'
-import { useAwarenessStates, usePresence } from '../../presence/PresenceProvider'
-import { initials } from '../../presence/color'
+import React, { useCallback, useMemo } from 'react';
+import { useAwarenessStates, usePresence } from '../../presence/PresenceProvider';
+import { initials } from '../../presence/color';
+import { Avatar, AvatarGroup, Tooltip } from '@mui/material';
 
 export default function NodeAvatars({ nodeId, max = 3 }) {
-  const { self } = usePresence()
-  
-  const mapFn = useCallback((s) => {
-    if (!s.user) return null
-    if (s.user.id === self.id) return null
-    if (s.selection?.nodeId !== nodeId) return null
-    return { id: s.user.id, name: s.user.name, color: s.user.color }
-  }, [self.id, nodeId]);
+    const { self } = usePresence();
 
-  const users = useAwarenessStates(mapFn)
+    const mapFn = useCallback((s) => {
+        if (!s.user || s.user.id === self.id || s.selection?.nodeId !== nodeId) {
+            return null;
+        }
+        return { id: s.user.id, name: s.user.name, color: s.user.color };
+    }, [self.id, nodeId]);
 
-  const stack = useMemo(() => users.slice(0, max), [users, max])
-  const more = Math.max(0, users.length - stack.length)
+    const users = useAwarenessStates(mapFn);
 
-  if (users.length === 0) return null
-  return (
-    <div className={styles.stack}>
-      {stack.map((u) => (
-        <div key={u.id} className={styles.av} style={{ background: u.color }} title={u.name}>
-          {initials(u.name)}
-        </div>
-      ))}
-      {more > 0 && <div className={`${styles.av} ${styles.more}`} title={`${more} more`}>+{more}</div>}
-    </div>
-  )
+    if (users.length === 0) return null;
+
+    return (
+        <AvatarGroup
+            max={max}
+            sx={{
+                position: 'absolute',
+                top: -12,
+                right: -12,
+                flexDirection: 'row-reverse',
+                '& .MuiAvatar-root': {
+                    width: 24,
+                    height: 24,
+                    fontSize: 10,
+                    fontWeight: 800,
+                    border: '2px solid white',
+                    marginLeft: -1, // Overlap avatars
+                },
+            }}
+        >
+            {users.map((u) => (
+                <Tooltip title={u.name} key={u.id}>
+                    <Avatar sx={{ bgcolor: u.color }}>
+                        {initials(u.name)}
+                    </Avatar>
+                </Tooltip>
+            ))}
+        </AvatarGroup>
+    );
 }

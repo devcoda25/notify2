@@ -1,5 +1,5 @@
 // /src/Component/dailer/store/useDialerStore.js
-import create from 'zustand';
+import { create } from 'zustand';
 
 const ACW_DEFAULT_SECONDS = 45;
 const ENDED_LINGER_MS = 2500;

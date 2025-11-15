@@ -1,45 +1,54 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import styles from '../properties-panel.module.css';
-import { Label } from '../../ui/label';
-import { Button } from '../../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import {
+    Box,
+    Button,
+    Paper,
+    Stack,
+    Typography
+} from '@mui/material';
 
 export default function GoogleSheetsTab() {
-  const { watch, setValue } = useFormContext();
-  const accountId = watch('googleSheets.googleAccountId');
+    const { watch, setValue } = useFormContext();
+    const accountId = watch('googleSheets.googleAccountId');
 
-  const handleConnect = () => {
-    alert('Connecting to Google Account...');
-    setValue('googleSheets.googleAccountId', 'fake-account-id-123', { shouldDirty: true });
-  };
+    const handleConnect = () => {
+        alert('Connecting to Google Account...');
+        setValue('googleSheets.googleAccountId', 'fake-account-id-123', { shouldDirty: true });
+    };
 
-  const handleDisconnect = () => {
-    setValue('googleSheets.googleAccountId', null, { shouldDirty: true });
-  }
+    const handleDisconnect = () => {
+        setValue('googleSheets.googleAccountId', null, { shouldDirty: true });
+    }
 
-  return (
-    <div className={styles.tabBody}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Google Spreadsheet</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className={styles.field}>
-            <Label>Google Account</Label>
-            {accountId ? (
-                <div className="flex items-center justify-between">
-                    <p className="text-sm">Connected as: <strong>{accountId}</strong></p>
-                    <Button variant="destructive" size="sm" onClick={handleDisconnect}>Disconnect</Button>
-                </div>
-            ) : (
-                <Button onClick={handleConnect} className="w-fit bg-green-600 hover:bg-green-700 text-white">
-                    Add new Google Account
-                </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+    return (
+        <Stack spacing={3} sx={{ p: 1 }}>
+            <Paper variant="outlined">
+                <Box sx={{ p: 2 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>Google Spreadsheet</Typography>
+                </Box>
+                <Box sx={{ p: 2 }}>
+                    <Stack spacing={1}>
+                        <Typography variant="caption" color="text.secondary">Google Account</Typography>
+                        {accountId ? (
+                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                <Typography variant="body2">Connected as: <Typography component="span" sx={{ fontWeight: 600 }}>{accountId}</Typography></Typography>
+                                <Button color="error" size="small" onClick={handleDisconnect}>Disconnect</Button>
+                            </Stack>
+                        ) : (
+                            <Box>
+                                <Button 
+                                    variant="contained" 
+                                    onClick={handleConnect} 
+                                    sx={{ backgroundColor: '#16a34a', '&:hover': { backgroundColor: '#15803d' } }}
+                                >
+                                    Add new Google Account
+                                </Button>
+                            </Box>
+                        )}
+                    </Stack>
+                </Box>
+            </Paper>
+        </Stack>
+    );
 }

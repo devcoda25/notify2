@@ -10,10 +10,8 @@ import { getRandomColor } from './flowbuilder/lib/color-utils';
 import { PresenceProvider } from './flowbuilder/presence/PresenceProvider';
 
 // MUI Theme imports
-import { alpha, useTheme } from '@mui/material/styles';
-import { ReactComponent as LoadingSpinner } from './flowbuilder/sp.svg';
-
-import './FlowBuilder.css';
+import { Box, CircularProgress } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 // Lazy-loaded components
 const HeaderBar = lazy(() => import('./flowbuilder/components/HeaderBar/HeaderBar'));
@@ -23,10 +21,7 @@ const PropertiesPanel = lazy(() => import('./flowbuilder/components/PropertiesPa
 const TestConsole = lazy(() => import('./flowbuilder/components/TestConsole/TestConsole'));
 const PublishBanner = lazy(() => import('./flowbuilder/components/Presence/PublishBanner'));
 
-const ImageAttachmentModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/ImageAttachmentModal'));
-const VideoAttachmentModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/VideoAttachmentModal'));
-const DocumentAttachmentModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/DocumentAttachmentModal'));
-const AudioAttachmentModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/AudioAttachmentModal'));
+
 const WebhookModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/WebhookModal'));
 const ConditionModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/ConditionModal'));
 const AssignUserModal = lazy(() => import('./flowbuilder/components/PropertiesPanel/partials/AssignUserModal'));
@@ -59,7 +54,6 @@ function StudioPageContent() {
 
   const selectedNode = useMemo(() => nodes.find(n => n.id === selectedNodeId) || null, [nodes, selectedNodeId]);
 
-  // ✅ Access theme
   const theme = useTheme();
 
   useEffect(() => {
@@ -72,13 +66,6 @@ function StudioPageContent() {
   }, [activeFlow?.id, setNodes, setEdges, setMeta, activeFlow]);
 
   engine.setFlow(nodes, edges);
-
-  // Example usage of MUI theme
-  const containerStyle = {
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.text.primary,
-    minHeight: '100vh',
-  };
 
   const toast = (options) => {
     window.alert(options.title + '\n' + options.description);
@@ -107,8 +94,7 @@ function StudioPageContent() {
       setModalState({ type: 'webhook', nodeId: node.id, data: node.data });
     } else if (nodeLabel === 'Set a Condition') {
       setModalState({ type: 'condition', nodeId: node.id, data: { groups: node.data.groups } });
-    } else if (nodeLabel === 'Google Sheets') {
-      setModalState({ type: 'googleSheets', nodeId: node.id, data: node.data });
+    
     } else if (nodeLabel === 'Assign to User') {
       setModalState({ type: 'assignUser', nodeId: node.id, data: node.data });
     } else if (nodeLabel === 'Assign to Team') {
@@ -255,14 +241,26 @@ function StudioPageContent() {
     return undefined;
   }, [modalState, nodes]);
 
-  
-
   return (
-    <div className="flow-builder-container" style={containerStyle}>
-      <Suspense fallback={<div className="loading-container"><LoadingSpinner /></div>}>
+    <Box sx={{
+      position: 'fixed',
+      top: '60px',
+      left: 0,
+      width: '100%',
+      height: 'calc(100vh - 60px)',
+      zIndex: 1000,
+      bgcolor: 'background.default',
+      display: 'grid',
+      gridTemplateRows: 'auto 1fr',
+      color: 'text.primary',
+    }}>
+      <Suspense fallback={
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}>
+          <CircularProgress />
+        </Box>
+      }>
         <PublishBanner />
-        <PublishBanner />
-        <div className="flow-builder-header">
+        <Box>
           <HeaderBar 
             title={meta.title}
             onSave={setTitle}
@@ -280,12 +278,21 @@ function StudioPageContent() {
             onOpenFlows={() => setModalState({ type: 'flows' })}
             onDeleteFlow={handleDeleteFlow}
           />
-        </div>
-        <div className="flow-builder-body">
-          <div className="flow-builder-sidebar">
+        </Box>
+        <Box sx={{
+          display: 'grid',
+          gridTemplateColumns: '300px 1fr',
+          overflow: 'hidden',
+        }}>
+          <Box sx={{
+            overflowY: 'auto',
+            p: 2, // Corresponds to padding: 1rem
+          }}>
             <SidebarPalette onItemClick={handleClickAdd} filterChannels={meta.channels} />
-          </div>
-          <div className="flow-builder-main">
+          </Box>
+          <Box sx={{
+            position: 'relative',
+          }}>
             <CanvasWithLayoutWorker
               nodes={nodes}
               edges={edges}
@@ -301,8 +308,8 @@ function StudioPageContent() {
               onOpenImageEditor={openImageEditorModal}
               viewportKey="flow-editor-viewport"
             />
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {selectedNodeId && (
           <PropertiesPanel
@@ -319,11 +326,9 @@ function StudioPageContent() {
         {modalState?.type === 'buttons' && <ButtonsModal isOpen onClose={() => setModalState(null)} nodeId={modalState.nodeId} />}
         {modalState?.type === 'list' && <ListModal isOpen onClose={() => setModalState(null)} nodeId={modalState.nodeId} />}
         {modalState?.type === 'flows' && <FlowsModal isOpen onClose={() => setModalState(null)} />}
-        {modalState?.type === 'image' && <ImageAttachmentModal isOpen onClose={() => setModalState(null)} onSave={onSaveMedia} onDelete={onDeleteMedia} media={activePart} />}
+       
         {modalState?.type === 'imageEditor' && <ImageEditorModal isOpen onClose={() => setModalState(null)} onSave={onSaveMedia} media={activePart} />}
-        {modalState?.type === 'video' && <VideoAttachmentModal isOpen onClose={() => setModalState(null)} onSave={onSaveMedia} onDelete={onDeleteMedia} media={activePart} />}
-        {modalState?.type === 'audio' && <AudioAttachmentModal isOpen onClose={() => setModalState(null)} onSave={onSaveMedia} onDelete={onDeleteMedia} media={activePart} />}
-        {modalState?.type === 'document' && <DocumentAttachmentModal isOpen onClose={() => setModalState(null)} onSave={onSaveMedia} onDelete={onDeleteMedia} media={activePart} />}
+        
         {modalState?.type === 'webhook' && <WebhookModal isOpen onClose={() => setModalState(null)} onSave={onSaveModal} initialData={modalState?.data} />}
         {modalState?.type === 'condition' && <ConditionModal isOpen onClose={() => setModalState(null)} onSave={onSaveModal} initialData={modalState?.data} />}
         {modalState?.type === 'delay' && <DelayModal isOpen onClose={() => setModalState(null)} onSave={onSaveModal} initialData={modalState?.data} />}
@@ -333,7 +338,7 @@ function StudioPageContent() {
 
         <TestConsole isOpen={isTestConsoleOpen} onClose={toggleTestConsole} engine={engine} flowId={meta.id} />
       </Suspense>
-    </div>
+    </Box>
   );
 }
 

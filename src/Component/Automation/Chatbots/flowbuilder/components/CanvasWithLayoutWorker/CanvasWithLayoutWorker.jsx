@@ -3,17 +3,15 @@ import ReactFlow, {
   Controls,
   MiniMap,
   useReactFlow,
-  applyNodeChanges,
-  applyEdgeChanges,
-  addEdge,
-  ConnectionMode,
-  BackgroundVariant,
   Background,
+  BackgroundVariant,
   ConnectionLineType,
+  ConnectionMode,
 } from 'reactflow';
-import styles from './canvas-layout.module.css';
 import 'reactflow/dist/style.css';
 import { nanoid } from 'nanoid';
+import { Box } from '@mui/material';
+
 import BaseNode from './nodes/BaseNode';
 import GroupBoxNode from './nodes/GroupBoxNode';
 import SubflowNode from './nodes/SubflowNode';
@@ -44,7 +42,6 @@ export default function CanvasWithLayoutWorker({
   onOpenImageEditor,
 }) {
   const rfRef = useRef(null);
-  const canvasRef = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
   const { awareness } = usePresence();
   const { addNode } = useFlowStore();
@@ -52,7 +49,6 @@ export default function CanvasWithLayoutWorker({
   const [connectingNodeId, setConnectingNodeId] = useState(null);
   const [nodeSelector, setNodeSelector] = useState(null);
 
-  // Drag & drop
   const onDragOver = useCallback((e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
@@ -88,7 +84,6 @@ export default function CanvasWithLayoutWorker({
     [screenToFlowPosition, addNode, onOpenProperties]
   );
 
-  // Selection awareness
   const onSelectionChange = useCallback(
     ({ nodes: selNodes }) => {
       if (!awareness) return;
@@ -99,7 +94,6 @@ export default function CanvasWithLayoutWorker({
     [awareness]
   );
 
-  // Node double-click
   const handleNodeDoubleClick = useCallback(
     (_e, node) => {
       if (node.data.onNodeDoubleClick) node.data.onNodeDoubleClick(node);
@@ -108,7 +102,6 @@ export default function CanvasWithLayoutWorker({
     [onNodeDoubleClick]
   );
 
-  // Connection handlers
   const handleConnectStart = useCallback(
     (_, params) => {
       setConnectingNodeId(params);
@@ -184,8 +177,8 @@ export default function CanvasWithLayoutWorker({
   );
 
   return (
-    <div ref={canvasRef} className={styles.root}>
-  <div className={styles.canvas} onDrop={onDrop} onDragOver={onDragOver}>
+    <Box sx={{ position: 'relative', height: '100%', width: '100%' }}>
+      <Box sx={{ height: '100%', backgroundColor: '#fdfdfd' }} onDrop={onDrop} onDragOver={onDragOver}>
         <ReactFlow
           nodes={nodesWithProps}
           edges={edges}
@@ -194,7 +187,6 @@ export default function CanvasWithLayoutWorker({
           onConnect={onConnect}
           onConnectStart={handleConnectStart}
           onConnectEnd={handleConnectEnd}
-          onInit={(inst) => (rfRef.current = inst)}
           onSelectionChange={onSelectionChange}
           onNodeDoubleClick={handleNodeDoubleClick}
           onPaneClick={handlePaneClick}
@@ -204,26 +196,43 @@ export default function CanvasWithLayoutWorker({
           connectionMode={ConnectionMode.Loose}
           snapToGrid
           snapGrid={[GRID_SIZE, GRID_SIZE]}
-          fitView
           proOptions={{ hideAttribution: true }}
+          onInit={(inst) => {
+            rfRef.current = inst;
+            inst.fitView({ padding: 0.5 }); // Manually call fitView on init
+          }}
         >
           <Background variant={BackgroundVariant.Dots} gap={20} size={2} />
-          <Controls className={`${styles.controls} flow-builder-controls`} />
+          <Controls sx={{
+            display: 'flex',
+            backgroundColor: 'background.paper',
+            border: 1,
+            borderColor: 'divider',
+            borderRadius: 1,
+            boxShadow: 1,
+            '& button': {
+              width: 40,
+              height: 40,
+              p: 0,
+              borderRight: '1px solid',
+              borderColor: 'divider',
+              '&:last-of-type': { borderRight: 0 },
+              '&:hover': { backgroundColor: 'action.hover' },
+              '& svg': { width: 20, height: 20 },
+            },
+          }} />
           <MiniMap pannable zoomable />
-          <div className="position-absolute w-100 h-100" style={{ zIndex: 5, pointerEvents: 'none' }}>
+          <Box sx={{ position: 'absolute', width: '100%', height: '100%', zIndex: 5, pointerEvents: 'none' }}>
             <LiveCursors />
-          </div>
+          </Box>
         </ReactFlow>
 
         {nodeSelector && (
-          <div
-            className="position-fixed"
-            style={{ left: nodeSelector.x + 10, top: nodeSelector.y, zIndex: 2000 }}
-          >
+          <Box sx={{ position: 'fixed', left: nodeSelector.x + 10, top: nodeSelector.y, zIndex: 2000 }}>
             <NodeSelector onSelect={handleSelectNode} onClose={() => setNodeSelector(null)} />
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

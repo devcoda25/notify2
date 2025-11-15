@@ -1,61 +1,65 @@
-import React, { useState, useEffect, Suspense } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../../ui/dialog';
-import { Button } from '../../ui/button';
-import { Label } from '../../ui/label';
-import { lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Stack,
+    Typography,
+    Skeleton
+} from '@mui/material';
 
 const RichTextEditor = lazy(() => import('./RichTextEditor'));
 
 export default function MessageContentModal({
-  isOpen,
-  onClose,
-  onSave,
-  initialData,
-  onAddMedia,
+    isOpen,
+    onClose,
+    onSave,
+    initialData,
+    onAddMedia,
 }) {
-  const [text, setText] = useState('');
-  const modalRef = React.useRef(null);
+    const [text, setText] = useState('');
+    const modalRef = React.useRef(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      setText(initialData?.content || '');
-    }
-  }, [initialData, isOpen]);
+    useEffect(() => {
+        if (isOpen) {
+            setText(initialData?.content || '');
+        }
+    }, [initialData, isOpen]);
 
-  const handleSave = () => {
-    onSave({ content: text });
-    onClose();
-  };
+    const handleSave = () => {
+        onSave({ content: text });
+        onClose();
+    };
 
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl" ref={modalRef}>
-        <DialogHeader>
-          <DialogTitle>Edit Message</DialogTitle>
-          <DialogDescription>Modify the rich text content of your message below.</DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="message-text">Message Content</Label>
-            <Suspense fallback={<div className="min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2">Loading editor...</div>}>
-              <RichTextEditor
-                value={text}
-                onChange={setText}
-                placeholder="Type your message here..."
-                onAddMedia={onAddMedia}
-                variables={['name', 'email', 'order_id']}
-                modalRef={modalRef}
-              />
-            </Suspense>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="ghost" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+    return (
+        <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
+            <DialogTitle>Edit Message</DialogTitle>
+            <DialogContent ref={modalRef}>
+                <DialogContentText>Modify the rich text content of your message below.</DialogContentText>
+                <Stack spacing={1} sx={{ py: 2 }}>
+                    <Typography variant="caption" color="text.secondary">Message Content</Typography>
+                    <Suspense fallback={<Skeleton variant="rectangular" width="100%" height={200} />}>
+                        <RichTextEditor
+                            value={text}
+                            onChange={setText}
+                            placeholder="Type your message here..."
+                            onAddMedia={onAddMedia}
+                            variables={['name', 'email', 'order_id']}
+                            modalRef={modalRef}
+                        />
+                    </Suspense>
+                </Stack>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={handleSave} variant="contained">Save</Button>
+            </DialogActions>
+        </Dialog>
+    );
 }

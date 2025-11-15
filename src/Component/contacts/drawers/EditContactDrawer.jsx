@@ -63,6 +63,16 @@ function splitCsv(s) {
   return (s || "").split(",").map(v => v.trim()).filter(Boolean);
 }
 
+// Helper function to convert to E.164 format
+const toE164 = (countryIso, nationalNumber) => {
+  try {
+    const phoneNumber = parsePhoneNumberFromString(nationalNumber, countryIso);
+    return phoneNumber && phoneNumber.isValid() ? phoneNumber.format("E.164") : "";
+  } catch (e) {
+    return "";
+  }
+};
+
 function labelToId(label) {
   const l = (label || "").toLowerCase();
   const match = CHANNELS.find(c => c.label.toLowerCase() === l || c.id === l);
@@ -285,18 +295,62 @@ export default function EditContactDrawer({ open, contact, onClose, onSubmit }) 
     servicesCsv: (form.services || []).join(", "),
   }), [form]);
 
-  const handleSave = () => {
-    // normalize phone to E.164
-    if (form.nationalPhone) {
-      try {
-        const p = parsePhoneNumberFromString(form.nationalPhone, form.countryIso);
-        onField("phone", p && p.isValid() ? p.format("E.164") : "");
-      } catch { onField("phone", ""); }
-    }
+  const handleSave = async () => {
+    // Validate the form first
     const errs = validateContact(payloadForValidate);
     setErrors(errs);
     if (!isValid(errs)) return;
-    onSubmit?.({ ...payloadForValidate });
+
+    // 1. Prepare contactInfos
+    const contactInfos = [];
+    if (form.email || form.nationalPhone) {
+      contactInfos.push({
+        email: form.email,
+        phoneNumber: toE164(form.countryIso, form.nationalPhone) || form.phone, // Ensure phone is E.164
+        countryIso: form.countryIso || "",
+        nationalPhone: form.nationalPhone, // Store national phone as well
+        label: 'Primary', // Or derive from UI
+      });
+    }
+
+    // 2. Prepare preferences (assuming preferredChannels and languages are arrays)
+    const preferences = form.preferredChannels.map(channel => ({
+      preferenceChannel: channel,
+      languages: form.languages,
+    }));
+
+    // 4. Prepare devices
+    const devices = form.devices.map(d => ({
+      deviceType: d, // d is now a string (deviceType)
+      isMostUsed: d === form.deviceMostUsed, // Compare strings
+    }));
+
+    // 5. Prepare services
+    const services = form.services.map(s => ({
+      serviceType: s, // s is now a string (serviceType)
+      isMostUsed: s === form.serviceMostUsed, // Compare strings
+    }));
+
+    // 6. Prepare meta for other fields not directly mapped
+    const meta = {
+      source: form.source,
+      // Any other miscellaneous data
+    };
+
+    // 7. Construct the final patch object for the backend
+    const patch = {
+      fullName: form.name, // Rename 'name' to 'fullName'
+      title: form.title,
+      attribute: form.attributes, // Assuming attributes is already an array of {key, value}
+      contactInfos,
+      preferences,
+      devices,
+      services,
+      meta,
+    };
+
+    await onSubmit?.(form.id, patch);
+    onClose?.();
   };
 
   // guard

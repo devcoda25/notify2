@@ -1,46 +1,80 @@
-import React from 'react'
-import { useFieldArray, useFormContext } from 'react-hook-form'
-import styles from '../properties-panel.module.css'
+import React from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import {
+    Box,
+    Button,
+    FormControl,
+    Grid,
+    IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography
+} from '@mui/material';
+import { X } from 'lucide-react';
 
 export default function APITab() {
-  const { register, control, formState: { errors } } = useFormContext()
-  const { fields, append, remove } = useFieldArray({ control, name: 'headers' })
+    const { register, control, formState: { errors } } = useFormContext();
+    const { fields, append, remove } = useFieldArray({ control, name: 'headers' });
 
-  return (
-    <div className={styles.tabBody}>
-      <div className={styles.row}>
-        <label className={styles.fieldNarrow}>
-          <span className={styles.label}>Method</span>
-          <select {...register('method')} className={styles.select}>
-            <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option>
-          </select>
-        </label>
-        <label className={styles.field}>
-          <span className={styles.label}>URL</span>
-          <input {...register('url')} className={styles.input}/>
-          {errors.url && <span className={styles.err}>{String(errors.url.message)}</span>}
-        </label>
-      </div>
+    return (
+        <Stack spacing={3} sx={{ p: 1 }}>
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <FormControl fullWidth size="small">
+                        <InputLabel>Method</InputLabel>
+                        <Select {...register('method')} defaultValue="GET" label="Method">
+                            <MenuItem value="GET">GET</MenuItem>
+                            <MenuItem value="POST">POST</MenuItem>
+                            <MenuItem value="PUT">PUT</MenuItem>
+                            <MenuItem value="PATCH">PATCH</MenuItem>
+                            <MenuItem value="DELETE">DELETE</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={8}>
+                    <TextField
+                        {...register('url')}
+                        label="URL"
+                        fullWidth
+                        size="small"
+                        error={!!errors.url}
+                        helperText={errors.url ? String(errors.url.message) : null}
+                    />
+                </Grid>
+            </Grid>
 
-      <div className={styles.rowHeader}>
-        <h4 className={styles.subhead}>Headers</h4>
-        <button type="button" className={styles.addBtn} onClick={() => append({ key: '', value: '' })}>+ Add</button>
-      </div>
-      <ul className={styles.list}>
-        {fields.map((f, i) => (
-          <li key={f.id} className={styles.listItemTwo}>
-            <input {...register(`headers.${i}.key`)} placeholder="Key" className={styles.input}/>
-            <input {...register(`headers.${i}.value`)} placeholder="Value" className={styles.input}/>
-            <button type="button" className={styles.removeBtn} onClick={() => remove(i)}>✕</button>
-          </li>
-        ))}
-      </ul>
+            <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Headers</Typography>
+                    <Button size="small" onClick={() => append({ key: '', value: '' })}>+ Add</Button>
+                </Box>
+                <Stack spacing={1}>
+                    {fields.map((f, i) => (
+                        <Stack direction="row" key={f.id} spacing={1} alignItems="center">
+                            <TextField {...register(`headers.${i}.key`)} placeholder="Key" size="small" fullWidth />
+                            <TextField {...register(`headers.${i}.value`)} placeholder="Value" size="small" fullWidth />
+                            <IconButton onClick={() => remove(i)} aria-label="Remove header">
+                                <X size={16} />
+                            </IconButton>
+                        </Stack>
+                    ))}
+                </Stack>
+            </Box>
 
-      <label className={styles.field}>
-        <span className={styles.label}>Body (JSON)</span>
-        <textarea {...register('body')} rows={6} className={styles.textarea} placeholder='{"foo":"bar"}'/>
-        {errors.body && <span className={styles.err}>{String(errors.body.message)}</span>}
-      </label>
-    </div>
-  )
+            <TextField
+                {...register('body')}
+                label="Body (JSON)"
+                multiline
+                rows={6}
+                fullWidth
+                placeholder='{"foo":"bar"}'
+                error={!!errors.body}
+                helperText={errors.body ? String(errors.body.message) : null}
+                sx={{ '& .MuiInputBase-input': { fontFamily: 'monospace' } }}
+            />
+        </Stack>
+    );
 }

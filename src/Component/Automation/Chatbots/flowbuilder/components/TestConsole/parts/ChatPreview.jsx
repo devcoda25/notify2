@@ -1,104 +1,128 @@
-
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-// import styles from '../test-console.module.css';
-import clsx from 'clsx';
-import { Input } from '../../ui/input';
-import { Button } from '../../ui/button';
-import { FileText, ImageIcon, Music, Video } from 'lucide-react';
-const styles = ""
+import { Box, Button, Chip, Paper, Stack, TextField, Typography } from '@mui/material';
+import { FileText, Music, Video } from 'lucide-react';
+
 function AttachmentPreview({ attachment }) {
     switch (attachment.type) {
-        case 'image': 
-            return <img src={attachment.url} alt={attachment.name || 'image'} className={styles.attImage} />;
-        case 'video': 
-            return (
-                <div className={styles.attIconWrapper}>
-                    <Video className="h-6 w-6" />
-                    <span>{attachment.name || 'video'}</span>
-                </div>
-            );
+        case 'image':
+            return <Box component="img" src={attachment.url} alt={attachment.name || 'image'} sx={{ maxWidth: '100%', height: 'auto', borderRadius: 1 }} />;
+        case 'video':
+            return <Stack direction="row" spacing={1} alignItems="center"><Video size={16} /><Typography variant="caption">{attachment.name || 'video'}</Typography></Stack>;
         case 'audio':
-            return (
-                 <div className={styles.attIconWrapper}>
-                    <Music className="h-6 w-6" />
-                    <span>{attachment.name || 'audio'}</span>
-                </div>
-            );
-        default: 
-            return (
-                 <div className={styles.attIconWrapper}>
-                    <FileText className="h-6 w-6" />
-                    <span>{attachment.name || 'file'}</span>
-                </div>
-            );
+            return <Stack direction="row" spacing={1} alignItems="center"><Music size={16} /><Typography variant="caption">{attachment.name || 'audio'}</Typography></Stack>;
+        default:
+            return <Stack direction="row" spacing={1} alignItems="center"><FileText size={16} /><Typography variant="caption">{attachment.name || 'file'}</Typography></Stack>;
     }
 }
 
+const channelStyles = {
+    whatsapp: {
+        backgroundColor: 'grey.100',
+        // backgroundImage: 'url("https://i.imgur.com/G7aHhta.png")',
+        userBg: '#dcf8c6',
+        botBg: '#fff',
+    },
+    default: {
+        backgroundColor: 'grey.100',
+        userBg: 'primary.light',
+        botBg: '#fff',
+    }
+}
 
-export default function ChatPreview({
-  messages,
-  channel,
-  onUserReply,
-  autoScroll = true
-}) {
-  const scrollRef = useRef(null);
-  const [text, setText] = useState('');
+export default function ChatPreview({ messages, channel, onUserReply, autoScroll = true }) {
+    const scrollRef = useRef(null);
+    const [text, setText] = useState('');
 
-  const quickReplies = useMemo(() => {
-    const lastBot = [...messages].reverse().find(m => m.from === 'bot');
-    return lastBot?.actions?.buttons ?? [];
-  }, [messages]);
+    const quickReplies = useMemo(() => {
+        const lastBot = [...messages].reverse().find(m => m.from === 'bot');
+        return lastBot?.actions?.buttons ?? [];
+    }, [messages]);
 
-  useEffect(() => {
-    if (!autoScroll || !scrollRef.current) return;
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messages, autoScroll]);
+    useEffect(() => {
+        if (!autoScroll || !scrollRef.current) return;
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }, [messages, autoScroll]);
 
-  function send() {
-    const val = text.trim();
-    if (!val) return;
-    onUserReply(val);
-    setText('');
-  }
+    function send() {
+        const val = text.trim();
+        if (!val) return;
+        onUserReply(val);
+        setText('');
+    }
 
-  return (
-    <div className={styles.chatRoot}>
-      <div ref={scrollRef} className={clsx(styles.chatScroll, styles[`theme_${channel}`])}>
-        {messages.map((msg) => (
-          <div key={msg.id} className={clsx(styles.bubble, msg.from === 'user' ? styles.user : msg.from === 'bot' ? styles.bot : styles.system)}>
-            {msg.text && <div className={styles.bubbleText} dangerouslySetInnerHTML={{ __html: msg.text }}></div>}
-            
-            {msg.attachments && msg.attachments.length > 0 && (
-              <div className={styles.attRow}>
-                {msg.attachments.map(a => (
-                  <div key={a.id} className={styles.attChip}>
-                    <AttachmentPreview attachment={a} />
-                  </div>
-                ))}
-              </div>
+    const theme = channelStyles[channel] || channelStyles.default;
+
+    return (
+        <Stack sx={{ height: '100%' }}>
+            <Box
+                ref={scrollRef}
+                sx={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    p: 2,
+                    backgroundImage: theme.backgroundImage,
+                    backgroundColor: theme.backgroundColor,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            >
+                <Stack spacing={1.5}>
+                    {messages.map((msg) => (
+                        <Box
+                            key={msg.id}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: msg.from === 'user' ? 'flex-end' : 'flex-start',
+                            }}
+                        >
+                            <Paper
+                                elevation={1}
+                                sx={{
+                                    p: 1,
+                                    maxWidth: '80%',
+                                    bgcolor: msg.from === 'user' ? theme.userBg : theme.botBg,
+                                    borderRadius: 2,
+                                }}
+                            >
+                                {msg.text && <Typography variant="body2" dangerouslySetInnerHTML={{ __html: msg.text }} />}
+
+                                {msg.attachments && msg.attachments.length > 0 && (
+                                    <Stack spacing={1} sx={{ mt: 1 }}>
+                                        {msg.attachments.map(a => (
+                                            <Chip key={a.id} label={<AttachmentPreview attachment={a} />} size="small" />
+                                        ))}
+                                    </Stack>
+                                )}
+
+                                {msg.actions?.buttons && msg.actions.buttons.length > 0 && (
+                                    <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
+                                        {(msg.actions.buttons ?? []).map(b => 
+                                            <Button key={b.id} size="small" variant="outlined" onClick={() => onUserReply(b.label)} sx={{ textTransform: 'none' }}>
+                                                {b.label}
+                                            </Button>
+                                        )}
+                                    </Stack>
+                                )}
+                            </Paper>
+                        </Box>
+                    ))}
+                </Stack>
+            </Box>
+
+            {channel !== 'voice' && (
+                <Stack direction="row" spacing={1} sx={{ p: 1, borderTop: 1, borderColor: 'divider' }}>
+                    <TextField
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
+                        placeholder="Type a reply…"
+                        fullWidth
+                        size="small"
+                        variant="outlined"
+                    />
+                    <Button onClick={send} variant="contained">Send</Button>
+                </Stack>
             )}
-
-            {msg.actions?.buttons && msg.actions.buttons.length > 0 && (
-              <div className={styles.actionRow}>
-                {(msg.actions.buttons ?? []).map(b => <button key={b.id} className={styles.qrBtn} onClick={() => onUserReply(b.label)}>{b.label}</button>)}
-              </div>
-            )}
-
-          </div>
-        ))}
-      </div>
-
-      {channel !== 'voice' && (
-        <div className={styles.inputRow}>
-          <Input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-            placeholder="Type a reply…"
-          />
-          <Button onClick={send}>Send</Button>
-        </div>
-      )}
-    </div>
-  );
+        </Stack>
+    );
 }

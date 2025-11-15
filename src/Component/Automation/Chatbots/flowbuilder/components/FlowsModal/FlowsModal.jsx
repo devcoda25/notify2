@@ -1,74 +1,88 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog.jsx';
 import { useFlowsStore } from '../../store/flows.js';
-import { Button } from '../ui/button.jsx';
-import { Trash2 } from 'lucide-react';
 import { useToast } from '../../hooks/use-toast.js';
-
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogContentText,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Typography
+} from '@mui/material';
+import { Trash2 } from 'lucide-react';
 
 export default function FlowsModal({ isOpen, onClose }) {
-  const { flows, activeFlowId, setActiveFlow, deleteFlow } = useFlowsStore();
-  const { toast } = useToast();
+    const { flows, activeFlowId, setActiveFlow, deleteFlow } = useFlowsStore();
+    const { toast } = useToast();
 
-  const handleSelectFlow = (flowId) => {
-    setActiveFlow(flowId);
-    onClose();
-  };
+    const handleSelectFlow = (flowId) => {
+        setActiveFlow(flowId);
+        onClose();
+    };
 
-  const handleDeleteFlow = (e, flowId, flowTitle) => {
-    e.stopPropagation(); // Prevent row click when deleting
-    if (window.confirm(`Are you sure you want to delete the flow "${flowTitle}"? This cannot be undone.`)) {
-        deleteFlow(flowId);
-        toast({
-            title: "Flow Deleted",
-            description: `"${flowTitle}" has been deleted.`,
-            variant: "destructive"
-        });
-        if (flows.length <= 1) {
-            onClose(); // Close modal if it was the last flow
+    const handleDeleteFlow = (e, flowId, flowTitle) => {
+        e.stopPropagation();
+        if (window.confirm(`Are you sure you want to delete the flow "${flowTitle}"? This cannot be undone.`)) {
+            deleteFlow(flowId);
+            toast({
+                title: "Flow Deleted",
+                description: `"${flowTitle}" has been deleted.`,
+                variant: "destructive"
+            });
+            if (flows.length <= 1) {
+                onClose();
+            }
         }
     }
-  }
 
-  const sortedFlows = [...flows].sort((a, b) => b.lastModified - a.lastModified);
+    const sortedFlows = [...flows].sort((a, b) => b.lastModified - a.lastModified);
 
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Open Flow</DialogTitle>
-          <DialogDescription>Select a previously saved flow to open it in the editor.</DialogDescription>
-        </DialogHeader>
-        <div className="py-4 max-h-[60vh] overflow-y-auto">
-          <ul className="space-y-2">
-            {sortedFlows.map(flow => (
-              <li
-                key={flow.id}
-                onClick={() => handleSelectFlow(flow.id)}
-                className={`p-4 rounded-lg border flex justify-between items-center cursor-pointer transition-colors ${
-                  flow.id === activeFlowId ? 'bg-primary/10 border-primary' : 'hover:bg-muted'
-                }`}
-              >
-                <div>
-                  <h3 className="font-semibold">{flow.title}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Last modified: {new Date(flow.lastModified).toLocaleString()}
-                  </p>
-                </div>
-                <Button variant="ghost" size="icon" onClick={(e) => handleDeleteFlow(e, flow.id, flow.title)}>
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
-              </li>
-            ))}
-            {flows.length === 0 && (
-                <div className="text-center text-muted-foreground py-8">
-                    <p>No saved flows found.</p>
-                    <p>Create a new one from the "Flows" menu.</p>
-                </div>
-            )}
-          </ul>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
+    return (
+        <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
+            <DialogTitle>Open Flow</DialogTitle>
+            <DialogContent>
+                <DialogContentText sx={{ mb: 2 }}>
+                    Select a previously saved flow to open it in the editor.
+                </DialogContentText>
+                <Box sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                    <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        {sortedFlows.map(flow => (
+                            <ListItem
+                                key={flow.id}
+                                disablePadding
+                                secondaryAction={
+                                    <IconButton edge="end" aria-label="delete" onClick={(e) => handleDeleteFlow(e, flow.id, flow.title)}>
+                                        <Trash2 size={16} color="#ef4444" />
+                                    </IconButton>
+                                }
+                            >
+                                <ListItemButton
+                                    selected={flow.id === activeFlowId}
+                                    onClick={() => handleSelectFlow(flow.id)}
+                                    sx={{ borderRadius: 2, border: 1, borderColor: 'divider' }}
+                                >
+                                    <ListItemText
+                                        primary={<Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{flow.title}</Typography>}
+                                        secondary={`Last modified: ${new Date(flow.lastModified).toLocaleString()}`}
+                                    />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                        {flows.length === 0 && (
+                            <Box sx={{ textAlign: 'center', color: 'text.secondary', py: 8 }}>
+                                <Typography>No saved flows found.</Typography>
+                                <Typography variant="body2">Create a new one from the "Flows" menu.</Typography>
+                            </Box>
+                        )}
+                    </List>
+                </Box>
+            </DialogContent>
+        </Dialog>
+    );
 }

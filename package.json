@@ -64,6 +64,7 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.10.0",
     "reactflow": "^11.11.4",
+    "reselect": "^5.1.1",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "styled-components": "5.3.11",

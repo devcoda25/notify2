@@ -1,20 +1,29 @@
-import React from 'react'
-import { useFormContext } from 'react-hook-form'
-import styles from '../properties-panel.module.css'
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
+import { Stack, TextField } from '@mui/material';
 
 export default function AnalyticsTab() {
-  const { register, formState: { errors } } = useFormContext()
+  const { register, formState: { errors } } = useFormContext();
+  
   return (
-    <div className={styles.tabBody}>
-      <label className={styles.field}>
-        <span className={styles.label}>Event Name</span>
-        <input {...register('eventName')} className={styles.input}/>
-      </label>
-      <label className={styles.field}>
-        <span className={styles.label}>Properties (JSON)</span>
-        <textarea {...register('propertiesJson')} rows={6} className={styles.textarea}/>
-        {errors.propertiesJson && <span className={styles.err}>{String(errors.propertiesJson.message)}</span>}
-      </label>
-    </div>
-  )
+    <Stack spacing={3} sx={{ p: 1 }}>
+      <TextField 
+        {...register('eventName')} 
+        label="Event Name"
+        fullWidth
+        size="small"
+      />
+
+      <TextField 
+        {...register('propertiesJson')} 
+        label="Properties (JSON)"
+        multiline
+        rows={6}
+        fullWidth
+        size="small"
+        error={!!errors.propertiesJson}
+        helperText={errors.propertiesJson ? String(errors.propertiesJson.message) : null}
+      />
+    </Stack>
+  );
 }

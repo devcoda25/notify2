@@ -1,18 +1,16 @@
-// src/Component/store/useContactsStore.js
-import create from "zustand";
+import { create } from "zustand";
 import { subscribeWithSelector, persist } from "zustand/middleware";
 
 // If/when you move the dialer store under ./store, update this import.
 // Current tree shows it at: src/Component/dailer/store/useDialerStore.js
-import { useDialerStore } from "./useDialerStore";
+import { normalizeContact } from "../utils/mappers";
+import { useDialerStore } from "../../store/useDialerStore";
 
 /* --------------------------------- Utils ---------------------------------- */
 
 function genContactId() {
   return `c_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 }
-
-const toLower = (v) => String(v || "").toLowerCase();
 
 function pickPrimaryNumber(contact) {
   // Try common shapes
@@ -33,78 +31,6 @@ function pickPrimaryNumber(contact) {
   );
 }
 
-function compareContacts(a, b, sortBy, dir) {
-  const mul = dir === "asc" ? 1 : -1;
-
-  if (sortBy === "name") {
-    return mul * toLower(a.name).localeCompare(toLower(b.name));
-  }
-  if (sortBy === "createdAt") {
-    const av = +new Date(a.createdAt || a.created_at || 0);
-    const bv = +new Date(b.createdAt || b.created_at || 0);
-    return mul * (av - bv);
-  }
-  // default: lastUpdated
-  const au =
-    +new Date(a.updatedAt || a.updated_at || a.lastUpdated || a.last_updated || 0);
-  const bu =
-    +new Date(b.updatedAt || b.updated_at || b.lastUpdated || b.last_updated || 0);
-  return mul * (au - bu);
-}
-
-function matchesSearch(contact, search) {
-  if (!search) return true;
-  const s = toLower(search);
-  const hay = [
-    contact?.name,
-    contact?.email,
-    contact?.source,
-    pickPrimaryNumber(contact),
-    ...(Array.isArray(contact?.attributes)
-      ? contact.attributes.map((x) => `${x.key}:${x.value}`)
-      : []),
-  ]
-    .filter(Boolean)
-    .map(toLower)
-    .join(" | ");
-  return hay.includes(s);
-}
-
-/* You moved the filter to utils/ContactFilter.js.
-   We’ll try to use it if present; otherwise fall back to identity. */
-let applyExternalFilters = null;
-try {
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  const CF = require("../contacts/utils/ContactFilter");
-  applyExternalFilters =
-    CF?.applyFilters || CF?.filterContacts || CF?.default || null;
-} catch {
-  // no-op; optional dependency
-}
-
-function applyFiltersArr(arr, filters) {
-  if (!filters || !Object.keys(filters).length) return arr;
-  if (typeof applyExternalFilters === "function") {
-    try {
-      return applyExternalFilters(arr, filters);
-    } catch {
-      // fall back (don’t break UI if util throws)
-    }
-  }
-  // Minimal built-in: only "source" equality & tag includes if provided
-  const src = filters.source || null;
-  const tags = Array.isArray(filters.tags) ? filters.tags : null;
-  return arr.filter((c) => {
-    const okSource = src ? String(c.source || "") === String(src) : true;
-    const okTags = tags
-      ? (Array.isArray(c.attributes) ? c.attributes.map((t) => t.value) : []).some(
-          (v) => tags.includes(v)
-        )
-      : true;
-    return okSource && okTags;
-  });
-}
-
 /* --------------------------------- Store ---------------------------------- */
 
 export const useContactsStore = create(
@@ -123,11 +49,11 @@ export const useContactsStore = create(
         /* ------------------------------- Query ------------------------------ */
         query: {
           search: "",
-          sortBy: "lastUpdated", // 'lastUpdated' | 'name' | 'createdAt'
+          sortBy: "updatedAt", // 'updatedAt' | 'fullName' | 'createdAt'
           sortDir: "desc", // 'asc' | 'desc'
           page: 0,
           pageSize: 10,
-          filters: {}, // free-form; piped into utils/ContactFilter if available
+          filters: {},
         },
 
         /* ----------------------------- Selection ---------------------------- */
@@ -152,51 +78,32 @@ export const useContactsStore = create(
           return order.map((id) => byId[id]).filter(Boolean);
         },
 
-        getFilteredRows: () => {
-          const { search, filters } = get().query;
-          const rows = get().getAllRows();
-          const filtered = rows.filter((r) => matchesSearch(r, search));
-          return applyFiltersArr(filtered, filters);
-        },
-
-        getSortedRows: () => {
-          const { sortBy, sortDir } = get().query;
-          const arr = [...get().getFilteredRows()];
-          arr.sort((a, b) => compareContacts(a, b, sortBy, sortDir));
-          return arr;
-        },
-
-        getPagedRows: () => {
-          const { page, pageSize } = get().query;
-          const arr = get().getSortedRows();
-          const start = page * pageSize;
-          const end = start + pageSize;
-          return arr.slice(start, end);
-        },
-
         getSelectedCount: () => get().selection.ids.size,
 
         /* ------------------------------ Actions ----------------------------- */
 
         // Data
-        hydrate: (list = []) => {
-          const byId = {};
-          const order = [];
-          list.forEach((c) => {
-            const id = c?.id ?? genContactId();
-            byId[id] = { id, ...c };
-            order.push(id);
+        hydrate: (list = [], totalCount = 0) => {
+          set((s) => {
+            const newById = {};
+            const newOrder = [];
+            list.forEach((c) => {
+              const id = c?.id ?? genContactId();
+              newById[id] = normalizeContact({ id, ...c });
+              newOrder.push(id);
+            });
+
+            return {
+              data: {
+                ...s.data,
+                byId: newById, // Replace, don't append
+                order: newOrder, // Replace, don't append
+                total: totalCount, // Set total from API response
+                loading: false,
+                error: null,
+              },
+            };
           });
-          set((s) => ({
-            data: {
-              ...s.data,
-              byId,
-              order,
-              total: order.length,
-              loading: false,
-              error: null,
-            },
-          }));
         },
 
         setLoading: (loading = true) =>
@@ -206,22 +113,23 @@ export const useContactsStore = create(
           set((s) => ({ data: { ...s.data, error } })),
 
         addContact: (contact) => {
-          const id = contact?.id ?? genContactId();
+          const normalizedContact = normalizeContact(contact); // Normalize the incoming contact
+          const id = normalizedContact?.id ?? genContactId();
           set((s) => {
             if (s.data.byId[id]) {
               // already exists; do update
               return {
                 data: {
                   ...s.data,
-                  byId: { ...s.data.byId, [id]: { ...s.data.byId[id], ...contact, id } },
+                  byId: { ...s.data.byId, [id]: { ...s.data.byId[id], ...normalizedContact, id } },
                 },
               };
             }
             return {
               data: {
                 ...s.data,
-                byId: { ...s.data.byId, [id]: { id, ...contact } },
-                order: [...s.data.order, id],
+                byId: { ...s.data.byId, [id]: { id, ...normalizedContact } },
+                order: [id, ...s.data.order],
                 total: (s.data.total || 0) + 1,
               },
             };
@@ -229,12 +137,20 @@ export const useContactsStore = create(
         },
 
         updateContact: (id, patch) =>
-          set((s) => ({
-            data: {
-              ...s.data,
-              byId: { ...s.data.byId, [id]: { ...s.data.byId[id], ...patch } },
-            },
-          })),
+          set((s) => {
+            const existingContact = s.data.byId[id];
+            if (!existingContact) return {}; // Contact not found
+
+            const updatedContact = { ...existingContact, ...patch };
+            const normalizedUpdatedContact = normalizeContact(updatedContact); // Normalize the updated contact
+
+            return {
+              data: {
+                ...s.data,
+                byId: { ...s.data.byId, [id]: normalizedUpdatedContact },
+              },
+            };
+          }),
 
         removeContact: (id) =>
           set((s) => {
@@ -251,13 +167,11 @@ export const useContactsStore = create(
 
         bulkRemove: (ids = []) =>
           set((s) => {
-            let byId = { ...s.data.byId };
+            const byId = { ...s.data.byId };
             let removed = 0;
             ids.forEach((id) => {
               if (byId[id]) {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const { [id]: __, ...rest } = byId;
-                byId = rest;
+                delete byId[id];
                 removed++;
               }
             });
@@ -277,7 +191,7 @@ export const useContactsStore = create(
 
         // Query
         setQuery: (next) =>
-          set((s) => ({ query: { ...s.query, ...next } })),
+          set((s) => ({ query: { ...s.query, ...next, page: 0 } })),
 
         mergeQuery: (patch) =>
           set((s) => ({ query: { ...s.query, ...patch } })),
@@ -286,7 +200,7 @@ export const useContactsStore = create(
           set(() => ({
             query: {
               search: "",
-              sortBy: "lastUpdated",
+              sortBy: "updatedAt",
               sortDir: "desc",
               page: 0,
               pageSize: 10,
@@ -350,7 +264,6 @@ export const useContactsStore = create(
           const number = pickPrimaryNumber(c);
           if (!number) return;
 
-          // Lightweight shaping for the dialer’s "currentLead"
           const leadLike = {
             id: c.id,
             name: c.name || c.fullName || "Unknown",
@@ -380,7 +293,6 @@ export const useContactsStore = create(
         name: "contacts-store",
         version: 1,
         partialize: (state) => ({
-          // Persist only the query prefs (UX nicety)
           query: state.query,
         }),
       }
@@ -389,31 +301,17 @@ export const useContactsStore = create(
 );
 
 /* ------------------------------ Pure selectors ------------------------------ */
-/** Selects the full query object */
 export const selectContactsQuery = (s) => s.query;
 
-/** Selects *paged* rows based on current query (search, filters, sort, pagination) */
 export const selectContactsPagedRows = (s) => {
-  const { page, pageSize, sortBy, sortDir, search, filters } = s.query;
-  const rows = s.data.order.map((id) => s.data.byId[id]).filter(Boolean);
-  const filtered = applyFiltersArr(rows.filter((r) => matchesSearch(r, search)), filters);
-  const sorted = [...filtered].sort((a, b) => compareContacts(a, b, sortBy, sortDir));
-  const start = page * pageSize;
-  const end = start + pageSize;
-  return sorted.slice(start, end);
+  const { byId, order } = s.data;
+  return order.map((id) => byId[id]).filter(Boolean);
 };
 
-/** Total rows *after* filters/search (for pagination count) */
-export const selectContactsFilteredCount = (s) => {
-  const { search, filters } = s.query;
-  const rows = s.data.order.map((id) => s.data.byId[id]).filter(Boolean);
-  return applyFiltersArr(rows.filter((r) => matchesSearch(r, search)), filters).length;
-};
+export const selectContactsFilteredCount = (s) => s.data.total;
 
-/** Selected count (for bulk bar) */
 export const selectContactsSelectedCount = (s) => s.selection.ids.size;
 
-/** Returns true if the current page is fully selected */
 export const selectIsPageFullySelected = (s) => {
   const pageRows = selectContactsPagedRows(s);
   if (!pageRows.length) return false;

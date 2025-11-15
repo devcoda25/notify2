@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useContactsApi from "./useContactsApi"; // Import useContactsApi
 
 function genId(prefix = "xls") {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
@@ -6,13 +7,31 @@ function genId(prefix = "xls") {
 
 /**
  * @typedef {{ id:string, name:string, createdAt:number,
- *   rows:Array<any>, mapping?:Record<string,string>, stats?:{ total:number, invalid:number, duplicates:number } }} UploadTab
+ *   rows?:Array<any>, mapping?:Record<string,string>, stats?:{ total:number, invalid:number, duplicates:number },
+ *   isPersistent?:boolean, backendSheetId?:string, originalFileName?:string }} UploadTab
  */
 
 export default function useUploadWorkspace() {
   /** @type {[UploadTab[], Function]} */
   const [tabs, setTabs] = useState([]);
   const [activeId, setActiveId] = useState(null);
+  const api = useContactsApi(); // Initialize useContactsApi
+
+  // Load persistent groups from backend on initialization
+  useEffect(() => {
+    const loadGroups = async () => {
+      try {
+        const groups = await api.fetchGroups();
+        console.log("useUploadWorkspace - fetched persistent groups:", groups); // DEBUG LOG
+        if (groups?.length) {
+          addGroups(groups);
+        }
+      } catch (error) {
+        console.error("Failed to load persistent groups:", error);
+      }
+    };
+    loadGroups();
+  }, [api]); // Dependency on api to ensure it's stable
 
   const addTab = useCallback((name, rows = [], mapping = {}) => {
     const id = genId();
@@ -22,6 +41,8 @@ export default function useUploadWorkspace() {
       rows: Array.isArray(rows) ? rows : [],
       mapping: mapping || {},
       stats: { total: rows.length || 0, invalid: 0, duplicates: 0 },
+      isPersistent: false, // Default for client-side added tabs
+      visible: true,
     };
     setTabs((prev) => [...prev, tab]);
     setActiveId(id);
@@ -31,22 +52,44 @@ export default function useUploadWorkspace() {
   const addWorkbook = useCallback((sheets = []) => {
     // sheets: [{ name, rows, mapping? }]
     const ids = [];
-    setTabs((prev) => {
-      const next = [...prev];
-      for (const s of sheets) {
-        const id = genId();
-        ids.push(id);
-        next.push({
-          id,
-          name: String(s?.name || "Sheet"),
-          createdAt: Date.now(),
-          rows: Array.isArray(s?.rows) ? s.rows : [],
-          mapping: s?.mapping || {},
-          stats: { total: (s?.rows?.length || 0), invalid: 0, duplicates: 0 },
-        });
-      }
-      return next;
+    const newTabs = sheets.map(s => {
+      const id = genId();
+      ids.push(id);
+      return {
+        id,
+        name: String(s?.name || "Sheet"),
+        createdAt: Date.now(),
+        rows: Array.isArray(s?.rows) ? s.rows : [],
+        mapping: s?.mapping || {},
+        stats: { total: (s?.rows?.length || 0), invalid: 0, duplicates: 0 },
+        isPersistent: false, // Default for client-side added workbooks
+        visible: true,
+      };
     });
+    setTabs(prev => [...prev, ...newTabs]);
+    if (ids.length) setActiveId(ids[0]);
+    return ids;
+  }, []);
+
+  const addGroups = useCallback((backendGroups = []) => {
+    // backendSheets: [{ id: backendSheetId, name: sheetName, originalFileName: fileName, rowCount: number }]
+    const ids = [];
+    const newTabs = backendGroups.map(s => {
+      const id = genId("ps"); // Generate a client-side ID for the tab
+      ids.push(id);
+      return {
+        id,
+        name: String(s?.name || "Group"),
+        createdAt: Date.now(),
+        isPersistent: true,
+        groupId: s.id, // Store the backend ID
+        originalFileName: s.originalFileName,
+        stats: { total: s.rowCount || 0, invalid: 0, duplicates: 0 }, // Use backend rowCount
+        visible: true,
+        // Note: 'rows' is NOT stored here; it will be fetched from backend
+      };
+    });
+    setTabs(prev => [...prev, ...newTabs]);
     if (ids.length) setActiveId(ids[0]);
     return ids;
   }, []);
@@ -60,6 +103,17 @@ export default function useUploadWorkspace() {
     setTabs((prev) => prev.map((t) => (t.id === id ? { ...t, ...patch } : t)));
   }, []);
 
+  const toggleTabVisibility = useCallback((id) => {
+    setTabs(prev => prev.map(t => {
+      if (t.id === id) {
+        // Here you would also make an API call to persist this change
+        console.log(`API CALL: set group ${t.groupId} visibility to ${!t.visible}`);
+        return { ...t, visible: !t.visible };
+      }
+      return t;
+    }));
+  }, []);
+
   const clear = useCallback(() => {
     setTabs([]);
     setActiveId(null);
@@ -71,7 +125,14 @@ export default function useUploadWorkspace() {
   const headerTabs = useMemo(() => {
     const items = [];
     items.push({ id: "db", label: "Contacts", icon: "db" });
-    for (const t of tabs) items.push({ id: t.id, label: t.name || "Sheet", icon: "xls" });
+    for (const t of tabs) {
+      items.push({
+        id: t.id,
+        label: t.name || "Sheet",
+        icon: t.isPersistent ? "db-xls" : "xls", // Differentiate persistent tabs
+        closable: !t.isPersistent, // Persistent tabs might not be closable from UI
+      });
+    }
     return items;
   }, [tabs]);
 
@@ -85,8 +146,10 @@ export default function useUploadWorkspace() {
     setActiveId,
     addTab,
     addWorkbook,
+    addGroups, // <--- New function
     removeTab,
     updateTab,
+    toggleTabVisibility,
     clear,
 
     // helpers for header
