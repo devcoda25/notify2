@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 
 .editorWrapper {
   @apply bg-background border border-input rounded-lg flex flex-col;

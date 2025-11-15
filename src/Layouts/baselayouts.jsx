@@ -1,4 +1,4 @@
-// Path: /src/routes/BaseLayouts.jsx
+// /src/Layouts/baselayouts.jsx
 import React from "react";
 import {
   BrowserRouter,
@@ -15,6 +15,7 @@ import { notifyTheme } from "../theme/notifyTheme";
 
 import Navbar from "../Component/Navbar/Navbar";
 import BootGate from "../boot/BootGate";
+import PrivateGate from "../routes/PrivateGate";
 
 // App sections
 import TeamInbox from "../Pages/TeamInbox";
@@ -48,23 +49,21 @@ import LiveInvalid from "../Component/Meetings/public/LiveInvalid";
 import CallMiniWindow from "../alerts/CallMiniWindow";
 import CallAlertsController from "../alerts/CallAlertsController";
 
+// Auth glue
+import AuthCallback from "../Pages/AuthCallback";
+import { getAuthState, onAuthChange } from "../auth/authAgent";
+
 const NAVBAR_H_DESKTOP = 64;
 const NAVBAR_H_MOBILE = 56;
 
-// ===== DEV FLAG: allow bootstrapping session auth from /u/:authUser path =====
-// Turn this to false in production to force real sign-in via /console/pass
-const ALLOW_PATH_BOOTSTRAP = true;
-
 /** ---------- Layouts ---------- **/
 
-// Never mount Navbar/overlays on public pages to avoid any flash.
 const PublicLayout = () => (
   <Box sx={{ pt: 0 }}>
     <Outlet />
   </Box>
 );
 
-// Private layout always shows Navbar and internal overlays.
 const PrivateLayout = ({ agentId }) => (
   <>
     <Navbar />
@@ -78,28 +77,12 @@ const PrivateLayout = ({ agentId }) => (
   </>
 );
 
-/** Guard for /u/:authUser/* routes → punts to /console/pass if unauthenticated */
+/** Guard for /u/:authUser/* routes AFTER auth is confirmed by PrivateGate */
 const AuthUserRoute = ({ children }) => {
   const { authUser: pathAuthUser } = useParams();
-  const location = useLocation();
-
-  // Already authenticated?
-  const hasAuthFlag = sessionStorage.getItem("auth") === "true";
-
-  // If we allow path bootstrap (dev), and a path user is present, adopt it into session
-  if (!hasAuthFlag && ALLOW_PATH_BOOTSTRAP && pathAuthUser) {
-    sessionStorage.setItem("auth", "true");
-    sessionStorage.setItem("authUser", pathAuthUser);
-  }
-
-  const authed =
-    sessionStorage.getItem("auth") === "true" ||
-    Boolean(sessionStorage.getItem("authUser"));
-
+  const authed = getAuthState().hasTicket;
   if (!authed || !pathAuthUser) {
-    // Prefer sending people to the sign-in, with return path
-    const next = encodeURIComponent(location.pathname + location.search);
-    return <Navigate to={`/console/pass?next=${next}`} replace />;
+    return <Navigate to="/console/pass" replace />;
   }
   return children;
 };
@@ -117,207 +100,146 @@ const SlashNormalizer = () => {
   return null;
 };
 
-const AppRoutes = () => {
+function useAuthedKick() {
   const location = useLocation();
-  const [authUser, setAuthUser] = React.useState(() => {
-    const stored = sessionStorage.getItem("authUser");
-    if (stored) return stored;
-    const params = new URLSearchParams(window.location.search);
-    return params.get("x_authuser");
-  });
-
-  // capture x_authuser -> session (highest priority)
+  const navigate = useNavigate();
   React.useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const x_authuser = params.get("x_authuser");
-    if (x_authuser && x_authuser !== authUser) {
-      setAuthUser(x_authuser);
-      sessionStorage.setItem("authUser", x_authuser);
-      sessionStorage.setItem("auth", "true");
-    }
-  }, [location.search, authUser]);
+    const goInbox = () => {
+      const s = getAuthState();
+      if (!s?.hasTicket) return;
+      // only kick from public auth screens or root
+      const p = location.pathname;
+      const onPublic = p === "/" || p.startsWith("/console/pass");
+      if (!onPublic) return;
+      const u = encodeURIComponent(s.authUser || "me");
+      navigate(`/u/${u}/teaminbox`, { replace: true });
+    };
+    goInbox();
+    const unsub = onAuthChange(goInbox);
+    return () => { try { unsub?.(); } catch {} };
+  }, [location.pathname, navigate]);
+}
 
-  // Also, if we’re inside /u/:authUser and session has no user yet, adopt the path (when dev flag is on)
-  React.useEffect(() => {
-    if (!ALLOW_PATH_BOOTSTRAP) return;
-    const match = location.pathname.match(/^\/u\/([^/]+)/);
-    if (match && !sessionStorage.getItem("authUser")) {
-      const fromPath = match[1];
-      sessionStorage.setItem("authUser", fromPath);
-      sessionStorage.setItem("auth", "true");
-      setAuthUser(fromPath);
-    }
-  }, [location.pathname]);
+const AppRoutes = () => {
+  const navigate = useNavigate();
+  useAuthedKick();
+
+  const onLogin = React.useCallback(() => {
+    const user = getAuthState().authUser || "me";
+    const safe = encodeURIComponent(user);
+    navigate(`/u/${safe}/teaminbox`, { replace: true });
+  }, [navigate]);
 
   return (
     <>
-      {/* Keep URL tidy */}
       <SlashNormalizer />
 
       <Routes>
-        {/* Root → send to sign-in (cleaner than invalid for first touch) */}
-        <Route path="/" element={<Navigate to="/console/pass" replace />} />
+        {/* Root → authed inbox or sign-in */}
+        <Route
+          path="/"
+          element={
+            getAuthState().hasTicket
+              ? <Navigate to={`/u/${encodeURIComponent(getAuthState().authUser || "me")}/teaminbox`} replace />
+              : <Navigate to="/console/pass" replace />
+          }
+        />
 
-        {/* ---------- Public layout (NO NAVBAR, NO OVERLAYS) ---------- */}
+        {/* ---------- Public (no navbar) ---------- */}
         <Route element={<PublicLayout />}>
-          {/* Booking */}
           <Route path="/book/:slug" element={<BookingPage />} />
           <Route path="/book/:bookingId/reschedule" element={<ReschedulePage />} />
           <Route path="/book/:bookingId/cancel" element={<CancelPage />} />
 
-          {/* Live (invite-only) */}
           <Route path="/live" element={<LiveInvalid />} />
           <Route path="/live/invalid" element={<LiveInvalid />} />
           <Route path="/live/:roomId/left" element={<LiveLeft />} />
           <Route path="/live/:roomId" element={<LivePage />} />
 
-          {/* Optional alias */}
           <Route path="/meet/:slug" element={<BookingPage />} />
-
-          {/* Public one-off */}
-          <Route path="/hepto" element={<CopyMeetingLink />} />
-
-          {/* Explicit public invalid */}
           <Route path="/invalid" element={<LiveInvalid />} />
 
-          {/* Sign-in route */}
-          <Route path="/console/pass" element={<Login />} />
+          {/* Sign-in + IdP callback */}
+          <Route
+            path="/console/pass"
+            element={
+              getAuthState().hasTicket
+                ? <Navigate to={`/u/${encodeURIComponent(getAuthState().authUser || "me")}/teaminbox`} replace />
+                : <Login onLogin={onLogin} />
+            }
+          />
+          <Route path="/console/pass/callback" element={<AuthCallback onLogin={onLogin} />} />
         </Route>
 
-        {/* ---------- Private layout (NAVBAR + OVERLAYS) ---------- */}
-        <Route element={<PrivateLayout agentId={authUser} />}>
-          <Route
-            path="/u/:authUser"
-            element={
-              <AuthUserRoute>
-                <TeamInbox />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/teaminbox"
-            element={
-              <AuthUserRoute>
-                <TeamInbox />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/dialer"
-            element={
-              <AuthUserRoute>
-                <DailerPage />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/chatbots"
-            element={
-              <AuthUserRoute>
-                <TeamInbox />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/extended"
-            element={
-              <AuthUserRoute>
-                <TeamInbox />
-              </AuthUserRoute>
-            }
-          />
-
-          {/* Meetings module (wildcard) */}
-          <Route
-            path="/u/:authUser/meetings/*"
-            element={
-              <AuthUserRoute>
-                <Meetings />
-              </AuthUserRoute>
-            }
-          />
-
-          <Route
-            path="/u/:authUser/templates"
-            element={
-              <AuthUserRoute>
-                <Templates />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/contacts"
-            element={
-              <AuthUserRoute>
-                <Contacts />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/automations"
-            element={
-              <AuthUserRoute>
-                <Automations />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/analytics"
-            element={
-              <AuthUserRoute>
-                <Analytics />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/reports"
-            element={
-              <AuthUserRoute>
-                <Reports />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/userManagement"
-            element={
-              <AuthUserRoute>
-                <UserManagement />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/accountdetails"
-            element={
-              <AuthUserRoute>
-                <AccountDetails />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/meetinghistory"
-            element={
-              <AuthUserRoute>
-                <MeetingHistory />
-              </AuthUserRoute>
-            }
-          />
-          <Route
-            path="/u/:authUser/editchatbotpage"
-            element={
-              <AuthUserRoute>
-                <EditChatbotPage />
-              </AuthUserRoute>
-            }
-          />
-
-          {/* Misc internal (kept inside private shell) */}
-          <Route path="/edit-eventtype" element={<EditEvent />} />
-          <Route path="/one-on-one" element={<OneononeMeeting />} />
-          <Route path="/meet" element={<Meeting />} />
-          <Route path="/availability" element={<Availability />} />
+        {/* ---------- Private (GATED SHELL: navbar renders only when authed) ---------- */}
+        <Route element={<PrivateGate />}>
+          <Route element={<PrivateLayout agentId={getAuthState().authUser || "me"} />}>
+            <Route
+              path="/u/:authUser"
+              element={
+                <AuthUserRoute>
+                  <TeamInbox />
+                </AuthUserRoute>
+              }
+            />
+            <Route
+              path="/u/:authUser/teaminbox"
+              element={
+                <AuthUserRoute>
+                  <TeamInbox />
+                </AuthUserRoute>
+              }
+            />
+            <Route
+              path="/u/:authUser/dialer"
+              element={
+                <AuthUserRoute>
+                  <DailerPage />
+                </AuthUserRoute>
+              }
+            />
+            <Route
+              path="/u/:authUser/chatbots"
+              element={
+                <AuthUserRoute>
+                  <TeamInbox />
+                </AuthUserRoute>
+              }
+            />
+            <Route
+              path="/u/:authUser/extended"
+              element={
+                <AuthUserRoute>
+                  <TeamInbox />
+                </AuthUserRoute>
+              }
+            />
+            <Route
+              path="/u/:authUser/meetings/*"
+              element={
+                <AuthUserRoute>
+                  <Meetings />
+                </AuthUserRoute>
+              }
+            />
+            <Route path="/u/:authUser/templates" element={<AuthUserRoute><Templates /></AuthUserRoute>} />
+            <Route path="/u/:authUser/contacts" element={<AuthUserRoute><Contacts /></AuthUserRoute>} />
+            <Route path="/u/:authUser/automations" element={<AuthUserRoute><Automations /></AuthUserRoute>} />
+            <Route path="/u/:authUser/analytics" element={<AuthUserRoute><Analytics /></AuthUserRoute>} />
+            <Route path="/u/:authUser/reports" element={<AuthUserRoute><Reports /></AuthUserRoute>} />
+            <Route path="/u/:authUser/userManagement" element={<AuthUserRoute><UserManagement /></AuthUserRoute>} />
+            <Route path="/u/:authUser/accountdetails" element={<AuthUserRoute><AccountDetails /></AuthUserRoute>} />
+            <Route path="/u/:authUser/meetinghistory" element={<AuthUserRoute><MeetingHistory /></AuthUserRoute>} />
+            <Route path="/u/:authUser/editchatbotpage" element={<AuthUserRoute><EditChatbotPage /></AuthUserRoute>} />
+            {/* kept inside private shell */}
+            <Route path="/edit-eventtype" element={<EditEvent />} />
+            <Route path="/one-on-one" element={<OneononeMeeting />} />
+            <Route path="/meet" element={<Meeting />} />
+            <Route path="/availability" element={<Availability />} />
+          </Route>
         </Route>
 
-        {/* Catch all → invalid */}
+        {/* Catch-all */}
         <Route path="*" element={<Navigate to="/invalid" replace />} />
       </Routes>
     </>
@@ -325,12 +247,10 @@ const AppRoutes = () => {
 };
 
 const BaseLayouts = () => {
-  // Flip this to true when you actually need to BLOCK on async bootstrap.
   const ENABLE_BLOCKING_BOOTSTRAP = true;
 
   return (
     <BootGate block={ENABLE_BLOCKING_BOOTSTRAP}>
-      {/* 🔮 App-wide theme (Navbar + all routes) */}
       <ThemeProvider theme={notifyTheme}>
         <CssBaseline />
         <BrowserRouter>

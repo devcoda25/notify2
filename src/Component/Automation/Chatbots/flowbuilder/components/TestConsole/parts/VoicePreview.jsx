@@ -1,9 +1,11 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
-import styles from '../test-console.module.css';
+// import styles from '../test-console.module.css';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Label } from '../../ui/label';
 import { Slider } from '../../ui/slider';
+
+const styles = ""
 
 export default function VoicePreview({ ttsText }) {
   const [voices, setVoices] = useState([]);

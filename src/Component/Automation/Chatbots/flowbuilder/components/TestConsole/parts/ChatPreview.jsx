@@ -1,11 +1,11 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import styles from '../test-console.module.css';
+// import styles from '../test-console.module.css';
 import clsx from 'clsx';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { FileText, ImageIcon, Music, Video } from 'lucide-react';
-
+const styles = ""
 function AttachmentPreview({ attachment }) {
     switch (attachment.type) {
         case 'image': 

@@ -1,1048 +1,882 @@
-alpha@ALPHA-LINUX:~/WorkSpace/Projects/Execs/Notify/client$ tree
-.
+
+├── components.json
+├── config-overrides.js
+├── config-overrides.js.bak
+├── craco.config.js.bak
+├── jsconfig.json
 ├── package.json
 ├── package-lock.json
+├── postcss.config.js
 ├── public
-│   ├── assets
-│   │   ├── css
-│   │   │   ├── bootstrap.css
-│   │   │   ├── contactus.css
-│   │   │   ├── flaticon.css
-│   │   │   ├── fontawesome.css
-│   │   │   ├── icons.css
-│   │   │   ├── responsive.css
-│   │   │   ├── style.css
-│   │   │   └── Style.css
-│   │   ├── fonts
-│   │   │   ├── Flaticond41d.eot
-│   │   │   ├── Flaticon.eot
-│   │   │   ├── Flaticon.svg
-│   │   │   ├── Flaticon.ttf
-│   │   │   ├── Flaticon.woff
-│   │   │   ├── Flaticon.woff2
-│   │   │   ├── icomoon06c8.eot
-│   │   │   ├── icomoon06c8.svg
-│   │   │   ├── icomoon06c8.ttf
-│   │   │   ├── icomoon06c8.woff
-│   │   │   ├── la-brands-400d41d.eot
-│   │   │   ├── la-brands-400.eot
-│   │   │   ├── la-brands-400.svg
-│   │   │   ├── la-brands-400.ttf
-│   │   │   ├── la-brands-400.woff
-│   │   │   ├── la-brands-400.woff2
-│   │   │   ├── la-regular-400d41d.eot
-│   │   │   ├── la-regular-400.eot
-│   │   │   ├── la-regular-400.svg
-│   │   │   ├── la-regular-400.ttf
-│   │   │   ├── la-regular-400.woff
-│   │   │   ├── la-regular-400.woff2
-│   │   │   ├── la-solid-900d41d.eot
-│   │   │   ├── la-solid-900.eot
-│   │   │   ├── la-solid-900.svg
-│   │   │   ├── la-solid-900.ttf
-│   │   │   ├── la-solid-900.woff
-│   │   │   ├── la-solid-900.woff2
-│   │   │   └── webfonts
-│   │   │       ├── fa-brands-400.ttf
-│   │   │       ├── fa-brands-400.woff
-│   │   │       ├── fa-brands-400.woff2
-│   │   │       ├── fa-duotone-900.ttf
-│   │   │       ├── fa-duotone-900.woff
-│   │   │       ├── fa-duotone-900.woff2
-│   │   │       ├── fa-light-300.ttf
-│   │   │       ├── fa-light-300.woff
-│   │   │       ├── fa-light-300.woff2
-│   │   │       ├── fa-regular-400.ttf
-│   │   │       ├── fa-regular-400.woff
-│   │   │       ├── fa-regular-400.woff2
-│   │   │       ├── fa-solid-900.ttf
-│   │   │       ├── fa-solid-900.woff
-│   │   │       ├── fa-solid-900.woff2
-│   │   │       ├── fa-thin-100.ttf
-│   │   │       ├── fa-thin-100.woff
-│   │   │       └── fa-thin-100.woff2
-│   │   ├── images
-│   │   │   ├── analytics_events_side.svg
-│   │   │   ├── availability.svg
-│   │   │   ├── calendarconnection.svg
-│   │   │   ├── calendar.svg
-│   │   │   ├── check.svg
-│   │   │   ├── cloud-arrow-up.svg
-│   │   │   ├── cloud-download.svg
-│   │   │   ├── collective.svg
-│   │   │   ├── downarrow.svg
-│   │   │   ├── Email.png
-│   │   │   ├── exchange.svg
-│   │   │   ├── favicon.png
-│   │   │   ├── filter-icon.png
-│   │   │   ├── gmailDesk.png
-│   │   │   ├── google_calendar.svg
-│   │   │   ├── Googlemeet.svg
-│   │   │   ├── gotomeeting.svg
-│   │   │   ├── group.svg
-│   │   │   ├── icon_reply.svg
-│   │   │   ├── icon_web.svg
-│   │   │   ├── Location.svg
-│   │   │   ├── login_logo.svg
-│   │   │   ├── no_events.svg
-│   │   │   ├── notification_logo.svg
-│   │   │   ├── Notify_login_logo.svg
-│   │   │   ├── one_on_one.svg
-│   │   │   ├── outlook.svg
-│   │   │   ├── pencil.svg
-│   │   │   ├── platformDesk.png
-│   │   │   ├── platform.png
-│   │   │   ├── preview_header_doc.png
-│   │   │   ├── preview-header_image.png
-│   │   │   ├── preview_header_video.png
-│   │   │   ├── profile.png
-│   │   │   ├── pushDesk.png
-│   │   │   ├── push.png
-│   │   │   ├── red-delete-icon.png
-│   │   │   ├── round_robin.svg
-│   │   │   ├── sms.png
-│   │   │   ├── Teams.svg
-│   │   │   ├── trash.svg
-│   │   │   ├── webex.svg
-│   │   │   ├── whatsappDesk.png
-│   │   │   ├── whatsapp.png
-│   │   │   └── Zoom.svg
-│   │   └── teaminbox
-│   │       ├── css
-│   │       │   ├── ajax-loader.gif
-│   │       │   ├── bootstrap.min.css
-│   │       │   ├── burger-style.css
-│   │       │   ├── fonts
-│   │       │   │   ├── slick-2.html
-│   │       │   │   ├── slick-3.html
-│   │       │   │   ├── slickd41d.html
-│   │       │   │   └── slick.html
-│   │       │   ├── icons.css
-│   │       │   ├── Jcrop.html
-│   │       │   ├── main.css
-│   │       │   ├── marker.html
-│   │       │   ├── mask.html
-│   │       │   ├── responsive.css
-│   │       │   ├── sass.html
-│   │       │   └── wheel.html
-│   │       ├── fonts
-│   │       │   ├── fontawesome-webfont.eot
-│   │       │   ├── fontawesome-webfont.svg
-│   │       │   ├── fontawesome-webfont.ttf
-│   │       │   ├── fontawesome-webfont.woff
-│   │       │   ├── fontawesome-webfont.woff2
-│   │       │   ├── themify9f24.eot
-│   │       │   ├── themify9f24.svg
-│   │       │   ├── themify9f24.ttf
-│   │       │   ├── themify9f24.woff
-│   │       │   └── themifyd41d.eot
-│   │       ├── images
-│   │       │   ├── complete.png
-│   │       │   ├── down-arrow.png
-│   │       │   ├── loader.gif
-│   │       │   ├── logo-2.png
-│   │       │   ├── main-logo2.png
-│   │       │   ├── main-logo.png
-│   │       │   ├── notfound.gif
-│   │       │   ├── page-loader.gif
-│   │       │   ├── pattern.png
-│   │       │   ├── preview.html
-│   │       │   ├── preview.jpg
-│   │       │   ├── resource
-│   │       │   │   ├── admin-follow-bg.jpg
-│   │       │   │   ├── admin.jpg
-│   │       │   │   ├── admo-user10.jpg
-│   │       │   │   ├── admo-user11.jpg
-│   │       │   │   ├── admo-user12.jpg
-│   │       │   │   ├── admo-user13.jpg
-│   │       │   │   ├── admo-user1.jpg
-│   │       │   │   ├── admo-user2.jpg
-│   │       │   │   ├── admo-user3.jpg
-│   │       │   │   ├── admo-user4.jpg
-│   │       │   │   ├── admo-user5.jpg
-│   │       │   │   ├── admo-user6.jpg
-│   │       │   │   ├── admo-user7.jpg
-│   │       │   │   ├── admo-user8.jpg
-│   │       │   │   ├── admo-user9.jpg
-│   │       │   │   ├── australia-flag.html
-│   │       │   │   ├── author.jpg
-│   │       │   │   ├── background1.jpg
-│   │       │   │   ├── blog1.jpg
-│   │       │   │   ├── blog2.jpg
-│   │       │   │   ├── blog3.jpg
-│   │       │   │   ├── blog4.jpg
-│   │       │   │   ├── blog5.jpg
-│   │       │   │   ├── blog6.jpg
-│   │       │   │   ├── blogsmall1.jpg
-│   │       │   │   ├── blogsmall2.jpg
-│   │       │   │   ├── blogsmall3.jpg
-│   │       │   │   ├── blogsmall4.jpg
-│   │       │   │   ├── blogsmall5.jpg
-│   │       │   │   ├── blogsmall6.jpg
-│   │       │   │   ├── blogsmall7.jpg
-│   │       │   │   ├── blogsmall8.jpg
-│   │       │   │   ├── blogsmall9.jpg
-│   │       │   │   ├── brazil-flag.html
-│   │       │   │   ├── cart1.jpg
-│   │       │   │   ├── cart2.jpg
-│   │       │   │   ├── cart3.jpg
-│   │       │   │   ├── chat1.jpg
-│   │       │   │   ├── chat2.jpg
-│   │       │   │   ├── china-flag.html
-│   │       │   │   ├── comingsoon.jpg
-│   │       │   │   ├── designer.jpg
-│   │       │   │   ├── email1.jpg
-│   │       │   │   ├── email2.jpg
-│   │       │   │   ├── email3.jpg
-│   │       │   │   ├── error-0.gif
-│   │       │   │   ├── error-404.gif
-│   │       │   │   ├── face1.jpg
-│   │       │   │   ├── face2.jpg
-│   │       │   │   ├── face3.jpg
-│   │       │   │   ├── fb-bg.jpg
-│   │       │   │   ├── friend-avatar2.jpg
-│   │       │   │   ├── friend-avatar5.jpg
-│   │       │   │   ├── friend-avatar.jpg
-│   │       │   │   ├── gallery11.jpg
-│   │       │   │   ├── gallery12.jpg
-│   │       │   │   ├── gallery13.jpg
-│   │       │   │   ├── gallery14.jpg
-│   │       │   │   ├── gallery15.jpg
-│   │       │   │   ├── gallery16.jpg
-│   │       │   │   ├── gallery1.jpg
-│   │       │   │   ├── gallery2.jpg
-│   │       │   │   ├── gallery3.jpg
-│   │       │   │   ├── gallery4.jpg
-│   │       │   │   ├── gallery5.jpg
-│   │       │   │   ├── gallery6.jpg
-│   │       │   │   ├── gallery-small1.jpg
-│   │       │   │   ├── gallery-small2.jpg
-│   │       │   │   ├── gallery-small3.jpg
-│   │       │   │   ├── gallery-small4.jpg
-│   │       │   │   ├── gallery-small5.jpg
-│   │       │   │   ├── gallery-small6.jpg
-│   │       │   │   ├── gallery-small7.jpg
-│   │       │   │   ├── gallery-small8.jpg
-│   │       │   │   ├── high.png
-│   │       │   │   ├── img-add-comment.png
-│   │       │   │   ├── img-attach01.png
-│   │       │   │   ├── img-attach.png
-│   │       │   │   ├── img-exit-folder.png
-│   │       │   │   ├── img-file-attach.png
-│   │       │   │   ├── india-flag.html
-│   │       │   │   ├── lena-smith.jpg
-│   │       │   │   ├── low.png
-│   │       │   │   ├── maintenance.png
-│   │       │   │   ├── medium.png
-│   │       │   │   ├── ok.jpg
-│   │       │   │   ├── parallex1.jpg
-│   │       │   │   ├── parallex2.jpg
-│   │       │   │   ├── portfolio1.jpg
-│   │       │   │   ├── portfolio2.jpg
-│   │       │   │   ├── portfolio3.jpg
-│   │       │   │   ├── portfolio4.jpg
-│   │       │   │   ├── portfolio5.jpg
-│   │       │   │   ├── portfolio6.jpg
-│   │       │   │   ├── portfolio7.jpg
-│   │       │   │   ├── portfolio8.jpg
-│   │       │   │   ├── portfolio-large1.jpg
-│   │       │   │   ├── portfolio-large2.jpg
-│   │       │   │   ├── portfolio-large3.jpg
-│   │       │   │   ├── portfolio-large4.jpg
-│   │       │   │   ├── portfolio-large5.jpg
-│   │       │   │   ├── portfolio-large6.jpg
-│   │       │   │   ├── pricetable.jpg
-│   │       │   │   ├── product1.jpg
-│   │       │   │   ├── product2.jpg
-│   │       │   │   ├── product3.jpg
-│   │       │   │   ├── product4.jpg
-│   │       │   │   ├── product5.jpg
-│   │       │   │   ├── product6.jpg
-│   │       │   │   ├── product7.jpg
-│   │       │   │   ├── product8.jpg
-│   │       │   │   ├── product-single.jpg
-│   │       │   │   ├── profile-bg.jpg
-│   │       │   │   ├── recent-3.jpg
-│   │       │   │   ├── recent-7.jpg
-│   │       │   │   ├── recent-8.jpg
-│   │       │   │   ├── recent-9.jpg
-│   │       │   │   ├── search1.jpg
-│   │       │   │   ├── search2.jpg
-│   │       │   │   ├── search3.jpg
-│   │       │   │   ├── search4.jpg
-│   │       │   │   ├── search5.jpg
-│   │       │   │   ├── search6.jpg
-│   │       │   │   ├── services1.jpg
-│   │       │   │   ├── services2.jpg
-│   │       │   │   ├── services3.jpg
-│   │       │   │   ├── services4.jpg
-│   │       │   │   ├── services5.jpg
-│   │       │   │   ├── services6.jpg
-│   │       │   │   ├── shirt.jpg
-│   │       │   │   ├── single-post2.jpg
-│   │       │   │   ├── single-post3.jpg
-│   │       │   │   ├── single-post.jpg
-│   │       │   │   ├── task.png
-│   │       │   │   ├── team1.jpg
-│   │       │   │   ├── team2.jpg
-│   │       │   │   ├── team3.jpg
-│   │       │   │   ├── team4.jpg
-│   │       │   │   ├── team5.jpg
-│   │       │   │   ├── team6.jpg
-│   │       │   │   ├── turkey-flag.html
-│   │       │   │   ├── user1.jpg
-│   │       │   │   ├── user2.jpg
-│   │       │   │   ├── user3.jpg
-│   │       │   │   ├── user4.jpg
-│   │       │   │   ├── user5.jpg
-│   │       │   │   ├── us-flag.html
-│   │       │   │   ├── weather.jpg
-│   │       │   │   └── widget-bg1.jpg
-│   │       │   ├── sprite-skin-flat.png
-│   │       │   ├── typing-loading.gif
-│   │       │   └── up-arrow.png
-│   │       └── js
-│   │           ├── app.js
-│   │           ├── bootstrap.min.js
-│   │           ├── common.js
-│   │           └── jquery-2.1.3.js
-│   ├── dev-sim.js
-│   ├── favicon.ico
-│   ├── index.html
-│   ├── logo192.png
-│   ├── logo512.png
-│   ├── manifest.json
-│   ├── robots.txt
-│   └── service-worker.js
 ├── README.md
 ├── server-stack.md
 ├── server-stack.pdf
 ├── src
-│   ├── alerts
-│   │   ├── CallAlertsController.jsx
-│   │   ├── CallMiniWindow.jsx
-│   │   ├── CallMiniWindowPiP.jsx
-│   │   └── demoSim.jsx
-│   ├── App.css
-│   ├── App.js
-│   ├── App.test.js
-│   ├── Component
-│   │   ├── AccountDetails
-│   │   │   ├── AccountSettings.jsx
-│   │   │   ├── BillingInformation.jsx
-│   │   │   ├── SwitchPlan.jsx
-│   │   │   └── YourPlan.jsx
-│   │   ├── Analytics
-│   │   │   ├── InboxAnalyticsGraph
-│   │   │   │   ├── CountofTags.jsx
-│   │   │   │   ├── MessageDeleiveryStatus.jsx
-│   │   │   │   ├── SendandreceivedMessages.jsx
-│   │   │   │   ├── Sendmessagebytype.jsx
-│   │   │   │   ├── TicketCoversationbyType.jsx
-│   │   │   │   ├── TicketDuration.jsx
-│   │   │   │   ├── TicketStatusCount.jsx
-│   │   │   │   └── TicketStatusOvertime.jsx
-│   │   │   ├── InboxAnalytics.jsx
-│   │   │   └── WhatsapAds.jsx
-│   │   ├── Assets
-│   │   │   ├── css
-│   │   │   │   └── SampleTemplate.css
-│   │   │   ├── font
-│   │   │   │   ├── Roboto-BoldCondensed.ttf
-│   │   │   │   ├── Roboto-Italic.ttf
-│   │   │   │   ├── Roboto-Light.ttf
-│   │   │   │   ├── Roboto-Medium.ttf
-│   │   │   │   ├── Roboto-Regular.ttf
-│   │   │   │   └── Roboto-Thin.ttf
-│   │   │   └── img
-│   │   │       ├── 01_Cuppy_smile.webp
-│   │   │       ├── 02_Cuppy_lol.webp
-│   │   │       ├── 03_Cuppy_rofl.webp
-│   │   │       ├── 04_Cuppy_sad.webp
-│   │   │       ├── 05_Cuppy_cry.webp
-│   │   │       ├── 06_Cuppy_love.webp
-│   │   │       ├── 07_Cuppy_hate.webp
-│   │   │       ├── 08_Cuppy_lovewithmug.webp
-│   │   │       ├── 09_Cuppy_lovewithcookie.webp
-│   │   │       ├── 10_Cuppy_hmm.webp
-│   │   │       ├── analytics_events_side.svg
-│   │   │       ├── Analytics.png
-│   │   │       ├── analytics_routing_side.svg
-│   │   │       ├── Automations.png
-│   │   │       ├── boy.png
-│   │   │       ├── Broadcast.png
-│   │   │       ├── Call Interaction.png
-│   │   │       ├── call.png
-│   │   │       ├── catalogImg.svg
-│   │   │       ├── Catalog.jpeg
-│   │   │       ├── Chatbots.png
-│   │   │       ├── click.png
-│   │   │       ├── clock-square.png
-│   │   │       ├── Contact
-│   │   │       │   ├── Contacts_Upload_Sample.csv
-│   │   │       │   ├── country_code.svg
-│   │   │       │   └── upload.svg
-│   │   │       ├── Contacts.png
-│   │   │       ├── copy.png
-│   │   │       ├── Ecommerce.jpeg
-│   │   │       ├── education.jpeg
-│   │   │       ├── Email.png
-│   │   │       ├── evmarket.svg
-│   │   │       ├── ev-notify-logo.png
-│   │   │       ├── evzone.png
-│   │   │       ├── Extracted.png
-│   │   │       ├── Finance.jpeg
-│   │   │       ├── friends.png
-│   │   │       ├── general.jpeg
-│   │   │       ├── gmailDesk.png
-│   │   │       ├── Groups.png
-│   │   │       ├── hospital.jpeg
-│   │   │       ├── House.png
-│   │   │       ├── Intiated.png
-│   │   │       ├── list.png
-│   │   │       ├── logo.png
-│   │   │       ├── mail.png
-│   │   │       ├── mediaDocument.png
-│   │   │       ├── mediaImg.png
-│   │   │       ├── mediaVdo.png
-│   │   │       ├── Meeting.png
-│   │   │       ├── menu.svg
-│   │   │       ├── More.png
-│   │   │       ├── My Team.png
-│   │   │       ├── Notify_login_logo.svg
-│   │   │       ├── pan.svg
-│   │   │       ├── platformDesk.png
-│   │   │       ├── platform.png
-│   │   │       ├── previewimag.jpg
-│   │   │       ├── PrivateIcon.png
-│   │   │       ├── pushDesk.png
-│   │   │       ├── push.png
-│   │   │       ├── Realestate.jpeg
-│   │   │       ├── reply.png
-│   │   │       ├── Reports.png
-│   │   │       ├── reset.svg
-│   │   │       ├── Restaurant.jpeg
-│   │   │       ├── Rule.svg
-│   │   │       ├── showFile.png
-│   │   │       ├── sms.png
-│   │   │       ├── TeamInbox
-│   │   │       │   ├── add-circle.svg
-│   │   │       │   ├── angle-down-small.svg
-│   │   │       │   ├── angle-right.svg
-│   │   │       │   ├── arrow-down-to-line.svg
-│   │   │       │   ├── atImg.svg
-│   │   │       │   ├── attachImg.svg
-│   │   │       │   ├── BellImg.svg
-│   │   │       │   ├── boldImg.svg
-│   │   │       │   ├── car.svg
-│   │   │       │   ├── centerImg.svg
-│   │   │       │   ├── center.svg
-│   │   │       │   ├── chatprofile1.png
-│   │   │       │   ├── chatprofile2.png
-│   │   │       │   ├── chatsender.png
-│   │   │       │   ├── Ev_Marketlogo.svg
-│   │   │       │   ├── flag-triangle.svg
-│   │   │       │   ├── hashImg.svg
-│   │   │       │   ├── italicImg.svg
-│   │   │       │   ├── IVRImg.svg
-│   │   │       │   ├── mailIcon.svg
-│   │   │       │   ├── Mail_logo.svg
-│   │   │       │   ├── membersImg.svg
-│   │   │       │   ├── menu-left.svg
-│   │   │       │   ├── menu-right.svg
-│   │   │       │   ├── NutImg.svg
-│   │   │       │   ├── orderImg.svg
-│   │   │       │   ├── recorderImg.svg
-│   │   │       │   ├── Rectangle 34625680.svg
-│   │   │       │   ├── scanImg.svg
-│   │   │       │   ├── SMS_Logo.svg
-│   │   │       │   ├── textImg.svg
-│   │   │       │   ├── times-circle.svg
-│   │   │       │   ├── underImg.svg
-│   │   │       │   ├── unorderImg.svg
-│   │   │       │   ├── WA_Logo.svg
-│   │   │       │   └── Whatsapp_logo.svg
-│   │   │       ├── Team-inbox.png
-│   │   │       ├── Team Leads.png
-│   │   │       ├── Technical.png
-│   │   │       ├── user.png
-│   │   │       ├── visit.png
-│   │   │       ├── Wallet.png
-│   │   │       ├── whatsappads.svg
-│   │   │       ├── whatsappDesk.png
-│   │   │       ├── whatsappflow.svg
-│   │   │       ├── whatsapp.png
-│   │   │       ├── zoomin.svg
-│   │   │       ├── zoomout.svg
-│   │   │       └── zoom.svg
-│   │   ├── assigneddrop.js
-│   │   ├── AssigneeDrop.js
-│   │   ├── AutocompleteComponent.jsx
-│   │   ├── Automation
-│   │   │   ├── Chatbots
-│   │   │   │   ├── Card.jsx
-│   │   │   │   ├── EditChatbotPage.jsx
-│   │   │   │   ├── EditNavContent.jsx
-│   │   │   │   ├── OperationItemContent.jsx
-│   │   │   │   └── Sidebar
-│   │   │   │       ├── AssignToTeamModal.jsx
-│   │   │   │       ├── AssignToUserModal.jsx
-│   │   │   │       ├── BaseModal.jsx
-│   │   │   │       ├── ButtonsModal.jsx
-│   │   │   │       ├── ChatbotTextEditor.jsx
-│   │   │   │       ├── ConditionModal.jsx
-│   │   │   │       ├── ListModal.jsx
-│   │   │   │       ├── MessageOption.jsx
-│   │   │   │       ├── QuestionModal.jsx
-│   │   │   │       ├── SetTagsModal.jsx
-│   │   │   │       ├── SetTimeDelayModal.jsx
-│   │   │   │       ├── TemplatesModal.jsx
-│   │   │   │       ├── TriggerChatbotModal.jsx
-│   │   │   │       ├── UpdateAttributesModal.jsx
-│   │   │   │       ├── UpdateChatModal.jsx
-│   │   │   │       ├── VariablesDropdown.jsx
-│   │   │   │       ├── WebhookModal.jsx
-│   │   │   │       └── WhatsappFlowModal.jsx
-│   │   │   ├── Chatbots.js
-│   │   │   ├── DefaultAction.js
-│   │   │   ├── KeywordAction.js
-│   │   │   ├── Nextstep.js
-│   │   │   ├── NextSteps
-│   │   │   │   ├── AssigntoTeamComponent.jsx
-│   │   │   │   ├── AssigntoUserComponent.jsx
-│   │   │   │   ├── CatalogComponent.jsx
-│   │   │   │   ├── ChatbotsComponent.jsx
-│   │   │   │   ├── ContactComponent.jsx
-│   │   │   │   ├── DocumentComponent.jsx
-│   │   │   │   ├── ImageComponent.jsx
-│   │   │   │   ├── Modal
-│   │   │   │   │   ├── EditAssigntoTeamModal.jsx
-│   │   │   │   │   ├── EditAssigntoUserModal.jsx
-│   │   │   │   │   ├── EditCaptionModal.jsx
-│   │   │   │   │   ├── EditContactAttributeModal.jsx
-│   │   │   │   │   ├── EditNotificationModal.jsx
-│   │   │   │   │   ├── EditTextModal.jsx
-│   │   │   │   │   └── KeywordBaseModal.jsx
-│   │   │   │   ├── SendNotificationComponent.jsx
-│   │   │   │   ├── SequenceComponent.jsx
-│   │   │   │   ├── StickerComponent.jsx
-│   │   │   │   ├── TemplateComponent.jsx
-│   │   │   │   ├── TextComponent.jsx
-│   │   │   │   └── VideoComponent.jsx
-│   │   │   ├── PopupModal
-│   │   │   │   ├── Chatbot
-│   │   │   │   │   ├── ChatbotTimerModal.jsx
-│   │   │   │   │   ├── CopyandAddModal.jsx
-│   │   │   │   │   ├── FallbackMessageModal.jsx
-│   │   │   │   │   ├── FlowTemplates.jsx
-│   │   │   │   │   └── NotificationModal.jsx
-│   │   │   │   ├── DefaultAction
-│   │   │   │   │   ├── WorkingHoursRow.jsx
-│   │   │   │   │   └── Workinghourssettings.jsx
-│   │   │   │   ├── KeywordAction
-│   │   │   │   │   └── AddKeywordModalComponent.jsx
-│   │   │   │   ├── Rule
-│   │   │   │   │   ├── ActionPropertiesModal.jsx
-│   │   │   │   │   ├── ActionSelect.jsx
-│   │   │   │   │   ├── FilterPropertiesModal.jsx
-│   │   │   │   │   ├── NewRuleModal.jsx
-│   │   │   │   │   └── TriggerPropertiesModal.jsx
-│   │   │   │   ├── Sequence
-│   │   │   │   │   ├── AddSequenceModal.jsx
-│   │   │   │   │   └── MessageSettingModal.jsx
-│   │   │   │   └── Whatsappflows
-│   │   │   │       ├── FeedbackFormModal.jsx
-│   │   │   │       └── LeadGenerationModal.jsx
-│   │   │   ├── Replymaterial.js
-│   │   │   ├── Routing.js
-│   │   │   ├── Rules.js
-│   │   │   ├── Sequence.js
-│   │   │   └── Whatsappflows.js
-│   │   ├── ButtonComponent.jsx
-│   │   ├── CheckboxComponent.jsx
-│   │   ├── contacts
-│   │   │   ├── constants.jsx
-│   │   │   ├── ContactsPage.jsx
-│   │   │   ├── data
-│   │   │   │   └── countries.jsx
-│   │   │   ├── drawers
-│   │   │   │   ├── ContactDetailsDrawer.jsx
-│   │   │   │   └── EditContactDrawer.jsx
-│   │   │   ├── hooks
-│   │   │   │   ├── useContactsApi.jsx
-│   │   │   │   ├── useContactsQueryState.jsx
-│   │   │   │   ├── useSelection.jsx
-│   │   │   │   └── useUploadWorkspace.js
-│   │   │   ├── index.jsx
-│   │   │   ├── layouts
-│   │   │   │   └── ContactsTabs.jsx
-│   │   │   ├── Modals
-│   │   │   │   ├── AddContactModal.jsx
-│   │   │   │   ├── DeleteConfirmModal.jsx
-│   │   │   │   ├── EditContactDrawer.jsx
-│   │   │   │   ├── ExportContactsModal.jsx
-│   │   │   │   ├── FilterContactsModal.jsx
-│   │   │   │   ├── ImportContactsModal.jsx
-│   │   │   │   └── UploadsManagerDialog.jsx
-│   │   │   ├── Table
-│   │   │   │   ├── ContactCells.jsx
-│   │   │   │   ├── ContactRow.jsx
-│   │   │   │   ├── ContactsTable.jsx
-│   │   │   │   ├── EmptyState.jsx
-│   │   │   │   └── LoadingBar.jsx
-│   │   │   ├── Toolbar
-│   │   │   │   ├── BulkBar.jsx
-│   │   │   │   ├── ContactsToolbar.jsx
-│   │   │   │   └── SavedViewsMenu.jsx
-│   │   │   └── utils
-│   │   │       ├── ContactFilter.js
-│   │   │       ├── editability.jsx
-│   │   │       ├── mappers.jsx
-│   │   │       ├── phone.jsx
-│   │   │       ├── schema.jsx
-│   │   │       ├── uploadHistory.jsx
-│   │   │       └── validation.jsx
-│   │   ├── CustomDatePicker.jsx
-│   │   ├── CustomPagination.jsx
-│   │   ├── dailer
-│   │   │   ├── AgentProfileCard.jsx
-│   │   │   ├── dialingPlan
-│   │   │   │   ├── CallScript.jsx
-│   │   │   │   ├── CampaignDetails.jsx
-│   │   │   │   ├── CRMFormPane.jsx
-│   │   │   │   ├── CRMPanel.jsx
-│   │   │   │   ├── EngagementOverview.jsx
-│   │   │   │   ├── EscalationDetailsDialog.jsx
-│   │   │   │   ├── EscalationPanel.jsx
-│   │   │   │   ├── FieldRenderer.jsx
-│   │   │   │   ├── index.jsx
-│   │   │   │   ├── InteractionForm.jsx
-│   │   │   │   ├── OfferDetails.jsx
-│   │   │   │   ├── QualityAssurance.jsx
-│   │   │   │   ├── ScriptPanel.jsx
-│   │   │   │   └── TargetAudience.jsx
-│   │   │   ├── DialingPlanPanel.jsx
-│   │   │   ├── DispositionPanel.jsx
-│   │   │   ├── hoverScroll.jsx
-│   │   │   ├── index.js
-│   │   │   ├── lead
-│   │   │   │   ├── index.js
-│   │   │   │   ├── LeadActivityPanel.jsx
-│   │   │   │   ├── LeadIdentityCard.jsx
-│   │   │   │   ├── LeadNotificationsPanel.jsx
-│   │   │   │   ├── LeadOverviewHeader.jsx
-│   │   │   │   ├── LeadProfileOverview.jsx
-│   │   │   │   └── NotificationViewDialog.jsx
-│   │   │   ├── LeftNav.jsx
-│   │   │   ├── NextCallCard.jsx
-│   │   │   ├── ServiceEngagementCard.jsx
-│   │   │   └── Softphone
-│   │   │       ├── CallControls.jsx
-│   │   │       ├── CallEventLog.jsx
-│   │   │       ├── CallTimer.jsx
-│   │   │       ├── CountryPicker.jsx
-│   │   │       ├── DialerLogPanel.jsx
-│   │   │       ├── DTMFPad.jsx
-│   │   │       ├── IconButtonAnimated.jsx
-│   │   │       ├── index.js
-│   │   │       ├── InlineCallToast.jsx
-│   │   │       ├── phoneUtils.jsx
-│   │   │       ├── QualityPill.jsx
-│   │   │       ├── RecordingTimer.jsx
-│   │   │       ├── ScenarioCallView.jsx
-│   │   │       ├── ShimmerGlitch.jsx
-│   │   │       ├── SignalMeters.jsx
-│   │   │       ├── SoftphoneCard.jsx
-│   │   │       ├── SoftphoneKeypad.jsx
-│   │   │       ├── useAudioMeters.jsx
-│   │   │       ├── useDialerShortcuts.jsx
-│   │   │       ├── VolumeBar.jsx
-│   │   │       └── WrapUpChip.jsx
-│   │   ├── Data.json
-│   │   ├── DeleteModal.jsx
-│   │   ├── Dropdown.jsx
-│   │   ├── Footer
-│   │   │   └── Footer.js
-│   │   ├── humburgerdiv.jsx
-│   │   ├── Icon.js
-│   │   ├── Meetings
-│   │   │   ├── Analytic.jsx
-│   │   │   ├── Availability.jsx
-│   │   │   ├── CopyMeetingLink.jsx
-│   │   │   ├── CreateNewMeetingComponent.jsx
-│   │   │   ├── CustomButton.jsx
-│   │   │   ├── CustomDatePicker.jsx
-│   │   │   ├── CustomDropdown.jsx
-│   │   │   ├── DataSpecificHoursComponent.jsx
-│   │   │   ├── EditEvent.jsx
-│   │   │   ├── EditEventType.jsx
-│   │   │   ├── EditQuestionModal.jsx
-│   │   │   ├── Event.jsx
-│   │   │   ├── EventType.jsx
-│   │   │   ├── EventTypeMenu.jsx
-│   │   │   ├── LocationSelector.jsx
-│   │   │   ├── MeetingHistory.jsx
-│   │   │   ├── Meeting.jsx
-│   │   │   ├── OneononeMeeting.jsx
-│   │   │   ├── ScheduleOptions.jsx
-│   │   │   ├── SelectDateandTimeComponent.jsx
-│   │   │   ├── SelectEventLocation.jsx
-│   │   │   ├── TextEditor.jsx
-│   │   │   ├── TimeZoneMenu.jsx
-│   │   │   ├── VariableBox.jsx
-│   │   │   ├── WeeklyHours.jsx
-│   │   │   └── WorkingHoursModal.jsx
-│   │   ├── MuiStyles
-│   │   │   └── muiStyle.js
-│   │   ├── Navbar
-│   │   │   ├── MoreDropDown.js
-│   │   │   └── Navbar.js
-│   │   ├── newpopup.js
-│   │   ├── Popup
-│   │   │   ├── AttributePopup.js
-│   │   │   └── SampleTemplate.js
-│   │   ├── Reporter.js
-│   │   ├── Reports
-│   │   │   ├── AccordionTable.jsx
-│   │   │   ├── AuditLog.jsx
-│   │   │   ├── ChartComponent.jsx
-│   │   │   ├── FirstResponseTime.jsx
-│   │   │   ├── GenerateReport.jsx
-│   │   │   ├── HandlingTimebyStatus.jsx
-│   │   │   ├── NewTickets.jsx
-│   │   │   ├── ResolutionTime.jsx
-│   │   │   ├── SolvedandClosed.jsx
-│   │   │   ├── TicketReports.jsx
-│   │   │   ├── TicketSatisfaction.jsx
-│   │   │   └── TimeGridChart.jsx
-│   │   ├── SearchboxComponent.jsx
-│   │   ├── store
-│   │   │   ├── templates
-│   │   │   │   ├── useApprovalsStore.js
-│   │   │   │   ├── usePreviewStore.js
-│   │   │   │   ├── useRoutingProfilesStore.js
-│   │   │   │   ├── useStatsStore.js
-│   │   │   │   ├── useTemplatesStore.js
-│   │   │   │   └── useThemeLibraryStore.js
-│   │   │   ├── useContactsStore.js
-│   │   │   └── useDialerStore.js
-│   │   ├── Style.css
-│   │   ├── TableComponent.jsx
-│   │   ├── teamburgerMenu.jsx
-│   │   ├── TeamInbox
-│   │   │   ├── ChatInputToolbar.jsx
-│   │   │   ├── CustomAccordion.jsx
-│   │   │   ├── Editorbox.jsx
-│   │   │   ├── TicketsCard.jsx
-│   │   │   ├── TicketsChat.jsx
-│   │   │   └── TicketSidePanel.jsx
-│   │   ├── TeamInboxAccordin.jsx
-│   │   ├── templates
-│   │   │   ├── channel-previews
-│   │   │   │   ├── EmailPreview.jsx
-│   │   │   │   ├── PlatformPreview.jsx
-│   │   │   │   ├── PushPreview.jsx
-│   │   │   │   ├── SmsPreview.jsx
-│   │   │   │   └── WhatsAppPreview.jsx
-│   │   │   ├── constants
-│   │   │   │   ├── APPROVAL_STATES.js
-│   │   │   │   ├── CHANNELS.js
-│   │   │   │   ├── FEATURE_FLAGS.js
-│   │   │   │   ├── QUALITY_STATUSES.js
-│   │   │   │   └── TEMPLATE_TYPES.js
-│   │   │   ├── core
-│   │   │   │   ├── channelAdapters.preview.js
-│   │   │   │   ├── channelCapabilities.js
-│   │   │   │   ├── formatters.js
-│   │   │   │   ├── idGen.js
-│   │   │   │   ├── localStore.js
-│   │   │   │   ├── routingProfiles.defaults.js
-│   │   │   │   ├── validators.js
-│   │   │   │   └── variableResolver.js
-│   │   │   ├── fixtures
-│   │   │   │   ├── approvals.fixtures.json
-│   │   │   │   ├── routingProfiles.fixtures.json
-│   │   │   │   ├── templates.fixtures.json
-│   │   │   │   ├── usage.fixtures.json
-│   │   │   │   ├── variableKits.fixtures.json
-│   │   │   │   └── variants.fixtures.json
-│   │   │   ├── fsm
-│   │   │   │   ├── approvals.machine.js
-│   │   │   │   └── submission.machine.js
-│   │   │   ├── index.js
-│   │   │   ├── layout
-│   │   │   │   ├── TemplatesContentFrame.jsx
-│   │   │   │   ├── TemplatesLeftNav.jsx
-│   │   │   │   └── TemplatesTopBar.jsx
-│   │   │   ├── modals
-│   │   │   │   ├── ArchiveDialog.jsx
-│   │   │   │   ├── ChooseChannelModal.jsx
-│   │   │   │   ├── CloneTemplateModal.jsx
-│   │   │   │   ├── DeleteConfirmDialog.jsx
-│   │   │   │   └── TestSendModal.jsx
-│   │   │   ├── utils
-│   │   │   │   ├── ABComparePanel.jsx
-│   │   │   │   ├── AnalyticsCharts.jsx
-│   │   │   │   ├── ApprovalStatusChip.jsx
-│   │   │   │   ├── AttachmentsManager.jsx
-│   │   │   │   ├── ButtonsDesigner.jsx
-│   │   │   │   ├── ChannelTabs.jsx
-│   │   │   │   ├── ChannelVariantPanel.jsx
-│   │   │   │   ├── ContentBlocksEditor.jsx
-│   │   │   │   ├── DeviceToggle.jsx
-│   │   │   │   ├── DiffViewer.jsx
-│   │   │   │   ├── EmptyState.jsx
-│   │   │   │   ├── ImportExportMenu.jsx
-│   │   │   │   ├── LocaleTabs.jsx
-│   │   │   │   ├── RoutingProfilePicker.jsx
-│   │   │   │   ├── StatusTimeline.jsx
-│   │   │   │   ├── SubmissionDrawer.jsx
-│   │   │   │   ├── TemplateCard.jsx
-│   │   │   │   ├── TemplatePreviewPane.jsx
-│   │   │   │   ├── TemplateRowActions.jsx
-│   │   │   │   ├── TemplatesTable.jsx
-│   │   │   │   ├── ThemeSelector.jsx
-│   │   │   │   ├── UsageSummary.jsx
-│   │   │   │   ├── UsedInPanel.jsx
-│   │   │   │   ├── ValidationPanel.jsx
-│   │   │   │   └── VariablesInspector.jsx
-│   │   │   └── views
-│   │   │       ├── AllTemplatesView.jsx
-│   │   │       ├── ApprovalsCenterView.jsx
-│   │   │       ├── ChannelTemplatesView.jsx
-│   │   │       ├── CreateTemplateWizardView.jsx
-│   │   │       ├── NotFoundView.jsx
-│   │   │       ├── SettingsView.jsx
-│   │   │       ├── StatisticsView.jsx
-│   │   │       ├── TemplateDetailView.jsx
-│   │   │       └── ThemeLibraryView.jsx
-│   │   ├── TextfieldComponent.jsx
-│   │   ├── TicketType.js
-│   │   ├── TimePickerComponent.jsx
-│   │   ├── ToggleSwitch.jsx
-│   │   └── UserManagement
-│   │       └── PopupModal
-│   │           ├── AddTeamModal.jsx
-│   │           ├── AddUserModal.jsx
-│   │           └── UserBaseModal.jsx
-│   ├── index.css
-│   ├── index.js
-│   ├── Layouts
-│   │   └── baselayouts.jsx
-│   ├── logo.svg
-│   ├── Modal.js
-│   ├── Pages
-│   │   ├── AccountDetails.jsx
-│   │   ├── Analytics.js
-│   │   ├── automations.jsx
-│   │   ├── Contacts.jsx
-│   │   ├── Dailer.jsx
-│   │   ├── Login.jsx
-│   │   ├── Meetings.jsx
-│   │   ├── Reports.jsx
-│   │   ├── TeamInbox.jsx
-│   │   ├── Templates.jsx
-│   │   └── UserManagement.jsx
-│   ├── push
-│   │   └── pushClient.js
-│   ├── reportWebVitals.js
-│   ├── setupTests.js
-│   ├── styles
-│   │   └── dailer.css
-│   ├── swRegistration.js
-│   ├── theme
-│   │   ├── constants
-│   │   │   └── THEME_CATALOG.js
-│   │   ├── core
-│   │   │   └── themeMaps.js
-│   │   ├── fixtures
-│   │   │   └── themeCatalog.fixtures.json
-│   │   └── notifyTheme.js
-│   └── Url.js
+│   ├── alerts
+│   │   ├── CallAlertsController.jsx
+│   │   ├── CallMiniWindow.jsx
+│   │   ├── CallMiniWindowPiP.jsx
+│   │   └── demoSim.jsx
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── auth
+│   │   └── authAgent.js
+│   ├── boot
+│   │   ├── BootGate.jsx
+│   │   └── bootstrap.js
+│   ├── Component
+│   │   ├── AccountDetails
+│   │   │   ├── AccountSettings.jsx
+│   │   │   ├── BillingInformation.jsx
+│   │   │   ├── SwitchPlan.jsx
+│   │   │   └── YourPlan.jsx
+│   │   ├── Analytics
+│   │   │   ├── InboxAnalyticsGraph
+│   │   │   │   ├── CountofTags.jsx
+│   │   │   │   ├── MessageDeleiveryStatus.jsx
+│   │   │   │   ├── SendandreceivedMessages.jsx
+│   │   │   │   ├── Sendmessagebytype.jsx
+│   │   │   │   ├── TicketCoversationbyType.jsx
+│   │   │   │   ├── TicketDuration.jsx
+│   │   │   │   ├── TicketStatusCount.jsx
+│   │   │   │   └── TicketStatusOvertime.jsx
+│   │   │   ├── InboxAnalytics.jsx
+│   │   │   └── WhatsapAds.jsx
+│   │   ├── assigneddrop.js
+│   │   ├── AssigneeDrop.js
+│   │   ├── AutocompleteComponent.jsx
+│   │   ├── Automation
+│   │   │   ├── Chatbots
+│   │   │   │   ├── Card.jsx
+│   │   │   │   ├── EditChatbotPage.jsx
+│   │   │   │   ├── EditNavContent.jsx
+│   │   │   │   ├── flowbuilder
+│   │   │   │   │   ├── ai
+│   │   │   │   │   │   ├── dev.js
+│   │   │   │   │   │   ├── flows
+│   │   │   │   │   │   │   ├── ai-content-enhancement.js
+│   │   │   │   │   │   │   └── ai-flow-suggestions.js
+│   │   │   │   │   │   └── genkit.js
+│   │   │   │   │   ├── api
+│   │   │   │   │   │   ├── flows.js
+│   │   │   │   │   │   └── mockServer.js
+│   │   │   │   │   ├── components
+│   │   │   │   │   │   ├── CanvasWithLayoutWorker
+│   │   │   │   │   │   │   ├── canvas-layout.module.css
+│   │   │   │   │   │   │   ├── CanvasWithLayoutWorker.jsx
+│   │   │   │   │   │   │   ├── edges
+│   │   │   │   │   │   │   │   └── ButtonEdge.jsx
+│   │   │   │   │   │   │   ├── nodes
+│   │   │   │   │   │   │   │   ├── BaseNode.jsx
+│   │   │   │   │   │   │   │   ├── GroupBoxNode.jsx
+│   │   │   │   │   │   │   │   ├── list-node.css
+│   │   │   │   │   │   │   │   ├── list-node.module.css
+│   │   │   │   │   │   │   │   └── SubflowNode.jsx
+│   │   │   │   │   │   │   └── NodeSelector.jsx
+│   │   │   │   │   │   ├── ConditionalLogicTab
+│   │   │   │   │   │   │   ├── conditional-logic.css
+│   │   │   │   │   │   │   ├── conditional-logic.module.css
+│   │   │   │   │   │   │   ├── ConditionalLogicTab.jsx
+│   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   ├── parts
+│   │   │   │   │   │   │   │   ├── BranchRow.jsx
+│   │   │   │   │   │   │   │   └── SimulatorPanel.jsx
+│   │   │   │   │   │   │   ├── schema.js
+│   │   │   │   │   │   │   ├── types.js
+│   │   │   │   │   │   │   └── utils.js
+│   │   │   │   │   │   ├── CredentialSelector
+│   │   │   │   │   │   │   ├── credentialSelector.css
+│   │   │   │   │   │   │   ├── CredentialSelector.jsx
+│   │   │   │   │   │   │   └── credentialSelector.module.css
+│   │   │   │   │   │   ├── CredentialVault
+│   │   │   │   │   │   │   ├── credentialVault.css
+│   │   │   │   │   │   │   ├── CredentialVaultModal.jsx
+│   │   │   │   │   │   │   └── credentialVault.module.css
+│   │   │   │   │   │   ├── ExpressionBuilder
+│   │   │   │   │   │   │   ├── cm
+│   │   │   │   │   │   │   │   ├── autocomplete.js
+│   │   │   │   │   │   │   │   └── lint.js
+│   │   │   │   │   │   │   ├── evaluator
+│   │   │   │   │   │   │   │   └── safeEval.js
+│   │   │   │   │   │   │   ├── expression-builder.css
+│   │   │   │   │   │   │   ├── ExpressionBuilder.jsx
+│   │   │   │   │   │   │   ├── expression-builder.module.css
+│   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   ├── snippets.js
+│   │   │   │   │   │   │   └── types.js
+│   │   │   │   │   │   ├── FlowsModal
+│   │   │   │   │   │   │   └── FlowsModal.jsx
+│   │   │   │   │   │   ├── HeaderBar
+│   │   │   │   │   │   │   ├── channel-meta.js
+│   │   │   │   │   │   │   ├── HeaderBar.jsx
+│   │   │   │   │   │   │   ├── header-bar.module.css
+│   │   │   │   │   │   │   └── index.js
+│   │   │   │   │   │   ├── KeyValueEditor
+│   │   │   │   │   │   │   ├── key-value-editor.css
+│   │   │   │   │   │   │   ├── KeyValueEditor.jsx
+│   │   │   │   │   │   │   └── keyValueEditor.module.css
+│   │   │   │   │   │   ├── Presence
+│   │   │   │   │   │   │   ├── colors.js
+│   │   │   │   │   │   │   ├── LiveCursors.jsx
+│   │   │   │   │   │   │   ├── NodeAvatars.jsx
+│   │   │   │   │   │   │   ├── presence.css
+│   │   │   │   │   │   │   ├── presence.module.css
+│   │   │   │   │   │   │   ├── PresenceProvider.jsx
+│   │   │   │   │   │   │   └── PublishBanner.jsx
+│   │   │   │   │   │   ├── PropertiesPanel
+│   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   ├── partials
+│   │   │   │   │   │   │   │   ├── AssignTeamModal.jsx
+│   │   │   │   │   │   │   │   ├── AssignUserModal.jsx
+│   │   │   │   │   │   │   │   ├── AttachmentsManager.jsx
+│   │   │   │   │   │   │   │   ├── AudioAttachmentModal.jsx
+│   │   │   │   │   │   │   │   ├── ButtonsModal.jsx
+│   │   │   │   │   │   │   │   ├── ConditionModal.jsx
+│   │   │   │   │   │   │   │   ├── DelayModal.jsx
+│   │   │   │   │   │   │   │   ├── DocumentAttachmentModal.jsx
+│   │   │   │   │   │   │   │   ├── EditorPieces.jsx
+│   │   │   │   │   │   │   │   ├── GoogleSheetsModal.jsx
+│   │   │   │   │   │   │   │   ├── ImageAttachmentModal.jsx
+│   │   │   │   │   │   │   │   ├── ImageEditorModal.jsx
+│   │   │   │   │   │   │   │   ├── ListModal.jsx
+│   │   │   │   │   │   │   │   ├── MessageContentModal.jsx
+│   │   │   │   │   │   │   │   ├── QuestionModal.jsx
+│   │   │   │   │   │   │   │   ├── RichTextEditor.jsx
+│   │   │   │   │   │   │   │   ├── simple-text-editor.css
+│   │   │   │   │   │   │   │   ├── simple-text-editor.module.css
+│   │   │   │   │   │   │   │   ├── VideoAttachmentModal.jsx
+│   │   │   │   │   │   │   │   └── WebhookModal.jsx
+│   │   │   │   │   │   │   ├── properties-panel.css
+│   │   │   │   │   │   │   ├── PropertiesPanel.jsx
+│   │   │   │   │   │   │   ├── properties-panel.module.css
+│   │   │   │   │   │   │   ├── schemas.js
+│   │   │   │   │   │   │   ├── tabs
+│   │   │   │   │   │   │   │   ├── AITab.jsx
+│   │   │   │   │   │   │   │   ├── AnalyticsTab.jsx
+│   │   │   │   │   │   │   │   ├── APITab.jsx
+│   │   │   │   │   │   │   │   ├── CampaignTab.jsx
+│   │   │   │   │   │   │   │   ├── GeneralTab.jsx
+│   │   │   │   │   │   │   │   ├── GoogleSheetsTab.jsx
+│   │   │   │   │   │   │   │   ├── HandoffTab.jsx
+│   │   │   │   │   │   │   │   ├── logic-tab.css
+│   │   │   │   │   │   │   │   ├── LogicTab.jsx
+│   │   │   │   │   │   │   │   ├── LogicTab.module.css
+│   │   │   │   │   │   │   │   ├── MessageTab.jsx
+│   │   │   │   │   │   │   │   ├── ScheduleTab.jsx
+│   │   │   │   │   │   │   │   └── SubflowTab.jsx
+│   │   │   │   │   │   │   ├── types.js
+│   │   │   │   │   │   │   └── utils
+│   │   │   │   │   │   │       ├── useDebouncedCallback.js
+│   │   │   │   │   │   │       └── useKeybind.js
+│   │   │   │   │   │   ├── SidebarPalette
+│   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   ├── sections-data.js
+│   │   │   │   │   │   │   ├── SidebarPalette.jsx
+│   │   │   │   │   │   │   ├── sidebar-palette.module.css
+│   │   │   │   │   │   │   ├── storage.js
+│   │   │   │   │   │   │   └── useShortcutFocus.js
+│   │   │   │   │   │   ├── StudioClientPage.jsx
+│   │   │   │   │   │   ├── TestConsole
+│   │   │   │   │   │   │   ├── index.js
+│   │   │   │   │   │   │   ├── parts
+│   │   │   │   │   │   │   │   ├── ChatPreview.jsx
+│   │   │   │   │   │   │   │   ├── ContextEditor.jsx
+│   │   │   │   │   │   │   │   ├── Toolbar.jsx
+│   │   │   │   │   │   │   │   ├── TracePanel.jsx
+│   │   │   │   │   │   │   │   └── VoicePreview.jsx
+│   │   │   │   │   │   │   ├── TestConsole.jsx
+│   │   │   │   │   │   │   ├── types.js
+│   │   │   │   │   │   │   └── utils
+│   │   │   │   │   │   │       ├── download.js
+│   │   │   │   │   │   │       └── sms.js
+│   │   │   │   │   │   ├── ui
+│   │   │   │   │   │   │   ├── accordion.jsx
+│   │   │   │   │   │   │   ├── alert-dialog.jsx
+│   │   │   │   │   │   │   ├── alert.jsx
+│   │   │   │   │   │   │   ├── avatar.jsx
+│   │   │   │   │   │   │   ├── badge.jsx
+│   │   │   │   │   │   │   ├── button.jsx
+│   │   │   │   │   │   │   ├── calendar.jsx
+│   │   │   │   │   │   │   ├── card.jsx
+│   │   │   │   │   │   │   ├── carousel.jsx
+│   │   │   │   │   │   │   ├── checkbox.jsx
+│   │   │   │   │   │   │   ├── collapsible.jsx
+│   │   │   │   │   │   │   ├── dialog.jsx
+│   │   │   │   │   │   │   ├── dropdown-menu.jsx
+│   │   │   │   │   │   │   ├── form.jsx
+│   │   │   │   │   │   │   ├── input.jsx
+│   │   │   │   │   │   │   ├── label.jsx
+│   │   │   │   │   │   │   ├── menubar.jsx
+│   │   │   │   │   │   │   ├── popover.jsx
+│   │   │   │   │   │   │   ├── progress.jsx
+│   │   │   │   │   │   │   ├── radio-group.jsx
+│   │   │   │   │   │   │   ├── scroll-area.jsx
+│   │   │   │   │   │   │   ├── select.jsx
+│   │   │   │   │   │   │   ├── separator.jsx
+│   │   │   │   │   │   │   ├── sheet.jsx
+│   │   │   │   │   │   │   ├── skeleton.jsx
+│   │   │   │   │   │   │   ├── slider.jsx
+│   │   │   │   │   │   │   ├── switch.jsx
+│   │   │   │   │   │   │   ├── table.jsx
+│   │   │   │   │   │   │   ├── tabs.jsx
+│   │   │   │   │   │   │   ├── textarea.jsx
+│   │   │   │   │   │   │   ├── toaster.jsx
+│   │   │   │   │   │   │   ├── toast.jsx
+│   │   │   │   │   │   │   └── tooltip.jsx
+│   │   │   │   │   │   ├── UpdateToast.jsx
+│   │   │   │   │   │   └── VariableChipAutocomplete
+│   │   │   │   │   │       ├── VariableChipAutocomplete.jsx
+│   │   │   │   │   │       ├── variable-chip.css
+│   │   │   │   │   │       └── variableChip.module.css
+│   │   │   │   │   ├── config
+│   │   │   │   │   │   └── whatsapp-rules.js
+│   │   │   │   │   ├── cred
+│   │   │   │   │   │   ├── crypto.js
+│   │   │   │   │   │   ├── idb.js
+│   │   │   │   │   │   ├── types.js
+│   │   │   │   │   │   ├── useCredentials.jsx
+│   │   │   │   │   │   └── vault.js
+│   │   │   │   │   ├── engine
+│   │   │   │   │   │   ├── clock.js
+│   │   │   │   │   │   ├── evaluator.js
+│   │   │   │   │   │   ├── EventBus.js
+│   │   │   │   │   │   ├── FlowCompiler.js
+│   │   │   │   │   │   ├── FlowEngine.js
+│   │   │   │   │   │   └── types.js
+│   │   │   │   │   ├── hooks
+│   │   │   │   │   │   ├── useDebouncedCallback.js
+│   │   │   │   │   │   ├── useLayoutWorker.js
+│   │   │   │   │   │   ├── use-toast.js
+│   │   │   │   │   │   └── useUndoRedo.js
+│   │   │   │   │   ├── layoutWorker
+│   │   │   │   │   │   ├── algorithms.js
+│   │   │   │   │   │   ├── layoutWorker.js
+│   │   │   │   │   │   ├── protocol.js
+│   │   │   │   │   │   └── utils.js
+│   │   │   │   │   ├── lib
+│   │   │   │   │   │   ├── color-utils.js
+│   │   │   │   │   │   └── utils.js
+│   │   │   │   │   ├── presence
+│   │   │   │   │   │   ├── color.js
+│   │   │   │   │   │   ├── PresenceProvider.jsx
+│   │   │   │   │   │   └── types.js
+│   │   │   │   │   ├── sp.svg
+│   │   │   │   │   ├── store
+│   │   │   │   │   │   ├── flow.js
+│   │   │   │   │   │   ├── flows.js
+│   │   │   │   │   │   ├── history.js
+│   │   │   │   │   │   └── ui.js
+│   │   │   │   │   ├── sw
+│   │   │   │   │   │   └── registration.jsx
+│   │   │   │   │   └── types
+│   │   │   │   │       └── MediaPart.js
+│   │   │   │   ├── FlowBuilder.css
+│   │   │   │   ├── FlowBuilder.jsx
+│   │   │   │   ├── index.js
+│   │   │   │   ├── OperationItemContent.jsx
+│   │   │   │   └── Sidebar
+│   │   │   │       ├── AssignToTeamModal.jsx
+│   │   │   │       ├── AssignToUserModal.jsx
+│   │   │   │       ├── BaseModal.jsx
+│   │   │   │       ├── ButtonsModal.jsx
+│   │   │   │       ├── ChatbotTextEditor.jsx
+│   │   │   │       ├── ConditionModal.jsx
+│   │   │   │       ├── ListModal.jsx
+│   │   │   │       ├── MessageOption.jsx
+│   │   │   │       ├── QuestionModal.jsx
+│   │   │   │       ├── SetTagsModal.jsx
+│   │   │   │       ├── SetTimeDelayModal.jsx
+│   │   │   │       ├── TemplatesModal.jsx
+│   │   │   │       ├── TriggerChatbotModal.jsx
+│   │   │   │       ├── UpdateAttributesModal.jsx
+│   │   │   │       ├── UpdateChatModal.jsx
+│   │   │   │       ├── VariablesDropdown.jsx
+│   │   │   │       ├── WebhookModal.jsx
+│   │   │   │       └── WhatsappFlowModal.jsx
+│   │   │   ├── Chatbots.js
+│   │   │   ├── DefaultAction.js
+│   │   │   ├── KeywordAction.js
+│   │   │   ├── Nextstep.js
+│   │   │   ├── NextSteps
+│   │   │   │   ├── AssigntoTeamComponent.jsx
+│   │   │   │   ├── AssigntoUserComponent.jsx
+│   │   │   │   ├── CatalogComponent.jsx
+│   │   │   │   ├── ChatbotsComponent.jsx
+│   │   │   │   ├── ContactComponent.jsx
+│   │   │   │   ├── DocumentComponent.jsx
+│   │   │   │   ├── ImageComponent.jsx
+│   │   │   │   ├── Modal
+│   │   │   │   │   ├── EditAssigntoTeamModal.jsx
+│   │   │   │   │   ├── EditAssigntoUserModal.jsx
+│   │   │   │   │   ├── EditCaptionModal.jsx
+│   │   │   │   │   ├── EditContactAttributeModal.jsx
+│   │   │   │   │   ├── EditNotificationModal.jsx
+│   │   │   │   │   ├── EditTextModal.jsx
+│   │   │   │   │   └── KeywordBaseModal.jsx
+│   │   │   │   ├── SendNotificationComponent.jsx
+│   │   │   │   ├── SequenceComponent.jsx
+│   │   │   │   ├── StickerComponent.jsx
+│   │   │   │   ├── TemplateComponent.jsx
+│   │   │   │   ├── TextComponent.jsx
+│   │   │   │   └── VideoComponent.jsx
+│   │   │   ├── PopupModal
+│   │   │   │   ├── Chatbot
+│   │   │   │   │   ├── ChatbotTimerModal.jsx
+│   │   │   │   │   ├── CopyandAddModal.jsx
+│   │   │   │   │   ├── FallbackMessageModal.jsx
+│   │   │   │   │   ├── FlowTemplates.jsx
+│   │   │   │   │   └── NotificationModal.jsx
+│   │   │   │   ├── DefaultAction
+│   │   │   │   │   ├── WorkingHoursRow.jsx
+│   │   │   │   │   └── Workinghourssettings.jsx
+│   │   │   │   ├── KeywordAction
+│   │   │   │   │   └── AddKeywordModalComponent.jsx
+│   │   │   │   ├── Rule
+│   │   │   │   │   ├── ActionPropertiesModal.jsx
+│   │   │   │   │   ├── ActionSelect.jsx
+│   │   │   │   │   ├── FilterPropertiesModal.jsx
+│   │   │   │   │   ├── NewRuleModal.jsx
+│   │   │   │   │   └── TriggerPropertiesModal.jsx
+│   │   │   │   ├── Sequence
+│   │   │   │   │   ├── AddSequenceModal.jsx
+│   │   │   │   │   └── MessageSettingModal.jsx
+│   │   │   │   └── Whatsappflows
+│   │   │   │       ├── FeedbackFormModal.jsx
+│   │   │   │       └── LeadGenerationModal.jsx
+│   │   │   ├── Replymaterial.js
+│   │   │   ├── Routing.js
+│   │   │   ├── Rules.js
+│   │   │   ├── Sequence.js
+│   │   │   └── Whatsappflows.js
+│   │   ├── Broadcast
+│   │   │   ├── BroadcastAnalytics.jsx
+│   │   │   ├── BroadcastBody.js
+│   │   │   ├── ImageSelectAttribute.jsx
+│   │   │   ├── NewBroadcastTemplate.jsx
+│   │   │   ├── NewTemplate.jsx
+│   │   │   ├── ScheduledBroadcast.jsx
+│   │   │   ├── SelectAttributeModal.jsx
+│   │   │   ├── TemplateCategories.jsx
+│   │   │   ├── TemplateChannels.jsx
+│   │   │   ├── TemplateContents.jsx
+│   │   │   ├── TemplateContentType.jsx
+│   │   │   ├── TemplateLibrary.jsx
+│   │   │   ├── Templates.jsx
+│   │   │   ├── Variables.jsx
+│   │   │   └── YourTemplate.jsx
+│   │   ├── ButtonComponent.jsx
+│   │   ├── CheckboxComponent.jsx
+│   │   ├── contacts
+│   │   │   ├── constants.jsx
+│   │   │   ├── ContactsPage.jsx
+│   │   │   ├── data
+│   │   │   │   └── countries.jsx
+│   │   │   ├── drawers
+│   │   │   │   ├── ContactDetailsDrawer.jsx
+│   │   │   │   └── EditContactDrawer.jsx
+│   │   │   ├── hooks
+│   │   │   │   ├── useContactsApi.jsx
+│   │   │   │   ├── useContactsQueryState.jsx
+│   │   │   │   ├── useSelection.jsx
+│   │   │   │   └── useUploadWorkspace.js
+│   │   │   ├── index.jsx
+│   │   │   ├── layouts
+│   │   │   │   └── ContactsTabs.jsx
+│   │   │   ├── Modals
+│   │   │   │   ├── AddContactModal.jsx
+│   │   │   │   ├── DeleteConfirmModal.jsx
+│   │   │   │   ├── EditContactDrawer.jsx
+│   │   │   │   ├── ExportContactsModal.jsx
+│   │   │   │   ├── FilterContactsModal.jsx
+│   │   │   │   ├── ImportContactsModal.jsx
+│   │   │   │   └── UploadsManagerDialog.jsx
+│   │   │   ├── Table
+│   │   │   │   ├── ContactCells.jsx
+│   │   │   │   ├── ContactRow.jsx
+│   │   │   │   ├── ContactsTable.jsx
+│   │   │   │   ├── EmptyState.jsx
+│   │   │   │   └── LoadingBar.jsx
+│   │   │   ├── Toolbar
+│   │   │   │   ├── BulkBar.jsx
+│   │   │   │   ├── ContactsToolbar.jsx
+│   │   │   │   └── SavedViewsMenu.jsx
+│   │   │   └── utils
+│   │   │       ├── ContactFilter.js
+│   │   │       ├── editability.jsx
+│   │   │       ├── mappers.jsx
+│   │   │       ├── phone.jsx
+│   │   │       ├── schema.jsx
+│   │   │       ├── uploadHistory.jsx
+│   │   │       └── validation.jsx
+│   │   ├── CustomDatePicker.jsx
+│   │   ├── CustomPagination.jsx
+│   │   ├── dailer
+│   │   │   ├── AgentProfileCard.jsx
+│   │   │   ├── dialingPlan
+│   │   │   │   ├── CallScript.jsx
+│   │   │   │   ├── CampaignDetails.jsx
+│   │   │   │   ├── CRMFormPane.jsx
+│   │   │   │   ├── CRMPanel.jsx
+│   │   │   │   ├── EngagementOverview.jsx
+│   │   │   │   ├── EscalationDetailsDialog.jsx
+│   │   │   │   ├── EscalationPanel.jsx
+│   │   │   │   ├── FieldRenderer.jsx
+│   │   │   │   ├── index.jsx
+│   │   │   │   ├── InteractionForm.jsx
+│   │   │   │   ├── OfferDetails.jsx
+│   │   │   │   ├── QualityAssurance.jsx
+│   │   │   │   ├── ScriptPanel.jsx
+│   │   │   │   └── TargetAudience.jsx
+│   │   │   ├── DialingPlanPanel.jsx
+│   │   │   ├── DispositionPanel.jsx
+│   │   │   ├── hoverScroll.jsx
+│   │   │   ├── index.js
+│   │   │   ├── lead
+│   │   │   │   ├── index.js
+│   │   │   │   ├── LeadActivityPanel.jsx
+│   │   │   │   ├── LeadIdentityCard.jsx
+│   │   │   │   ├── LeadNotificationsPanel.jsx
+│   │   │   │   ├── LeadOverviewHeader.jsx
+│   │   │   │   ├── LeadProfileOverview.jsx
+│   │   │   │   └── NotificationViewDialog.jsx
+│   │   │   ├── LeftNav.jsx
+│   │   │   ├── NextCallCard.jsx
+│   │   │   ├── ServiceEngagementCard.jsx
+│   │   │   ├── Softphone
+│   │   │   │   ├── CallControls.jsx
+│   │   │   │   ├── CallEventLog.jsx
+│   │   │   │   ├── CallTimer.jsx
+│   │   │   │   ├── CountryPicker.jsx
+│   │   │   │   ├── DialerLogPanel.jsx
+│   │   │   │   ├── DialPad.jsx
+│   │   │   │   ├── DTMFPad.jsx
+│   │   │   │   ├── IconButtonAnimated.jsx
+│   │   │   │   ├── index.js
+│   │   │   │   ├── InlineCallToast.jsx
+│   │   │   │   ├── phoneUtils.jsx
+│   │   │   │   ├── QualityPill.jsx
+│   │   │   │   ├── RecordingTimer.jsx
+│   │   │   │   ├── ScenarioCallView.jsx
+│   │   │   │   ├── ShimmerGlitch.jsx
+│   │   │   │   ├── SignalMeters.jsx
+│   │   │   │   ├── SoftphoneCard.jsx
+│   │   │   │   ├── SoftphoneKeypad.jsx
+│   │   │   │   ├── useAudioMeters.jsx
+│   │   │   │   ├── useDialerShortcuts.jsx
+│   │   │   │   ├── VolumeBar.jsx
+│   │   │   │   └── WrapUpChip.jsx
+│   │   │   └── store
+│   │   │       └── useDialerStore.js
+│   │   ├── Data.json
+│   │   ├── DeleteModal.jsx
+│   │   ├── Dropdown.jsx
+│   │   ├── Footer
+│   │   │   └── Footer.js
+│   │   ├── humburgerdiv.jsx
+│   │   ├── Icon.js
+│   │   ├── Meetings
+│   │   │   ├── Analytic.jsx
+│   │   │   ├── Availability.jsx
+│   │   │   ├── components
+│   │   │   │   ├── AvailabilityEditor.jsx
+│   │   │   │   ├── BookingHeaderRow.jsx
+│   │   │   │   ├── BookingStepperFrames.jsx
+│   │   │   │   ├── BookingWizard.jsx
+│   │   │   │   ├── CancelPage.jsx
+│   │   │   │   ├── DevicePreflight.jsx
+│   │   │   │   ├── EventTypeDetailsDialog.jsx
+│   │   │   │   ├── EventTypeForm.jsx
+│   │   │   │   ├── HostBookingTipCard.jsx
+│   │   │   │   ├── HostCard.jsx
+│   │   │   │   ├── live
+│   │   │   │   │   ├── controls.js
+│   │   │   │   │   ├── core.js
+│   │   │   │   │   ├── LiveMeeting.jsx
+│   │   │   │   │   ├── sections
+│   │   │   │   │   │   ├── ControlsAndMenu.jsx
+│   │   │   │   │   │   ├── EndAndOverlays.jsx
+│   │   │   │   │   │   ├── InviteParticipantDialog.jsx
+│   │   │   │   │   │   ├── LivePausedSection.jsx
+│   │   │   │   │   │   ├── LobbySection.jsx
+│   │   │   │   │   │   └── SetupSection.jsx
+│   │   │   │   │   ├── SpeakingAura.jsx
+│   │   │   │   │   ├── tiles.js
+│   │   │   │   │   ├── useAudioLevel.js
+│   │   │   │   │   └── views.js
+│   │   │   │   ├── LocationSelector.jsx
+│   │   │   │   ├── MeetingCard.jsx
+│   │   │   │   ├── MeetingTable.jsx
+│   │   │   │   ├── notify-live.jsx
+│   │   │   │   ├── PersonalLinkCard.jsx
+│   │   │   │   ├── PhoneInputLite.jsx
+│   │   │   │   ├── PoolDetailsDialog.jsx
+│   │   │   │   ├── PoolEditor.jsx
+│   │   │   │   ├── RecordingPlayer.jsx
+│   │   │   │   ├── ReminderPolicyEditor.jsx
+│   │   │   │   ├── ReschedulePage.jsx
+│   │   │   │   ├── ScorecardEditor.jsx
+│   │   │   │   ├── SlotPicker.jsx
+│   │   │   │   └── steps
+│   │   │   │       ├── StepConfirm.jsx
+│   │   │   │       ├── StepInviteeDetails.jsx
+│   │   │   │       ├── StepPickTime.jsx
+│   │   │   │       └── StepScheduled.jsx
+│   │   │   ├── constants
+│   │   │   │   └── booking.constants.js
+│   │   │   ├── CopyMeetingLink.jsx
+│   │   │   ├── CreateNewMeetingComponent.jsx
+│   │   │   ├── CustomButton.jsx
+│   │   │   ├── CustomDatePicker.jsx
+│   │   │   ├── CustomDropdown.jsx
+│   │   │   ├── DataSpecificHoursComponent.jsx
+│   │   │   ├── EditEvent.jsx
+│   │   │   ├── EditEventType.jsx
+│   │   │   ├── EditQuestionModal.jsx
+│   │   │   ├── Event.jsx
+│   │   │   ├── EventType.jsx
+│   │   │   ├── EventTypeMenu.jsx
+│   │   │   ├── hooks
+│   │   │   │   ├── useBookingState.js
+│   │   │   │   ├── useCalendarSwipe.js
+│   │   │   │   ├── useDaySlots.js
+│   │   │   │   └── useLiveClock.js
+│   │   │   ├── layout
+│   │   │   │   ├── MeetingsContentFrame.jsx
+│   │   │   │   └── MeetingsLeftNav.jsx
+│   │   │   ├── LocationSelector.jsx
+│   │   │   ├── MeetingHistory.jsx
+│   │   │   ├── Meeting.jsx
+│   │   │   ├── mocks
+│   │   │   │   ├── adapters
+│   │   │   │   │   ├── calendar.mock.js
+│   │   │   │   │   ├── conferencing.mock.js
+│   │   │   │   │   └── notifications.mock.js
+│   │   │   │   ├── fixtures
+│   │   │   │   │   ├── availability.fixtures.json
+│   │   │   │   │   ├── eventTypes.fixtures.json
+│   │   │   │   │   ├── meetings.fixtures.json
+│   │   │   │   │   ├── pools.fixtures.json
+│   │   │   │   │   ├── reminderPolicies.fixtures.json
+│   │   │   │   │   └── users.fixtures.json
+│   │   │   │   └── fsm
+│   │   │   │       └── booking.machine.js
+│   │   │   ├── OneononeMeeting.jsx
+│   │   │   ├── public
+│   │   │   │   ├── BookingPage.jsx
+│   │   │   │   ├── CancelPage.jsx
+│   │   │   │   ├── LiveInvalid.jsx
+│   │   │   │   ├── LiveLeft.jsx
+│   │   │   │   ├── LivePage.jsx
+│   │   │   │   ├── LiveSplitDebug.jsx
+│   │   │   │   ├── live-sync
+│   │   │   │   │   ├── LiveBusContext.jsx
+│   │   │   │   │   ├── RoleContext.jsx
+│   │   │   │   │   └── useLiveSync.js
+│   │   │   │   └── ReschedulePage.jsx
+│   │   │   ├── ScheduleOptions.jsx
+│   │   │   ├── SelectDateandTimeComponent.jsx
+│   │   │   ├── SelectEventLocation.jsx
+│   │   │   ├── TextEditor.jsx
+│   │   │   ├── TimeZoneMenu.jsx
+│   │   │   ├── utils
+│   │   │   │   ├── availabilityMerge.js
+│   │   │   │   ├── ConfirmDialog.js
+│   │   │   │   ├── datetime.js
+│   │   │   │   ├── hostProfile.js
+│   │   │   │   ├── icsClient.js
+│   │   │   │   ├── phone.js
+│   │   │   │   ├── poolAssignment.js
+│   │   │   │   ├── PromptDialog.js
+│   │   │   │   ├── slotProbe.js
+│   │   │   │   └── timezones.js
+│   │   │   ├── VariableBox.jsx
+│   │   │   ├── views
+│   │   │   │   ├── Chronicle
+│   │   │   │   │   ├── AuditTrailView.jsx
+│   │   │   │   │   └── BookingLogsView.jsx
+│   │   │   │   ├── Desk
+│   │   │   │   │   ├── JoinNowView.jsx
+│   │   │   │   │   ├── MyAttendanceView.jsx
+│   │   │   │   │   └── MyMeetingsView.jsx
+│   │   │   │   ├── Focus
+│   │   │   │   │   ├── FollowUpsView.jsx
+│   │   │   │   │   ├── PoolSchedulesView.jsx
+│   │   │   │   │   └── SpecialMeetingsView.jsx
+│   │   │   │   ├── MySetup
+│   │   │   │   │   ├── CalendarConnectionsView.jsx
+│   │   │   │   │   ├── EmailPairingView.jsx
+│   │   │   │   │   ├── PersonalLinkPoolsView.jsx
+│   │   │   │   │   └── PreferencesDevicesView.jsx
+│   │   │   │   ├── Organize
+│   │   │   │   │   ├── AgentPoolsView.jsx
+│   │   │   │   │   ├── AvailabilityRoutingView.jsx
+│   │   │   │   │   ├── CreateMeetingWizard.jsx
+│   │   │   │   │   └── EventTypesView.jsx
+│   │   │   │   ├── Review
+│   │   │   │   │   ├── CalibrationView.jsx
+│   │   │   │   │   ├── DisputesView.jsx
+│   │   │   │   │   ├── RecordingsView.jsx
+│   │   │   │   │   └── ScorecardsView.jsx
+│   │   │   │   └── Systems
+│   │   │   │       ├── CalendarIntegrationsView.jsx
+│   │   │   │       ├── ConferencingNodesView.jsx
+│   │   │   │       ├── ReminderPoliciesView.jsx
+│   │   │   │       └── SecurityRetentionView.jsx
+│   │   │   ├── WeeklyHours.jsx
+│   │   │   └── WorkingHoursModal.jsx
+│   │   ├── MuiStyles
+│   │   │   └── muiStyle.js
+│   │   ├── Navbar
+│   │   │   └── Navbar.js
+│   │   ├── newpopup.js
+│   │   ├── Popup
+│   │   │   ├── AttributePopup.js
+│   │   │   └── SampleTemplate.js
+│   │   ├── Reporter.js
+│   │   ├── Reports
+│   │   │   ├── AccordionTable.jsx
+│   │   │   ├── AuditLog.jsx
+│   │   │   ├── ChartComponent.jsx
+│   │   │   ├── FirstResponseTime.jsx
+│   │   │   ├── GenerateReport.jsx
+│   │   │   ├── HandlingTimebyStatus.jsx
+│   │   │   ├── NewTickets.jsx
+│   │   │   ├── ResolutionTime.jsx
+│   │   │   ├── SolvedandClosed.jsx
+│   │   │   ├── TicketReports.jsx
+│   │   │   ├── TicketSatisfaction.jsx
+│   │   │   └── TimeGridChart.jsx
+│   │   ├── SearchboxComponent2.jsx
+│   │   ├── SearchboxComponent.jsx
+│   │   ├── store
+│   │   │   ├── __persist__
+│   │   │   │   └── persist.js
+│   │   │   ├── scheduling
+│   │   │   │   ├── useAvailabilityStore.js
+│   │   │   │   ├── useConferencingStore.js
+│   │   │   │   ├── useEventTypesStore.js
+│   │   │   │   ├── useMeetingsStore.js
+│   │   │   │   ├── usePoolsStore.js
+│   │   │   │   └── useReminderPoliciesStore.js
+│   │   │   ├── templates
+│   │   │   │   ├── useApprovalsStore.js
+│   │   │   │   ├── usePreviewStore.js
+│   │   │   │   ├── useRoutingProfilesStore.js
+│   │   │   │   ├── useStatsStore.js
+│   │   │   │   └── useTemplatesStore.js
+│   │   │   ├── useContactsStore.js
+│   │   │   └── useDialerStore.js
+│   │   ├── Style.css
+│   │   ├── TableComponent.jsx
+│   │   ├── teamburgerMenu.jsx
+│   │   ├── TeamInbox
+│   │   │   ├── ChatInputToolbar.css
+│   │   │   ├── ChatInputToolbar.jsx
+│   │   │   ├── CustomAccordion.jsx
+│   │   │   ├── Editorbox.jsx
+│   │   │   ├── TicketsCard.jsx
+│   │   │   ├── TicketsChat.jsx
+│   │   │   ├── TicketSidePanel.jsx
+│   │   │   └── wsClient.js
+│   │   ├── TeamInboxAccordin.jsx
+│   │   ├── templates
+│   │   │   ├── channel-previews
+│   │   │   │   ├── DeviceFrame.jsx
+│   │   │   │   ├── EmailPreview.jsx
+│   │   │   │   ├── PlatformPreview.jsx
+│   │   │   │   ├── PushPreview.jsx
+│   │   │   │   ├── SmsPreview.jsx
+│   │   │   │   └── WhatsAppPreview.jsx
+│   │   │   ├── constants
+│   │   │   │   ├── APPROVAL_STATES.js
+│   │   │   │   ├── CHANNELS.js
+│   │   │   │   ├── FEATURE_FLAGS.js
+│   │   │   │   ├── PROVIDERS_BY_CHANNEL.js
+│   │   │   │   ├── QUALITY_STATUSES.js
+│   │   │   │   └── TEMPLATE_TYPES.js
+│   │   │   ├── core
+│   │   │   │   ├── channelAdapters.preview.js
+│   │   │   │   ├── channelCapabilities.js
+│   │   │   │   ├── formatters.js
+│   │   │   │   ├── idGen.js
+│   │   │   │   ├── localStore.js
+│   │   │   │   ├── routingProfiles.defaults.js
+│   │   │   │   ├── validators.js
+│   │   │   │   └── variableResolver.js
+│   │   │   ├── fixtures
+│   │   │   │   ├── approvals.fixtures.json
+│   │   │   │   ├── routingProfiles.fixtures.json
+│   │   │   │   ├── templates.fixtures.json
+│   │   │   │   ├── usage.fixtures.json
+│   │   │   │   ├── variableKits.fixtures.json
+│   │   │   │   └── variants.fixtures.json
+│   │   │   ├── fsm
+│   │   │   │   ├── approvals.machine.js
+│   │   │   │   └── submission.machine.js
+│   │   │   ├── index.js
+│   │   │   ├── layout
+│   │   │   │   ├── TemplatesContentFrame.jsx
+│   │   │   │   ├── TemplatesLeftNav.jsx
+│   │   │   │   └── TemplatesTopNav.jsx
+│   │   │   ├── modals
+│   │   │   │   ├── ArchiveDialog.jsx
+│   │   │   │   ├── ChooseChannelModal.jsx
+│   │   │   │   ├── CloneTemplateModal.jsx
+│   │   │   │   ├── DeleteConfirmDialog.jsx
+│   │   │   │   └── TestSendModal.jsx
+│   │   │   ├── utils
+│   │   │   │   ├── AnalyticsCharts.jsx
+│   │   │   │   ├── ApprovalStatusChip.jsx
+│   │   │   │   ├── AttachmentsManager.jsx
+│   │   │   │   ├── ButtonsDesigner.jsx
+│   │   │   │   ├── ChannelVariantPanel.jsx
+│   │   │   │   ├── ContentBlocksEditor.jsx
+│   │   │   │   ├── DeviceToggle.jsx
+│   │   │   │   ├── DiffViewer.jsx
+│   │   │   │   ├── EditorPieces.jsx
+│   │   │   │   ├── EmptyState.jsx
+│   │   │   │   ├── graphModel.jsx
+│   │   │   │   ├── GraphTimeline.jsx
+│   │   │   │   ├── ImportExportMenu.jsx
+│   │   │   │   ├── LocaleTabs.jsx
+│   │   │   │   ├── ProviderApprovalsTable.jsx
+│   │   │   │   ├── ProviderDetailsDialog.jsx
+│   │   │   │   ├── ProviderSubmissionDialog.jsx
+│   │   │   │   ├── ProviderVariantMatrix.jsx
+│   │   │   │   ├── StatusTimeline.jsx
+│   │   │   │   ├── TemplateCard.jsx
+│   │   │   │   ├── TemplatePreviewPane.jsx
+│   │   │   │   ├── TemplateRowActions.jsx
+│   │   │   │   ├── TemplatesTable.jsx
+│   │   │   │   ├── UsageSummary.jsx
+│   │   │   │   ├── UsedInPanel.jsx
+│   │   │   │   ├── ValidationPanel.jsx
+│   │   │   │   └── VariablesInspector.jsx
+│   │   │   └── views
+│   │   │       ├── AllTemplatesView.jsx
+│   │   │       ├── ApprovalsCenterView.jsx
+│   │   │       ├── ChannelTemplatesView.jsx
+│   │   │       ├── CreateTemplateWizardView.jsx
+│   │   │       ├── NotFoundView.jsx
+│   │   │       ├── TemplateDetailView.jsx
+│   │   │       └── TemplateParts.jsx
+│   │   ├── TextfieldComponent.jsx
+│   │   ├── TicketType.js
+│   │   ├── TimePickerComponent.jsx
+│   │   ├── ToggleSwitch.jsx
+│   │   └── UserManagement
+│   │       └── PopupModal
+│   │           ├── AddTeamModal.jsx
+│   │           ├── AddUserModal.jsx
+│   │           └── UserBaseModal.jsx
+│   ├── index.css
+│   ├── index.js
+│   ├── Layouts
+│   │   ├── baselayouts.jsx
+│   │   ├── marketplace-lifecycle.txt
+│   │   └── sp.svg
+│   ├── logo.svg
+│   ├── Modal.js
+│   ├── Pages
+│   │   ├── AccountDetails.jsx
+│   │   ├── Analytics.js
+│   │   ├── AuthCallback.jsx
+│   │   ├── automations.jsx
+│   │   ├── Broadcast.jsx
+│   │   ├── Contacts.jsx
+│   │   ├── Dailer.jsx
+│   │   ├── Login.jsx
+│   │   ├── Meetings.jsx
+│   │   ├── Reports.jsx
+│   │   ├── TeamInbox.jsx
+│   │   ├── Templates.jsx
+│   │   └── UserManagement.jsx
+│   ├── push
+│   │   └── pushClient.js
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   ├── styles
+│   │   ├── dailer.css
+│   │   └── globals.css
+│   ├── swRegistration.js
+│   ├── TeamInbox
+│   │   ├── components
+│   │   │   ├── chat
+│   │   │   │   ├── ChatPane.jsx
+│   │   │   │   ├── EmptyChatState.jsx
+│   │   │   │   ├── MessageVirtualList.jsx
+│   │   │   │   ├── parts
+│   │   │   │   │   ├── ChannelChip.jsx
+│   │   │   │   │   ├── DayDivider.jsx
+│   │   │   │   │   ├── DeliveryTicks.jsx
+│   │   │   │   │   ├── FlagStripe.jsx
+│   │   │   │   │   ├── MessageMetaLine.jsx
+│   │   │   │   │   ├── NewMessagesMarker.jsx
+│   │   │   │   │   └── WindowMarker.jsx
+│   │   │   │   └── TypingPresenceBar.jsx
+│   │   │   ├── composer
+│   │   │   │   └── Composer.jsx
+│   │   │   ├── filters
+│   │   │   │   └── FiltersBar.jsx
+│   │   │   ├── header
+│   │   │   │   └── TeamInboxHeader.jsx
+│   │   │   ├── sidebar
+│   │   │   │   └── SidebarRooms.jsx
+│   │   │   └── tickets
+│   │   │       ├── TicketsCard.jsx
+│   │   │       ├── TicketsHeader.jsx
+│   │   │       ├── TicketsListEmpty.jsx
+│   │   │       └── TicketsVirtualList.jsx
+│   │   ├── constants
+│   │   │   ├── CHANNELS.js
+│   │   │   ├── DIVISIONS.js
+│   │   │   ├── EVENTS.js
+│   │   │   ├── MESSAGE.js
+│   │   │   └── UX.js
+│   │   ├── fixtures
+│   │   │   ├── rooms.fixtures.json
+│   │   │   └── tickets.fixtures.json
+│   │   ├── hooks
+│   │   │   ├── useChat.js
+│   │   │   ├── useComposer.js
+│   │   │   ├── useRooms.js
+│   │   │   ├── useTickets.js
+│   │   │   └── useWs.js
+│   │   ├── index.js
+│   │   ├── layouts
+│   │   │   └── TeamInboxContentFrame.jsx
+│   │   ├── modals
+│   │   │   ├── AddRecipientModal.jsx
+│   │   │   └── NewChatModal.jsx
+│   │   ├── services
+│   │   │   ├── api.service.js
+│   │   │   ├── fanout.service.js
+│   │   │   └── ws.service.js
+│   │   ├── store
+│   │   │   ├── useChatStore.js
+│   │   │   ├── useRoomsStore.js
+│   │   │   ├── useTeamInboxStore.js
+│   │   │   └── useTicketsStore.js
+│   │   ├── types
+│   │   │   ├── chat.js
+│   │   │   └── room.js
+│   │   ├── utils
+│   │   │   ├── formatting.js
+│   │   │   ├── keys.js
+│   │   │   ├── mappers.js
+│   │   │   ├── receipts.js
+│   │   │   ├── virtualize.js
+│   │   │   └── window.js
+│   │   ├── views
+│   │   │   └── TeamInboxView.jsx
+│   │   └── ws
+│   │       └── wsClient.js
+│   ├── theme
+│   │   ├── dialerTheme.js
+│   │   └── notifyTheme.js
+│   └── Url.js
+├── tailwind.config.js
 └── tree.txt
-------------------------------------------------------------------
 
-
-src
-└── Component
-    └── Meetings                          # (existing) becomes the home for internal "back office"
-        ├── layout
-        │   ├── MeetingsLeftNav.jsx       # mirrors Dialer tiers: Desk/Focus/Review/Organize/My Setup/Systems/Chronicle
-        │   └── MeetingsContentFrame.jsx  # wrapper that applies padding using your theme + --nav-w CSS var
-        ├── views
-        │   ├── Desk
-        │   │   ├── MyMeetingsView.jsx
-        │   │   ├── JoinNowView.jsx
-        │   │   └── MyAttendanceView.jsx
-        │   ├── Focus
-        │   │   ├── PoolSchedulesView.jsx
-        │   │   ├── SpecialMeetingsView.jsx     # VIP / special filters
-        │   │   └── FollowUpsView.jsx           # no-shows / rebooks
-        │   ├── Review
-        │   │   ├── RecordingsView.jsx
-        │   │   ├── ScorecardsView.jsx
-        │   │   ├── CalibrationView.jsx
-        │   │   └── DisputesView.jsx
-        │   ├── Organize
-        │   │   ├── CreateMeetingWizard.jsx
-        │   │   ├── EventTypesView.jsx
-        │   │   ├── AgentPoolsView.jsx
-        │   │   └── AvailabilityRoutingView.jsx
-        │   ├── MySetup
-        │   │   ├── CalendarConnectionsView.jsx
-        │   │   ├── EmailPairingView.jsx
-        │   │   ├── PreferencesDevicesView.jsx
-        │   │   └── PersonalLinkPoolsView.jsx
-        │   ├── Systems
-        │   │   ├── CalendarIntegrationsView.jsx # provider health (mock), scopes, webhook status (stub)
-        │   │   ├── ConferencingNodesView.jsx    # SFU regions/capacity (mock until server)
-        │   │   ├── ReminderPoliciesView.jsx
-        │   │   └── SecurityRetentionView.jsx
-        │   └── Chronicle
-        │       ├── BookingLogsView.jsx
-        │       └── AuditTrailView.jsx
-        ├── components
-        │   ├── EventTypeForm.jsx
-        │   ├── PoolEditor.jsx
-        │   ├── AvailabilityEditor.jsx
-        │   ├── SlotPicker.jsx
-        │   ├── MeetingCard.jsx
-        │   ├── MeetingTable.jsx
-        │   ├── ScorecardEditor.jsx
-        │   ├── RecordingPlayer.jsx
-        │   ├── PersonalLinkCard.jsx
-        │   ├── DevicePreflight.jsx              # camera/mic checks (client-only)
-        │   └── ReminderPolicyEditor.jsx
-        ├── public                              # **Booking Page (external), outside app nav**
-        │   ├── BookingPage.jsx                  # route: /book/:slug (/meet/:slug alias)
-        │   ├── ReschedulePage.jsx               # /book/:bookingId/reschedule
-        │   └── CancelPage.jsx                   # /book/:bookingId/cancel
-        ├── mocks                                # client-only data & adapters
-        │   ├── fixtures
-        │   │   ├── meetings.fixtures.json
-        │   │   ├── eventTypes.fixtures.json
-        │   │   ├── pools.fixtures.json
-        │   │   ├── availability.fixtures.json
-        │   │   ├── reminderPolicies.fixtures.json
-        │   │   └── users.fixtures.json
-        │   ├── adapters
-        │   │   ├── calendar.mock.js             # simulates Google/Outlook busy blocks
-        │   │   ├── conferencing.mock.js         # simulates room/join link, recording URLs
-        │   │   └── notifications.mock.js        # simulates email/SMS/WA confirmations
-        │   └── fsm
-        │       └── booking.machine.js           # client-only finite state machine for booking lifecycle
-        └── utils
-            ├── availabilityMerge.js             # merge weekly rules + busy blocks + buffers
-            ├── poolAssignment.js                # round-robin / least-load / skills (client-only)
-            ├── timezones.js                     # wraps Intl / date utils to respect Africa/Kampala
-            └── icsClient.js                     # generate ICS for client-only downloads
-
-├── Pages
-    └── Meetings.jsx                             # top-level page uses MeetingsLeftNav + ContentFrame + routes
----------------------------------------------------------------------------------------
-
-
-
-
-Hi {{user_first_name}},
-
-Great news! Your {{company_name}} order ({{order_id}}) was received on {{current_short_date}}.
-
-As a welcome, enjoy {{discount_percent}}% off your next purchase with code {{discount_code}} (valid until {{expiry_date}}).
-
-You can track your current order here: {{tracking_url}}
-
-If you have any questions, just reply to this message or email us at {{support_email}}.
-Thanks again, {{user_name}}!
-
-— The {{company_name}} Team
-
-
-
-{
-  "user_first_name": "Ada",
-  "user_name": "Ada Lovelace",
-  "company_name": "Acme",
-  "order_id": "A1B2C3",
-  "current_short_date": "2025-09-11",
-  "discount_percent": "15",
-  "discount_code": "WELCOME15",
-  "expiry_date": "2025-09-25",
-  "support_email": "support@example.com",
-  "tracking_url": "https://example.com/track/A1B2C3"
-}
-
-
---------------
-
-src/Component/Meetings/public/BookingPage.jsx (public wrapper) [reuse; will import pieces]
-  └─ src/Component/Meetings/components/BookingStepperFrames.jsx [new]
-      ├─ src/Component/Meetings/components/BookingHeaderRow.jsx [new]
-      ├─ src/Component/Meetings/components/steps/StepPickTime.jsx [new]
-      │   ├─ src/Component/Meetings/components/HostCard.jsx [new]
-      │   ├─ src/Component/Meetings/TimeZoneMenu.jsx [reuse]
-      │   └─ src/Component/Meetings/components/SlotPicker.jsx [reuse]
-      ├─ src/Component/Meetings/components/steps/StepInviteeDetails.jsx [new]
-      │   ├─ src/Component/Meetings/components/PhoneInputLite.jsx [new UI, uses shared phone utils]
-      │   └─ src/Component/Meetings/LocationSelector.jsx [reuse]
-      ├─ src/Component/Meetings/components/steps/StepConfirm.jsx [new]
-      └─ src/Component/Meetings/components/steps/StepScheduled.jsx [new]
-
-Hooks
-  ├─ src/Component/Meetings/hooks/useBookingState.js [new]
-  ├─ src/Component/Meetings/hooks/useLiveClock.js [new]
-  ├─ src/Component/Meetings/hooks/useCalendarSwipe.js [new]
-  └─ src/Component/Meetings/hooks/useDaySlots.js [new; reads availability + meetings stores]
-
-Utils
-  ├─ src/Component/Meetings/utils/datetime.js [new; toISODate, fmtTime, startOfToday, addDays, addMonths, safeDate]
-  ├─ src/Component/Meetings/utils/hostProfile.js [new; resolveHostProfile, initials]
-  ├─ src/Component/Meetings/utils/timezones.js [reuse; already exists]
-  └─ src/Component/contacts/utils/phone.jsx [reuse; parsing/validation]
-
-Constants
-  ├─ src/Component/Meetings/constants/booking.constants.js [new; STEPS, EMAIL_RE, COMMON_TZS, HOST_PROFILES]
-  └─ (countries) — reuse if possible:
-      • Prefer src/Component/contacts/data/countries.jsx [reuse]
-      • Only create src/Component/Meetings/constants/countries.js if truly needed
-
-Services
-  └─ (none; client-only)  src/Component/Meetings/services/README.md [new placeholder; no API calls]
-
-
-
-
-index.js
-worker.js
-
-  initializers/kafka.js
-  utilities/kafkaRunner.js
-  initializers/schemaRegistry.js
-  operations/serde.js
-  operations/consume.js
-
-consumers/composed.consumer.js
-handlers/messageHandler.js
-handlers/processHandlers.js
-initializers/redis.js
-operations/redis.js
-
-services/sessions.service.js
-services/presence.service.js
-services/fanout.service.js
-server/ws.server.js
-handlers/wsRegistry.js
-
-handlers/sendToClients.js
-initializers/observability.js
-services/metrics.js
-services/telemetry.service.js
-utilities/tracing.js
-utilities/error.js
-
-
-
-
-
-
-https://github.com/devcoda25/notify.git
+164 directories, 1158 files

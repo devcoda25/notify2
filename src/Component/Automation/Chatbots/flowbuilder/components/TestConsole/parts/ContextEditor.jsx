@@ -1,9 +1,9 @@
 
 import React, { useMemo, useState } from 'react';
-import styles from '../test-console.module.css';
+// import styles from '../test-console.module.css';
 import { Textarea } from '../../ui/textarea';
 import { Button } from '../../ui/button';
-
+const styles = ""
 export default function ContextEditor({
   initial,
   onApply

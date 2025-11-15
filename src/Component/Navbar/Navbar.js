@@ -1,23 +1,25 @@
-// Path: src/Component/Navbar/Navbar.jsx
+// /src/Component/Navbar/Navbar.jsx
 import React from "react";
 import {
   AppBar,
   Toolbar,
   Box,
   Stack,
-  IconButton,
   ButtonBase,
   Typography,
   Chip,
-  Popover,
   Divider,
   Menu,
   MenuItem,
-  Tooltip,
 } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 import { NavLink, useLocation, useParams } from "react-router-dom";
-import { IoMdPerson } from "react-icons/io";
+
+// Global store only
+import { useUserStore } from "../../auth/user.store";
+
+// Presentational header (far right)
+import UserPresenceHeader from "./UserPresenceHeader";
 
 // assets
 import logo from "../Assets/img/Notify_login_logo.svg";
@@ -28,17 +30,14 @@ import ContactImg from "../Assets/img/Contacts.png";
 import AutomationImg from "../Assets/img/Automations.png";
 import AnalyticsImg from "../Assets/img/Analytics.png";
 import ReportsImg from "../Assets/img/Reports.png";
-import WalletImg from "../Assets/img/Wallet.png";
-import ClockImg from "../Assets/img/clock-square.png";
 import ClickImg from "../Assets/img/click.png";
 import UserImg from "../Assets/img/friends.png";
 
 const NAVBAR_H_DESKTOP = 64;
 const NAVBAR_H_MOBILE = 56;
 
-// ——— Tweaks ———
-const TAB_SPACING = 1.25;           // more space between tabs
-const ACTIVE_PURPLE = "#7C3AED";    // active tab font color
+const TAB_SPACING = 1.25;
+const ACTIVE_PURPLE = "#7C3AED";
 
 /** ---- Overflow-aware tabs row with hidden measuring row ---- */
 function OverflowTabs({ items }) {
@@ -84,11 +83,8 @@ function OverflowTabs({ items }) {
     const hostWidth = host.clientWidth;
     if (hostWidth <= 0) return;
 
-    // Collect widths for every item from the measuring row (always mounted)
     const children = Array.from(meas.querySelectorAll("[data-tab-measure='1']"));
     const widths = children.map((el) => el.offsetWidth || 0);
-
-    // Width of the “More” trigger (from hidden sample)
     const moreW = moreBtn ? moreBtn.offsetWidth || 60 : 60;
 
     let used = 0;
@@ -96,7 +92,7 @@ function OverflowTabs({ items }) {
     for (let i = 0; i < widths.length; i += 1) {
       const w = widths[i];
       const remaining = widths.length - (i + 1);
-      const reserve = remaining > 0 ? moreW : 0; // if more remain, reserve space for More
+      const reserve = remaining > 0 ? moreW : 0;
       if (used + w + reserve <= hostWidth) {
         used += w;
         fits = i + 1;
@@ -104,17 +100,13 @@ function OverflowTabs({ items }) {
         break;
       }
     }
-
-    // Guarantee at least one tab visible
     setVisibleCount(Math.max(1, fits));
   }, []);
 
-  // Recalc on resize and when items/path change (font changes can also shift widths)
   React.useEffect(() => {
     recalc();
     const obs = new ResizeObserver(recalc);
     if (containerRef.current) obs.observe(containerRef.current);
-    // also observe the body to catch global layout shifts
     obs.observe(document.body);
     return () => obs.disconnect();
   }, [recalc]);
@@ -141,9 +133,7 @@ function OverflowTabs({ items }) {
                 sx={linkSx(active)}
               >
                 <Box component="img" src={item.icon} alt="" sx={{ width: 18, height: 18, flexShrink: 0 }} />
-                <Typography variant="body2" noWrap>
-                  {item.label}
-                </Typography>
+                <Typography variant="body2" noWrap>{item.label}</Typography>
                 {active ? (
                   <Chip
                     size="small"
@@ -196,10 +186,7 @@ function OverflowTabs({ items }) {
                     component={NavLink}
                     to={item.path}
                     onClick={closeMore}
-                    sx={{
-                      gap: 1,
-                      ...(active && { color: ACTIVE_PURPLE, fontWeight: 600 }),
-                    }}
+                    sx={{ gap: 1, ...(active && { color: ACTIVE_PURPLE, fontWeight: 600 }) }}
                   >
                     <Box component="img" src={item.icon} alt="" sx={{ width: 18, height: 18 }} />
                     {item.label}
@@ -211,7 +198,7 @@ function OverflowTabs({ items }) {
         )}
       </Stack>
 
-      {/* Hidden measuring row (does not affect layout) */}
+      {/* Hidden measuring row */}
       <Stack
         direction="row"
         spacing={TAB_SPACING}
@@ -226,15 +213,9 @@ function OverflowTabs({ items }) {
         }}
       >
         {items.map((item) => (
-          <ButtonBase
-            data-tab-measure="1"
-            key={`measure-${item.path}`}
-            sx={linkSx(false)}
-          >
+          <ButtonBase data-tab-measure="1" key={`measure-${item.path}`} sx={linkSx(false)}>
             <Box component="img" src={item.icon} alt="" sx={{ width: 18, height: 18, flexShrink: 0 }} />
-            <Typography variant="body2" noWrap>
-              {item.label}
-            </Typography>
+            <Typography variant="body2" noWrap>{item.label}</Typography>
           </ButtonBase>
         ))}
         <ButtonBase ref={moreMeasureRef} sx={linkSx(false)}>
@@ -251,6 +232,16 @@ export default function Navbar() {
   const location = useLocation();
   const { authUser: routeAuthUser } = useParams();
 
+  // Read only from the store
+  const currentUser = useUserStore((s) => s.currentUser);
+  const stats = useUserStore((s) => s.getStats());
+  const presencePending = useUserStore((s) => s.presencePending);
+  const isHydratedFromAuth = useUserStore((s) => s.isHydratedFromAuth); // NEW
+  const setAvail = useUserStore((s) => s.setAvailability);
+  const startBreak = useUserStore((s) => s.startBreak);
+  const endBreak = useUserStore((s) => s.endBreak);
+  const resetUser = useUserStore((s) => s.resetUser);
+
   const authUser = React.useMemo(() => {
     if (routeAuthUser) return routeAuthUser;
     const match = location.pathname.match(/\/u\/([^/]+)/);
@@ -260,7 +251,7 @@ export default function Navbar() {
   const menuItems = React.useMemo(
     () => [
       { path: `/u/${authUser}/teaminbox`, label: "Team Inbox", icon: TeaminboxImg },
-      { path: `/u/${authUser}/dialer`, label: "Dailer", icon: ClickImg },
+      { path: `/u/${authUser}/dialer`, label: "Dialer", icon: ClickImg },
       { path: `/u/${authUser}/meetings`, label: "Meetings", icon: MeetingImg },
       { path: `/u/${authUser}/templates`, label: "Templates", icon: BroadcastImg },
       { path: `/u/${authUser}/contacts`, label: "Contacts", icon: ContactImg },
@@ -271,45 +262,6 @@ export default function Navbar() {
     ],
     [authUser]
   );
-
-  // Break-time state as a Popover
-  const [breakAnchor, setBreakAnchor] = React.useState(null);
-  const openBreak = Boolean(breakAnchor);
-  const handleOpenBreak = (e) => setBreakAnchor(e.currentTarget);
-  const handleCloseBreak = () => setBreakAnchor(null);
-
-  // Toggle switches state
-  const [toggles, setToggles] = React.useState({
-    lunch: false,
-    teaBreak: false,
-    bioBreak: false,
-    meeting: false,
-    qa: false,
-    briefing: false,
-    technical: false,
-    unwell: false,
-  });
-
-  const toggleSwitches = React.useMemo(
-    () => [
-      { key: "lunch", label: "Lunch" },
-      { key: "teaBreak", label: "Tea Break" },
-      { key: "bioBreak", label: "Bio Break" },
-      { key: "meeting", label: "Meeting" },
-      { key: "qa", label: "QA" },
-      { key: "briefing", label: "Briefing" },
-      { key: "technical", label: "Technical" },
-      { key: "unwell", label: "Unwell" },
-    ],
-    []
-  );
-
-  const handleToggle = (key) => {
-    setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
-    sessionStorage.setItem("selectedToggle", key);
-    sessionStorage.setItem("auth", "false");
-    window.location.reload();
-  };
 
   return (
     <AppBar
@@ -339,89 +291,34 @@ export default function Navbar() {
           </Typography>
         </Stack>
 
-        {/* Divider between brand and tabs */}
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
 
-        {/* 2) Tabs (with responsive More) */}
+        {/* 2) Tabs */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <OverflowTabs items={menuItems} />
         </Box>
 
-        {/* 3) Right actions (stick to far right) */}
+        {/* 3) Far right: unified header fully wired to the store */}
         <Stack direction="row" alignItems="center" spacing={1.25} sx={{ ml: 1 }}>
-          <Tooltip title="Wallet">
-            <IconButton
-              size="small"
-              component="a"
-              href="https://wallet.evzone.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Box component="img" src={WalletImg} alt="" sx={{ width: 20, height: 20 }} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Break time">
-            <IconButton size="small" onClick={handleOpenBreak}>
-              <Box component="img" src={ClockImg} alt="" sx={{ width: 20, height: 20 }} />
-            </IconButton>
-          </Tooltip>
-
-          <Tooltip title="Profile">
-            <IconButton size="small" color="primary">
-              <IoMdPerson />
-            </IconButton>
-          </Tooltip>
+          <UserPresenceHeader
+            user={currentUser}
+            stats={stats}
+            pending={Boolean(presencePending)}
+            onChangeAvailability={(next) => { try { setAvail(next); } catch { } }}
+            onBreakSelect={(key) => {
+              try { key === "end" ? endBreak() : startBreak(key); }
+              catch (e) { console.warn("[Navbar] break toggle failed", e); }
+            }}
+            onLogout={() => {
+              try {
+                resetUser();
+                // window.location.href = "/login";
+              } catch (e) {
+                console.warn("[Navbar] logout failed", e);
+              }
+            }}
+          />
         </Stack>
-
-        {/* Break-time popover */}
-        <Popover
-          open={openBreak}
-          onClose={handleCloseBreak}
-          anchorEl={breakAnchor}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
-          PaperProps={{
-            sx: {
-              mt: 1,
-              p: 1,
-              borderRadius: theme.shape.borderRadius + 2,
-              border: `1px solid ${theme.palette.divider}`,
-              boxShadow: 3,
-              minWidth: 220,
-            },
-          }}
-        >
-          <Typography variant="subtitle2" sx={{ px: 1, py: 0.5, fontWeight: 700 }}>
-            Break time
-          </Typography>
-          <Divider sx={{ mb: 0.5 }} />
-          <Stack spacing={0.5} sx={{ px: 0.5, pb: 0.5 }}>
-            {toggleSwitches.map(({ key, label }) => (
-              <Stack
-                key={key}
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{
-                  px: 1,
-                  py: 0.75,
-                  borderRadius: 1,
-                  "&:hover": { bgcolor: alpha(theme.palette.primary.main, 0.04) },
-                }}
-                onClick={() => handleToggle(key)}
-              >
-                <Typography variant="body2">{label}</Typography>
-                <Chip
-                  size="small"
-                  label={toggles[key] ? "On" : "Off"}
-                  color={toggles[key] ? "primary" : "default"}
-                  variant={toggles[key] ? "filled" : "outlined"}
-                />
-              </Stack>
-            ))}
-          </Stack>
-        </Popover>
       </Toolbar>
     </AppBar>
   );

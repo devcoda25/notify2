@@ -1,31 +1,46 @@
+// /src/boot/BootGate.jsx
 import React from "react";
 import { syncBootstrap, asyncBootstrap } from "./bootstrap";
 
-// Usage modes:
-// - block = false  → only sync pre-paint work (no flash), render app immediately
-// - block = true   → do sync pre-paint, then BLOCK on async bootstrap (shows Splash)
-
+/**
+ * BootGate
+ * - If `block` is true, children do not render until bootstrap finishes.
+ * - Pass an optional `Splash` component (e.g., a branded full-screen) for zero flash.
+ *
+ * Usage (wrap your private app shell):
+ *   <BootGate block Splash={AppSplash}><PrivateApp /></BootGate>
+ */
 export default function BootGate({ children, block = false, Splash = null }) {
-  const [ready, setReady] = React.useState(block ? false : true);
+  const [ready, setReady] = React.useState(!block);
 
-  // Pre-paint sync work (no flicker)
+  // Always run quick, synchronous URL param bootstrap (x_authuser etc.)
   React.useLayoutEffect(() => {
-    syncBootstrap();
+    try { syncBootstrap(); } catch {}
   }, []);
 
-  // Optional async bootstrap
+  // If blocking, run async bootstrap and gate rendering
   React.useEffect(() => {
     if (!block) return;
+
+    let cancelled = false;
     const ctrl = new AbortController();
-    asyncBootstrap({ signal: ctrl.signal })
-      .catch(() => {}) // decide what to do on error (log, sentry, etc.)
-      .finally(() => setReady(true));
-    return () => ctrl.abort();
+
+    (async () => {
+      try {
+        await asyncBootstrap({ signal: ctrl.signal });
+      } catch {
+        // Private routes/components will handle redirect if needed
+      } finally {
+        if (!cancelled && !ctrl.signal.aborted) setReady(true);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      ctrl.abort();
+    };
   }, [block]);
 
-  if (!ready) {
-    // No flash: render nothing OR a branded Splash component you pass in.
-    return Splash ? <Splash /> : null;
-  }
+  if (!ready) return Splash ? <Splash /> : null;
   return children;
 }
