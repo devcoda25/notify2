@@ -1,13 +1,13 @@
 
 import React from 'react';
-import styles from '../test-console.module.css';
+// import styles from '../test-console.module.css';
 import clsx from 'clsx';
 import { Button } from '../../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
 import { Play, Pause, SkipForward, RotateCcw, Binary, Download } from 'lucide-react';
 import { Checkbox } from '../../ui/checkbox';
 import { Label } from '../../ui/label';
-
+const styles = ""
 export default function Toolbar({
   channel, setChannel,
   status,

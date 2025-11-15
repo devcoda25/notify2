@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 
 .root { display:grid; }
 .label { font-size:12px; color:hsl(var(--muted-foreground)); }

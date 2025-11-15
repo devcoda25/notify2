@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import styles from './test-console.module.css';
+// import styles from './test-console.module.css';
 import clsx from 'clsx';
 import Toolbar from './parts/Toolbar';
 import ChatPreview from './parts/ChatPreview';
@@ -11,7 +11,7 @@ import { Button } from '../ui/button';
 import { nanoid } from 'nanoid';
 
 const DEFAULT_CHANNEL = 'whatsapp';
-
+const styles = ""
 export default function TestConsole({
   isOpen,
   onClose,

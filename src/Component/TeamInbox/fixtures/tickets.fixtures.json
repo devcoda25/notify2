@@ -1,0 +1,122 @@
+[
+    {
+        "id": "t-1001",
+        "roomId": "room-1",
+        "title": "Order confirmation",
+        "subtitle": "Please confirm order #A132",
+        "unreadCount": 1,
+        "updatedAt": "2025-10-23T08:30:00.000Z",
+        "status": "active",
+        "channel": "email"
+    },
+    {
+        "id": "t-1002",
+        "roomId": "room-1",
+        "title": "Delivery update",
+        "subtitle": "Courier delayed by 1 day",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-23T07:15:00.000Z",
+        "status": "active",
+        "channel": "sms"
+    },
+    {
+        "id": "t-1003",
+        "roomId": "room-2",
+        "title": "Invoice inquiry",
+        "subtitle": "Mismatch on line item",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-22T17:45:00.000Z",
+        "status": "active",
+        "channel": "email"
+    },
+    {
+        "id": "t-1004",
+        "roomId": "room-3",
+        "title": "Campaign brief",
+        "subtitle": "Final copy attached",
+        "unreadCount": 2,
+        "updatedAt": "2025-10-22T09:20:00.000Z",
+        "status": "active",
+        "channel": "inapp"
+    },
+    {
+        "id": "t-1005",
+        "roomId": "room-4",
+        "title": "VIP support",
+        "subtitle": "Callback requested",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-21T18:05:00.000Z",
+        "status": "active",
+        "channel": "whatsapp"
+    },
+    {
+        "id": "t-1006",
+        "roomId": "room-5",
+        "title": "Schedule change",
+        "subtitle": "Reschedule meeting to Friday",
+        "unreadCount": 1,
+        "updatedAt": "2025-10-23T11:10:00.000Z",
+        "status": "active",
+        "channel": "email"
+    },
+    {
+        "id": "t-1007",
+        "roomId": "room-6",
+        "title": "Patch deploy",
+        "subtitle": "Deployment confirmation",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-19T19:25:00.000Z",
+        "status": "closed",
+        "channel": "inapp"
+    },
+    {
+        "id": "t-1008",
+        "roomId": "room-7",
+        "title": "Quote ETA",
+        "subtitle": "Requesting updated timeline",
+        "unreadCount": 1,
+        "updatedAt": "2025-10-22T15:10:00.000Z",
+        "status": "active",
+        "channel": "email"
+    },
+    {
+        "id": "t-1009",
+        "roomId": "room-2",
+        "title": "PO sent",
+        "subtitle": "Purchase order #778",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-21T13:32:00.000Z",
+        "status": "active",
+        "channel": "email"
+    },
+    {
+        "id": "t-1010",
+        "roomId": "room-3",
+        "title": "Go-live checklist",
+        "subtitle": "QA sign-off pending",
+        "unreadCount": 3,
+        "updatedAt": "2025-10-22T08:17:00.000Z",
+        "status": "active",
+        "channel": "inapp"
+    },
+    {
+        "id": "t-1011",
+        "roomId": "room-8",
+        "title": "Invoice approved",
+        "subtitle": "October billing",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-18T14:15:00.000Z",
+        "status": "active",
+        "channel": "email"
+    },
+    {
+        "id": "t-1012",
+        "roomId": "room-5",
+        "title": "Renewal",
+        "subtitle": "Subscription renewal reminder",
+        "unreadCount": 0,
+        "updatedAt": "2025-10-20T10:40:00.000Z",
+        "status": "active",
+        "channel": "sms"
+    }
+]

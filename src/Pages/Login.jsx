@@ -1,190 +1,169 @@
-import React, { useState, useEffect } from "react";
+// /src/Pages/Login.jsx
+import React, { useState } from "react";
 import { IconButton, Modal } from "@mui/material";
-import { CloseIcon } from "../Component/Icon";
-import { Navigate } from "react-router-dom";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { beginLogin } from "../auth/authAgent";
+
+const t = () => new Date().toISOString();
+const log  = (...a) => console.log(`[Login ${t()}]`, ...a);
+const warn = (...a) => console.warn(`[Login ${t()}] WARN`, ...a);
+const err  = (...a) => console.error(`[Login ${t()}] ERROR`, ...a);
+
+// Optional: translate internal codes to extra human hints (authAgent already friendly-izes .message)
+function hintFor(e) {
+  const code = e?.code || "";
+  switch (code) {
+    case "HELLO_FAILED":
+      return "Make sure the server is reachable and you’re connected to the VPN/Wi-Fi.";
+    case "CLOCK_IN_FAILED":
+      return "If this keeps happening, your passcode may be wrong or expired—ask your supervisor.";
+    case "TICKET_FAILED":
+      return "We couldn’t prepare a secure session. Refresh and try again.";
+    case "WS_REJECT":
+      return "Live updates could not be initialized. Try reloading the page.";
+    case "NO_TOKEN":
+      return "No sign-in token configured. In production you’ll be redirected to the IdP.";
+    default:
+      return "";
+  }
+}
 
 const Login = ({ onLogin }) => {
   const [showPasscode, setShowPasscode] = useState(false);
   const [passcode, setPasscode] = useState("");
-  const [selectedToggle, setSelectedToggle] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [errMsg, setErr] = useState("");
 
-
-  // const redirect_url = "http://localhost:3000/Teaminbox";
-  const redirect_url = "https://notify.dev.evzone.app/Teaminbox";
-  const handleContinue = () => {
+  const openPasscode = () => {
+    setErr("");
+    setPasscode("");
     setShowPasscode(true);
+    // focus first box shortly after open
+    setTimeout(() => document.getElementById("pass-0")?.focus(), 20);
   };
 
-  const checkAuthStatus = () => {
-    const params = new URLSearchParams(window.location.search);
-    const x_authuser = params.get("x_authuser");
+  async function runLogin(p) {
+    if (busy) return;
+    log("runLogin start", { hasPass: !!p });
+    setBusy(true);
+    setErr("");
+    try {
+      // beginLogin handles both: dev-token flow OR IdP redirect if no token
+      const res = await beginLogin({ passcode: p });
+      // If beginLogin redirected to IdP, we won’t reach here immediately.
+      // If it returned state (dev flow), continue:
+      if (res && typeof onLogin === "function") onLogin();
+    } catch (e) {
+      err("login failed", e);
+      const base = e?.message || "Sign-in failed. Please try again.";
+      const extra = hintFor(e);
+      setErr(extra ? `${base} ${extra}` : base);
+    } finally {
+      setBusy(false);
+      log("runLogin end");
+    }
+  }
 
-    if (x_authuser) {
-      console.log("x_authuser", x_authuser);
-      sessionStorage.setItem("auth", "true");
-    //   window.location.href = `/u/${x_authuser}${
-    //     window.location.pathname !== "/" ? window.location.pathname : ""
-    //   }`;
-      onLogin();
-      return;
+  const handleDigitChange = (index, value) => {
+    const v = value.replace(/\D/g, "");
+    const arr = passcode.split("");
+    arr[index] = v;
+    const next = arr.join("");
+    setPasscode(next);
+
+    if (v && index < 5) document.getElementById(`pass-${index + 1}`)?.focus();
+    if (next.length === 6) {
+      log("6 digits entered — triggering runLogin");
+      void runLogin(next);
     }
   };
 
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
-
-  const handleLogin = () => {
-    console.log("window.globalValue", window.globalValue);
-    if (!window.globalValue) {
-      window.location.href = `https://accounts.dev.evzone.app/?redirecturl=${redirect_url}`;
-    } else {
-        window.location.href = `https://accounts.dev.evzone.app/?redirecturl=${redirect_url}`;
-    //   window.location.href = `https://myaccount.evzone.app/u/${window.globalValue}/profile?change=${redirect_url}`;
-    }
-  };
-
-  const handleInputChange = (index, value) => {
-    const numeric = value.replace(/\D/, ""); 
-    const updated = passcode.split("");
-    updated[index] = numeric;
-    const newPasscode = updated.join("");
-    setPasscode(newPasscode);
-
-    
-    if (numeric && index < 5) {
-      const nextInput = document.getElementById(`pass-${index + 1}`);
-      nextInput?.focus();
-    }
-
-    
-    if (newPasscode.length === 6) {
-      if (newPasscode === "123456") {
-        setTimeout(() => {
-          sessionStorage.setItem("auth", "true");
-          onLogin();
-          sessionStorage.removeItem("selectedToggle");
-        }, 1000);
-      } else {
-        alert("Invalid passcode");
-        setPasscode("");
-      }
-    }
-  };
-  useEffect(() => {
-    const toggle = sessionStorage.getItem("selectedToggle");
-    if (toggle) {
-      setSelectedToggle(toggle);
-    }
-  }, []);
   return (
     <>
       <div className="login_page_container">
-        {
-          <Modal open={showPasscode} onClose={() => setShowPasscode(false)}>
-            <div className="modal_style_login">
-              <IconButton
-                onClick={() => setShowPasscode(false)}
-                sx={{ position: "absolute", top: 8, right: 8 }}
-              >
-                <CloseIcon />
-              </IconButton>
+        <Modal open={showPasscode} onClose={() => setShowPasscode(false)}>
+          <div className="modal_style_login" role="dialog" aria-modal="true" aria-label="Enter access passcode">
+            <IconButton
+              onClick={() => setShowPasscode(false)}
+              sx={{ position: "absolute", top: 8, right: 8 }}
+              disabled={busy}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
 
-              <div>
-                <img src="/assets/images/profile.png" alt="profile" />
-              </div>
-              <h4>Passcode Required</h4>
-              <p>
-                To access your Work Account, Please enter your Access Passcode
-              </p>
-              {Array.from({ length: 6 }).map((_, index) => (
+            <div>
+              <img src="/assets/images/profile.png" alt="profile" />
+            </div>
+            <h4>Passcode Required</h4>
+            <p>To access your Work Account, please enter your Access Passcode</p>
+
+            <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+              {Array.from({ length: 6 }).map((_, i) => (
                 <input
-                  key={index}
-                  id={`pass-${index}`}
+                  key={i}
+                  id={`pass-${i}`}
+                  inputMode="numeric"
+                  aria-label={`Passcode digit ${i + 1}`}
                   type="text"
-                  maxLength="1"
-                  value={passcode[index] || ""}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
+                  maxLength={1}
+                  value={passcode[i] || ""}
+                  onChange={(e) => handleDigitChange(i, e.target.value)}
                   className="circle-input"
-                  autoFocus={index === 0}
+                  autoFocus={i === 0}
+                  disabled={busy}
                 />
               ))}
-              <h5>
-                <a style={{ color: "#f77f00" }}>
-                  <span style={{ color: "black" }}>Forgot Access code?</span>
-                  Contact your Supervisor
-                </a>
-              </h5>
             </div>
-          </Modal>
-        }
-        <div className="left_content">
-          <>
-            <img src="/assets/images/Notify_login_logo.svg" alt="welcome" />
 
-            {selectedToggle && (
-              <>
-                <div>
-                  <table className="break_table">
-                    <tbody>
-                      <tr>
-                        <th>Break Type</th>
-                        <td>Lunch</td>
-                      </tr>
-                      <tr>
-                        <th>Time Out</th>
-                        <td>5:49 PM</td>
-                      </tr>
-                      <tr>
-                        <th>Time Back</th>
-                        <td>6:10 PM</td>
-                      </tr>
-                      <tr>
-                        <th>Duration</th>
-                        <td>00:21:02</td>
-                      </tr>
-                      <tr>
-                        <th>Break Time allowed</th>
-                        <td>Maxed Out</td>
-                      </tr>
-                      <tr>
-                        <th>Remaining Break Time</th>
-                        <td>00:00:00</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )}
-          </>
+            {errMsg ? <p style={{ color: "#d32f2f", marginTop: 8 }}>{errMsg}</p> : null}
+
+            <h5>
+              <span style={{ color: "black" }}>Forgot Access code?</span>{" "}
+              <span style={{ color: "#f77f00" }}>Contact your Supervisor</span>
+            </h5>
+          </div>
+        </Modal>
+
+        <div className="left_content">
+          <img src="/assets/images/Notify_login_logo.svg" alt="welcome" />
         </div>
+
         <div className="right_content">
-          <h2>Welcome back, thameem!</h2>
+          <h2>Welcome back!</h2>
           <p>You're almost there! Log in to access your work page</p>
           <div>
             <img src="/assets/images/profile.png" alt="profile" />
           </div>
+
           <div className="userinfo_container">
             <div className="userinfo">
-              <div>Continue as Thameem </div>
-              <p>thameem@heptotechnologies.org</p>
+              <div>Continue</div>
+              <p>Use passcode to proceed</p>
             </div>
-            <button className="continue_button" onClick={handleContinue}>
-              Continue
+            <button className="continue_button" onClick={openPasscode} disabled={busy}>
+              {busy ? "Checking…" : "Continue"}
             </button>
           </div>
-          <h4>
-            <a style={{ color: "#f77f00" }}>
-              <span style={{ color: "black" }}>Not you?</span> Log in with a
-              different personal account
-            </a>
-          </h4>
-          <button onClick={handleLogin} className="login_btn">
-            Login
+
+          <h4 style={{ opacity: 0.6 }}>For production, this will redirect to the IdP.</h4>
+
+          <button
+            onClick={() => { log("Sign-in button clicked"); void runLogin(""); }}
+            className="login_btn"
+            disabled={busy}
+            title="Sign in (dev token if configured, else redirects to IdP)"
+          >
+            {busy ? "Signing in…" : "Sign in"}
           </button>
+
+          {errMsg ? (
+            <p style={{ color: "#d32f2f", marginTop: 12, textAlign: "center" }}>{errMsg}</p>
+          ) : null}
         </div>
       </div>
     </>
   );
 };
+
 export default Login;

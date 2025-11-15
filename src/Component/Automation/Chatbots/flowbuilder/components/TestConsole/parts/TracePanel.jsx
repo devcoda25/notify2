@@ -1,11 +1,11 @@
 
 import React, { useMemo, useState } from 'react';
-import styles from '../test-console.module.css';
+// import styles from '../test-console.module.css';
 import clsx from 'clsx';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
-
+const styles = ""
 export default function TracePanel({
   trace, onClear
 }) {

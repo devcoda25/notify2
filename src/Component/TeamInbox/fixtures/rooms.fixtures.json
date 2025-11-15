@@ -1,0 +1,106 @@
+[
+  {
+    "id": "room-1",
+    "division": "business",
+    "title": "Acme Corp",
+    "roommates": [
+      { "id": "u-1", "displayName": "Acme Support", "role": "member" }
+    ],
+    "unreadCount": 2,
+    "lastMessage": { "text": "Thanks, noted.", "at": "2025-10-20T10:00:00.000Z", "from": "Alex" },
+    "createdAt": "2025-10-18T09:00:00.000Z",
+    "updatedAt": "2025-10-20T10:00:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-2",
+    "division": "business",
+    "title": "Globex LTD",
+    "roommates": [
+      { "id": "u-2", "displayName": "Globex Ops", "role": "member" }
+    ],
+    "unreadCount": 0,
+    "lastMessage": { "text": "PO sent.", "at": "2025-10-21T13:30:00.000Z", "from": "Mina" },
+    "createdAt": "2025-10-19T12:00:00.000Z",
+    "updatedAt": "2025-10-21T13:30:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-3",
+    "division": "insider",
+    "title": "Marketing Squad",
+    "roommates": [
+      { "id": "u-3", "displayName": "Team Marketing", "role": "member" }
+    ],
+    "unreadCount": 5,
+    "lastMessage": { "text": "Campaign goes live tomorrow.", "at": "2025-10-22T08:15:00.000Z", "from": "Sam" },
+    "createdAt": "2025-10-01T08:00:00.000Z",
+    "updatedAt": "2025-10-22T08:15:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-4",
+    "division": "personal",
+    "title": "VIP Customers",
+    "roommates": [
+      { "id": "u-4", "displayName": "VIP Desk", "role": "member" }
+    ],
+    "unreadCount": 0,
+    "lastMessage": { "text": "Appreciate the quick response.", "at": "2025-10-20T16:40:00.000Z", "from": "Rita" },
+    "createdAt": "2025-09-30T10:00:00.000Z",
+    "updatedAt": "2025-10-20T16:40:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-5",
+    "division": "business",
+    "title": "Wayne Enterprises",
+    "roommates": [
+      { "id": "u-5", "displayName": "Wayne Ops", "role": "member" }
+    ],
+    "unreadCount": 1,
+    "lastMessage": { "text": "Schedule moved to Friday.", "at": "2025-10-23T11:05:00.000Z", "from": "Lee" },
+    "createdAt": "2025-10-10T11:00:00.000Z",
+    "updatedAt": "2025-10-23T11:05:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-6",
+    "division": "insider",
+    "title": "Engineering Handoff",
+    "roommates": [
+      { "id": "u-6", "displayName": "Eng Handoff", "role": "member" }
+    ],
+    "unreadCount": 0,
+    "lastMessage": { "text": "Patch deployed.", "at": "2025-10-19T19:20:00.000Z", "from": "DevOps" },
+    "createdAt": "2025-10-05T09:30:00.000Z",
+    "updatedAt": "2025-10-19T19:20:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-7",
+    "division": "business",
+    "title": "Stark Industries",
+    "roommates": [
+      { "id": "u-7", "displayName": "Stark PM", "role": "member" }
+    ],
+    "unreadCount": 3,
+    "lastMessage": { "text": "Need ETA for quote.", "at": "2025-10-22T15:00:00.000Z", "from": "Pepper" },
+    "createdAt": "2025-10-12T13:00:00.000Z",
+    "updatedAt": "2025-10-22T15:00:00.000Z",
+    "meta": {}
+  },
+  {
+    "id": "room-8",
+    "division": "personal",
+    "title": "Vendors",
+    "roommates": [
+      { "id": "u-8", "displayName": "Vendors", "role": "member" }
+    ],
+    "unreadCount": 0,
+    "lastMessage": { "text": "Invoice approved.", "at": "2025-10-18T14:10:00.000Z", "from": "Ops" },
+    "createdAt": "2025-10-02T08:00:00.000Z",
+    "updatedAt": "2025-10-18T14:10:00.000Z",
+    "meta": {}
+  }
+]
