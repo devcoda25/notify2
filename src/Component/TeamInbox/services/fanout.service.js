@@ -196,11 +196,26 @@ export function handleEvent(evt) {
           }
           // Drop through to message branch by not breaking here.
         } else {
-          const rawTicket =
+          // ⬇⬇⬇ CHANGE: propagate roomId/ticketId from envelope into the ticket dto ⬇⬇⬇
+          const roomId =
+            S(payload.roomId ?? payload.room_id ?? "");
+          const ticketId =
+            S(payload.ticketId ?? payload.ticket_id ?? "");
+
+          const baseTicket =
             payload.ticket ??
             payload.data?.ticket ??
             payload.data ??
             payload;
+
+          const rawTicket = {
+            ...baseTicket,
+            // ensure the mapper sees canonical ids
+            roomId: baseTicket?.roomId ?? baseTicket?.room_id ?? roomId,
+            room_id: baseTicket?.room_id ?? baseTicket?.roomId ?? roomId,
+            ticketId: baseTicket?.ticketId ?? baseTicket?.ticket_id ?? ticketId,
+            ticket_id: baseTicket?.ticket_id ?? baseTicket?.ticketId ?? ticketId,
+          };
 
           const item = mapServerTicketToListItem(rawTicket);
           if (!item?.id) break;

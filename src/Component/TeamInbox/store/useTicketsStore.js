@@ -404,22 +404,100 @@ export const useTicketsStore = create((set, get) => (/** @type {TicketsState & T
 
   /**
    * Upsert live updates (e.g., from WS).
-   * We just update byId and, if ids are in the active view bucket, re-sort.
+   * Room-aware:
+   *  - merge into byId
+   *  - for each item with roomId, ensure a bucket and insert id into its order
+   *  - mark bucket as loaded, update empty/lastLoadedAt, touch LRU
+   *  - if activeRoomId is among touched rooms, apply that bucket to VIEW
+   * Fallback:
+   *  - if none of the items have roomId, behave like the old view-only upsert
    */
   upsert(items) {
     if (!Array.isArray(items) || items.length === 0) return;
-    set((s) => {
-      const byId = indexById(items, s.byId);
-      const ids = items.map((x) => String(x?.id ?? "")).filter(Boolean);
 
-      // If current view contains any of these ids, re-sort the view order
-      let order = s.order;
-      const intersection = ids.some((id) => order.includes(id));
-      if (intersection) {
-        order = sortTickets(order, byId);
+    set((s) => {
+      // 1) Merge into byId with normalized items.
+      const byId = indexById(items, s.byId);
+
+      // Track which rooms we touched
+      const touchedRooms = new Set();
+      const byRoomId = { ...s.byRoomId };
+      let roomLRU = s.roomLRU ? [...s.roomLRU] : [];
+
+      // 2) For each item, update its room bucket if roomId is present
+      for (const raw of items) {
+        const norm = normalizeItem(raw);
+        if (!norm.id) continue;
+
+        const rid = norm.roomId ? String(norm.roomId) : "";
+        if (!rid) continue;
+
+        const existingBucket = byRoomId[rid] || {
+          order: [],
+          cursor: null,
+          total: null,
+          empty: false,
+          status: "idle",
+          lastLoadedAt: null,
+        };
+
+        const existingOrder = Array.isArray(existingBucket.order)
+          ? existingBucket.order
+          : [];
+
+        const mergedOrder = sortTickets(
+          dedupeOrder([...existingOrder, norm.id]),
+          byId
+        );
+
+        byRoomId[rid] = {
+          ...existingBucket,
+          order: mergedOrder,
+          empty: mergedOrder.length === 0,
+          status: "loaded",
+          lastLoadedAt: new Date().toISOString(),
+        };
+
+        touchedRooms.add(rid);
+        roomLRU = touchLRU(roomLRU, rid);
       }
 
-      return { ...s, byId, order, empty: order.length === 0 };
+      // 3) Decide how to update VIEW
+      let order = s.order;
+      let next = {
+        ...s,
+        byId,
+        byRoomId,
+        roomLRU,
+      };
+
+      const activeRid = s.activeRoomId ? String(s.activeRoomId) : null;
+
+      if (activeRid && touchedRooms.has(activeRid)) {
+        // Active room got new/updated tickets → apply its bucket to VIEW
+        next = {
+          ...next,
+          ...applyBucketToView(next, activeRid),
+        };
+        order = next.order;
+      } else {
+        // No room buckets touched for the active view.
+        // Fallback: if any of these ids are already in current view, re-sort the view.
+        const ids = items
+          .map((x) => String(x?.id ?? ""))
+          .filter(Boolean);
+        const intersection = ids.some((id) => s.order.includes(id));
+        if (intersection) {
+          order = sortTickets(s.order, byId);
+          next = {
+            ...next,
+            order,
+            empty: order.length === 0,
+          };
+        }
+      }
+
+      return evictIfNeeded(next);
     });
   },
 
@@ -437,7 +515,7 @@ export const useTicketsStore = create((set, get) => (/** @type {TicketsState & T
       const byRoomId = { ...s.byRoomId };
       for (const rid of Object.keys(byRoomId)) {
         const bucket = byRoomId[rid];
-        const order = bucket.order.filter((x) => x !== tid);
+        const order = (bucket.order || []).filter((x) => x !== tid);
         byRoomId[rid] = {
           ...bucket,
           order,
