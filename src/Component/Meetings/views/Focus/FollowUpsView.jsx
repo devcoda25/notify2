@@ -25,7 +25,7 @@ import { useTheme, alpha } from "@mui/material/styles";
 import { RotateCcw, UserX, MessageSquare } from "lucide-react";
 
 import { useMeetingsStore } from "../../../store/scheduling/useMeetingsStore";
-import * as notify from "../../mocks/adapters/notifications.mock";
+// import * as notify from "../../mocks/adapters/notifications.mock";
 
 /**
  * Follow-ups surface:
@@ -101,24 +101,10 @@ export default function FollowUpsView() {
   const sendFollowUp = async (m, type) => {
     const invitee = m.invitee?.email;
     if (!invitee) return;
-    const res = await notify.sendEmail({
-      to: invitee,
-      subject:
-        type === "no_show"
-          ? "We missed you — reschedule?"
-          : type === "rebook"
-          ? "Let's find a new time"
-          : "Thanks for the call — recap",
-      text:
-        type === "no_show"
-          ? `We noticed you couldn't make it. Pick another time: ${m.rescheduleUrl}`
-          : type === "rebook"
-          ? `Your meeting was cancelled. Book a new slot here: ${m.rescheduleUrl}`
-          : `Thanks for meeting! If you'd like to revisit anything, reply to this email.`,
-      templateId: `followup_${type}`,
-      vars: { meetingId: m.id },
-    });
-    setToast({ sev: "success", msg: `Follow-up sent (id ${res.providerMessageId})` });
+    // DUMMY IMPLEMENTATION
+    console.log(`[DUMMY] Sending ${type} follow-up to ${invitee}`);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    setToast({ sev: "success", msg: `Follow-up sent (dummy)` });
   };
 
   const totalColumns = 5; // When, Invitee, Type, Reason, Actions

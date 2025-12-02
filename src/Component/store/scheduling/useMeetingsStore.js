@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { attachPersistence } from "../../store/__persist__/persist";
 import usersFixtures from "../../Meetings/mocks/fixtures/users.fixtures.json";
 import { buildICS } from "../../Meetings/utils/icsClient";
-import * as notify from "../../Meetings/mocks/adapters/notifications.mock";
+// import * as notify from "../../Meetings/mocks/adapters/notifications.mock";
 import * as calendar from "../../Meetings/mocks/adapters/calendar.mock";
 import { createBookingMachine } from "../../Meetings/mocks/fsm/booking.machine";
 
@@ -330,11 +330,8 @@ export const useMeetingsStore = create((set, get) => ({
       try { calendar.removeBusyBlock(target.id); } catch {}
     }
 
-    await notify.sendEmail({
-      to: mtg.invitee.email,
-      subject: "Meeting cancelled",
-      text: `Your meeting scheduled from ${mtg.start} to ${mtg.end} has been cancelled. Reason: ${reason}`,
-    });
+    // DUMMY IMPLEMENTATION
+    console.log(`[DUMMY] Sending cancellation email to ${mtg.invitee.email}`);
 
     get().deleteMeeting(meetingId);
     return true;

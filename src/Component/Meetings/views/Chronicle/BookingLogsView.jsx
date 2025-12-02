@@ -23,7 +23,7 @@ import {
 import { useTheme, alpha } from "@mui/material/styles";
 import { Filter, Trash2 } from "lucide-react";
 import { useMeetingsStore } from "../../../store/scheduling/useMeetingsStore";
-import * as notify from "../../mocks/adapters/notifications.mock";
+// import * as notify from "../../mocks/adapters/notifications.mock";
 
 export default function BookingLogsView() {
   const t = useTheme();
@@ -48,10 +48,26 @@ export default function BookingLogsView() {
 
   useEffect(() => {
     if (!mtg.loaded) mtg.loadFixtures();
-    setNotif(notify.getLog({}));
+    // DUMMY IMPLEMENTATION
+    const dummyNotifications = [
+        { id: 'n1', ts: new Date().toISOString(), channel: 'email', to: 'dummy@example.com', status: 'delivered', providerMessageId: 'dummy-email-id-1' },
+        { id: 'n2', ts: new Date().toISOString(), channel: 'sms', to: '+1234567890', status: 'sent', providerMessageId: 'dummy-sms-id-1' },
+    ];
+    setNotif(dummyNotifications);
   }, [mtg]);
 
-  const applyFilter = () => setNotif(notify.getLog({ channel: channel === "all" ? undefined : channel }));
+  const applyFilter = () => {
+      // DUMMY IMPLEMENTATION
+      const dummyNotifications = [
+        { id: 'n1', ts: new Date().toISOString(), channel: 'email', to: 'dummy@example.com', status: 'delivered', providerMessageId: 'dummy-email-id-1' },
+        { id: 'n2', ts: new Date().toISOString(), channel: 'sms', to: '+1234567890', status: 'sent', providerMessageId: 'dummy-sms-id-1' },
+      ];
+      if (channel === 'all') {
+          setNotif(dummyNotifications);
+      } else {
+          setNotif(dummyNotifications.filter(n => n.channel === channel));
+      }
+  }
 
   const historyAll = useMemo(() => mtg.history || [], [mtg.history]);
 
@@ -140,7 +156,7 @@ export default function BookingLogsView() {
             color="error"
             startIcon={<Trash2 />}
             onClick={() => {
-              notify.clearLog();
+              // DUMMY IMPLEMENTATION
               setNotif([]);
             }}
             variant="outlined"

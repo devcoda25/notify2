@@ -14,7 +14,7 @@ import {
 import { useTheme, alpha } from "@mui/material/styles";
 import { Mail, Send, CheckCircle2 } from "lucide-react";
 import usersFixtures from "../../mocks/fixtures/users.fixtures.json";
-import * as notify from "../../mocks/adapters/notifications.mock";
+// import * as notify from "../../mocks/adapters/notifications.mock";
 
 export default function EmailPairingView() {
   const theme = useTheme();
@@ -27,13 +27,10 @@ export default function EmailPairingView() {
 
   const sendTest = async () => {
     setStatus("sending");
-    const res = await notify.sendEmail({
-      to: email,
-      subject: "[Notify] Email pairing test",
-      text: "This is a mock test from Notify. If you see this, pairing works.",
-      templateId: "pairing_test",
-      vars: { user: me?.name || "User" },
-    });
+    // DUMMY IMPLEMENTATION
+    console.log(`[DUMMY] Sending test email to ${email}`);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const res = { providerMessageId: 'dummy-email-id-test', estimatedDeliveryAt: new Date().toISOString() };
     setLastMsg(res);
     setTimeout(() => setStatus("sent"), 400);
   };
