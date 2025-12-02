@@ -210,9 +210,12 @@ const TemplateLibrary = () => {
 
   const fetchAllTemplates = async () => {
     try {
-      const res = await axios.get(getAllTemplates(), config);
-      const TemplateValues = res?.data?.data?.values || [];
-      setTemplateData(TemplateValues);
+      // DUMMY LOGIC
+      const dummyApiTemplates = [
+        { id: 101, subject: 'API Template 1', content: 'Content for API template 1', channel: { name: 'Email' }, language: { name: 'English' }, ticket_type: 'Support', updated_at: new Date().toISOString() },
+        { id: 102, subject: 'API Template 2', content: 'Content for API template 2', channel: { name: 'SMS' }, language: { name: 'Spanish' }, ticket_type: 'Billing', updated_at: new Date().toISOString() },
+      ];
+      setTemplateData(dummyApiTemplates);
     } catch (error) {
       console.log("Error fetching templates", error);
     }
@@ -270,9 +273,7 @@ const TemplateLibrary = () => {
 
   const confirmDelete = async () => {
     try {
-      const payload = { id: templateToDelete }; 
-      await axios.post(deleteTemplatemodule(), payload, config);
-
+      // DUMMY LOGIC
       setTemplateData((prev) => prev.filter(t => t.id !== templateToDelete));
       setDeleteDialogOpen(false);
       setTemplateToDelete(null);
@@ -285,13 +286,7 @@ const TemplateLibrary = () => {
   // Bulk delete function
   const confirmBulkDelete = async () => {
     try {
-      // Delete multiple templates
-      const deletePromises = selectedRows.map(id => 
-        axios.post(deleteTemplatemodule(), { id }, config)
-      );
-      
-      await Promise.all(deletePromises);
-      
+      // DUMMY LOGIC
       setTemplateData((prev) => prev.filter(t => !selectedRows.includes(t.id)));
       setBulkDeleteDialogOpen(false);
       setSelectedRows([]);

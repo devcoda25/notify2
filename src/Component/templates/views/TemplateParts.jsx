@@ -95,53 +95,30 @@ export function VariantManager({
       setSnack?.({ open: true, severity: "warning", message: "Variant name is required." });
       return;
     }
+
+    const payload = {
+      name: nm,
+      description: vdDesc.trim(),
+      tags: vdTags.slice(),
+      locale: vdLocale || "en",
+    };
+
     if (variantDialogEditingId) {
-      updateVariant?.(variantDialogEditingId, {
-        name: nm,
-        description: vdDesc.trim(),
-        tags: vdTags.slice(),
-        locale: vdLocale || "en",
-      });
+      updateVariant?.(variantDialogEditingId, payload);
       setSnack?.({ open: true, severity: "success", message: "Variant updated." });
     } else {
-      // Parent provides addVariantSeed which returns the created id
-      const id = addVariantSeed
-        ? addVariantSeed({ name: nm, description: vdDesc.trim(), tags: vdTags.slice(), locale: vdLocale || "en" })
-        : null;
-      // If parent didn't return id, still ensure UI is updated locally (best-effort)
-      if (!id) {
-        const fallbackId = "v_" + Math.random().toString(36).slice(2, 8);
-        setVariants((prev) => [
-          ...prev,
-          { id: fallbackId, name: nm, description: vdDesc.trim(), tags: vdTags.slice(), locale: vdLocale || "en", steps: {} },
-        ]);
-        setVariantDrafts?.((prev) => ({
-          ...prev,
-          [fallbackId]: {
-            content: {
-              subject: "",
-              title: "",
-              body: "",
-              html: "",
-              headerText: "",
-              headerHtml: "",
-              footerText: "",
-              footerHtml: "",
-              buttons: [],
-              links: [],
-              media: [],
-            },
-          },
-        }));
+      if (addVariantSeed) {
+        addVariantSeed(payload);
+        setSnack?.({ open: true, severity: "success", message: "Variant added." });
+      } else {
+        setSnack?.({ open: true, severity: "error", message: "Cannot add variant." });
       }
-      setSnack?.({ open: true, severity: "success", message: "Variant added." });
     }
     setVariantDialogOpen(false);
   };
 
   const handleDelete = (id) => {
     deleteVariant?.(id);
-    setSnack?.({ open: true, severity: "info", message: "Variant deleted." });
   };
 
   const handleBuild = (id) => {

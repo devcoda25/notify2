@@ -383,12 +383,10 @@ const validateForm = () => {
 
     try {
       setSubmitting(true);
-      const url = formData.id ? updateChannel() : addChannel();
-      
-      await axios.post(url, formData, config);
+      // DUMMY LOGIC
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       setOpenDialog(false);
-      // await fetchData();
       await fetchChannelData();
       showNotification(
         formData.id ? 'Channel updated successfully' : 'Channel created successfully',
@@ -404,9 +402,9 @@ const validateForm = () => {
   const handleDelete = async () => {
     try {
       setSubmitting(true);
-      await axios.post(deleteChannel(), { id: deleteId }, config);
+      // DUMMY LOGIC
+      await new Promise(resolve => setTimeout(resolve, 500));
       setOpenDelete(false);
-      // await fetchData();
       await fetchChannelData();
       showNotification('Channel deleted successfully', 'success');
     } catch (error) {
@@ -418,25 +416,24 @@ const validateForm = () => {
 
   const handleView = async (id) => {
     try {
-      // setLoading(true);
-      const res = await axios.get(`${showChannel()}?id=${id}`, config);
-      setViewData(res.data?.data);
-      setOpenView(true);
+      // DUMMY LOGIC
+      const channelToView = data.find(c => c.id === id);
+      if (channelToView) {
+        setViewData(channelToView);
+        setOpenView(true);
+      } else {
+        showNotification('Could not find channel details', 'error');
+      }
     } catch (error) {
       showNotification('Failed to load channel details', 'error');
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleStatusChange = async (row, isActive) => {
     try {
-      await axios.post(updateChannel(), {
-        ...row,
-        is_active: isActive,
-      }, config);
-      
-      // await fetchData();
+      // DUMMY LOGIC
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       await fetchChannelData();
       showNotification('Status updated successfully', 'success');
     } catch (error) {

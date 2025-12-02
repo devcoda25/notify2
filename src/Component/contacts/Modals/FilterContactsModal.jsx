@@ -179,6 +179,13 @@ export default function FilterContactsModal({ open, onClose, initialFilters = {}
     const ccMin = toNum(casesCountMin);
     if (ccMin != null) filters.casesCountMin = ccMin;
 
+    const csat = toNum(csatMin);
+    if (csat != null) filters.csatMin = csat;
+    const nps = toNum(npsMin);
+    if (nps != null) filters.npsMin = nps;
+    const eng = toNum(engagementScoreMin);
+    if (eng != null) filters.engagementScoreMin = eng;
+
     onApply?.(filters);
   };
 

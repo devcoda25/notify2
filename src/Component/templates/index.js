@@ -35,7 +35,7 @@ export default function TemplatesApp() {
   const [selectedChannel, setSelectedChannel] = React.useState("all");
   const [selectedTemplateId, setSelectedTemplateId] = React.useState(null);
 
-  const [approvalsInit, setApprovalsInit] = React.useState({ tab: "all", state: "Submitted" });
+  const [approvalsInit, setApprovalsInit] = React.useState({ tab: "all", state: "all" });
 
   const handleNavigate = (view, channel) => {
     if (channel) setSelectedChannel(channel);
@@ -75,13 +75,15 @@ export default function TemplatesApp() {
           channel={selectedChannel}
           onOpenTemplate={handleOpenTemplate}
           onOpenApprovals={openInApprovals}
-          // ChannelTemplatesView doesn’t show ChannelTabs, so no button here
         />
       );
       break;
     case VIEWS.DETAIL:
       content = selectedTemplateId ? (
-        <TemplateDetailView templateId={selectedTemplateId} />
+        <TemplateDetailView
+          templateId={selectedTemplateId}
+          onOpenTemplate={handleOpenTemplate}
+        />
       ) : (
         <NotFoundView />
       );
@@ -120,7 +122,6 @@ export default function TemplatesApp() {
       currentView={currentView}
       selectedChannel={selectedChannel}
       onNavigate={handleNavigate}
-      // onCreateTemplate prop is unused by the frame now; views own the button
     >
       {content}
     </TemplatesContentFrame>

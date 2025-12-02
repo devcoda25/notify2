@@ -50,59 +50,32 @@ const Broadcast = (authUser) => {
     //   const headers = { 'Accept': 'application/json', "X-Authuser": getAuthIdFromUrl() };
 
     const fetchChannelData = async () => {
-        try {
-            const res = await axios.get(fetchChannels(), config);
-            setChannelData(res.data?.data?.values || []);
-        } catch (error) {
-            console.log('fetch error', 'Failed to load data')
-        } finally {
-        }
+        const dummyChannels = [{ id: 1, name: 'Email' }, { id: 2, name: 'SMS' }];
+        setChannelData(dummyChannels);
     };
 
     const fetchTemplateData = async () => {
-        try {
-            const res = await axios.get(fetchTemplates(), config);
-            setTemplateData(res.data?.data?.values || []);
-        } catch (error) {
-            console.error('Error fetching templates:', error);
-        }
+        const dummyTemplates = [{ id: 1, name: 'Broadcast Template 1' }, { id: 2, name: 'Broadcast Template 2' }];
+        setTemplateData(dummyTemplates);
     };
 
     const fetchLanguageData = async () => {
-        try {
-            // setLanguageLoading(true);
-            const res = await axios.get(fetchLanguages(), config);
-            setLanguageData(res.data?.data?.values || []);
-        } catch (error) {
-            console.error('Error fetching languages:', error);
-        }
+        const dummyLanguages = [{ id: 1, name: 'English' }, { id: 2, name: 'Spanish' }];
+        setLanguageData(dummyLanguages);
     };
 
     const fetchCategoryData = async () => {
-        try {
-            const res = await axios.get(fetchCategories(), config);
-            setCategoryData(res.data?.data?.values || []);
-        } catch (err) {
-            console.error('Error fetching categories:', err);
-        }
+        const dummyCategories = [{ id: 1, name: 'Promotional' }, { id: 2, name: 'Transactional' }];
+        setCategoryData(dummyCategories);
     };
 
     const fetchContentTypeData = async () => {
-        try {
-            const res = await axios.get(fetchContentTypes(), config);
-            setContentTypeData(res.data?.data?.values || []);
-        } catch (error) {
-            console.log('Failed to fetch data', 'error')
-        }
+        const dummyContentTypes = [{ id: 1, name: 'HTML' }, { id: 2, name: 'Plain Text' }];
+        setContentTypeData(dummyContentTypes);
     };
     const fetchvarVariablesData = async () => {
-        try {
-            const res = await axios.get(fetchvarVariables(), config);
-            setVariablesTypeData(res.data?.data?.values || []);
-            console.log('response',res);
-        } catch (error) {
-            console.log('Failed to fetch data', 'error')
-        }
+        const dummyVariables = [{ id: 1, name: 'firstName' }, { id: 2, name: 'lastName' }];
+        setVariablesTypeData(dummyVariables);
     };
 
     // useEffect(()=>{

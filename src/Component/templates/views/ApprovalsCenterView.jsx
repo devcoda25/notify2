@@ -10,8 +10,10 @@ import ProviderDetailsDialog from "../utils/ProviderDetailsDialog";
 import ProviderSubmissionDialog from "../utils/ProviderSubmissionDialog";
 import TemplateCard from "../utils/TemplateCard";
 
-import useTemplatesStore from "../../store/templates/useTemplatesStore";
-import useApprovalsStore from "../../store/templates/useApprovalsStore";
+import { useParams } from "react-router-dom";
+import useTemplatesStore from "../store/useTemplatesStore";
+import useApprovalsStore from "../store/useApprovalsStore";
+import useTemplatesApi from "../hooks/useTemplatesApi";
 
 import PROVIDERS_BY_CHANNEL from "../constants/PROVIDERS_BY_CHANNEL";
 import APPROVAL_STATES from "../constants/APPROVAL_STATES";
@@ -42,7 +44,7 @@ const toProviderStatuses = (tpl, approvals) => {
 };
 
 const toVariants = (tpl, approvals) => {
-  const raw = tpl?.variants || tpl?.translations || [];
+  const raw = tpl?.versions?.[0]?.variants || [];
   const fromTemplate = Array.isArray(raw) ? raw : [];
   const vp = approvals?.[tpl.id]?.variantProviders || {};
   const providers = PROVIDERS_BY_CHANNEL[normalizeChannel(tpl?.channel)] || [];
@@ -66,18 +68,13 @@ export default function ApprovalsCenterView({
   onCreateTemplate,
 }) {
   const theme = useTheme();
+  const api = useTemplatesApi();
 
-  const templates = useTemplatesStore((s) => s.templates) || [];
-  const seedDemoIfSparse = useTemplatesStore((s) => s.seedDemoIfSparse);
-  const query = useTemplatesStore((s) => s.query || "");
+  const templates = useTemplatesStore((s) => s.templates);
+  const query = useTemplatesStore((s) => s.query);
   const setQuery = useTemplatesStore((s) => s.setQuery);
 
   const approvals = useApprovalsStore((s) => s.approvals) || {};
-  const ensureForTemplates = useApprovalsStore((s) => s.ensureForTemplates);
-  const seedDemoForTemplates = useApprovalsStore((s) => s.seedDemoForTemplates);
-
-  const deriveHistory = useApprovalsStore((s) => s.deriveHistory);
-  const selectGraph = useApprovalsStore((s) => s.selectGraph);
 
   const [tab, setTab] = React.useState(initialTab);
   const [mode, setMode] = React.useState("table");
@@ -98,14 +95,21 @@ export default function ApprovalsCenterView({
   const [submitDetails, setSubmitDetails] = React.useState(null);
   const [submitInitialTab, setSubmitInitialTab] = React.useState("overview");
 
-  React.useEffect(() => { seedDemoIfSparse(); }, [seedDemoIfSparse]);
-  React.useEffect(() => { ensureForTemplates(templates); }, [templates, ensureForTemplates]);
-  React.useEffect(() => { seedDemoForTemplates(templates); }, [templates, seedDemoForTemplates]);
+  // The API hook is the source of truth for all filtering and pagination.
+  React.useEffect(() => {
+    const apiFilters = {
+      q: query,
+      page: page + 1,
+      pageSize: pageSize,
+      // In approvals center, we always filter by status, so we don't need a fallback.
+      status: statusFilter === 'all' ? undefined : statusFilter,
+      type: typeFilter === 'all' ? undefined : typeFilter,
+      channel: tab === 'all' ? undefined : tab,
+    };
+    api.fetchTemplates(apiFilters);
+  }, [api, query, page, pageSize, statusFilter, typeFilter, tab]);
 
-  React.useEffect(() => setTab(initialTab), [initialTab]);
-  React.useEffect(() => setStatusFilter(initialState), [initialState]);
-
-  const statusOf = (t) => approvals?.[t.id]?.state || t.status || t.state || "Draft";
+  const statusOf = (t) => t.status || t.state || "Draft";
 
   const inDateWindow = (iso) => {
     if (!iso) return !(dateFrom || dateTo);
@@ -115,23 +119,18 @@ export default function ApprovalsCenterView({
     return true;
   };
 
+  // Client-side filtering is re-introduced as requested.
+  // Note: This is somewhat redundant if the backend is also filtering, but is kept as requested.
   const filtered = React.useMemo(() => {
-    const q = (query || "").trim().toLowerCase();
-    const base = templates.filter((t) => (statusFilter === "all" ? true : statusOf(t) === statusFilter));
-    const byChannel = tab === "all" ? base : base.filter((t) => normalizeChannel(t.channel) === normalizeChannel(tab));
-    return byChannel
+    return (templates || [])
       .filter((t) => {
-        if (q) {
-          const hit = t.name?.toLowerCase().includes(q) || t.id?.toLowerCase().includes(q) || (t.tags || []).some((tg) => tg.toLowerCase().includes(q));
-          if (!hit) return false;
-        }
-        if (typeFilter !== "all" && t.type !== typeFilter) return false;
+        // API handles q, status, type, channel. We only need to filter by date.
         if (!inDateWindow(t.updatedAt)) return false;
         return true;
       })
       .map((t) => ({ ...t, status: statusOf(t) }))
       .sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime());
-  }, [templates, approvals, query, statusFilter, typeFilter, tab, dateFrom, dateTo]);
+  }, [templates, dateFrom, dateTo]);
 
   const rows = React.useMemo(() => {
     return filtered.map((t) => {
@@ -156,19 +155,17 @@ export default function ApprovalsCenterView({
 
   const getDetails = React.useCallback(
     (templateId) => {
-      const tpl = filtered.find((t) => t.id === templateId) || templates.find((t) => t.id === templateId);
+      const tpl = templates.find((t) => t.id === templateId);
       if (!tpl) return null;
-      const graph = selectGraph(templateId);
-      const history = deriveHistory(templateId, "trunk");
       return {
         template: tpl,
         providerStatuses: toProviderStatuses(tpl, approvals),
         variants: toVariants(tpl, approvals),
-        history,
-        graph,
+        history: [], // History is no longer available from mock store
+        graph: null, // Graph is no longer available from mock store
       };
     },
-    [filtered, templates, approvals, selectGraph, deriveHistory]
+    [templates, approvals]
   );
 
   const handleOpenDetails = (row) => {
@@ -203,6 +200,40 @@ export default function ApprovalsCenterView({
   const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
   const clampedPage = Math.min(page, totalPages - 1);
 
+  const handleSubmitInternal = async ({ templateId, note }) => {
+    const template = templates.find(t => t.id === templateId);
+    const versionId = template?.versions?.[0]?.id;
+    if (!versionId) {
+      console.error("Cannot submit for approval, versionId is missing.");
+      return;
+    }
+    try {
+      await api.submitForApproval(versionId, { notes: note });
+      setSubmitOpen(false);
+      api.fetchTemplates({ q: query, page: page + 1, pageSize: pageSize, status: statusFilter, type: typeFilter }); // Refetch to update status
+    } catch (e) {
+      console.error("Failed to submit for internal approval", e);
+    }
+  };
+
+  const handleSubmitProvider = async ({ templateId, provider, note }) => {
+    const template = templates.find(t => t.id === templateId);
+    const versionId = template?.versions?.[0]?.id;
+    if (!versionId) {
+      console.error("Cannot submit to provider, versionId is missing.");
+      return;
+    }
+    // This would call a provider-specific submission endpoint.
+    // For now, we use the generic submitForApproval endpoint.
+    try {
+      await api.submitForApproval(versionId, { notes: `Provider: ${provider}. ${note}` });
+      setSubmitOpen(false);
+      api.fetchTemplates({ q: query, page: page + 1, pageSize: pageSize, status: statusFilter, type: typeFilter }); // Refetch to update status
+    } catch (e) {
+      console.error("Failed to submit to provider", e);
+    }
+  };
+
   return (
     <Stack spacing={1.5}>
       <TemplatesTopNav
@@ -227,6 +258,7 @@ export default function ApprovalsCenterView({
       {mode === "table" ? (
         <ProviderApprovalsTable
           rows={rows}
+          total={rows.length}
           page={page}
           pageSize={pageSize}
           onPageChange={setPage}
@@ -243,7 +275,7 @@ export default function ApprovalsCenterView({
       ) : (
         <>
           <Grid container spacing={1.5}>
-            {filtered.slice(clampedPage * pageSize, clampedPage * pageSize + pageSize).map((t) => (
+            {rows.slice(clampedPage * pageSize, clampedPage * pageSize + pageSize).map((t) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={t.id}>
                 <TemplateCard
                   template={t}
@@ -318,14 +350,8 @@ export default function ApprovalsCenterView({
         graph={submitDetails?.graph}
         initialTab={submitInitialTab}
         onOpenTimeline={({ templateId }) => onOpenTimeline({ templateId })}
-        onSubmitInternal={({ templateId, approver, note }) => {
-          console.debug("submit internal", { templateId, approver, note });
-          setSubmitOpen(false);
-        }}
-        onSubmitProvider={({ templateId, provider, selectedVariantIds, providerConfig, note }) => {
-          console.debug("submit provider", { templateId, provider, selectedVariantIds, providerConfig, note });
-          setSubmitOpen(false);
-        }}
+        onSubmitInternal={handleSubmitInternal}
+        onSubmitProvider={handleSubmitProvider}
         onWithdrawSubmission={({ templateId }) => {
           console.debug("withdraw", { templateId });
           setSubmitOpen(false);

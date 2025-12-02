@@ -25,6 +25,7 @@ import { Mail, MonitorSmartphone, Bell, MessageSquare, MessageCircle } from "luc
 import TemplateRowActions from "./TemplateRowActions";
 import ApprovalStatusChip from "./ApprovalStatusChip";
 import EmptyState from "./EmptyState";
+import TypeChip from "./TypeChip";
 
 /* ---------- helpers ---------- */
 const normalizeChannel = (val) => {
@@ -107,11 +108,9 @@ export default function TemplatesTable({
   const safePage = Math.min(page, pages - 1);
   const from = total === 0 ? 0 : safePage * pageSize + 1;
   const to = Math.min(total, (safePage + 1) * pageSize);
-  const rppOptions = [10, 25, 50, 100];
 
-  // Slice to show the current page
-  const start = safePage * pageSize;
-  const pageRows = sorted.slice(start, start + pageSize);
+  // The parent now handles pagination, so we render all received rows.
+  const pageRows = sorted;
 
   // ----- selection (page only) -----
   const pageIds = pageRows.map((r) => r.id);
@@ -139,7 +138,7 @@ export default function TemplatesTable({
   );
 
   const getVariantMeta = (r) => {
-    const variants = r.variants || r.translations || [];
+    const variants = r.versions?.[0]?.variants || [];
     const languages = Array.from(
       new Set(
         variants
@@ -258,7 +257,7 @@ export default function TemplatesTable({
                   )}
 
                   <TableCell>
-                    <Chip size="small" label={r.type} />
+                    <TypeChip type={r.type} />
                   </TableCell>
 
                   {showVariants && (

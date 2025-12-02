@@ -1,7 +1,8 @@
 // Path: src/Component/templates/views/AllTemplatesView.jsx
 
 import React from "react";
-import { Box, Grid, Stack, Select, MenuItem, Pagination, Paper, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Box, Grid, Stack, Select, MenuItem, Pagination, Paper, Typography, CircularProgress } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 
 import TemplateCard from "../utils/TemplateCard";
@@ -11,8 +12,9 @@ import ProviderDetailsDialog from "../utils/ProviderDetailsDialog";
 
 import TemplatesTopNav from "../layout/TemplatesTopNav";
 
-import useTemplatesStore from "../../store/templates/useTemplatesStore";
-import useApprovalsStore from "../../store/templates/useApprovalsStore";
+import useTemplatesStore from "../store/useTemplatesStore";
+import useApprovalsStore from "../store/useApprovalsStore";
+import useTemplatesApi from "../hooks/useTemplatesApi";
 
 import PROVIDERS_BY_CHANNEL from "../constants/PROVIDERS_BY_CHANNEL";
 import APPROVAL_STATES from "../constants/APPROVAL_STATES";
@@ -77,69 +79,76 @@ const toHistory = (tpl, approvals) => {
 
 export default function AllTemplatesView({ onOpenTemplate, onOpenApprovals, onCreateTemplate }) {
   const theme = useTheme();
+  const api = useTemplatesApi();
 
-  const templates = useTemplatesStore((s) => s.templates) || [];
-  const setFilter = useTemplatesStore((s) => s.setFilter);
-  const query = useTemplatesStore((s) => s.query || "");
+  // Store selectors (following Zustand best practices)
+  const templates = useTemplatesStore((s) => s.templates);
+  const totalCount = useTemplatesStore((s) => s.totalCount);
+  const loading = useTemplatesStore((s) => s.loading);
+  const error = useTemplatesStore((s) => s.error);
+  const query = useTemplatesStore((s) => s.query);
+  const filters = useTemplatesStore((s) => s.filters);
   const setQuery = useTemplatesStore((s) => s.setQuery);
-  const filters = useTemplatesStore((s) => s.filters || { type: "all", status: "all" });
-  const seedDemoIfSparse = useTemplatesStore((s) => s.seedDemoIfSparse);
+  const setFilter = useTemplatesStore((s) => s.setFilter);
+
   const approvals = useApprovalsStore((s) => s.approvals) || {};
 
-  const selectGraph = useApprovalsStore((s) => s.selectGraph);
-
+  // Component state
   const [tab, setTab] = React.useState("all");
   const [mode, setMode] = React.useState("table");
   const [page, setPage] = React.useState(0);
   const [pageSize, setPageSize] = React.useState(25);
   const [dateFrom, setDateFrom] = React.useState("");
   const [dateTo, setDateTo] = React.useState("");
-
-  // submit dialog
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [dialogDetails, setDialogDetails] = React.useState(null);
   const [dialogInitialTab, setDialogInitialTab] = React.useState("overview");
-
-  // details dialog
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [detailsData, setDetailsData] = React.useState(null);
 
-  React.useEffect(() => { seedDemoIfSparse(); }, [seedDemoIfSparse]);
+  // The API hook is now the single source of truth for all filtering and pagination.
+  // This useEffect will re-run whenever any filter, search, or page change occurs.
+  React.useEffect(() => {
+    const apiFilters = {
+      q: query,
+      page: page + 1,
+      pageSize: pageSize,
+      status: filters.status === 'all' ? undefined : filters.status,
+      type: filters.type === 'all' ? undefined : filters.type,
+      channel: tab === 'all' ? undefined : tab,
+    };
+    api.fetchTemplates(apiFilters);
+  }, [api, query, page, pageSize, filters, tab]);
 
-  const statusOf = (t) => approvals?.[t.id]?.state || t.status || t.state || APPROVAL_STATES.DRAFT;
+  const statusOf = (t) => t.status || t.state || "Draft";
 
   const inDateWindow = (iso) => {
-    if (!iso) return !(dateFrom || dateTo);
+    if (!dateFrom && !dateTo) return true;
+    if (!iso) return false;
     const ts = new Date(iso).getTime();
     if (dateFrom && ts < new Date(`${dateFrom}T00:00:00`).getTime()) return false;
     if (dateTo && ts > new Date(`${dateTo}T23:59:59`).getTime()) return false;
     return true;
   };
 
-  const rowsAll = React.useMemo(() => {
-    const q = (query || "").trim().toLowerCase();
-    const matchesQuery = (t) =>
-      !q || t.name?.toLowerCase().includes(q) || t.id?.toLowerCase().includes(q) || (t.tags || []).some((tg) => tg.toLowerCase().includes(q));
-
+  // Client-side filtering is re-introduced as requested, now acting on the paginated data from the API.
+  const rows = React.useMemo(() => {
     return (templates || [])
       .filter((t) => {
-        if (!matchesQuery(t)) return false;
-        if (filters.type !== "all" && t.type !== filters.type) return false;
-        if (filters.status !== "all" && statusOf(t) !== filters.status) return false;
+        // The API handles q, page, pageSize, status, and type.
+        // We only need to apply filters the API doesn't handle, like date.
         if (!inDateWindow(t.updatedAt)) return false;
+        // Also, apply channel filter for the tabs
+        if (tab !== 'all' && normalizeChannel(t.channel) !== tab) return false;
         return true;
       })
       .map((t) => enrich(t, approvals))
       .sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime());
-  }, [templates, query, filters, approvals, dateFrom, dateTo]);
+  }, [templates, approvals, tab, dateFrom, dateTo]);
 
-  const rows = React.useMemo(() => {
-    if (tab === "all") return rowsAll;
-    const key = normalizeChannel(tab);
-    return rowsAll.filter((t) => normalizeChannel(t.channel) === key);
-  }, [rowsAll, tab]);
 
-  React.useEffect(() => { setPage(0); }, [tab, query, filters, dateFrom, dateTo]);
+  // Reset page to 0 when filters change
+  React.useEffect(() => { setPage(0); }, [query, filters.status, filters.type, dateFrom, dateTo, tab]);
 
   const onOpen = (tpl) => onOpenTemplate?.(tpl.id);
   const showChannel = tab === "all";
@@ -148,8 +157,8 @@ export default function AllTemplatesView({ onOpenTemplate, onOpenApprovals, onCr
     template: tpl,
     providerStatuses: toProviderStatuses(tpl, approvals),
     variants: toVariants(tpl, approvals),
-    history: toHistory(tpl, approvals),
-    graph: selectGraph?.(tpl.id),
+    history: [], // History is no longer available from mock store
+    graph: null, // Graph is no longer available from mock store
   });
 
   const openSubmitApproval = (tpl) => {
@@ -169,8 +178,110 @@ export default function AllTemplatesView({ onOpenTemplate, onOpenApprovals, onCr
   };
   const openInApprovals = (tpl) => onOpenApprovals?.(tpl);
 
-  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const clampedPage = Math.min(page, totalPages - 1);
+
+  console.log("[AllTemplatesView] Rendering with page:", page);
+  console.log("[AllTemplatesView] Templates from store:", templates);
+  console.log("[AllTemplatesView] Final rows for render:", rows);
+
+  const renderContent = () => {
+    if (loading && !templates.length) { // Show loading only on initial fetch
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200 }}>
+          <CircularProgress />
+        </Box>
+      );
+    }
+
+    if (error) {
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200 }}>
+          <Typography color="error">Failed to load templates: {error.message || "Unknown error"}</Typography>
+        </Box>
+      );
+    }
+
+    if (mode === "table") {
+      return (
+        <TemplatesTable
+          rows={rows}
+          total={totalCount}
+          showChannel={showChannel}
+          showVariants
+          page={clampedPage}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          onOpen={onOpen}
+          onSubmitInternal={openSubmitApproval}
+          onSendToProvider={openSubmitApproval}
+          onResubmitProvider={openProviderResubmit}
+          onOpenTimeline={openTimeline}
+          onOpenInApprovals={onOpenApprovals}
+          context="all"
+        />
+      );
+    }
+
+    return (
+      <>
+        <Grid container spacing={1.5}>
+          {rows.map((t) => ( // Note: table handles its own pagination, card view does not yet fully
+            <Grid item xs={12} sm={6} md={4} lg={3} key={t.id}>
+              <TemplateCard
+                template={t}
+                onOpen={onOpen}
+                onSubmitApproval={openSubmitApproval}
+                onResubmitProvider={openProviderResubmit}
+                onOpenTimeline={openTimeline}
+                onOpenInApprovals={onOpenApprovals}
+                context="all"
+              />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Paper
+          variant="outlined"
+          sx={{ mt: 1, px: 1.5, py: 1, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 2, borderRadius: 2 }}
+        >
+          <Box
+            sx={{
+              px: 1, py: 0.25,
+              border: (th) => `1px solid ${alpha(th.palette.primary.main, 0.4)}`,
+              borderRadius: 2,
+              display: "inline-flex", alignItems: "center", gap: 0.5,
+            }}
+          >
+            <Select
+              size="small"
+              value={pageSize}
+              onChange={(e) => setPageSize(parseInt(e.target.value, 10))}
+              variant="standard"
+              disableUnderline
+              sx={{ minWidth: 64, "& .MuiSelect-select": { px: 0.5 } }}
+            >
+              {[10, 25, 30, 50, 100].map((n) => (
+                <MenuItem key={n} value={n}>{n}</MenuItem>
+              ))}
+            </Select>
+            <Typography variant="body2" sx={{ opacity: 0.7 }}>/ page</Typography>
+          </Box>
+
+          <Pagination
+            page={clampedPage + 1}
+            count={totalPages}
+            onChange={(_, p) => setPage(p - 1)}
+            variant="outlined"
+            shape="rounded"
+            siblingCount={1}
+            boundaryCount={1}
+          />
+        </Paper>
+      </>
+    );
+  };
 
   return (
     <Stack spacing={1.5}>
@@ -193,80 +304,7 @@ export default function AllTemplatesView({ onOpenTemplate, onOpenApprovals, onCr
         onModeChange={setMode}
       />
 
-      {mode === "table" ? (
-        <TemplatesTable
-          rows={rows}
-          showChannel={showChannel}
-          showVariants
-          page={clampedPage}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-          onOpen={onOpen}
-          onSubmitInternal={openSubmitApproval}
-          onSendToProvider={openSubmitApproval}
-          onResubmitProvider={openProviderResubmit}
-          onOpenTimeline={openTimeline}
-          onOpenInApprovals={openInApprovals}
-          context="all"
-        />
-      ) : (
-        <>
-          <Grid container spacing={1.5}>
-            {rows.slice(clampedPage * pageSize, clampedPage * pageSize + pageSize).map((t) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={t.id}>
-                <TemplateCard
-                  template={t}
-                  onOpen={onOpen}
-                  onSubmitApproval={openSubmitApproval}
-                  onResubmitProvider={openProviderResubmit}
-                  onOpenTimeline={openTimeline}
-                  onOpenInApprovals={openInApprovals}
-                  context="all"
-                />
-              </Grid>
-            ))}
-          </Grid>
-
-          <Paper
-            variant="outlined"
-            sx={{ mt: 1, px: 1.5, py: 1, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 2, borderRadius: 2 }}
-          >
-            <Box
-              sx={{
-                px: 1, py: 0.25,
-                border: (th) => `1px solid ${alpha(th.palette.primary.main, 0.4)}`,
-                borderRadius: 2,
-                display: "inline-flex", alignItems: "center", gap: 0.5,
-              }}
-            >
-              <Select
-                size="small"
-                value={pageSize}
-                onChange={(e) => setPageSize(parseInt(e.target.value, 10))}
-                variant="standard"
-                disableUnderline
-                sx={{ minWidth: 64, "& .MuiSelect-select": { px: 0.5 } }}
-              >
-                {[10, 25, 30, 50, 100].map((n) => (
-                  <MenuItem key={n} value={n}>{n}</MenuItem>
-                ))}
-              </Select>
-              <Typography variant="body2" sx={{ opacity: 0.7 }}>/ page</Typography>
-            </Box>
-
-            <Pagination
-              page={clampedPage + 1}
-              count={Math.max(1, Math.ceil(rows.length / pageSize))}
-              onChange={(_, p) => setPage(p - 1)}
-              variant="outlined"
-              shape="rounded"
-              siblingCount={1}
-              boundaryCount={1}
-            />
-          </Paper>
-        </>
-      )}
+      {renderContent()}
 
       <ProviderDetailsDialog
         open={detailsOpen}

@@ -20,6 +20,7 @@ import ImportContactsModal from "./Modals/ImportContactsModal";
 
 import useSelection from "./hooks/useSelection";
 import useUploadWorkspace from "./hooks/useUploadWorkspace";
+import { useParams } from "react-router-dom";
 import useContactsApi from "./hooks/useContactsApi"; // Added
 
 import { useContactsStore, selectContactsPagedRows, selectContactsFilteredCount } from "./store/useContactsStore"; // Modified
@@ -27,6 +28,7 @@ import { DEFAULT_COLUMNS } from "./utils/mappers";
 
 /* ------------------------------ component ------------------------------ */
 export default function ContactsPage() {
+  const { authUser } = useParams();
   // Query & uploads
   const [queryParams, setQueryParams] = useState({
     search: "",
@@ -39,7 +41,7 @@ export default function ContactsPage() {
   });
   const [activeTabId, setActiveTabId] = useState("db");
   const uploads = useUploadWorkspace();
-  const api = useContactsApi(); // Added
+  const api = useContactsApi(authUser); // Added
 
   // Store (DB)
   const dbRows = useContactsStore(selectContactsPagedRows); // Modified to use selector
@@ -52,6 +54,26 @@ export default function ContactsPage() {
     console.log("Fetching contacts with queryParams:", queryParams);
     api.fetchContacts(queryParams);
   }, [api, queryParams]); // Fetch contacts on component mount and when queryParams change
+
+  // Fetch groups on mount
+  useEffect(() => {
+    const loadGroups = async () => {
+      // Only fetch groups if the API is ready and there are no persistent tabs yet.
+      // This prevents re-fetching when the component re-renders.
+      if (api && api.fetchGroups && !uploads.tabs.some(t => t.isPersistent)) {
+        try {
+          const existingGroups = await api.fetchGroups();
+          if (existingGroups && existingGroups.length > 0) {
+            uploads.addGroups(existingGroups);
+          }
+        } catch (error) {
+          console.error("Failed to fetch groups:", error);
+        }
+      }
+    };
+    loadGroups();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, uploads.tabs.length]);
 
   
 

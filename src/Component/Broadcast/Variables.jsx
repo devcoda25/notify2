@@ -29,12 +29,12 @@ const Variables = () => {
     }, []);
 
     const fetchvarVariablesData = async () => {
-        try {
-            const res = await axios.get(fetchvarVariables(), config);
-            setVariablesTypeData(res.data?.data?.values || []);
-        } catch (error) {
-            console.log('Failed to fetch data', error);
-        }
+        const dummyVariables = [
+            { id: 1, name: '{{first_name}}', description: 'The recipient\'s first name', sample_data: ['John', 'Jane'] },
+            { id: 2, name: '{{order_number}}', description: 'The order number', sample_data: ['12345', '67890'] },
+            { id: 3, name: '{{company_name}}', description: 'Your company name', sample_data: ['Notify'] },
+        ];
+        setVariablesTypeData(dummyVariables);
     };
 
     const handleSearchChange = (e) => {
@@ -92,10 +92,10 @@ const Variables = () => {
 
     const handleConfirmDelete = async () => {
         try {
-            await axios.post(deleteVariable(), { id: deleteId }, config);
+            // DUMMY LOGIC
+            setVariablesTypeData(prev => prev.filter(v => v.id !== deleteId));
             setOpenDeleteDialog(false);
             setDeleteId(null);
-            fetchvarVariablesData();
         } catch (error) {
             console.error('Error deleting variable:', error);
         }
@@ -103,12 +103,14 @@ const Variables = () => {
 
     const handleFormSubmit = async () => {
         try {
-            const url = editMode ? editVariable() : addVariable();
-            const payload = { ...formData };
-
-            await axios.post(url, payload, config);
+            // DUMMY LOGIC
+            if (editMode) {
+                setVariablesTypeData(prev => prev.map(v => v.id === formData.id ? formData : v));
+            } else {
+                const newVariable = { ...formData, id: Date.now() }; // Create a new ID
+                setVariablesTypeData(prev => [...prev, newVariable]);
+            }
             setOpenDialog(false);
-            fetchvarVariablesData();
         } catch (error) {
             console.error('Error saving variable:', error);
         }
@@ -129,15 +131,15 @@ const Variables = () => {
     // NEW: Handle show variable details
      const handleShowClick = async (id) => {
         try {
-            const res = await axios.get(showVariable(id), config); // ✅ GET with ID param
-            const result = res.data?.data;
-
-            setShowVariableData({
-                ...result,
-                sample_data: normalizeSampleData(result.sample_data)
-            });
-
-            setOpenShowDialog(true);
+            // DUMMY LOGIC
+            const variableToShow = variables.find(v => v.id === id);
+            if (variableToShow) {
+                setShowVariableData({
+                    ...variableToShow,
+                    sample_data: normalizeSampleData(variableToShow.sample_data)
+                });
+                setOpenShowDialog(true);
+            }
         } catch (error) {
             console.error("Error showing variable:", error);
         }

@@ -1,6 +1,7 @@
 // Path: src/Component/templates/views/ChannelTemplatesView.jsx
 
 import React from "react";
+import { useParams } from "react-router-dom";
 import { Box, Grid, Stack, Typography, Paper, Select, MenuItem, Pagination } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 
@@ -10,8 +11,9 @@ import TemplatesTable from "../utils/TemplatesTable";
 import ProviderSubmissionDialog from "../utils/ProviderSubmissionDialog";
 import ProviderDetailsDialog from "../utils/ProviderDetailsDialog";
 
-import useTemplatesStore from "../../store/templates/useTemplatesStore";
-import useApprovalsStore from "../../store/templates/useApprovalsStore";
+import useTemplatesStore from "../store/useTemplatesStore";
+import useApprovalsStore from "../store/useApprovalsStore";
+import useTemplatesApi from "../hooks/useTemplatesApi";
 
 import PROVIDERS_BY_CHANNEL from "../constants/PROVIDERS_BY_CHANNEL";
 
@@ -76,19 +78,21 @@ const toVariants = (tpl, approvals) => {
 };
 
 export default function ChannelTemplatesView({ channel = "email", onOpenTemplate, onOpenApprovals }) {
-  const listForChannel = useTemplatesStore((s) => s.listForChannel);
-  const resetToBigDemo = useTemplatesStore((s) => s.resetToBigDemo);
-  const templatesCount = useTemplatesStore((s) => (s.templates || []).length);
+  const api = useTemplatesApi();
 
-  const query = useTemplatesStore((s) => s.query || "");
-  const setQuery = useTemplatesStore((s) => s.setQuery);
-  const filters = useTemplatesStore((s) => s.filters || { type: "all", status: "all" });
-  const setFilter = useTemplatesStore((s) => s.setFilter);
+  const { listForChannel, query, setQuery, filters, setFilter } = useTemplatesStore((s) => ({
+    listForChannel: s.listForChannel,
+    query: s.query || "",
+    setQuery: s.setQuery,
+    filters: s.filters || { type: "all", status: "all" },
+    setFilter: s.setFilter,
+  }));
 
-  const approvals = useApprovalsStore((s) => s.approvals) || {};
-
-  const deriveHistory = useApprovalsStore((s) => s.deriveHistory);
-  const selectGraph = useApprovalsStore((s) => s.selectGraph);
+  const { approvals, deriveHistory, selectGraph } = useApprovalsStore((s) => ({
+    approvals: s.approvals || {},
+    deriveHistory: s.deriveHistory,
+    selectGraph: s.selectGraph,
+  }));
 
   const [mode, setMode] = React.useState("table");
   const [page, setPage] = React.useState(0);
@@ -105,13 +109,13 @@ export default function ChannelTemplatesView({ channel = "email", onOpenTemplate
   const [detailsData, setDetailsData] = React.useState(null);
 
   React.useEffect(() => {
-    if ((templatesCount || 0) < 100) resetToBigDemo(300);
-  }, [templatesCount, resetToBigDemo]);
+    api.fetchTemplates();
+  }, [api]);
 
   const chKey = normalizeChannel(channel);
   const allForCh = React.useMemo(() => (listForChannel ? listForChannel(chKey) : []), [listForChannel, chKey]);
 
-  const statusOf = (t) => approvals?.[t.id]?.state || t.status || t.state || "Draft";
+  const statusOf = (t) => t.status || t.state || "Draft";
 
   const inDateWindow = (iso) => {
     if (!dateFrom && !dateTo) return true;

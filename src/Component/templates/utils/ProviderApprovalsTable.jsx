@@ -109,6 +109,7 @@ export default function ProviderApprovalsTable({
 
   page = 0,
   pageSize = 25,
+  total: totalProp,
   onPageChange,
   onPageSizeChange,
 
@@ -142,7 +143,7 @@ export default function ProviderApprovalsTable({
     return arr;
   }, [rows, orderBy, order]);
 
-  const total = sortRows.length;
+  const total = typeof totalProp === "number" ? totalProp : sortRows.length;
   const pages = Math.max(1, Math.ceil(Math.max(0, total) / Math.max(1, pageSize)));
   const safePage = Math.min(page, pages - 1);
   const pageRows = sortRows.slice(safePage * pageSize, safePage * pageSize + pageSize);

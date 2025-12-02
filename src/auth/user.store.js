@@ -196,11 +196,19 @@ const initialShift = { startAt: "", lengthMin: 0, btaMin: 0 };
 /* ───────── store ───────── */
 
 export const useUserStore = create((set, get) => ({
-  currentUser: { ...initialUser },
-  isHydratedFromAuth: false,
-  authChecked: false, // becomes true when bootstrap finishes checking session
-  isAuthed: false, // true when authAgent reports a valid ticket
-  authUser: null,
+  currentUser: {
+    id: "dummy-user-id",
+    displayName: "Dummy User",
+    email: "dummy@example.com",
+    role: "admin",
+    avatarUrl: "",
+    availability: "available",
+    meta: { raw: { sub: "dummy-user-id", name: "Dummy User", email: "dummy@example.com" } },
+  },
+  isHydratedFromAuth: true,
+  authChecked: true, // becomes true when bootstrap finishes checking session
+  isAuthed: true, // true when authAgent reports a valid ticket
+  authUser: "dummy-user",
 
   shift: { ...initialShift },
   sessions: [],
@@ -290,89 +298,9 @@ export const useUserStore = create((set, get) => ({
 
   // GWAPI enrichment (store-owned; single /me)
   async fetchPartyEnrichmentViaGwapi() {
-    if (_meFetchInFlight) return;
-    _meFetchInFlight = true;
-    try {
-      const me = await getJsonSafe("/me");
-      if (!me) return;
-
-      // Prefer rich party block; fallback flat
-      const party = me.party || me.user || me;
-
-      // 1) Merge human-facing profile fields
-      get().mergeProfile({
-        displayName: party?.name ?? party?.displayName ?? undefined,
-        email: party?.email ?? undefined,
-        role: Array.isArray(party?.roles)
-          ? party.roles[0]
-          : party?.role ?? undefined,
-        avatarUrl: party?.picture ?? party?.avatarUrl ?? undefined,
-      });
-
-      // 2) Canonical Party ID ← absolutely required (party-first)
-      if (party?.id) {
-        const partyId = String(party.id);
-        set((s) => ({
-          currentUser: {
-            ...s.currentUser,
-            id: partyId, // partyId
-          },
-        }));
-
-        // Subscribe PARTY stream when /me confirms partyId
-        try {
-          wsService.subscribeParty?.(partyId);
-        } catch (e) {
-          console.warn("[user.store] subscribeParty from /me failed:", e?.message || e);
-        }
-      }
-
-      // 3) Presence from /me if present; otherwise, don't overwrite
-      if (me.presence && typeof me.presence.availability === "string") {
-        const srv = me.presence.availability.toUpperCase();
-        const ui = mapFromServer(srv);
-        if (ui && isValidUiAvailability(ui)) {
-          const cur = get().currentUser || {};
-          set({
-            currentUser: { ...cur, availability: ui },
-            presencePending: null,
-            presencePendingReason: undefined,
-            _presenceEchoToken: null,
-          });
-          mirrorRooms(ui, false);
-        }
-      } else {
-        // No presence in /me → if not waiting for an echo, clear pending gently
-        if (!get()._presenceEchoToken) {
-          set({ presencePending: null, presencePendingReason: undefined });
-          mirrorRooms(undefined, false);
-        }
-      }
-
-      // 4) Shift config (from rich /me)
-      const shift = me.shift || {};
-      if (shift && (shift.startAt || shift.lengthMin || shift.btaMin)) {
-        get().setShiftConfig({
-          startAt: String(shift.startAt ?? ""),
-          lengthMin: Number.isFinite(shift.lengthMin) ? shift.lengthMin : 0,
-          btaMin: Number.isFinite(shift.btaMin) ? shift.btaMin : 0,
-        });
-      }
-
-      // 5) Telemetry (from rich /me)
-      const tel = me.telemetry || {};
-      if (
-        tel &&
-        (Array.isArray(tel.sessions) || Array.isArray(tel.breaks))
-      ) {
-        get().setTelemetry({
-          sessions: Array.isArray(tel.sessions) ? tel.sessions : [],
-          breaks: Array.isArray(tel.breaks) ? tel.breaks : [],
-        });
-      }
-    } finally {
-      _meFetchInFlight = false;
-    }
+    // DUMMY LOGIN: Do not fetch real user data
+    console.log('[DUMMY AUTH] fetchPartyEnrichmentViaGwapi call skipped.');
+    return;
   },
 
   // Shift/telemetry state writers

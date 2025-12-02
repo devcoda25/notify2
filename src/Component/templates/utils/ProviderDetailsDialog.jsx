@@ -33,7 +33,7 @@ import {
 
 // Graph timeline + store
 import GraphTimeline from "./GraphTimeline";
-import useApprovalsStore from "../../store/templates/useApprovalsStore";
+import useApprovalsStore from "../store/useApprovalsStore";
 
 /* ---------------- helpers ---------------- */
 const statusColor = (s) => {

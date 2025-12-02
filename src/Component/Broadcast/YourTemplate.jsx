@@ -200,9 +200,12 @@ const YourTemplate = () => {
 
         const GetTemplateCategories = async () => {
         try {
-            const res = await axios.get(fetchCategories(), config);
-            // console.log("data", res.data?.data?.values)
-            setTemplateData(res.data?.data?.values); 
+            // DUMMY LOGIC
+            const dummyCategories = [
+                { id: 1, name: 'My Category 1', description: 'Description for my category 1', slug: 'my-category-1', is_active: true, updated_at: new Date().toISOString() },
+                { id: 2, name: 'My Category 2', description: 'Description for my category 2', slug: 'my-category-2', is_active: false, updated_at: new Date().toISOString() },
+            ];
+            setTemplateData(dummyCategories); 
         } catch (err) {
             console.error("Error fetching categories:", err);
         }

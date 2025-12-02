@@ -199,46 +199,20 @@ async function probeWsAcceptance(ticket) {
  * - Otherwise, redirect the browser to the IdP authorize endpoint.
  */
 export async function beginLogin({ passcode, manualIdpAccessToken } = {}) {
-  const accessToken = manualIdpAccessToken || cfg.idpAccessTokenDev;
+  // DUMMY LOGIN: Simulate a successful login
+  console.log('[DUMMY AUTH] beginLogin called');
+  
+  // Simulate a network delay
+  await new Promise(resolve => setTimeout(resolve, 500));
 
-  // If we have a token (dev or scripted), perform our standard flow.
-  if (accessToken) {
-    // /hello → /me (store hydrates) → /clock/in → /ws/ticket → ws probe
-    await postHello({ accessToken });
+  _accessToken = 'dummy-access-token';
+  _ticket = 'dummy-ws-ticket'; // A non-null value to make hasTicket true
+  _authUser = 'dummy-user';
+  _tenantId = 'dummy-tenant';
 
-    try {
-      const m = await import("./user.store.js");
-      m?.useUserStore?.getState?.().fetchPartyEnrichmentViaGwapi?.();
-    } catch { }
-
-    const jti = genJti();
-    await postClockIn({ accessToken, passcode, jti });
-
-    const ticket = await fetchGwapiTicket({ accessToken });
-    const ok = await probeWsAcceptance(ticket).catch(() => false);
-    if (!ok) throw friendlyError("WS_REJECT");
-
-    _accessToken = accessToken;
-    _ticket = ticket;
-
-    const claims = parseJwtPayload(ticket);
-    _authUser = claims?.sub || claims?.principal_id || "me";
-    _tenantId = claims?.tenant_id || claims?.tenant || null;
-
-    notify();
-    return getAuthState();
-  }
-
-  // Otherwise redirect to IdP authorize (treat dev IdP as THE IdP)
-  const url = new URL(cfg.idpAuthPath, cfg.idpBaseUrl);
-  url.searchParams.set("client_id", cfg.idpClientId);
-  url.searchParams.set("redirect_uri", cfg.idpRedirectUrl);
-  url.searchParams.set("response_type", "code");
-  url.searchParams.set("scope", cfg.idpScope);
-  url.searchParams.set("state", `web-${cfg.deviceId}-${Date.now()}`);
-  try { sessionStorage.setItem("post_login_path", window.location.pathname + window.location.search); } catch { }
-  window.location.assign(url.toString());
-  return null;
+  notify(); // Notify listeners (like the router) about the auth state change
+  
+  return getAuthState(); // Return the new dummy state
 }
 
 /**
@@ -250,124 +224,8 @@ export async function beginLogin({ passcode, manualIdpAccessToken } = {}) {
  *    3) require ticket; hydrate store best-effort
  */
 export async function resumeLogin() {
-  if (_ticket) return true;
-
-  // 0) Quick ping — if no cookie session, bail fast
-  const hasSid = await hasSessionViaPing({ timeoutMs: 300 });
-  if (!hasSid) return false;
-
-  // 1) Run /me, /clock/in and /ws/ticket in parallel (cookie session should suffice)
-  const base = (process.env.REACT_APP_GWAPI_REST_BASE || "http://localhost:7440").replace(/\/+$/, "");
-
-  const mePromise = (async () => {
-    try {
-      const meRes = await fetch(`${base}/me`, {
-        method: "GET",
-        credentials: "include",
-        headers: { Accept: "application/json", "X-Device-ID": cfg.deviceId },
-      });
-      if (!meRes.ok) return null;
-      const meJson = await meRes.json().catch(() => null);
-      if (!meJson) return null;
-
-      // Push into store (rich /me)
-      const store = await import("./user.store.js");
-      const api = store?.useUserStore?.getState?.();
-      if (api) {
-        const p = meJson.party || meJson.user || meJson;
-
-        api.mergeProfile?.({
-          displayName: p?.name ?? p?.displayName ?? undefined,
-          email: p?.email ?? undefined,
-          role: Array.isArray(p?.roles) ? p.roles[0] : (p?.role ?? undefined),
-          avatarUrl: p?.picture ?? p?.avatarUrl ?? undefined,
-        });
-
-        // Canonical Party ID is critical for presence echo + mutations
-        if (p?.id) {
-          store.useUserStore.setState((s) => ({
-            currentUser: { ...s.currentUser, id: String(p.id) },
-          }));
-        }
-
-        // presence (if present)
-        if (meJson.presence?.availability) {
-          const avail = String(meJson.presence.availability).toUpperCase();
-          const map = { ONLINE: "available", BUSY: "busy", AWAY: "away", OFFLINE: "offline" };
-          const ui = map[avail] || null;
-          if (ui) {
-            const cur = api.currentUser || {};
-            store.useUserStore.setState({
-              currentUser: { ...cur, availability: ui },
-              presencePending: null,
-              presencePendingReason: undefined,
-            });
-          }
-        }
-
-        // shift
-        if (meJson.shift) {
-          api.setShiftConfig?.({
-            startAt: String(meJson.shift.startAt ?? ""),
-            lengthMin: Number.isFinite(meJson.shift.lengthMin) ? meJson.shift.lengthMin : 0,
-            btaMin: Number.isFinite(meJson.shift.btaMin) ? meJson.shift.btaMin : 0,
-          });
-        }
-        // telemetry
-        if (meJson.telemetry) {
-          api.setTelemetry?.({
-            sessions: Array.isArray(meJson.telemetry.sessions) ? meJson.telemetry.sessions : [],
-            breaks: Array.isArray(meJson.telemetry.breaks) ? meJson.telemetry.breaks : [],
-          });
-        }
-      }
-      return true;
-    } catch { return null; }
-  })();
-
-  // NEW: idempotent clock open/refresh using cookie (no Authorization needed)
-  const clockPromise = (async () => {
-    try {
-      const jti = genJti();
-      await postClockIn({ jti }); // cookie-bound; server should accept
-      return true;
-    } catch { return false; }
-  })();
-
-  const ticketPromise = (async () => {
-    try {
-      const tr = await fetch(cfg.gwapiUrl, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json", "X-Device-ID": cfg.deviceId },
-        body: "{}",
-      });
-      if (!tr.ok) throw new Error(`status ${tr.status}`);
-      const { token } = await tr.json().catch(() => ({}));
-      if (!token) throw new Error("no token");
-      _ticket = token;
-      const claims = parseJwtPayload(token);
-      _authUser = claims?.sub || "me";
-      _tenantId = claims?.tenant_id || null;
-      notify();
-      return true;
-    } catch (err) {
-      throw friendlyError("TICKET_FAILED", err?.message || err);
-    }
-  })();
-
-  // 2) Require the ticket; /me + clock are best-effort but run in parallel
-  const [ticketOk] = await Promise.allSettled([ticketPromise, mePromise, clockPromise])
-    .then((r) => [r[0]?.value === true]);
-  if (!ticketOk) return false;
-
-  // Optional: idempotent enrichment (rich /me) to reconcile
-  try {
-    const store = await import("./user.store.js");
-    store?.useUserStore?.getState?.().fetchPartyEnrichmentViaGwapi?.();
-  } catch { }
-
-  return true;
+  // DUMMY LOGIN: Disabled auto-login on refresh
+  return false;
 }
 
 // Debug snapshot

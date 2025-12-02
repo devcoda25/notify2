@@ -83,29 +83,32 @@ export function validateVariant(channel, snapshot = {}) {
 }
 
 /**
- * Validate a whole template across its channel variants.
- * @param {object} template
- * @param {Array<{channel: string, snapshot: object}>} variants
+ * Validate a whole template object, including its variants.
+ * @param {object} payload The complete template payload, including a `variants` array.
  */
-export function validateTemplate(template, variants = []) {
+export function validateTemplate(payload = {}) {
   const out = { errors: [], warnings: [] };
+  const template = payload;
+  const variants = Array.isArray(payload.variants) ? payload.variants : [];
 
   if (!template?.name) out.errors.push("Template name is required.");
   if (!template?.type) out.errors.push("Template type is required.");
-  if (!Array.isArray(template?.channels) || !template.channels.length)
-    out.errors.push("At least one channel must be selected.");
+  if (!template?.channel) {
+    out.errors.push("A channel must be selected.");
+  }
 
-  const declaredChannels = new Set(template?.channels || []);
+  if (variants.length === 0) {
+    out.errors.push("At least one variant must be created.");
+  }
+
   variants.forEach((v) => {
-    if (!declaredChannels.has(v.channel)) {
-      out.warnings.push(`Variant found for '${v.channel}' but channel is not selected on template.`);
-    }
-    const res = validateVariant(v.channel, v.snapshot);
-    out.errors.push(...res.errors.map((e) => `[${v.channel}] ${e}`));
-    out.warnings.push(...res.warnings.map((w) => `[${v.channel}] ${w}`));
+    // The variant snapshot is the `content` property within the variant object
+    const res = validateVariant(template.channel, v.content);
+    out.errors.push(...res.errors.map((e) => `[${v.locale || 'variant'}] ${e}`));
+    out.warnings.push(...res.warnings.map((w) => `[${v.locale || 'variant'}] ${w}`));
   });
 
-  return out;
+  return out.errors; // The calling code expects an array of errors
 }
 
 const Validators = { validateVariant, validateTemplate };

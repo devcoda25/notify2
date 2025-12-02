@@ -12,8 +12,7 @@ import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
 
 import CHANNELS from "../constants/CHANNELS";
-import useTemplatesStore from "../../store/templates/useTemplatesStore";
-import useApprovalsStore from "../../store/templates/useApprovalsStore";
+import useTemplatesStore from "../store/useTemplatesStore";
 
 // lucide icons
 import {
@@ -76,13 +75,15 @@ function ChannelRow({ ch, selected, count, onClick }) {
 }
 
 export default function TemplatesLeftNav({ currentView, selectedChannel, onNavigate }) {
-  const listForChannel = useTemplatesStore((s) => s.listForChannel);
-  const templates = useTemplatesStore((s) => s.templates);
-  const approvals = useApprovalsStore((s) => s.approvals);
+  const { templates, totalCount, listForChannel } = useTemplatesStore((s) => ({
+    templates: s.templates,
+    totalCount: s.totalCount,
+    listForChannel: s.listForChannel,
+  }));
 
-  const total = templates?.length || 0;
-  const pendingApprovals = Object.values(approvals || {}).filter(
-    (a) => a.state === "Submitted" || a.state === "In-Review" || a.state === "Rejected"
+  const total = totalCount || templates?.length || 0;
+  const pendingApprovals = (templates || []).filter(
+    (t) => ["Submitted", "In-Review", "Rejected"].includes(t.status)
   ).length;
 
   return (

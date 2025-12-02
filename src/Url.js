@@ -21,10 +21,11 @@
 
 export const config = { headers, withCredentials: true } 
 export function base(){
-    return process.env.REACT_APP_API_URL + "/api/v1.0/web/notify/template";
+    return process.env.REACT_APP_API_URL + "http://localhost:7440";
 }
 
 export const CONTACTS_API_BASE_URL = 'http://localhost:7440/api/v1.0/web/notify/contacts'; // Updated API base URL for contacts
+export const TEMPLATES_API_BASE_URL = 'http://localhost:7440/api/v1.0/web/notify/templates'; // API base URL for templates
 
 export function coreBase(){
     return process.env.REACT_APP_API_URL + "/api/v1.0/app/core/user/modules/user";

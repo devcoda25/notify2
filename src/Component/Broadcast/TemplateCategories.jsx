@@ -302,11 +302,8 @@ const isFormValid = () => {
     setIsSubmitting(true);
 
     try {
-      const url = formData.id
-        ? updateCategory()
-        : addCategory();
-
-      await axios.post(url, formData, config);
+      // DUMMY LOGIC
+      await new Promise(resolve => setTimeout(resolve, 500));
       handleCloseDialog();
       fetchCategoryData();
     } catch (err) {
@@ -317,7 +314,8 @@ const isFormValid = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.post(deleteCategory(), { id: deleteId }, config );
+      // DUMMY LOGIC
+      await new Promise(resolve => setTimeout(resolve, 500));
       setOpenDeleteConfirm(false);
       fetchCategoryData();
     } catch (err) {
@@ -327,9 +325,12 @@ const isFormValid = () => {
 
   const handleViewCategory = async (id) => {
     try {
-      const res = await axios.get(`${showCategory()}?id=${id}`, config);
-      setViewData(res.data?.data);
-      setOpenViewDialog(true);
+      // DUMMY LOGIC
+      const categoryToView = categoryData.find(c => c.id === id);
+      if (categoryToView) {
+        setViewData(categoryToView);
+        setOpenViewDialog(true);
+      }
     } catch (err) {
       console.error("Error viewing category:", err);
     }
@@ -337,12 +338,8 @@ const isFormValid = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const updated = categoryData.find((item) => item.id === id);
-      if (!updated) return;
-
-      const payload = { ...updated, is_active: newStatus };
-
-      await axios.post(updateCategory(), payload, config);
+      // DUMMY LOGIC
+      await new Promise(resolve => setTimeout(resolve, 500));
       fetchCategoryData();
     } catch (err) {
       console.error("Error updating status:", err);

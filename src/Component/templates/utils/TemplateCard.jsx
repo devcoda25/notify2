@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Mail, MonitorSmartphone, Bell, MessageSquare, MessageCircle } from "lucide-react";
 import TemplateRowActions from "./TemplateRowActions";
+import TypeChip from "./TypeChip";
 
 const normalizeChannel = (val) => {
   const s = String(val || "").toLowerCase().trim();
@@ -70,7 +71,7 @@ export default function TemplateCard({
   const updatedAt = template?.updatedAt ? new Date(template.updatedAt).toLocaleString() : "—";
   const usage = template?.usage?.total ?? template?.usageTotal ?? 0;
 
-  const variants = template?.variants || template?.translations || [];
+  const variants = template?.versions?.[0]?.variants || [];
   const languages = Array.from(
     new Set(variants.map((v) => v?.lang || v?.language || v?.locale).filter(Boolean).map((s) => String(s).slice(0, 5).toUpperCase()))
   );
@@ -99,7 +100,7 @@ export default function TemplateCard({
 
             <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: "wrap" }}>
               <Chip size="small" variant="outlined" label={ch} />
-              <Chip size="small" variant="outlined" label={template?.type || "—"} />
+              <TypeChip type={template?.type} />
               <Chip size="small" label={`${variants.length} variants`} />
               {languages.slice(0, 3).map((lng) => (
                 <Chip key={`${template?.id}-lng-${lng}`} size="small" variant="outlined" label={lng} />
@@ -144,8 +145,8 @@ export default function TemplateCard({
 
             {Array.isArray(template?.tags) && template.tags.length > 0 && (
               <Stack direction="row" spacing={0.5} sx={{ flexWrap: "wrap" }}>
-                {template.tags.slice(0, 3).map((tg) => (
-                  <Chip key={tg} size="small" variant="outlined" label={tg} />
+                {template.tags.slice(0, 3).map((tagObj) => (
+                  <Chip key={tagObj.tagId || tagObj.tag.id} size="small" variant="outlined" label={tagObj.tag.name} />
                 ))}
                 {template.tags.length > 3 && <Chip size="small" variant="outlined" label={`+${template.tags.length - 3}`} />}
               </Stack>
