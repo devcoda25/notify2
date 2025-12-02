@@ -28,7 +28,34 @@ export default function useTemplatesApi() {
   const api = useMemo(() => {
     if (!partyId) {
       console.warn("useTemplatesApi: partyId is missing from user store. API calls will be disabled.");
-      return {};
+      // Return an object with dummy functions to prevent crashes
+      const dummyApi = {
+        fetchTemplates: async () => {},
+        createTemplate: async () => {},
+        getTemplate: async () => {},
+        updateTemplate: async () => {},
+        archiveTemplate: async () => {},
+        deleteTemplate: async () => {},
+        duplicateTemplate: async () => {},
+        createTemplateVersion: async () => {},
+        getVersionById: async () => {},
+        updateVersion: async () => {},
+        updateVariableSchema: async () => {},
+        getVariant: async () => {},
+        updateVariant: async () => {},
+        deleteVariant: async () => {},
+        updateVariantContent: async () => {},
+        submitForApproval: async () => {},
+        listApprovalRequests: async () => {},
+        getApprovalRequestById: async () => {},
+        castVote: async () => {},
+        getProviderStatuses: async () => {},
+        syncProviderStatuses: async () => {},
+        renderPreview: async () => {},
+        validateVariant: async () => {},
+        sendTest: async () => {},
+      };
+      return dummyApi;
     }
 
     const axiosInstance = axios.create({
