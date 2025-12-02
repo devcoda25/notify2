@@ -5,7 +5,7 @@ import usersFixtures from "../../Meetings/mocks/fixtures/users.fixtures.json";
 import { buildICS } from "../../Meetings/utils/icsClient";
 // import * as notify from "../../Meetings/mocks/adapters/notifications.mock";
 // import * as calendar from "../../Meetings/mocks/adapters/calendar.mock";
-import { createBookingMachine } from "../../Meetings/mocks/fsm/booking.machine";
+// import { createBookingMachine } from "../../Meetings/mocks/fsm/booking.machine";
 
 /** ── Volume knobs (override by window.MEETINGS_SEED if you want) ───────────── */
 const SEED = {
@@ -262,30 +262,26 @@ export const useMeetingsStore = create((set, get) => ({
   book: async ({ eventTypeId, host, invitee, start, end, locationPreference, channelPrefs }) => {
     set({ bookingState: "validating_input", lastError: null, lastBooking: null });
 
-    const machine = createBookingMachine({
-      onReserved: async (ctx) => {
-        // Log reservation
-        set((s) => ({
-          history: [{ id: `h_${Date.now()}`, at: new Date().toISOString(), type: "reserved", data: ctx }, ...s.history],
-        }));
-      },
-      onConfirmed: async (ctx) => {
-        // Save meeting
+    // DUMMY IMPLEMENTATION
+    console.log('[DUMMY] Booking meeting:', { eventTypeId, host, invitee, start, end });
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate validation and booking
+
+    try {
         const newId = id("mtg");
         const meeting = {
           id: newId,
-          eventTypeId: ctx.eventTypeId,
-          host: ctx.host,
-          poolId: ctx.host.ownerType === "pool" ? ctx.host.ownerId : null,
-          invitee: ctx.invitee,
-          attendees: ctx.attendees || [
+          eventTypeId: eventTypeId,
+          host: host,
+          poolId: host.ownerType === "pool" ? host.ownerId : null,
+          invitee: invitee,
+          attendees: [
             { type: "host", name: "Host", email: "host@example.com" },
-            { type: "invitee", name: ctx.invitee.name, email: ctx.invitee.email },
+            { type: "invitee", name: invitee.name, email: invitee.email },
           ],
-          start: ctx.start,
-          end: ctx.end,
-          timezone: ctx.invitee.timezone || "UTC",
-          location: { type: ctx.conference.provider, link: ctx.conference.joinUrl },
+          start: start,
+          end: end,
+          timezone: invitee.timezone || "UTC",
+          location: { type: 'dummy_conference', link: 'https://dummy.conference/join' },
           status: "scheduled",
           createdAt: nowIso(),
           updatedAt: nowIso(),
@@ -296,22 +292,9 @@ export const useMeetingsStore = create((set, get) => ({
         };
         set((s) => ({ meetings: [meeting, ...s.meetings], lastBooking: meeting }));
         set({ bookingState: "confirmed" });
-      },
-      onFailed: async (_ctx, err) => {
+    } catch (err) {
         set({ bookingState: "failed", lastError: err?.message || String(err) });
-      },
-    });
-
-    const unsub = machine.on("transition", ({ state }) => {
-      set({ bookingState: state });
-    });
-
-    machine.send({
-      type: "BOOK",
-      payload: { eventTypeId, host, invitee, start, end, locationPreference, channelPrefs },
-    });
-
-    setTimeout(() => unsub?.(), 10000);
+    }
   },
 
   /** Cancel: drop the meeting & free the calendar hold (mock) */
