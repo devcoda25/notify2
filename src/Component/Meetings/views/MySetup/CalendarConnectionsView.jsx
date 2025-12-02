@@ -22,7 +22,7 @@ import {
 import { useTheme, alpha } from "@mui/material/styles";
 import { Link as LinkIcon, RefreshCcw, CheckCircle2, XCircle, Clock } from "lucide-react";
 import usersFixtures from "../../mocks/fixtures/users.fixtures.json";
-import * as calendar from "../../mocks/adapters/calendar.mock";
+// import * as calendar from "../../mocks/adapters/calendar.mock";
 
 export default function CalendarConnectionsView() {
   const theme = useTheme();
@@ -55,19 +55,14 @@ export default function CalendarConnectionsView() {
     setLoading(true);
     setErr(null);
     try {
-      const rangeStart = new Date().toISOString();
-      const rangeEnd = new Date(Date.now() + 7 * 864e5).toISOString();
+      // DUMMY IMPLEMENTATION
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const entries = await Promise.all(
         users.map(async (u) => {
           const provider = (u.integrations?.calendars?.[0] || "google").split(":")[0];
-          const busy = await calendar.getBusyBlocks({
-            ownerType: "user",
-            ownerId: u.id,
-            start: rangeStart,
-            end: rangeEnd,
-          });
-          return { u, provider, busyCount: busy.length };
+          const busyCount = Math.floor(Math.random() * 10); // Dummy busy count
+          return { u, provider, busyCount };
         })
       );
 

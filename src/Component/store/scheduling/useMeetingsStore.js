@@ -4,7 +4,7 @@ import { attachPersistence } from "../../store/__persist__/persist";
 import usersFixtures from "../../Meetings/mocks/fixtures/users.fixtures.json";
 import { buildICS } from "../../Meetings/utils/icsClient";
 // import * as notify from "../../Meetings/mocks/adapters/notifications.mock";
-import * as calendar from "../../Meetings/mocks/adapters/calendar.mock";
+// import * as calendar from "../../Meetings/mocks/adapters/calendar.mock";
 import { createBookingMachine } from "../../Meetings/mocks/fsm/booking.machine";
 
 /** ── Volume knobs (override by window.MEETINGS_SEED if you want) ───────────── */
@@ -319,6 +319,7 @@ export const useMeetingsStore = create((set, get) => ({
     const mtg = get().getById(meetingId);
     if (!mtg) return false;
 
+    /* DUMMY IMPLEMENTATION - calendar block removed
     const busy = await calendar.getBusyBlocks({
       ownerType: mtg.host.ownerType,
       ownerId: mtg.host.ownerId,
@@ -329,6 +330,7 @@ export const useMeetingsStore = create((set, get) => ({
     if (target) {
       try { calendar.removeBusyBlock(target.id); } catch {}
     }
+    */
 
     // DUMMY IMPLEMENTATION
     console.log(`[DUMMY] Sending cancellation email to ${mtg.invitee.email}`);

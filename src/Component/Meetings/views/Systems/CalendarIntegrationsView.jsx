@@ -25,7 +25,7 @@ import {
 import { useTheme, alpha } from "@mui/material/styles";
 import { Link as LinkIcon, RefreshCcw, CheckCircle2, XCircle, Clock, Activity, Webhook } from "lucide-react";
 import usersFixtures from "../../mocks/fixtures/users.fixtures.json";
-import * as calendar from "../../mocks/adapters/calendar.mock";
+// import * as calendar from "../../mocks/adapters/calendar.mock";
 
 export default function CalendarIntegrationsView() {
   const theme = useTheme();
@@ -43,17 +43,12 @@ export default function CalendarIntegrationsView() {
     setErr(null);
     setLoading(true);
     try {
-      const now = new Date();
-      const next7 = new Date(Date.now() + 7 * 864e5);
+      // DUMMY IMPLEMENTATION
+      await new Promise(resolve => setTimeout(resolve, 500));
       const results = await Promise.all(
         users.map(async (u) => {
           const provider = (u.integrations?.calendars?.[0] || "google").split(":")[0];
-          const busy = await calendar.getBusyBlocks({
-            ownerType: "user",
-            ownerId: u.id,
-            start: now.toISOString(),
-            end: next7.toISOString(),
-          });
+          const busyCount = Math.floor(Math.random() * 10); // Dummy busy count
           const ok = true; // mock
           return {
             id: u.id,
@@ -63,7 +58,7 @@ export default function CalendarIntegrationsView() {
             scopes: ["calendar.read", "calendar.write"],
             webhookStatus: "subscribed",
             lastSync: new Date().toISOString(),
-            upcomingBusy: busy.length,
+            upcomingBusy: busyCount,
             health: ok ? "ok" : "error",
           };
         })
